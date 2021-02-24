@@ -22,6 +22,7 @@ RCT_EXPORT_MODULE()
         return;
     }
     
+    //[MMKV initializeMMKV:nil];
     mmkv::setup(*(facebook::jsi::Runtime *)cxxBridge.runtime);
 }
 
