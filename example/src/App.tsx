@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
+import { benchmarkAgainstAsyncStorage } from './Benchmarks';
 
 export default function App() {
   const [text, setText] = React.useState<string>('');
@@ -47,6 +48,12 @@ export default function App() {
     } catch (e) {
       console.error('Error:', e);
     }
+  }, []);
+
+  React.useEffect(() => {
+    setTimeout(async () => {
+      await benchmarkAgainstAsyncStorage();
+    }, 5000);
   }, []);
 
   return (
