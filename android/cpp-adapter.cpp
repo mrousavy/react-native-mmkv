@@ -1,8 +1,10 @@
 #include <jni.h>
-#include "example.h"
+#include <android/log.h>
 
 extern "C"
-JNIEXPORT jint JNICALL
-Java_com_reactnativemmkv_MmkvModule_nativeMultiply(JNIEnv *env, jclass type, jint a, jint b) {
-    return example::multiply(a, b);
+JNIEXPORT jobject JNICALL
+Java_com_reactnativemmkv_MmkvModule_nativeInstall(JNIEnv *env, jobject clazz, jlong jsiPtr) {
+    __android_log_print(ANDROID_LOG_VERBOSE, "react-native-leveldb", "Initializing react-native-mmkv");
+
+    return nullptr;
 }

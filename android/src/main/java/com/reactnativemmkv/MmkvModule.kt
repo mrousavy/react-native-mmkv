@@ -6,31 +6,22 @@ import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
 
 class MmkvModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
+  override fun getName(): String {
+      return "MMKV"
+  }
 
-    override fun getName(): String {
-        return "Mmkv"
-    }
+  external fun nativeInstall(jsiPtr: Long): Void;
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
-    @ReactMethod
-    fun multiply(a: Int, b: Int, promise: Promise) {
-    
-      promise.resolve(nativeMultiply(a, b));
-    
-    }
+  companion object
+  {
+      init
+      {
+          System.loadLibrary("cpp")
+      }
+  }
 
-    
-    external fun nativeMultiply(a: Int, b: Int): Int;
-
-    companion object
-    {
-
-        // Used to load the 'native-lib' library on application startup.
-        init
-        {
-            System.loadLibrary("cpp")
-        }
-    }
-    
+  override fun initialize() {
+    super.initialize()
+    nativeInstall(this.reactApplicationContext.javaScriptContextHolder.get())
+  }
 }
