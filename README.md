@@ -14,8 +14,8 @@
   <a align="center" href="https://twitter.com/mrousavy">
     <img src="https://img.shields.io/twitter/follow/mrousavy?label=Follow%20%40mrousavy&style=social" />
   </a>
-  <br/>
 </div>
+<br/>
 
 **MMKV** is an efficient, small mobile key-value storage framework developed by WeChat.
 
