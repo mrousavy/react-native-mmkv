@@ -29,7 +29,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                          [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[1].isString()) throw jsi::JSError(runtime, "Second argument ('key') has to be of type string!");
         auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
-        
+
         try {
             if (arguments[0].isBool()) {
                 [MMKV.defaultMMKV setBool:arguments[0].getBool() forKey:keyName];
@@ -47,8 +47,8 @@ static void install(jsi::Runtime & jsiRuntime)
         }
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvSet", std::move(mmkvSet));
-    
-    
+
+
     // MMKV.getBoolean(key: string)
     auto mmkvGetBoolean = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                 jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetBoolean"),
@@ -56,7 +56,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        
+
         try {
             auto value = [MMKV.defaultMMKV getBoolForKey:keyName];
             return jsi::Value(value);
@@ -65,8 +65,8 @@ static void install(jsi::Runtime & jsiRuntime)
         }
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetBoolean", std::move(mmkvGetBoolean));
-    
-    
+
+
     // MMKV.getString(key: string)
     auto mmkvGetString = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetString"),
@@ -74,7 +74,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        
+
         try {
             auto value = [MMKV.defaultMMKV getStringForKey:keyName];
             return jsi::String::createFromUtf8(runtime, value.UTF8String);
@@ -83,8 +83,8 @@ static void install(jsi::Runtime & jsiRuntime)
         }
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetString", std::move(mmkvGetString));
-    
-    
+
+
     // MMKV.getNumber(key: string)
     auto mmkvGetNumber = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetNumber"),
@@ -92,7 +92,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        
+
         try {
             auto value = [MMKV.defaultMMKV getDoubleForKey:keyName];
             return jsi::Value(value);
@@ -101,16 +101,16 @@ static void install(jsi::Runtime & jsiRuntime)
         }
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetNumber", std::move(mmkvGetNumber));
-    
-    
+
+
     // MMKV.delete(key: string)
     auto mmkvDelete = jsi::Function::createFromHostFunction(jsiRuntime,
                                                             jsi::PropNameID::forAscii(jsiRuntime, "mmkvDelete"),
                                                             1,  // key
                                                             [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
-        
+        auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+
         try {
             [MMKV.defaultMMKV removeValueForKey:keyName];
             return jsi::Value::undefined();
@@ -119,8 +119,8 @@ static void install(jsi::Runtime & jsiRuntime)
         }
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvDelete", std::move(mmkvDelete));
-    
-    
+
+
     // MMKV.getAllKeys()
     auto mmkvGetAllKeys = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                 jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetAllKeys"),
@@ -140,12 +140,12 @@ static void install(jsi::Runtime & jsiRuntime)
 {
     _bridge = bridge;
     _setBridgeOnMainQueue = RCTIsMainQueue();
-    
+
     RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
     if (!cxxBridge.runtime) {
         return;
     }
-    
+
     [MMKV initializeMMKV:nil];
     install(*(jsi::Runtime *)cxxBridge.runtime);
 }
@@ -166,5 +166,5 @@ RCT_EXPORT_METHOD(multiply:(nonnull NSNumber*)a withB:(nonnull NSNumber*)b
     resolve(result);
 }
 */
- 
+
 @end
