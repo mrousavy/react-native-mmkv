@@ -1,7 +1,11 @@
 #include "mmkv-wrapper.h"
 
-namespace example {
-	int multiply(float a, float b) {
-		return a * b;
-	}
+namespace mmkv {
+    void setup(facebook::jsi::Runtime& jsiRuntime) {
+        // jsiRuntime.global().setProperty(jsiRuntime, <#const char *name#>, <#T &&value#>)
+    }
+
+    void teardown() {
+        
+    }
 }

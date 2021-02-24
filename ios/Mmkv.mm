@@ -22,11 +22,11 @@ RCT_EXPORT_MODULE()
         return;
     }
     
-    installMMKV(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+    mmkv::setup(*(facebook::jsi::Runtime *)cxxBridge.runtime);
 }
 
 - (void)invalidate {
-    cleanupLeveldb();
+    mmkv::teardown();
 }
 
 /*

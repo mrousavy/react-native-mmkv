@@ -1,10 +1,12 @@
 #ifndef EXAMPLE_H
 #define EXAMPLE_H
 
-#include <JSI/Runtime>
+#include <jsi/jsilib.h>
+#include <jsi/jsi.h>
 
 namespace mmkv {
-    void installMMKV(facebook::jsi::Runtime runtime);
+    void setup(facebook::jsi::Runtime& jsiRuntime);
+    void teardown();
 }
 
 #endif /* EXAMPLE_H */
