@@ -1,5 +1,19 @@
 <div align="center">
-  <h1>MMKV</h1>
+  <h1 align="center">MMKV</h1>
+</div>
+
+<div align="center">
+  <a align="center" href='https://ko-fi.com/F1F8CLXG' target='_blank'>
+    <img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+  </a>
+  <br/>
+  
+  <a align="center" href="https://github.com/mrousavy?tab=followers">
+    <img src="https://img.shields.io/github/followers/mrousavy?label=Follow%20%40mrousavy&style=social" />
+  </a>
+  <a align="center" href="https://twitter.com/mrousavy">
+    <img src="https://img.shields.io/twitter/follow/mrousavy?label=Follow%20%40mrousavy&style=social" />
+  </a>
 </div>
 
 **MMKV** is an efficient, small mobile key-value storage framework developed by WeChat.
