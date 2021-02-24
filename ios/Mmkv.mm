@@ -5,7 +5,7 @@
 #import <React/RCTUtils.h>
 #import <jsi/jsi.h>
 
-#import <MMKV/MMKV.h>
+#import "MMKV/MMKV.h"
 
 using namespace facebook;
 
