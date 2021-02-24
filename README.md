@@ -9,6 +9,8 @@
 **react-native-mmkv** provides an interface to access MMKV functionality through synchronous JS functions using **JSI**.
 This means, there is **no bridge-traffic**, everything runs **synchronously**, no Promise-awaiting, and it's **fast asf**.
 
+> Fun fact: since all the JS functions have C++ implementations, you can also directly call them in [reanimated](https://github.com/software-mansion/react-native-reanimated) worklets
+
 ## Installation
 
 ```sh
