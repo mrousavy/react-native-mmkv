@@ -1,6 +1,6 @@
 #include <jni.h>
-#include "MMKV/Core/MMKV.h"
 #include <jsi/jsi.h>
+#include "MMKV.h"
 
 using namespace facebook;
 
