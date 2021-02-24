@@ -52,7 +52,7 @@ void install(jsi::Runtime& jsiRuntime) {
 
                                                                    std::string result;
                                                                    MMKV::defaultMMKV()->getString(keyName, result);
-                                                                   return jsi::Value(result);
+                                                                   return jsi::Value(runtime, jsi::String::createFromUtf8(runtime, result));
                                                                });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetString", std::move(mmkvGetString));
 
