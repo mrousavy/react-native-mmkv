@@ -1,6 +1,6 @@
 #include <jni.h>
 #include <jsi/jsi.h>
-#include "MMKV.h"
+//#include "MMKV.h"
 
 using namespace facebook;
 
@@ -30,7 +30,7 @@ std::string jstring2string(JNIEnv *env, jstring jStr) {
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_reactnativemmkv_MmkvModule_nativeInstall(JNIEnv *env, jobject clazz, jlong jsiPtr, jstring path) {
-    MMKV::initializeMMKV(jstring2string(env, path));
+    //MMKV::initializeMMKV(jstring2string(env, path));
 
     auto runtime = reinterpret_cast<jsi::Runtime*>(jsiPtr);
     install(*runtime);
