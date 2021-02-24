@@ -30,12 +30,9 @@ export default function App() {
 
   React.useEffect(() => {
     try {
-      console.log('setting...');
-      MMKV.set('Test', 'test-key');
-      console.log('set.');
-      console.log('getting...');
-      const string = MMKV.getString('test-key');
-      console.log(`got ${string}.`);
+      console.log('getting all keys...');
+      const keys = MMKV.getAllKeys();
+      console.log('MMKV keys:', keys);
     } catch (e) {
       console.error('Error:', e);
     }

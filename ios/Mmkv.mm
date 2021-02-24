@@ -123,7 +123,7 @@ static void install(jsi::Runtime & jsiRuntime)
     
     // MMKV.getAllKeys()
     auto mmkvGetAllKeys = jsi::Function::createFromHostFunction(jsiRuntime,
-                                                                jsi::PropNameID::forAscii(jsiRuntime, "getAllKeys"),
+                                                                jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetAllKeys"),
                                                                 0,
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         try {
@@ -133,7 +133,7 @@ static void install(jsi::Runtime & jsiRuntime)
             throw jsi::JSError(runtime, e.localizedDescription.UTF8String);
         }
     });
-    jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetNumber", std::move(mmkvGetNumber));
+    jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetAllKeys", std::move(mmkvGetAllKeys));
 }
 
 - (void)setBridge:(RCTBridge *)bridge
