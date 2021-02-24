@@ -88,6 +88,41 @@ const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
 const userObject = JSON.parse(jsonUser)
 ```
 
+## redux-persist
+
+If you want to use MMKV with redux-persist, create the following `storage` object:
+
+```ts
+import { MMKV } from "react-native-mmkv";
+import { Storage } from "redux-persist";
+
+type StorageType = typeof MMKV & {
+  /**
+   * Redux Persist plugin for react-native-mmkv
+   */
+  redux: Storage;
+};
+
+// Unfortunately redux-persist expects Promises, so we have to wrap our sync calls with Promise resolvers/rejecters
+const storage: StorageType = {
+  redux: {
+    setItem: (key: string, value: string): Promise<boolean> => {
+      MMKV.set(value, key);
+      return Promise.resolve(true);
+    },
+    getItem: (key: string): Promise<string> =>
+      Promise.resolve(MMKV.getString(key)),
+    removeItem: (key: string): Promise<void> => {
+      MMKV.delete(key);
+      return Promise.resolve();
+    },
+  },
+  ...MMKV,
+};
+
+export default storage;
+```
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
