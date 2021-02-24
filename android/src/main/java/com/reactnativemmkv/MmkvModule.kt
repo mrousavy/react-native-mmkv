@@ -10,7 +10,7 @@ class MmkvModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMo
       return "MMKV"
   }
 
-  external fun nativeInstall(jsiPtr: Long): Void;
+  external fun nativeInstall(jsiPtr: Long);
 
   companion object
   {
