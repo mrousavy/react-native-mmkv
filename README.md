@@ -6,6 +6,8 @@
 
 > See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
 
+**react-native-mmkv** is a library that allows you to use **MMKV** inside your React Native applications.
+
 ## Features
 
 * **Get** and **set** strings, booleans and numbers
