@@ -121,6 +121,19 @@ static void install(jsi::Runtime & jsiRuntime)
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvDelete", std::move(mmkvDelete));
     
     
+    // MMKV.getAllKeys()
+    auto mmkvGetAllKeys = jsi::Function::createFromHostFunction(jsiRuntime,
+                                                                jsi::PropNameID::forAscii(jsiRuntime, "getAllKeys"),
+                                                                0,
+                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
+        try {
+            auto keys = [MMKV.defaultMMKV allKeys];
+            return jsi::Value(convertNSArrayToJSIArray(runtime, keys));
+        } catch (NSError* e) {
+            throw jsi::JSError(runtime, e.localizedDescription.UTF8String);
+        }
+    });
+    jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetNumber", std::move(mmkvGetNumber));
 }
 
 - (void)setBridge:(RCTBridge *)bridge
