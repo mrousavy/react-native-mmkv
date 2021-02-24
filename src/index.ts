@@ -17,9 +17,9 @@ export const MMKV = {
   /**
    * Get a string value for the given `key`.
    *
-   * @default ""
+   * @default undefined
    */
-  getString: g.mmkvGetString as (key: string) => string,
+  getString: g.mmkvGetString as (key: string) => string | undefined,
   /**
    * Get a number value for the given `key`.
    *

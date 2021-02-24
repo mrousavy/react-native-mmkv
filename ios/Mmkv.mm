@@ -51,7 +51,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                 1,  // key
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        
+
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         auto value = [MMKV.defaultMMKV getBoolForKey:keyName];
         return jsi::Value(value);
@@ -65,10 +65,13 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                1,  // key
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        
+
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         auto value = [MMKV.defaultMMKV getStringForKey:keyName];
-        return jsi::String::createFromUtf8(runtime, value.UTF8String);
+        if (value != nil)
+            return jsi::String::createFromUtf8(runtime, value.UTF8String);
+        else
+            return jsi::Value::undefined();
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetString", std::move(mmkvGetString));
 
@@ -79,7 +82,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                1,  // key
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        
+
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         auto value = [MMKV.defaultMMKV getDoubleForKey:keyName];
         return jsi::Value(value);
@@ -93,7 +96,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                             1,  // key
                                                             [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        
+
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         [MMKV.defaultMMKV removeValueForKey:keyName];
         return jsi::Value::undefined();
