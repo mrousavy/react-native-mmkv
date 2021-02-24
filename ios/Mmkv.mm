@@ -101,6 +101,26 @@ static void install(jsi::Runtime & jsiRuntime)
         }
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetNumber", std::move(mmkvGetNumber));
+    
+    
+    // MMKV.delete(key: string)
+    auto mmkvDelete = jsi::Function::createFromHostFunction(jsiRuntime,
+                                                            jsi::PropNameID::forAscii(jsiRuntime, "mmkvDelete"),
+                                                            1,  // key
+                                                            [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
+        if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
+        auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
+        
+        try {
+            [MMKV.defaultMMKV removeValueForKey:keyName];
+            return jsi::Value::undefined();
+        } catch (NSError* e) {
+            throw jsi::JSError(runtime, e.localizedDescription.UTF8String);
+        }
+    });
+    jsiRuntime.global().setProperty(jsiRuntime, "mmkvDelete", std::move(mmkvDelete));
+    
+    
 }
 
 - (void)setBridge:(RCTBridge *)bridge
