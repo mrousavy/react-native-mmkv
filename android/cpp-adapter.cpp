@@ -91,7 +91,12 @@ void install(jsi::Runtime& jsiRuntime) {
                                                                 0,
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
                                                                     auto keys = MMKV::defaultMMKV()->allKeys();
-                                                                    return jsi::Value(runtime, keys);
+                                                                    auto array = jsi::Array(runtime, keys.size());
+                                                                    for (int i = 0; i < keys.size(); i++) {
+                                                                        auto string = jsi::String::createFromUtf8(runtime, keys[i]);
+                                                                        array.setValueAtIndex(runtime, i, string);
+                                                                    }
+                                                                    return jsi::Array::createWithElements(runtime, array);
                                                                 });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetAllKeys", std::move(mmkvGetAllKeys));
 }
