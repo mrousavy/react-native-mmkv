@@ -2,10 +2,12 @@
 
 #ifdef __cplusplus
 
-#import "example.h"
+#import "mmkv-wrapper.h"
 
 #endif
 
 @interface Mmkv : NSObject <RCTBridgeModule>
+
+@property (nonatomic, assign) BOOL setBridgeOnMainQueue;
 
 @end
