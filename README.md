@@ -90,7 +90,7 @@ const userObject = JSON.parse(jsonUser)
 
 ## redux-persist
 
-If you want to use MMKV with redux-persist, create the following `storage` object:
+If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-persist), create the following `storage` object:
 
 ```ts
 import { MMKV } from "react-native-mmkv";
