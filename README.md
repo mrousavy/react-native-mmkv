@@ -21,7 +21,7 @@ cd ios && pod install
 ### Set
 
 ```js
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from 'react-native-mmkv';
 
 MMKV.set('Marc', 'user.name')
 MMKV.set(20, 'user.age')
@@ -31,7 +31,7 @@ MMKV.set(true, 'is-mmkv-fast-asf')
 ### Get
 
 ```js
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from 'react-native-mmkv';
 
 const username = MMKV.getString('user.name') // 'Marc'
 const age = MMKV.getNumber('user.age') // 20
@@ -41,7 +41,7 @@ const isMmkvFastAsf = MMKV.getBoolean('is-mmkv-fast-asf') // true
 ### Delete
 
 ```js
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from 'react-native-mmkv';
 
 MMKV.delete('user.name')
 ```
@@ -49,9 +49,25 @@ MMKV.delete('user.name')
 ### Get all keys
 
 ```js
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from 'react-native-mmkv';
 
 const keys = MMKV.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
+```
+
+### Objects
+
+```js
+import { MMKV } from 'react-native-mmkv';
+
+const user = {
+  username: 'Marc',
+  age: 20
+}
+
+MMKV.set(JSON.stringify(user), 'user')
+
+const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
+const userObject = JSON.parse(jsonUser)
 ```
 
 ## Contributing
