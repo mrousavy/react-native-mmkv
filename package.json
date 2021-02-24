@@ -1,6 +1,6 @@
 {
   "name": "react-native-mmkv",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "An efficient, small mobile key-value storage framework developed by WeChat. Works on Android and iOS.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",

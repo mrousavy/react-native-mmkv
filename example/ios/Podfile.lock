@@ -271,7 +271,7 @@ PODS:
     - React-jsi (= 0.64.0-rc.3)
     - React-perflogger (= 0.64.0-rc.3)
   - React-jsinspector (0.64.0-rc.3)
-  - react-native-mmkv (0.1.0):
+  - react-native-mmkv (0.1.2):
     - MMKV
     - React-Core
   - React-perflogger (0.64.0-rc.3)
@@ -511,7 +511,7 @@ SPEC CHECKSUMS:
   React-jsi: 0c862d1821e1a6d671a85945b99bee28bc3f7020
   React-jsiexecutor: 3d27b79050df18a753001d77cbf07b960dc4a8d6
   React-jsinspector: 09567a7aa3dcb281caf25eeba87280b1ea3e09f4
-  react-native-mmkv: e3a8a385681246ca83702ab5c5bce9d28ccba11e
+  react-native-mmkv: 879e64efddfcf2476eb52cbbc0eafcdeee6f3ed3
   React-perflogger: d9815e398aa6e6016b8c0bef8b3033ab818f823d
   React-RCTActionSheet: 1ec7b3130b7878d5f818c105eeda38d25f1ebab1
   React-RCTAnimation: 26c31a4da3b7ac12c501fc82d43894f9beabe11a
