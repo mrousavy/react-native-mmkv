@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.9.0)
 # Needed to locate double-conversion src correctly for folly includes
 #execute_process (COMMAND ln "-s" "src" "../../react-native/third-party/double-conversion-1.1.6/double-conversion")
 
-add_subdirectory(./MMKV/Core Core)
+add_subdirectory(../MMKV/Core Core)
 
 include_directories(
         ./MMKV/Core
