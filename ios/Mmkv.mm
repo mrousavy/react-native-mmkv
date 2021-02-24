@@ -1,8 +1,11 @@
 #import "Mmkv.h"
+#import "YeetJSIUtils.h"
+
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
-#import <MMKV/MMKV.h>
 #import <jsi/jsi.h>
+
+#import <MMKV/MMKV.h>
 
 using namespace facebook;
 
@@ -16,10 +19,6 @@ RCT_EXPORT_MODULE()
     return YES;
 }
 
-static NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::String &value)
-{
-    return [NSString stringWithUTF8String:value.utf8(runtime).c_str()];
-}
 
 static void install(jsi::Runtime & jsiRuntime)
 {
