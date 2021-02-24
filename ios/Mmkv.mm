@@ -21,22 +21,31 @@ static NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::St
     return [NSString stringWithUTF8String:value.utf8(runtime).c_str()];
 }
 
-- (void)install:(jsi::Runtime &)jsiRuntime
+static void install(jsi::Runtime & jsiRuntime)
 {
     auto mmkvSet = jsi::Function::createFromHostFunction(jsiRuntime,
                                                          jsi::PropNameID::forAscii(jsiRuntime, "mmkvSet"),
                                                          2,  // value, key
                                                          [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        if (!arguments[1].isString()) {
-            throw jsi::JSError(runtime, "Second argument ('key') has to be of type string!");
-        }
+        if (!arguments[1].isString()) throw jsi::JSError(runtime, "Second argument ('key') has to be of type string!");
         auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
         
-        [MMKV setValue:0 forKey:keyName];
-        
-        return jsi::Value::undefined();
+        try {
+            if (arguments[0].isBool()) {
+                [MMKV.defaultMMKV setBool:arguments[0].getBool() forKey:keyName];
+            } else if (arguments[0].isNumber()) {
+                [MMKV.defaultMMKV setDouble:arguments[0].getNumber() forKey:keyName];
+            } else if (arguments[0].isString()) {
+                auto stringValue = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+                [MMKV.defaultMMKV setString:stringValue forKey:keyName];
+            } else {
+                throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number or string!");
+            }
+            return jsi::Value::undefined();
+        } catch (NSError* e) {
+            throw jsi::JSError(runtime, e.localizedDescription.UTF8String);
+        }
     });
-    
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvSet", std::move(mmkvSet));
 }
 
@@ -51,9 +60,7 @@ static NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::St
     }
     
     [MMKV initializeMMKV:nil];
-    
-    
-    [self install:*(jsi::Runtime *)cxxBridge.runtime];
+    install(*(jsi::Runtime *)cxxBridge.runtime);
 }
 
 - (void)invalidate {
