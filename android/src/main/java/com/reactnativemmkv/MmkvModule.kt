@@ -8,7 +8,7 @@ class MmkvModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMo
       return "MMKV"
   }
 
-  external fun nativeInstall(jsiPtr: Long);
+  private external fun nativeInstall(jsiPtr: Long, path: String);
 
   companion object
   {
@@ -20,6 +20,9 @@ class MmkvModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaMo
 
   override fun initialize() {
     super.initialize()
-    nativeInstall(this.reactApplicationContext.javaScriptContextHolder.get())
+
+    nativeInstall(
+      this.reactApplicationContext.javaScriptContextHolder.get(),
+      this.reactApplicationContext.filesDir.absolutePath + "/mmkv")
   }
 }
