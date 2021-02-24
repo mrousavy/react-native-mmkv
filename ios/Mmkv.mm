@@ -55,7 +55,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                 1,  // key
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
+        auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         
         try {
             auto value = [MMKV.defaultMMKV getBoolForKey:keyName];
@@ -73,7 +73,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                1,  // key
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
+        auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         
         try {
             auto value = [MMKV.defaultMMKV getStringForKey:keyName];
@@ -91,7 +91,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                1,  // key
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-        auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
+        auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         
         try {
             auto value = [MMKV.defaultMMKV getDoubleForKey:keyName];
