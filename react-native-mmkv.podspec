@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => "10.0" }
   s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/**/*.{h,m,mm}", "MMKV/iOS/MMVK/**/*.{h,m,mm,c,cpp}", "MMKV/Core/**/*.{h,c,cpp}"
+  s.source_files = "ios/**/*.{h,m,mm}", "MMKV/iOS/MMKV/**/*.{h,m,mm,c,cpp}", "MMKV/Core/**/*.{h,c,cpp}"
 
   s.dependency "React-Core"
 end
