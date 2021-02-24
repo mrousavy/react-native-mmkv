@@ -11,11 +11,10 @@
 ## Features
 
 * **Get** and **set** strings, booleans and numbers
-* **Synchronous** calls, no async/await, no Promises.
+* **Fully synchronous** calls, no async/await, no Promises, no Bridge.
 * **High performance** because everything is **written in C++** (even the JS functions have C++ bodies!)
 * **~30x faster than AsyncStorage**
-* [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91)
-* **No bridge traffic**
+* Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
 
 > Fun fact: since all the JS functions have C++ implementations, you can also directly call them in [reanimated](https://github.com/software-mansion/react-native-reanimated) worklets
 
