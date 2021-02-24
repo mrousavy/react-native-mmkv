@@ -6,9 +6,7 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#include "YeetJSIUTils.h"
-
-#import <ReactCommon/TurboModule.h>
+#include "YeetJSIUtils.h"
 
 /**
  * All helper functions are ObjC++ specific.
