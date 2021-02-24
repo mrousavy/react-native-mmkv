@@ -1,38 +1,49 @@
 import * as React from 'react';
 
-import { StyleSheet, View, TextInput, Alert, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 
 export default function App() {
   const [text, setText] = React.useState<string>('');
+  const [key, setKey] = React.useState<string>('');
+  const [keys, setKeys] = React.useState<string[]>([]);
 
   const save = React.useCallback(() => {
+    if (key == null || key.length < 1) {
+      Alert.alert('Empty key!', 'Enter a key first.');
+      return;
+    }
     try {
       console.log('setting...');
-      MMKV.set(text, 'text');
+      MMKV.set(text, key);
       console.log('set.');
     } catch (e) {
       console.error('Error:', e);
       Alert.alert('Failed to set value for key "test"!', JSON.stringify(e));
     }
-  }, [text]);
+  }, [key, text]);
   const read = React.useCallback(() => {
+    if (key == null || key.length < 1) {
+      Alert.alert('Empty key!', 'Enter a key first.');
+      return;
+    }
     try {
       console.log('getting...');
-      const value = MMKV.getString('text');
+      const value = MMKV.getString(key);
       console.log('got:', value);
-      setText(value);
+      Alert.alert('Result', `"${key}" = "${value}"`);
     } catch (e) {
       console.error('Error:', e);
       Alert.alert('Failed to get value for key "test"!', JSON.stringify(e));
     }
-  }, []);
+  }, [key]);
 
   React.useEffect(() => {
     try {
       console.log('getting all keys...');
-      const keys = MMKV.getAllKeys();
-      console.log('MMKV keys:', keys);
+      const _keys = MMKV.getAllKeys();
+      setKeys(_keys);
+      console.log('MMKV keys:', _keys);
     } catch (e) {
       console.error('Error:', e);
     }
@@ -40,7 +51,25 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <TextInput style={styles.textInput} value={text} onChangeText={setText} />
+      <Text style={styles.keys}>Available Keys: {keys.join(', ')}</Text>
+      <View style={styles.row}>
+        <Text style={styles.title}>Key:</Text>
+        <TextInput
+          placeholder="Key"
+          style={styles.textInput}
+          value={key}
+          onChangeText={setKey}
+        />
+      </View>
+      <View style={styles.row}>
+        <Text style={styles.title}>Value:</Text>
+        <TextInput
+          placeholder="Value"
+          style={styles.textInput}
+          value={text}
+          onChangeText={setText}
+        />
+      </View>
       <Button onPress={save} title="Save to MMKV" />
       <Button onPress={read} title="Read from MMKV" />
     </View>
@@ -52,15 +81,27 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  keys: {
+    fontSize: 14,
+    color: 'grey',
+  },
+  title: {
+    fontSize: 16,
+    color: 'black',
+    marginRight: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   textInput: {
-    width: '80%',
-    height: 60,
+    flex: 1,
     marginVertical: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: 'black',
     borderRadius: 5,
-    paddingHorizontal: 20,
-    paddingVertical: 5,
+    padding: 10,
   },
 });
