@@ -28,8 +28,7 @@ static NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::St
                                                          2,  // value, key
                                                          [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[1].isString()) {
-            return jsi::JSError(runtime, "Second argument ('key') has to be of type string!");
-            return jsi::Value(-1);
+            throw jsi::JSError(runtime, "Second argument ('key') has to be of type string!");
         }
         auto keyName = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
         

@@ -1,14 +1,22 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import Mmkv from 'react-native-mmkv';
-
+import { MMKV } from 'react-native-mmkv';
 
 export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
 
   React.useEffect(() => {
-    Mmkv.multiply(3, 7).then(setResult);
+    try {
+      console.log('setting...');
+      MMKV.set('Test', 'test-key');
+      console.log('set.');
+      console.log('getting...');
+      const string = MMKV.getString('test-key');
+      console.log(`got ${string}.`);
+    } catch (e) {
+      console.error('Error:', e);
+    }
   }, []);
 
   return (
