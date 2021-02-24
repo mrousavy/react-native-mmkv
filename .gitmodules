@@ -1,0 +1,3 @@
+[submodule "android/MMKV"]
+	path = android/MMKV
+	url = https://github.com/Tencent/MMKV.git
