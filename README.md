@@ -6,10 +6,26 @@
 
 > See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
 
-**react-native-mmkv** provides an interface to access MMKV functionality through synchronous JS functions using **JSI**.
-This means, there is **no bridge-traffic**, everything runs **synchronously**, no Promise-awaiting, and it's **fast asf**.
+## Features
+
+* **Get** and **set** strings, booleans and numbers
+* **Synchronous** calls, no async/await, no Promises.
+* **High performance** because everything is **written in C++** (even the JS functions have C++ bodies!)
+* [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91)
+* **No bridge traffic**
+
 
 > Fun fact: since all the JS functions have C++ implementations, you can also directly call them in [reanimated](https://github.com/software-mansion/react-native-reanimated) worklets
+
+## Benchmark
+
+<div align="center">
+  <img src="./img/benchmark_1000_get.png" />
+  <p>
+    <b>AsyncStorage vs MMKV</b>: Reading a value from Storage 1000 times. <br/>
+    Measured in milliseconds on an iPhone 8, lower is better.
+  </p>
+</div>
 
 ## Installation
 
