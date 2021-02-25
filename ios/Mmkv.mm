@@ -37,6 +37,9 @@ static void install(jsi::Runtime & jsiRuntime)
         } else if (arguments[0].isString()) {
             auto stringValue = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
             [MMKV.defaultMMKV setString:stringValue forKey:keyName];
+        } else if (arguments[0].isObject()) {
+            id object = convertJSIValueToObjCObject(runtime, arguments[0]);
+            [MMKV.defaultMMKV setObject:object forKey:keyName];
         } else {
             throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number or string!");
         }
@@ -74,20 +77,34 @@ static void install(jsi::Runtime & jsiRuntime)
             return jsi::Value::undefined();
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetString", std::move(mmkvGetString));
-
-
+    
+    
     // MMKV.getNumber(key: string)
     auto mmkvGetNumber = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetNumber"),
                                                                1,  // key
                                                                [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-
+        
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         auto value = [MMKV.defaultMMKV getDoubleForKey:keyName];
         return jsi::Value(value);
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetNumber", std::move(mmkvGetNumber));
+    
+    
+    // MMKV.getObject(key: string)
+    auto mmkvGetObject = jsi::Function::createFromHostFunction(jsiRuntime,
+                                                               jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetObject"),
+                                                               1,  // key
+                                                               [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
+        if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
+        
+        auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+        id value = [MMKV.defaultMMKV getObjectOfClass:[NSObject class] forKey:keyName];
+        return convertObjCObjectToJSIValue(runtime, value);
+    });
+    jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetObject", std::move(mmkvGetObject));
 
 
     // MMKV.delete(key: string)
