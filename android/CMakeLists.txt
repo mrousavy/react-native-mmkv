@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.9.0)
 
-add_subdirectory(./MMKV/Core Core)
+add_subdirectory(../MMKV/Core Core)
 
 include_directories(
-        ./MMKV/Core
+        ../MMKV/Core
         ../../react-native/React
         ../../react-native/React/Base
         ../../react-native/ReactCommon/jsi
@@ -11,7 +11,6 @@ include_directories(
 
 add_library(cpp  # <-- Library name
         SHARED
-        #MMKV/Core # <-- EXCLUDE_FROM_ALL
         # Provides a relative path to your source file(s).
         ../../react-native/ReactCommon/jsi/jsi/jsi.cpp
         cpp-adapter.cpp
