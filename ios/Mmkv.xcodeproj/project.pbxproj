@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Mmkv.mm */; };
+		5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Mmkv.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		B8CC270225E65597009808A2 /* YeetJSIUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8CC270125E65597009808A2 /* YeetJSIUtils.mm */; };
 /* End PBXBuildFile section */
 
