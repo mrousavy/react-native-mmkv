@@ -21,6 +21,6 @@ public class MmkvPackage implements ReactPackage {
   @NonNull
   @Override
   public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-    return null;
+    return Collections.emptyList();
   }
 }
