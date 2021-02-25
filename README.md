@@ -57,9 +57,9 @@ cd ios && pod install
 ```js
 import { MMKV } from 'react-native-mmkv';
 
-MMKV.set('Marc', 'user.name')
-MMKV.set(20, 'user.age')
-MMKV.set(true, 'is-mmkv-fast-asf')
+MMKV.set('user.name', 'Marc')
+MMKV.set('user.age', 20)
+MMKV.set('is-mmkv-fast-asf', true)
 ```
 
 ### Get
@@ -98,7 +98,7 @@ const user = {
   age: 20
 }
 
-MMKV.set(JSON.stringify(user), 'user')
+MMKV.set('user', JSON.stringify(user))
 
 const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
 const userObject = JSON.parse(jsonUser)
@@ -123,7 +123,7 @@ type StorageType = typeof MMKV & {
 const storage: StorageType = {
   redux: {
     setItem: (key: string, value: string): Promise<boolean> => {
-      MMKV.set(value, key);
+      MMKV.set(key, value);
       return Promise.resolve(true);
     },
     getItem: (key: string): Promise<string> =>

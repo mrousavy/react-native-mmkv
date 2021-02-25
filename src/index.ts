@@ -7,7 +7,7 @@ export const MMKV = {
   /**
    * Set a value for the given `key`.
    */
-  set: g.mmkvSet as (value: boolean | string | number, key: string) => void,
+  set: g.mmkvSet as (key: string, value: boolean | string | number) => void,
   /**
    * Get a boolean value for the given `key`.
    *

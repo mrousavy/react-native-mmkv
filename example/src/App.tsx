@@ -16,7 +16,7 @@ export default function App() {
     }
     try {
       console.log('setting...');
-      MMKV.set(text, key);
+      MMKV.set(key, text);
       console.log('set.');
     } catch (e) {
       console.error('Error:', e);

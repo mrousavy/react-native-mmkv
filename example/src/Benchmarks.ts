@@ -6,7 +6,7 @@ export const benchmarkAgainstAsyncStorage = async () => {
 
   await AsyncStorage.setItem('test', 'Some test string.');
   console.log('wrote test value to AsyncStorage');
-  MMKV.set('Some test string.', 'test');
+  MMKV.set('test', 'Some test string.');
   console.log('wrote test value to MMKV');
 
   const iters = 1000;

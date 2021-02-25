@@ -5,20 +5,20 @@
 using namespace facebook;
 
 void install(jsi::Runtime& jsiRuntime) {
-    // MMKV.set(value: string | number | bool, key: string)
+    // MMKV.set(key: string, value: string | number | bool)
     auto mmkvSet = jsi::Function::createFromHostFunction(jsiRuntime,
                                                          jsi::PropNameID::forAscii(jsiRuntime, "mmkvSet"),
-                                                         2,  // value, key
+                                                         2,  // key, value
                                                          [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        if (!arguments[1].isString()) throw jsi::JSError(runtime, "Second argument ('key') has to be of type string!");
-        auto keyName = arguments[1].getString(runtime).utf8(runtime);
+        if (!arguments[0].isString()) throw jsi::JSError(runtime, "MMKV::set: First argument ('key') has to be of type string!");
+        auto keyName = arguments[0].getString(runtime).utf8(runtime);
 
-        if (arguments[0].isBool()) {
-            MMKV::defaultMMKV()->set(arguments[0].getBool(), keyName);
-        } else if (arguments[0].isNumber()) {
-            MMKV::defaultMMKV()->set(arguments[0].getNumber(), keyName);
-        } else if (arguments[0].isString()) {
-            auto stringValue = arguments[0].getString(runtime).utf8(runtime);
+        if (arguments[1].isBool()) {
+            MMKV::defaultMMKV()->set(arguments[1].getBool(), keyName);
+        } else if (arguments[1].isNumber()) {
+            MMKV::defaultMMKV()->set(arguments[1].getNumber(), keyName);
+        } else if (arguments[1].isString()) {
+            auto stringValue = arguments[1].getString(runtime).utf8(runtime);
             MMKV::defaultMMKV()->set(stringValue, keyName);
         } else {
             throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number or string!");
