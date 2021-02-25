@@ -14,6 +14,8 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}", "MMKV/Core/**/*.{h,cpp}"
+  s.requires_arc = false
+  s.compiler_flags = '-fno-objc-arc'
 
   s.dependency "React-Core"
 end
