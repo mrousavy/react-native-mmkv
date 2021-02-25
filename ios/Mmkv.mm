@@ -36,8 +36,8 @@ static void install(jsi::Runtime & jsiRuntime)
         } else if (arguments[1].isNumber()) {
             MMKV::defaultMMKV()->set(arguments[1].getNumber(), keyName);
         } else if (arguments[1].isString()) {
-            auto stringValue = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
-            MMKV::defaultMMKV()->set(stringValue, keyName);
+            auto nsString = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
+            MMKV::defaultMMKV()->set(static_cast<NSObject<NSCoding>*>(nsString), keyName);
         } else {
             throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number or string!");
         }
@@ -68,10 +68,10 @@ static void install(jsi::Runtime & jsiRuntime)
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
 
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        auto value = MMKV::defaultMMKV()->getObject(keyName, std::string::class);
-        auto value = [MMKV.defaultMMKV getStringForKey:keyName];
+
+        auto value = MMKV::defaultMMKV()->getObject(keyName, NSString.class);
         if (value != nil)
-            return jsi::String::createFromUtf8(runtime, value.UTF8String);
+            return jsi::String::createFromUtf8(runtime, static_cast<NSString*>(value).UTF8String);
         else
             return jsi::Value::undefined();
     });
@@ -86,7 +86,7 @@ static void install(jsi::Runtime & jsiRuntime)
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
 
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        auto value = [MMKV.defaultMMKV getDoubleForKey:keyName];
+        auto value = MMKV::defaultMMKV()->getDouble(keyName);
         return jsi::Value(value);
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetNumber", std::move(mmkvGetNumber));
@@ -100,7 +100,7 @@ static void install(jsi::Runtime & jsiRuntime)
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
 
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        [MMKV.defaultMMKV removeValueForKey:keyName];
+        MMKV::defaultMMKV()->removeValueForKey(keyName);
         return jsi::Value::undefined();
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvDelete", std::move(mmkvDelete));
@@ -111,7 +111,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                 jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetAllKeys"),
                                                                 0,
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        auto keys = [MMKV.defaultMMKV allKeys];
+        auto keys = MMKV::defaultMMKV()->allKeys();
         return jsi::Value(convertNSArrayToJSIArray(runtime, keys));
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetAllKeys", std::move(mmkvGetAllKeys));
@@ -127,12 +127,12 @@ static void install(jsi::Runtime & jsiRuntime)
         return;
     }
 
-    [MMKV initializeMMKV:nil];
+    MMKV::defaultMMKV()->initializeMMKV(nil);
     install(*(jsi::Runtime *)cxxBridge.runtime);
 }
 
 - (void)invalidate {
-    [MMKV.defaultMMKV close];
+    MMKV::defaultMMKV()->close();
 }
 
 @end
