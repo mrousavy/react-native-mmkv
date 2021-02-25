@@ -7,15 +7,10 @@
   "types": "lib/typescript/index.d.ts",
   "react-native": "lib/module/index",
   "files": [
+    "lib/aar",
     "lib/commonjs",
     "lib/module",
     "lib/typescript",
-    "android/build.gradle",
-    "android/MMKV/Core",
-    "android/gradle.properties",
-    "android/src",
-    "android/CMakeLists.txt",
-    "android/cpp-adapter.cpp",
     "ios/**/*.h",
     "ios/**/*.m",
     "ios/**/*.mm",
@@ -128,6 +123,7 @@
     "source": "src",
     "output": "lib",
     "targets": [
+      "aar",
       "commonjs",
       "module",
       [
