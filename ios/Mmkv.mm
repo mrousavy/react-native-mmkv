@@ -5,9 +5,10 @@
 #import <React/RCTUtils.h>
 #import <jsi/jsi.h>
 
-#import <MMKV/MMKV.h>
+#import <MMKV.h>
 
 using namespace facebook;
+using namespace mmkv;
 
 @implementation Mmkv
 @synthesize bridge = _bridge;
@@ -31,12 +32,12 @@ static void install(jsi::Runtime & jsiRuntime)
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
 
         if (arguments[1].isBool()) {
-            [MMKV.defaultMMKV setBool:arguments[1].getBool() forKey:keyName];
+            MMKV::defaultMMKV()->set(arguments[1].getBool(), keyName);
         } else if (arguments[1].isNumber()) {
-            [MMKV.defaultMMKV setDouble:arguments[1].getNumber() forKey:keyName];
+            MMKV::defaultMMKV()->set(arguments[1].getNumber(), keyName);
         } else if (arguments[1].isString()) {
             auto stringValue = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
-            [MMKV.defaultMMKV setString:stringValue forKey:keyName];
+            MMKV::defaultMMKV()->set(stringValue, keyName);
         } else {
             throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number or string!");
         }
@@ -53,7 +54,7 @@ static void install(jsi::Runtime & jsiRuntime)
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
 
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-        auto value = [MMKV.defaultMMKV getBoolForKey:keyName];
+        auto value = MMKV::defaultMMKV()->getBool(keyName);
         return jsi::Value(value);
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetBoolean", std::move(mmkvGetBoolean));
@@ -67,6 +68,7 @@ static void install(jsi::Runtime & jsiRuntime)
         if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
 
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+        auto value = MMKV::defaultMMKV()->getObject(keyName, std::string::class);
         auto value = [MMKV.defaultMMKV getStringForKey:keyName];
         if (value != nil)
             return jsi::String::createFromUtf8(runtime, value.UTF8String);
