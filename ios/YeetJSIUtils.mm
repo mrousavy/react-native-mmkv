@@ -119,9 +119,9 @@ RCTResponseSenderBlock convertJSIFunctionToCallback(
 {
     __block auto cb = value.getFunction(runtime);
     
-    return ^(NSArray *responses) {
+    return Block_copy(^(NSArray *responses) {
         cb.call(runtime, convertNSArrayToJSIArray(runtime, responses), 2);
-    };
+    });
 }
 
 id convertJSIValueToObjCObject(
