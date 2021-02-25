@@ -7,7 +7,10 @@ export const MMKV = {
   /**
    * Set a value for the given `key`.
    */
-  set: g.mmkvSet as (value: boolean | string | number, key: string) => void,
+  set: g.mmkvSet as (
+    value: boolean | string | number | Record<string, unknown>,
+    key: string
+  ) => void,
   /**
    * Get a boolean value for the given `key`.
    *
@@ -26,6 +29,14 @@ export const MMKV = {
    * @default 0
    */
   getNumber: g.mmkvGetNumber as (key: string) => number,
+  /**
+   * Get an object value for the given `key`.
+   *
+   * @default undefined
+   */
+  getObject: g.mmkvGetObject as (
+    key: string
+  ) => Record<string, unknown> | undefined,
   /**
    * Delete the given `key`.
    */
