@@ -1,6 +1,9 @@
 #import "Mmkv.h"
 #import "YeetJSIUtils.h"
 
+#if __has_feature(objc_arc)
+#error This file must be compiled with MRC. Use -fno-objc-arc flag.
+#endif
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
 #import <jsi/jsi.h>
