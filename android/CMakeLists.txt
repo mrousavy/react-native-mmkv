@@ -1,22 +1,22 @@
 cmake_minimum_required(VERSION 3.9.0)
 
 # Needed to locate double-conversion src correctly for folly includes
-#execute_process (COMMAND ln "-s" "src" "../../react-native/third-party/double-conversion-1.1.6/double-conversion")
+#execute_process (COMMAND ln "-s" "src" "../../../react-native/third-party/double-conversion-1.1.6/double-conversion")
 
 add_subdirectory(./MMKV/Core Core)
 
 include_directories(
         ./MMKV/Core
-        ../node_modules/react-native/React
-        ../node_modules/react-native/React/Base
-        ../node_modules/react-native/ReactCommon/jsi
+        ../../../node_modules/react-native/React
+        ../../../node_modules/react-native/React/Base
+        ../../../node_modules/react-native/ReactCommon/jsi
 )
 
 add_library(cpp  # <-- Library name
         SHARED
         #MMKV/Core # <-- EXCLUDE_FROM_ALL
         # Provides a relative path to your source file(s).
-        ../node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp
+        ../../../node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp
         cpp-adapter.cpp
 )
 
