@@ -69,7 +69,7 @@ static void install(jsi::Runtime & jsiRuntime)
         auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
         auto value = [MMKV.defaultMMKV getStringForKey:keyName];
         if (value != nil)
-            return jsi::String::createFromUtf8(runtime, value.UTF8String);
+            return convertNSStringToJSIString(runtime, value);
         else
             return jsi::Value::undefined();
     });
