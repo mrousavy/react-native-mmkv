@@ -45,7 +45,6 @@ Pod::Spec.new do |s|
   # MMKVCore
   s.subspec 'MMKVCore' do |spec|
     spec.name = 'MMKVCore'
-    spec.module_name = 'MMKVCore'
     spec.source_files = [
       "MMKV/Core/**/*.{h,cpp}",
     ]
@@ -68,7 +67,6 @@ Pod::Spec.new do |s|
   # MMKV-iOS
   s.subspec 'MMKVIOS' do |spec|
     spec.name = 'MMKVIOS'
-    spec.module_name = 'MMKVIOS'
     spec.source_files = [
       "MMKV/iOS/MMKV/**/*.{h,m,mm}"
     ]
