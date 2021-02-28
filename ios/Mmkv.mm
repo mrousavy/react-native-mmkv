@@ -74,7 +74,7 @@ static void install(jsi::Runtime & jsiRuntime)
 
         auto value = MMKV::defaultMMKV()->getObject(keyName, NSString.class);
         if (value != nil)
-            return jsi::String::createFromUtf8(runtime, static_cast<NSString*>(value).UTF8String);
+            return convertNSStringToJSIString(runtime, value);
         else
             return jsi::Value::undefined();
     });

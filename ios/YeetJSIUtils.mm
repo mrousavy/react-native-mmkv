@@ -7,6 +7,9 @@
 //
 
 #include "YeetJSIUtils.h"
+#import <React/RCTConvert.h>
+#import <React/RCTBridgeModule.h>
+//#import <ReactCommon/TurboModuleUtils.h>
 
 /**
  * All helper functions are ObjC++ specific.
@@ -118,8 +121,8 @@ RCTResponseSenderBlock convertJSIFunctionToCallback(
                                                     const jsi::Function &value)
 {
     __block auto cb = value.getFunction(runtime);
-    
-    return Block_copy(^(NSArray *responses) {
+
+    return ^(NSArray *responses) {
         cb.call(runtime, convertNSArrayToJSIArray(runtime, responses), 2);
     });
 }
@@ -150,7 +153,7 @@ id convertJSIValueToObjCObject(
         }
         return convertJSIObjectToNSDictionary(runtime, o);
     }
-    
+
     throw std::runtime_error("Unsupported jsi::jsi::Value kind");
 }
 
@@ -188,6 +191,6 @@ jsi::Value createPromiseAsJSIValue(
         func(rt2, wrapper);
         return jsi::Value::undefined();
     });
-    
+
     return JSPromise.callAsConstructor(rt, fn);
 }

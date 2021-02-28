@@ -1,11 +1,12 @@
 {
   "name": "react-native-mmkv",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "An efficient, small mobile key-value storage framework developed by WeChat. Works on Android and iOS.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
   "react-native": "lib/module/index",
+  "source": "src/index",
   "files": [
     "android/src",
     "android/build.gradle",
@@ -17,6 +18,7 @@
     "ios/**/*.m",
     "ios/**/*.mm",
     "ios/**/*.cpp",
+    "ios/Mmkv.xcodeproj/project.pbxproj",
     "react-native-mmkv.podspec",
     "README.md"
   ],
