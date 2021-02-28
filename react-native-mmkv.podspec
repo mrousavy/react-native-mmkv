@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.source_files = [
     "ios/**/*.{m,mm}",
     "MMKV/Core/*.cpp",
-    "MMKV/iOS/MMKV/*.{m,mm}",
+    "MMKV/iOS/MMKV/**/*.{m,mm}",
     "ios/RNMMKV.h",
     'MMKV/Core/MMKVPredef.h',
     'MMKV/iOS/MMKV/MMKV/MMKV.h'
