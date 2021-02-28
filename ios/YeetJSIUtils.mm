@@ -124,7 +124,7 @@ RCTResponseSenderBlock convertJSIFunctionToCallback(
 
     return ^(NSArray *responses) {
         cb.call(runtime, convertNSArrayToJSIArray(runtime, responses), 2);
-    });
+    };
 }
 
 id convertJSIValueToObjCObject(
