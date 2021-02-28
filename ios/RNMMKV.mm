@@ -1,4 +1,4 @@
-#import "Mmkv.h"
+#import "RNMMKV.h"
 #import "YeetJSIUtils.h"
 
 #if __has_feature(objc_arc)
@@ -13,7 +13,7 @@
 using namespace facebook;
 using namespace mmkv;
 
-@implementation Mmkv
+@implementation RNMMKV
 @synthesize bridge = _bridge;
 @synthesize methodQueue = _methodQueue;
 
