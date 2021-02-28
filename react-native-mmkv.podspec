@@ -46,8 +46,12 @@ Pod::Spec.new do |s|
   s.subspec 'MMKVCore' do |spec|
     spec.name = 'MMKVCore'
     spec.source_files = [
-      "MMKV/Core/**/*.{h,cpp}",
+      "MMKV/Core/**/*.{cpp}",
     ]
+    spec.public_header_files = [
+      "MMKV/Core/**/*.{h,hpp}"
+    ]
+    spec.header_mappings_dir = "MMKV/Core/**"
 
     spec.requires_arc = [
       'MMKV/Core/MemoryFile.cpp',
@@ -68,8 +72,12 @@ Pod::Spec.new do |s|
   s.subspec 'MMKVIOS' do |spec|
     spec.name = 'MMKVIOS'
     spec.source_files = [
-      "MMKV/iOS/MMKV/**/*.{h,m,mm}"
+      "MMKV/iOS/MMKV/**/*.{m,mm}"
     ]
+    spec.public_header_files = [
+      "MMKV/iOS/MMKV/**/*.{h,hpp}"
+    ]
+    spec.header_mappings_dir = "MMKV/iOS/MMKV/**"
   end
 
   s.dependency "React-Core"
