@@ -50,6 +50,12 @@ npm install react-native-mmkv
 cd ios && pod install
 ```
 
+If you're experiencing build errors, try increasing your iOS deployment version to 11.0. in your `Podfile`, set:
+
+```ruby
+platform :ios, '11.0'
+```
+
 ## Usage
 
 ### Set
