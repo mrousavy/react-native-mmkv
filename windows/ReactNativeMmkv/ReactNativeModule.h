@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "JSValue.h"
 #include "NativeModules.h"
@@ -11,12 +11,13 @@ namespace winrt::ReactNativeMmkv
 REACT_MODULE(ReactNativeModule, L"ReactNativeMmkv")
 struct ReactNativeModule
 {
-    // See https://microsoft.github.io/react-native-windows/docs/native-modules for details on writing native modules
+    void installMmkv();
 
     REACT_INIT(Initialize)
     void Initialize(ReactContext const &reactContext) noexcept
     {
         m_reactContext = reactContext;
+        installMmkv();
     }
     
     REACT_METHOD(sampleMethod)

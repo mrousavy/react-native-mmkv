@@ -7,6 +7,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
     <ClCompile Include="ReactPackageProvider.cpp" />
+    <ClCompile Include="ReactNativeModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
