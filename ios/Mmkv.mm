@@ -110,7 +110,7 @@ static void install(jsi::Runtime & jsiRuntime)
                                                                 0,
                                                                 [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
         auto keys = [MMKV.defaultMMKV allKeys];
-        return jsi::Value(convertNSArrayToJSIArray(runtime, keys));
+        return convertNSArrayToJSIArray(runtime, keys);
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetAllKeys", std::move(mmkvGetAllKeys));
 }
