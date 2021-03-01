@@ -32,7 +32,8 @@
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods",
     "prepack": "rm -rf android-tmp && mv android android-tmp && mv lib/aar android && cp -r android-tmp/src android/src",
-    "postpack": "rm -rf android && mv android-tmp android"
+    "postpack": "rm -rf android && mv android-tmp android",
+    "windows": "react-native run-windows"
   },
   "keywords": [
     "react-native",
