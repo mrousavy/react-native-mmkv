@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ReactNativeModule.h"
 #include <JSI/jsi.h>
+#include <MMKV/MMKV.h>
 
 using namespace facebook;
 

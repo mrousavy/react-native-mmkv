@@ -20,7 +20,7 @@ struct ReactNativeModule
     void Initialize(ReactContext const &reactContext) noexcept
     {
         m_reactContext = reactContext;
-        auto runtime = GetOrCreateContextRuntime(reactContext);
+        auto& runtime = GetOrCreateContextRuntime(reactContext);
         installMmkv(runtime);
     }
 
