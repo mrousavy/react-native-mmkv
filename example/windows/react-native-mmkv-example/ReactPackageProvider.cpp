@@ -4,7 +4,7 @@
 
 using namespace winrt::Microsoft::ReactNative;
 
-namespace winrt::react-native-mmkv-example::implementation
+namespace winrt::RNMMKVExample::implementation
 {
 
 void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
@@ -12,4 +12,4 @@ void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuil
     AddAttributedModules(packageBuilder);
 }
 
-} // namespace winrt::react-native-mmkv-example::implementation
+} // namespace winrt::RNMMKVExample::implementation

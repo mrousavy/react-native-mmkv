@@ -9,7 +9,7 @@
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 
-namespace winrt::react-native-mmkv-example::implementation
+namespace winrt::RNMMKVExample::implementation
 {
     MainPage::MainPage()
     {

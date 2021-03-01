@@ -1,4 +1,4 @@
-namespace react-native-mmkv-example
+namespace RNMMKVExample
 {
     [default_interface]
     runtimeclass MainPage : Windows.UI.Xaml.Controls.Page

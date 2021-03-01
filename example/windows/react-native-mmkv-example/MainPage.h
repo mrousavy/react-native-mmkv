@@ -2,7 +2,7 @@
 #include "MainPage.g.h"
 #include <winrt/Microsoft.ReactNative.h>
 
-namespace winrt::react-native-mmkv-example::implementation
+namespace winrt::RNMMKVExample::implementation
 {
     struct MainPage : MainPageT<MainPage>
     {
@@ -10,7 +10,7 @@ namespace winrt::react-native-mmkv-example::implementation
     };
 }
 
-namespace winrt::react-native-mmkv-example::factory_implementation
+namespace winrt::RNMMKVExample::factory_implementation
 {
     struct MainPage : MainPageT<MainPage, implementation::MainPage>
     {

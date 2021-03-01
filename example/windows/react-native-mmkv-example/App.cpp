@@ -5,8 +5,8 @@
 #include "AutolinkedNativeModules.g.h"
 #include "ReactPackageProvider.h"
 
-using namespace winrt::react-native-mmkv-example;
-using namespace winrt::react-native-mmkv-example::implementation;
+using namespace winrt::RNMMKVExample;
+using namespace winrt::RNMMKVExample::implementation;
 using namespace winrt;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
@@ -53,7 +53,7 @@ void App::OnLaunched(activation::LaunchActivatedEventArgs const& e)
     super::OnLaunched(e);
 
     Frame rootFrame = Window::Current().Content().as<Frame>();
-    rootFrame.Navigate(xaml_typename<react-native-mmkv-example::MainPage>(), box_value(e.Arguments()));
+    rootFrame.Navigate(xaml_typename<RNMMKVExample::MainPage>(), box_value(e.Arguments()));
 }
 
 /// <summary>

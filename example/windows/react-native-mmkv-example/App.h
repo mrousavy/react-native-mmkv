@@ -4,7 +4,7 @@
 
 namespace activation = winrt::Windows::ApplicationModel::Activation;
 
-namespace winrt::react-native-mmkv-example::implementation
+namespace winrt::RNMMKVExample::implementation
 {
     struct App : AppT<App>
     {
@@ -15,4 +15,4 @@ namespace winrt::react-native-mmkv-example::implementation
       private:
         using super = AppT<App>;
     };
-} // namespace winrt::react-native-mmkv-example::implementation
+} // namespace winrt::RNMMKVExample::implementation
