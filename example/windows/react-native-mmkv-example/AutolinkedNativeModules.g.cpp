@@ -6,6 +6,9 @@
 // Includes from @react-native-async-storage/async-storage
 #include <winrt/ReactNativeAsyncStorage.h>
 
+// Includes from react-native-mmkv
+#include <winrt/ReactNativeMmkv.h>
+
 namespace winrt::Microsoft::ReactNative
 {
 
@@ -13,6 +16,8 @@ void RegisterAutolinkedNativeModulePackages(winrt::Windows::Foundation::Collecti
 { 
     // IReactPackageProviders from @react-native-async-storage/async-storage
     packageProviders.Append(winrt::ReactNativeAsyncStorage::ReactPackageProvider());
+    // IReactPackageProviders from react-native-mmkv
+    packageProviders.Append(winrt::ReactNativeMmkv::ReactPackageProvider());
 }
 
 }

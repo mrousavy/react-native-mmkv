@@ -6,5 +6,9 @@
     <ProjectReference Include="$(ProjectDir)..\..\node_modules\@react-native-async-storage\async-storage\windows\ReactNativeAsyncStorage\ReactNativeAsyncStorage.vcxproj">
       <Project>{4855D892-E16C-404D-8286-0089E0F7F9C4}</Project>
     </ProjectReference>
+    <!-- Projects from react-native-mmkv -->
+    <ProjectReference Include="$(ProjectDir)..\..\..\windows\ReactNativeMmkv\ReactNativeMmkv.vcxproj">
+      <Project>{04eef245-300b-48cf-ad41-a72694d19be5}</Project>
+    </ProjectReference>
   </ItemGroup>
 </Project>

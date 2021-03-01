@@ -37,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Include", "..\node_modules\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactNativeAsyncStorage", "..\node_modules\@react-native-async-storage\async-storage\windows\ReactNativeAsyncStorage\ReactNativeAsyncStorage.vcxproj", "{4855D892-E16C-404D-8286-0089E0F7F9C4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReactNativeMmkv", "..\..\windows\ReactNativeMmkv\ReactNativeMmkv.vcxproj", "{04EEF245-300B-48CF-AD41-A72694D19BE5}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		..\node_modules\react-native-windows\JSI\Shared\JSI.Shared.vcxitems*{0cc28589-39e4-4288-b162-97b959f8b843}*SharedItemsImports = 9
@@ -182,6 +184,22 @@ Global
 		{4855D892-E16C-404D-8286-0089E0F7F9C4}.Release|x64.Build.0 = Release|x64
 		{4855D892-E16C-404D-8286-0089E0F7F9C4}.Release|x86.ActiveCfg = Release|Win32
 		{4855D892-E16C-404D-8286-0089E0F7F9C4}.Release|x86.Build.0 = Release|Win32
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|ARM.ActiveCfg = Debug|ARM
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|ARM.Build.0 = Debug|ARM
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|ARM64.Build.0 = Debug|ARM64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|x64.ActiveCfg = Debug|x64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|x64.Build.0 = Debug|x64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|x86.ActiveCfg = Debug|Win32
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Debug|x86.Build.0 = Debug|Win32
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|ARM.ActiveCfg = Release|ARM
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|ARM.Build.0 = Release|ARM
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|ARM64.ActiveCfg = Release|ARM64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|ARM64.Build.0 = Release|ARM64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|x64.ActiveCfg = Release|x64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|x64.Build.0 = Release|x64
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|x86.ActiveCfg = Release|Win32
+		{04EEF245-300B-48CF-AD41-A72694D19BE5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
