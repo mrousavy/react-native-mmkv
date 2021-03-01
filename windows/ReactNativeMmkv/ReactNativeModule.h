@@ -19,13 +19,6 @@ struct ReactNativeModule
         m_reactContext = reactContext;
         installMmkv();
     }
-    
-    REACT_METHOD(sampleMethod)
-    void sampleMethod(std::string stringArgument, int numberArgument, std::function<void(std::string)> &&callback) noexcept
-    {
-        // TODO: Implement some actually useful functionality
-        callback("Received numberArgument: " + std::to_string(numberArgument) + " stringArgument: " + stringArgument);
-    }
 
     private:
         ReactContext m_reactContext{nullptr};
