@@ -118,34 +118,22 @@ If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-pers
 import { MMKV } from "react-native-mmkv";
 import { Storage } from "redux-persist";
 
-type StorageType = typeof MMKV & {
-  /**
-   * Redux Persist plugin for react-native-mmkv
-   */
-  redux: Storage;
-};
-
 // Unfortunately redux-persist expects Promises, 
 // so we have to wrap our sync calls with Promise resolvers/rejecters
-const storage: StorageType = {
-  redux: {
-    setItem: (key: string, value: string): Promise<boolean> => {
-      MMKV.set(key, value);
-      return Promise.resolve(true);
-    },
-    getItem: (key: string): Promise<string> => {
-      const value = MMKV.getString(key);
-      return Promise.resolve(value);
-    },
-    removeItem: (key: string): Promise<void> => {
-      MMKV.delete(key);
-      return Promise.resolve();
-    },
+export const storage: Storage = {
+  setItem: (key: string, value: string): Promise<boolean> => {
+    MMKV.set(key, value);
+    return Promise.resolve(true);
   },
-  ...MMKV,
+  getItem: (key: string): Promise<string> => {
+    const value = MMKV.getString(key);
+    return Promise.resolve(value);
+  },
+  removeItem: (key: string): Promise<void> => {
+    MMKV.delete(key);
+    return Promise.resolve();
+  },
 };
-
-export default storage;
 ```
 
 ## Contributing
