@@ -41,7 +41,7 @@
   ],
   "repository": "https://github.com/mrousavy/react-native-mmkv",
   "author": "Marc Rousavy <marcrousavy@hotmail.com> (https://github.com/mrousavy)",
-  "license": "MIT",
+  "license": "(MIT AND BSD-3-Clause)",
   "bugs": {
     "url": "https://github.com/mrousavy/react-native-mmkv/issues"
   },
