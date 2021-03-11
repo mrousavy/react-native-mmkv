@@ -104,6 +104,10 @@ const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
 const userObject = JSON.parse(jsonUser)
 ```
 
+## Limitations
+
+As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Alternatively, you can use Flipper.
+
 ## redux-persist
 
 If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-persist), create the following `storage` object:
