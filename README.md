@@ -106,7 +106,7 @@ const userObject = JSON.parse(jsonUser)
 
 ## Limitations
 
-As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Alternatively, you can use Flipper.
+As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
 
 ## redux-persist
 
