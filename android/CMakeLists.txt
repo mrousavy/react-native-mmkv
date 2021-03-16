@@ -9,7 +9,7 @@ include_directories(
         ../../react-native/ReactCommon/jsi
 )
 
-add_library(cpp  # <-- Library name
+add_library(mmkvNative  # <-- Library name
         SHARED
         # Provides a relative path to your source file(s).
         ../../react-native/ReactCommon/jsi/jsi/jsi.cpp
@@ -17,7 +17,7 @@ add_library(cpp  # <-- Library name
 )
 
 set_target_properties(
-        cpp PROPERTIES
+        mmkvNative PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
         POSITION_INDEPENDENT_CODE ON
@@ -30,7 +30,7 @@ find_library(
 )
 
 target_link_libraries(
-        cpp
+        mmkvNative
         core
         ${log-lib}
         android
