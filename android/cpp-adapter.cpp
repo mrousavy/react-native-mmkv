@@ -127,5 +127,8 @@ Java_com_reactnativemmkv_MmkvModule_nativeInstall(JNIEnv *env, jobject clazz, jl
     MMKV::initializeMMKV(jstringToStdString(env, path));
 
     auto runtime = reinterpret_cast<jsi::Runtime*>(jsiPtr);
-    install(*runtime);
+    if (runtime) {
+        install(*runtime);
+    }
+    // if runtime was nullptr, MMKV will not be installed. This should only happen while Remote Debugging (Chrome), but will be weird either way.
 }
