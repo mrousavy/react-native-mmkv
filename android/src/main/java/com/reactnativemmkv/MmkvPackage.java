@@ -1,26 +1,15 @@
 package com.reactnativemmkv;
 
-import androidx.annotation.NonNull;
-
-import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.NativeModule;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.facebook.react.bridge.JSIModuleSpec;
+import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.uimanager.ViewManager;
-
 import java.util.Collections;
 import java.util.List;
 
-
-public class MmkvPackage implements ReactPackage {
-  @NonNull
+public class MmkvPackage implements JSIModulePackage {
   @Override
-  public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-    return Collections.singletonList(new MmkvModule(reactContext));
-  }
-
-  @NonNull
-  @Override
-  public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-    return Collections.emptyList();
+  public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
+    return Collections.singletonList(new MmkvModuleSpec(reactApplicationContext, jsContext));
   }
 }
