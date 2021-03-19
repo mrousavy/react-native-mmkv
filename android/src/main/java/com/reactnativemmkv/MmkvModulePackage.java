@@ -7,9 +7,10 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import java.util.Collections;
 import java.util.List;
 
-public class MmkvPackage implements JSIModulePackage {
+public class MmkvModulePackage implements JSIModulePackage {
   @Override
   public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
-    return Collections.singletonList(new MmkvModuleSpec(reactApplicationContext, jsContext));
+    MmkvModule.install(jsContext, reactApplicationContext.getFilesDir().getAbsolutePath() + "/mmkv");
+    return Collections.emptyList();
   }
 }

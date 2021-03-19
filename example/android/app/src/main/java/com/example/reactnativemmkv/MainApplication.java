@@ -3,8 +3,6 @@ package com.example.reactnativemmkv;
 import android.app.Application;
 import android.content.Context;
 
-import androidx.annotation.Nullable;
-
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
@@ -14,7 +12,7 @@ import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.reactnativemmkv.MmkvPackage;
+import com.reactnativemmkv.MmkvModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -37,7 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected JSIModulePackage getJSIModulePackage() {
-          return new MmkvPackage();
+          return new MmkvModulePackage();
         }
       };
 
