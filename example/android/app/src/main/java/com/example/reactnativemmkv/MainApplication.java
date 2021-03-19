@@ -10,11 +10,13 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.ReactInstanceManager;
-import com.facebook.react.bridge.JSIModulePackage;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import com.reactnativemmkv.MmkvPackage;
+
+import com.reactnativemmkv.MmkvModule;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,14 +32,17 @@ public class MainApplication extends Application implements ReactApplication {
           return new PackageList(this).getPackages();
         }
 
+        @Nullable
         @Override
-        protected String getJSMainModuleName() {
-          return "index";
+        protected JavaScriptExecutorFactory getJavaScriptExecutorFactory() {
+          ReactApplicationContext context = (ReactApplicationContext)this.getApplication().getApplicationContext();
+          MmkvModule.install(context);
+          return super.getJavaScriptExecutorFactory();
         }
 
         @Override
-        protected JSIModulePackage getJSIModulePackage() {
-          return new MmkvPackage();
+        protected String getJSMainModuleName() {
+          return "index";
         }
       };
 

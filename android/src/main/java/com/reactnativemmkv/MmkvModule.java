@@ -1,29 +1,16 @@
 package com.reactnativemmkv;
 
-import com.facebook.react.bridge.JSIModule;
-import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
 
-public class MmkvModule implements JSIModule {
+public class MmkvModule {
   static {
     System.loadLibrary("mmkvnative");
   }
 
-  private final String storageDirectory;
-  private final JavaScriptContextHolder jsContext;
+  private static native void nativeInstall(long jsiPtr, String path);
 
-  public MmkvModule(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
-    this.storageDirectory = reactApplicationContext.getFilesDir().getAbsolutePath() + "/mmkv";
-    this.jsContext = jsContext;
+  public static void install(ReactApplicationContext reactApplicationContext) {
+    nativeInstall(reactApplicationContext.getJavaScriptContextHolder().get(),
+      reactApplicationContext.getFilesDir().getAbsolutePath() + "/mmkv");
   }
-
-  private native void nativeInstall(long jsiPtr, String path);
-
-  @Override
-  public void initialize() {
-    nativeInstall(jsContext.get(), storageDirectory);
-  }
-
-  @Override
-  public void onCatalystInstanceDestroy() { }
 }
