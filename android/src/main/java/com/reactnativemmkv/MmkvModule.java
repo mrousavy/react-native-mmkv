@@ -1,8 +1,11 @@
 package com.reactnativemmkv;
 
-import com.facebook.react.bridge.JavaScriptContextHolder;
+import androidx.annotation.NonNull;
 
-public class MmkvModule {
+import com.facebook.react.bridge.JavaScriptContextHolder;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
+
+public class MmkvModule extends ReactContextBaseJavaModule {
   static {
     System.loadLibrary("mmkvnative");
   }
@@ -11,5 +14,11 @@ public class MmkvModule {
 
   public static void install(JavaScriptContextHolder jsContext, String storageDirectory) {
     nativeInstall(jsContext.get(), storageDirectory);
+  }
+
+  @NonNull
+  @Override
+  public String getName() {
+    return "MMKV";
   }
 }
