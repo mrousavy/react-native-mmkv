@@ -47,8 +47,19 @@
 
 ```sh
 npm install react-native-mmkv
+```
+
+### iOS
+
+iOS installation is automatic, just run:
+
+```sh
 cd ios && pod install
 ```
+
+### Android
+
+To correctly initialize MMKV on Android, please follow the [Installation guide](./INSTALL.md).
 
 ## Usage
 
