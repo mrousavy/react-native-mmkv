@@ -1,6 +1,6 @@
 {
   "name": "react-native-mmkv",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "An efficient, small mobile key-value storage framework developed by WeChat. Works on Android and iOS.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -31,7 +31,7 @@
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods",
-    "prepack": "rm -rf android-tmp && mv android android-tmp && mv lib/aar android && cp -r android-dummy android/src",
+    "prepack": "rm -rf android-tmp && mv android android-tmp && mv lib/aar android",
     "postpack": "rm -rf android && mv android-tmp android"
   },
   "keywords": [
