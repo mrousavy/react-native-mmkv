@@ -11,6 +11,8 @@ To install MMKV without Reanimated, open your Android project (the `android` fol
 
 
 ```java
+import com.reactnativemmkv.MmkvModulePackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
@@ -53,27 +55,25 @@ To install MMKV with Reanimated, open your Android project (the `android` folder
 4. Add the following code:
 
 ```java
-import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.react.bridge.JSIModuleSpec;
 import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import com.reactnativemmkv.MmkvModule;
-
-import com.swmansion.reanimated.NodesManager;
-import com.swmansion.reanimated.ReanimatedModule;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ExampleJSIPackage implements JSIModulePackage {
-  @Override
-  public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
-    NodesManager nodesManager = reactApplicationContext.getNativeModule(ReanimatedModule.class).getNodesManager();
-    nodesManager.initWithContext(reactApplicationContext);
-    MmkvModule.install(jsContext, reactApplicationContext.getFilesDir().getAbsolutePath() + "/mmkv");
-    return Collections.emptyList();
-  }
+// TODO: Remove all of this when MMKV and Reanimated can be autoinstalled (maybe RN 0.65)
+public class ExampleJSIPackage extends ReanimatedJSIModulePackage {
+    @Override
+    public List<JSIModuleSpec> getJSIModules(ReactApplicationContext reactApplicationContext, JavaScriptContextHolder jsContext) {
+        super.getJSIModules(reactApplicationContext, jsContext);
+        MmkvModule.install(jsContext, reactApplicationContext.getFilesDir().getAbsolutePath() + "/mmkv");
+        return Collections.emptyList();
+    }
 }
+
 ```
 
 5. Open `MainApplication.java` and find the location where the `ReactNativeHost` is initialized. You have to override it's `getJSIModulePackage` method:
