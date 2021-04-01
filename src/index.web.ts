@@ -59,7 +59,6 @@ export const MMKV = {
    * @default []
    */
   getAllKeys: (): string[] => {
-
     var keys = [] as string[];
 
     for (var i = 0; i < localStorage.length; i++) {
