@@ -14,6 +14,7 @@ export const benchmarkAgainstAsyncStorage = async () => {
     const start = global.performance.now();
     for (let i = 0; i < iters; i++) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // @ts-ignore
       const value = await AsyncStorage.getItem('test');
     }
     const end = global.performance.now();
@@ -23,6 +24,7 @@ export const benchmarkAgainstAsyncStorage = async () => {
     const start = global.performance.now();
     for (let i = 0; i < iters; i++) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      // @ts-ignore
       const value = MMKV.getString('test');
     }
     const end = global.performance.now();

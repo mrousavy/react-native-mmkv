@@ -6,21 +6,33 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "web": "cd web && webpack serve",
     "start": "react-native start"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.14.1",
     "react": "17.0.1",
-    "react-native": "0.64.0-rc.3"
+    "react-dom": "^17.0.2",
+    "react-native": "0.64.0-rc.3",
+    "react-native-web": "^0.15.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@types/react": "^17.0.3",
+    "@types/react-native": "^0.64.2",
     "babel-jest": "^26.6.3",
     "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "7.14.0",
+    "html-webpack-plugin": "^5.3.1",
     "metro-react-native-babel-preset": "^0.64.0",
-    "react-native-codegen": "^0.0.7"
+    "react-native-codegen": "^0.0.7",
+    "react-native-typescript-transformer": "^1.2.13",
+    "ts-loader": "^8.1.0",
+    "typescript": "^4.2.3",
+    "webpack": "^5.30.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
