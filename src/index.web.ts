@@ -47,14 +47,6 @@ export const MMKV = {
    * @default []
    */
   getAllKeys: (): string[] => {
-    /*let keys = [] as string[];
-
-    for (let i = 0; i < localStorage.length; i++) {
-      keys.push(localStorage.key(i) as string);
-    }
-
-    return keys;*/
-
     return Object.keys(localStorage);
   },
 }
