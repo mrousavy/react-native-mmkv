@@ -8,10 +8,12 @@ module.exports = {
   mode: webpackEnv,
   entry: {
     app: path.join(rootDir, './index.web.tsx'),
+    vendor: ['react', 'react-dom'],
   },
   output: {
     path: path.resolve(rootDir, 'dist'),
-    filename: 'app-[hash].bundle.js',
+    filename: '[name].js',
+    chunkFilename: '[id].[chunkhash].js',
   },
   devtool: 'source-map',
   module: {
@@ -19,7 +21,16 @@ module.exports = {
       {
         test: /\.(tsx|ts|jsx|js|mjs)$/,
         exclude: /node_modules/,
-        loader: 'ts-loader',
+        use: {
+          options: {
+            loader: 'babel-loader',
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript',
+            ],
+          },
+        },
       },
     ],
   },
