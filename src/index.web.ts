@@ -23,7 +23,7 @@ export const MMKV = {
   getString: (key: string): string | undefined => {
     let result = localStorage.getItem(key);
 
-    return result != null ? result : undefined;
+    return result ?? undefined;
   },
   /**
    * Get a number value for the given `key`.
