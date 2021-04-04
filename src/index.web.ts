@@ -49,6 +49,4 @@ export const MMKV = {
   getAllKeys: (): string[] => {
     return Object.keys(localStorage);
   },
-}
-
-
+};
