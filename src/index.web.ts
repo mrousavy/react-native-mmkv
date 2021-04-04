@@ -11,13 +11,9 @@ export const MMKV = {
    * @default false
    */
   getBoolean: (key: string): boolean => {
-    var result = localStorage.getItem(key);
+    let result = localStorage.getItem(key);
 
-    if (result) {
-      return Boolean(result);
-    }
-
-    return false;
+    return result ? Boolean(result) : false;
   },
   /**
    * Get a string value for the given `key`.
@@ -25,13 +21,9 @@ export const MMKV = {
    * @default undefined
    */
   getString: (key: string): string | undefined => {
-    var result = localStorage.getItem(key);
+    let result = localStorage.getItem(key);
 
-    if (result) {
-      return result;
-    }
-
-    return undefined;
+    return result != null ? result : undefined;
   },
   /**
    * Get a number value for the given `key`.
@@ -39,13 +31,9 @@ export const MMKV = {
    * @default 0
    */
   getNumber: (key: string): number => {
-    var result = localStorage.getItem(key);
+    let result = localStorage.getItem(key);
 
-    if (result) {
-      return Number(result);
-    }
-
-    return 0;
+    return result ? Number(result) : 0;
   },
   /**
    * Delete the given `key`.
@@ -59,13 +47,15 @@ export const MMKV = {
    * @default []
    */
   getAllKeys: (): string[] => {
-    var keys = [] as string[];
+    /*let keys = [] as string[];
 
-    for (var i = 0; i < localStorage.length; i++) {
+    for (let i = 0; i < localStorage.length; i++) {
       keys.push(localStorage.key(i) as string);
     }
 
-    return keys;
+    return keys;*/
+
+    return Object.keys(localStorage);
   },
 }
 
