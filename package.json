@@ -30,7 +30,7 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
-    "bootstrap": "yarn example && yarn && yarn pods",
+    "bootstrap": "git submodule update --init --recursive && yarn example && yarn && yarn pods",
     "prepack": "rm -rf android-tmp && mv android android-tmp && mv lib/aar android",
     "postpack": "rm -rf android && mv android-tmp android"
   },
