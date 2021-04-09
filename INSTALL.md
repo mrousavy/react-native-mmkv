@@ -55,6 +55,8 @@ To install MMKV with Reanimated, open your Android project (the `android` folder
 4. Add the following code:
 
 ```java
+package com.example;
+
 import com.facebook.react.bridge.JSIModuleSpec;
 import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -75,8 +77,9 @@ public class ExampleJSIPackage extends ReanimatedJSIModulePackage {
 }
 
 ```
+5. Replace `com.example` with your package namespace
 
-5. Open `MainApplication.java` and find the location where the `ReactNativeHost` is initialized. You have to override it's `getJSIModulePackage` method:
+6. Open `MainApplication.java` and find the location where the `ReactNativeHost` is initialized. You have to override it's `getJSIModulePackage` method:
 
 ```java
 public class MainApplication extends Application implements ReactApplication {
