@@ -51,6 +51,8 @@ npm install react-native-mmkv
 
 ### iOS
 
+> :warning: **the minimum deployment target required is 11.0**: Make sure your Podfile's is > platform :ios, '11.0'!
+
 iOS installation is automatic, just run:
 
 ```sh
