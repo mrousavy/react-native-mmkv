@@ -115,6 +115,10 @@ const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
 const userObject = JSON.parse(jsonUser)
 ```
 
+## Migrate from AsyncStorage
+
+See [#52](https://github.com/mrousavy/react-native-mmkv/issues/52) for instructions on how to safely migrate your existing AsyncStorage database to MMKV.
+
 ## Limitations
 
 As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
