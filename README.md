@@ -31,7 +31,7 @@
 * **~30x faster than AsyncStorage**
 * Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
 
-> Fun fact: since all the JS functions have C++ implementations, you can also directly call them in [reanimated](https://github.com/software-mansion/react-native-reanimated) worklets, [Vision Camera](http://github.com/cuvent/react-native-vision-camera) frame processors or [custom threads using react-native-multithreading](https://github.com/mrousavy/react-native-multithreading).
+> Fun fact: since all the JS functions have C++ implementations, you can also directly call them in [reanimated](https://github.com/software-mansion/react-native-reanimated) worklets, [Vision Camera](http://github.com/mrousavy/react-native-vision-camera) frame processors or [custom threads using react-native-multithreading](https://github.com/mrousavy/react-native-multithreading).
 
 ## Benchmark
 
