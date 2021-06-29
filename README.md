@@ -149,6 +149,25 @@ export const storage: Storage = {
 };
 ```
 
+## mobx-persist-store
+
+If you want to use MMKV with [mobx-persist-store](https://github.com/quarrant/mobx-persist-store), create the following `storage` object:
+
+```ts
+import { MMKV } from 'react-native-mmkv';
+import { configurePersistable } from 'mobx-persist-store';
+
+configurePersistable({
+  storage: {
+    setItem: (key, data) => MMKV.set(key, data),
+    getItem: (key) => MMKV.getString(key),
+    removeItem: (key) => MMKV.delete(key),
+  },
+});
+```
+
+For more information, check out [kanzitelli/rnn-starter](https://github.com/kanzitelli/rnn-starter).
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
