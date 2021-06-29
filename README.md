@@ -159,8 +159,8 @@ import { configurePersistable } from 'mobx-persist-store';
 
 configurePersistable({
   storage: {
-    setItem: (key, data) => MMKV.set(key, JSON.stringify(data)),
-    getItem: (key) => JSON.parse(MMKV.getString(key) || '{}'),
+    setItem: (key, data) => MMKV.set(key, data),
+    getItem: (key) => MMKV.getString(key),
     removeItem: (key) => MMKV.delete(key),
   },
 });
