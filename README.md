@@ -166,7 +166,7 @@ configurePersistable({
 });
 ```
 
-For more information, check out [example app](https://github.com/kanzitelli/rnn-starter).
+For more information, check out [kanzitelli/rnn-starter](https://github.com/kanzitelli/rnn-starter).
 
 ## Contributing
 
