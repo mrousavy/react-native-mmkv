@@ -119,7 +119,7 @@ static void install(jsi::Runtime & jsiRuntime)
 {
     RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
     if (!cxxBridge.runtime) {
-        // retry 10ms later
+        // retry 10ms later - THIS IS A WACK WORKAROUND. wait for TurboModules to land.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.001 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [self setup];
         });
