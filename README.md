@@ -115,6 +115,14 @@ const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
 const userObject = JSON.parse(jsonUser)
 ```
 
+### Delete all keys
+
+```js
+import { MMKV } from 'react-native-mmkv';
+
+MMKV.deleteAllKeys()
+```
+
 ## Migrate from AsyncStorage
 
 See [#52](https://github.com/mrousavy/react-native-mmkv/issues/52) for instructions on how to safely migrate your existing AsyncStorage database to MMKV.
