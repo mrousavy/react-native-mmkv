@@ -36,4 +36,8 @@ export const MMKV = {
    * @default []
    */
   getAllKeys: g.mmkvGetAllKeys as () => string[],
+  /**
+   * Delete all keys.
+   */
+  clearAll: g.mmkvClearAll as () => void,
 };
