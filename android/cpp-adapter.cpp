@@ -101,6 +101,16 @@ void install(jsi::Runtime& jsiRuntime) {
         return array;
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetAllKeys", std::move(mmkvGetAllKeys));
+
+    // MMKV.clearAll()
+    auto mmkvClearAll = jsi::Function::createFromHostFunction(jsiRuntime,
+                                                              jsi::PropNameID::forAscii(jsiRuntime, "mmkvClearAll"),
+                                                              0,
+                                                              [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
+        MMKV::defaultMMKV()->clearAll();
+        return jsi::Value::undefined();
+    });
+    jsiRuntime.global().setProperty(jsiRuntime, "mmkvClearAll", std::move(mmkvClearAll));
 }
 
 std::string jstringToStdString(JNIEnv *env, jstring jStr) {
