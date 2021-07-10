@@ -14,6 +14,7 @@ add_library(mmkvnative  # <-- Library name
         # Provides a relative path to your source file(s).
         ../../react-native/ReactCommon/jsi/jsi/jsi.cpp
         cpp-adapter.cpp
+        MmkvBinding.cpp
 )
 
 set_target_properties(

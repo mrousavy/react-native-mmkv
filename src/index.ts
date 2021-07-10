@@ -1,43 +1,52 @@
 const g = global as any;
 
-/**
- * MMKV is an efficient, small mobile key-value storage framework developed by WeChat.
- */
-export const MMKV = {
+export interface MMKVInstance {
   /**
    * Set a value for the given `key`.
    */
-  set: g.mmkvSet as (key: string, value: boolean | string | number) => void,
+  set: (key: string, value: boolean | string | number) => void;
   /**
    * Get a boolean value for the given `key`.
    *
    * @default false
    */
-  getBoolean: g.mmkvGetBoolean as (key: string) => boolean,
+  getBoolean: (key: string) => boolean;
   /**
    * Get a string value for the given `key`.
    *
    * @default undefined
    */
-  getString: g.mmkvGetString as (key: string) => string | undefined,
+  getString: (key: string) => string | undefined;
   /**
    * Get a number value for the given `key`.
    *
    * @default 0
    */
-  getNumber: g.mmkvGetNumber as (key: string) => number,
+  getNumber: (key: string) => number;
   /**
    * Delete the given `key`.
    */
-  delete: g.mmkvDelete as (key: string) => void,
+  delete: (key: string) => void;
   /**
    * Get all keys.
    *
    * @default []
    */
-  getAllKeys: g.mmkvGetAllKeys as () => string[],
+  getAllKeys: () => string[];
   /**
    * Delete all keys.
    */
-  clearAll: g.mmkvClearAll as () => void,
-};
+  clearAll: () => void;
+}
+
+/**
+ * Create an MMKV instance.
+ *
+ * @param id The unique ID of the MMKV instance or null for the default.
+ */
+export const mmkvWithID = g.mmkvWithID as (id: string | null) => MMKVInstance;
+
+/**
+ * MMKV is an efficient, small mobile key-value storage framework developed by WeChat.
+ */
+export const MMKV = mmkvWithID(null);

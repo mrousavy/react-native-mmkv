@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CFFFB9926996DF9002DC43F /* MmkvBinding.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0CFFFB9726996DF9002DC43F /* MmkvBinding.mm */; };
 		5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Mmkv.mm */; };
 		B8CC270225E65597009808A2 /* YeetJSIUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8CC270125E65597009808A2 /* YeetJSIUtils.mm */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CFFFB9726996DF9002DC43F /* MmkvBinding.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MmkvBinding.mm; sourceTree = "<group>"; };
+		0CFFFB9826996DF9002DC43F /* MmkvBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MmkvBinding.h; sourceTree = "<group>"; };
 		134814201AA4EA6300B7C361 /* libMmkv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMmkv.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5891CC2AC0600A0062D /* Mmkv.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Mmkv.mm; sourceTree = "<group>"; };
 		B865949C25E63C5C002102DB /* Mmkv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mmkv.h; sourceTree = "<group>"; };
@@ -57,6 +60,8 @@
 				B8CC270125E65597009808A2 /* YeetJSIUtils.mm */,
 				B865949C25E63C5C002102DB /* Mmkv.h */,
 				B3E7B5891CC2AC0600A0062D /* Mmkv.mm */,
+				0CFFFB9826996DF9002DC43F /* MmkvBinding.h */,
+				0CFFFB9726996DF9002DC43F /* MmkvBinding.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,6 +125,7 @@
 			files = (
 				5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */,
 				B8CC270225E65597009808A2 /* YeetJSIUtils.mm in Sources */,
+				0CFFFB9926996DF9002DC43F /* MmkvBinding.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
