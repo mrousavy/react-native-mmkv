@@ -26,12 +26,12 @@
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "prepare": "bob build",
+    "prepare": "cd android && ./gradlew clean && ./gradlew assembleDebug && ./gradlew assembleRelease && cd .. && bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "git submodule update --init --recursive && yarn example && yarn && yarn pods",
-    "prepack": "cd android && ./gradlew clean && ./gradlew assembleDebug && ./gradlew assembleRelease && cd .. && rm -rf android-tmp && mv android android-tmp && mv android-tmp/build/outputs/aar/android-debug.aar android && mv android-tmp/build/outputs/aar/android-release.aar android",
+    "prepack": "rm -rf android-tmp && mv android android-tmp && mv android-tmp/build/outputs/aar/android-debug.aar android && mv android-tmp/build/outputs/aar/android-release.aar android",
     "postpack": "rm -rf android && mv android-tmp android"
   },
   "keywords": [
