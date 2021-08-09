@@ -11,9 +11,9 @@ cd android
 echo "Cleaned."
 
 ./gradlew assembleDebug
-mv android/build/outputs/aar/android-debug.aar android-npm
+mv build/outputs/aar/android-debug.aar android-npm
 echo "Built debug."
 
 ./gradlew assembleRelease
-mv android/build/outputs/aar/android-release.aar android-npm
+mv build/outputs/aar/android-release.aar android-npm
 echo "Built release."
