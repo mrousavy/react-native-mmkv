@@ -1,2 +1,3 @@
 configurations.maybeCreate("default")
-artifacts.add("default", file("react-native-mmkv.aar"))
+// TODO: Add debug or release?
+artifacts.add("default", file("android-release.aar"))
