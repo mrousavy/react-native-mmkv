@@ -10,7 +10,7 @@
   "files": [
     "android/src",
     "android/build.gradle",
-    "android/android.aar",
+    "android/*.aar",
     "lib/commonjs",
     "lib/module",
     "lib/typescript",
