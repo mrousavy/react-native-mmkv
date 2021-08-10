@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.9.0)
 
 add_subdirectory(../MMKV/Core Core)
 
+set (PACKAGE_NAME "react-native-mmkv")
+set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
+
 include_directories(
         ../MMKV/Core
         ../../react-native/React
@@ -11,8 +14,6 @@ include_directories(
 
 add_library(mmkvnative  # <-- Library name
         SHARED
-        # Provides a relative path to your source file(s).
-        ../../react-native/ReactCommon/jsi/jsi/jsi.cpp
         cpp-adapter.cpp
 )
 
@@ -23,15 +24,23 @@ set_target_properties(
         POSITION_INDEPENDENT_CODE ON
 )
 
+file (GLOB LIBRN_DIR "${BUILD_DIR}/react-native-0*/jni/${ANDROID_ABI}")
 
 find_library(
-        log-lib # Sets the name of the path variable.
+        log-lib
         log
+)
+find_library(
+        REACT_NATIVE_JNI_LIB
+        reactnativejni
+        PATHS ${LIBRN_DIR}
+        NO_CMAKE_FIND_ROOT_PATH
 )
 
 target_link_libraries(
         mmkvnative
         core
         ${log-lib}
+        ${REACT_NATIVE_JNI_LIB}
         android
 )
