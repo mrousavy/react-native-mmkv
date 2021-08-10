@@ -7,7 +7,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
 public class MmkvModule extends ReactContextBaseJavaModule {
   static {
-    System.loadLibrary("mmkvnative");
+    System.loadLibrary("reactnativemmkv");
   }
 
   private static native void nativeInstall(long jsiPtr, String path);

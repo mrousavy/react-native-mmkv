@@ -12,13 +12,13 @@ include_directories(
         ../../react-native/ReactCommon/jsi
 )
 
-add_library(mmkvnative  # <-- Library name
+add_library(reactnativemmkv  # <-- Library name
         SHARED
         cpp-adapter.cpp
 )
 
 set_target_properties(
-        mmkvnative PROPERTIES
+        reactnativemmkv PROPERTIES
         CXX_STANDARD 17
         CXX_EXTENSIONS OFF
         POSITION_INDEPENDENT_CODE ON
@@ -38,7 +38,7 @@ find_library(
 )
 
 target_link_libraries(
-        mmkvnative
+        reactnativemmkv
         core
         ${log-lib}
         ${REACT_NATIVE_JNI_LIB}
