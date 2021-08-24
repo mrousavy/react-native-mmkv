@@ -136,21 +136,21 @@ As the library uses JSI for synchronous native methods access, remote debugging 
 If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-persist), create the following `storage` object:
 
 ```ts
-import { MMKV } from "react-native-mmkv";
-import { Storage } from "redux-persist";
+import { MMKV } from 'react-native-mmkv';
+import { Storage } from 'redux-persist';
 
 // Unfortunately redux-persist expects Promises,
 // so we have to wrap our sync calls with Promise resolvers/rejecters
 export const storage: Storage = {
-  setItem: (key: string, value: string): Promise<boolean> => {
+  setItem: (key, value) => {
     MMKV.set(key, value);
     return Promise.resolve(true);
   },
-  getItem: (key: string): Promise<string> => {
+  getItem: (key) => {
     const value = MMKV.getString(key);
     return Promise.resolve(value);
   },
-  removeItem: (key: string): Promise<void> => {
+  removeItem: (key) => {
     MMKV.delete(key);
     return Promise.resolve();
   },
