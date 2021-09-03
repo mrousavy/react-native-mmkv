@@ -14,7 +14,7 @@ MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, 
 }
 
 MmkvHostObject::~MmkvHostObject() {
-  instance->close();
+  instance->close(); // also calls destructor
 }
 
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
