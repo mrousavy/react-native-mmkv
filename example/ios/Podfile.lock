@@ -12,9 +12,9 @@ PODS:
   - glog (0.3.5)
   - hermes-engine (0.7.2)
   - libevent (2.1.11)
-  - MMKV (1.2.7):
-    - MMKVCore (~> 1.2.7)
-  - MMKVCore (1.2.7)
+  - MMKV (1.2.10):
+    - MMKVCore (~> 1.2.10)
+  - MMKVCore (1.2.10)
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
     - DoubleConversion
@@ -409,9 +409,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: c058de5a7f2e339ae2ea345a0790b9578a9aee56
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
-  libevent: 867cc03e654415675bcacf9726871a37c4b56b8a
-  MMKV: 22e5136f7d00197bc0fc9694b7f71519f0d1ca12
-  MMKVCore: 607b7b05f2c2140056b5d338e45f2c14bf3f4232
+  libevent: b00601ac33d4bf2545a3ded65f5c05c6f5fdc0d4
+  MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
+  MMKVCore: b00e7a09ec77a1b916aef336eedd3b99ec249978
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: cff6c2b6d032642cc892d3516bca5da0dfe86f38
   RCTTypeSafety: 8a552c3ec91843c081e1893009babf821d4a11a0
