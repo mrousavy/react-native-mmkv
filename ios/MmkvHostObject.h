@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 #import <jsi/jsi.h>
 #import <MMKV/MMKV.h>
+#include <unordered_map>
 
 using namespace facebook;
 
@@ -23,5 +24,7 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
   
 private:
+  jsi::Value getFunction(jsi::Runtime& runtime, const std::string& propName);
+  std::unordered_map<std::string, jsi::Function> functionCache;
   MMKV* instance;
 };
