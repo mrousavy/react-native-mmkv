@@ -13,7 +13,8 @@ add_library(reactnativemmkv  # <-- Library name
         SHARED
         # Provides a relative path to your source file(s).
         ../../react-native/ReactCommon/jsi/jsi/jsi.cpp
-        cpp-adapter.cpp
+        src/main/cpp/cpp-adapter.cpp
+        src/main/cpp/MmkvHostObject.cpp
 )
 
 set_target_properties(
