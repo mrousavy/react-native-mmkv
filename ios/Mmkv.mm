@@ -6,6 +6,7 @@
 #import <jsi/jsi.h>
 
 #import <MMKV/MMKV.h>
+#import "MmkvHostObject.h"
 
 using namespace facebook;
 
@@ -18,7 +19,6 @@ RCT_EXPORT_MODULE()
 + (BOOL)requiresMainQueueSetup {
     return YES;
 }
-
 
 static void install(jsi::Runtime & jsiRuntime)
 {
@@ -113,16 +113,44 @@ static void install(jsi::Runtime & jsiRuntime)
         return convertNSArrayToJSIArray(runtime, keys);
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetAllKeys", std::move(mmkvGetAllKeys));
-
+  
     // MMKV.clearAll()
     auto mmkvClearAll = jsi::Function::createFromHostFunction(jsiRuntime,
                                                               jsi::PropNameID::forAscii(jsiRuntime, "mmkvClearAll"),
                                                               0,
                                                               [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments, size_t count) -> jsi::Value {
-        [MMKV.defaultMMKV clearAll];
-        return jsi::Value::undefined();
+      [MMKV.defaultMMKV clearAll];
+      return jsi::Value::undefined();
     });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvClearAll", std::move(mmkvClearAll));
+    
+    // MMKV.createNewInstance()
+    auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(jsiRuntime,
+                                                                       jsi::PropNameID::forAscii(jsiRuntime, "mmkvCreateNewInstance"),
+                                                                       0,
+                                                                       [](jsi::Runtime& runtime,
+                                                                          const jsi::Value& thisValue,
+                                                                          const jsi::Value* arguments,
+                                                                          size_t count) -> jsi::Value {
+      if (count != 1) {
+        throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
+      }
+      jsi::Object config = arguments[0].asObject(runtime);
+      
+      NSString* instanceId = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"id"];
+      NSString* path = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"path"];
+      NSString* encryptionKey = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey"];
+      
+      auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
+      return jsi::Object::createFromHostObject(runtime, instance);
+    });
+    jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
+}
+
++ (NSString*)getPropertyAsStringOrNilFromObject:(jsi::Object&)object propertyName:(char*)propertyName {
+  jsi::Value value = object.getProperty(runtime, propertyName);
+  std::string string = value.isString() ? value.asString(runtime).utf8(runtime) : "";
+  return string.length() > 0 ? [NSString stringWithUTF8String:string.c_str()] : nil;
 }
 
 - (void)setup

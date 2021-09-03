@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Mmkv.mm */; };
-		B81384EA26E23A8500A8507D /* MmkvHostObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B81384E926E23A8500A8507D /* MmkvHostObject.m */; };
+		B81384EA26E23A8500A8507D /* MmkvHostObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B81384E926E23A8500A8507D /* MmkvHostObject.mm */; };
 		B8CC270225E65597009808A2 /* JSIUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8CC270125E65597009808A2 /* JSIUtils.mm */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +27,7 @@
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libMmkv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMmkv.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5891CC2AC0600A0062D /* Mmkv.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Mmkv.mm; sourceTree = "<group>"; };
-		B81384E926E23A8500A8507D /* MmkvHostObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MmkvHostObject.m; sourceTree = "<group>"; };
+		B81384E926E23A8500A8507D /* MmkvHostObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MmkvHostObject.mm; sourceTree = "<group>"; };
 		B81384EB26E23A8D00A8507D /* MmkvHostObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmkvHostObject.h; sourceTree = "<group>"; };
 		B865949C25E63C5C002102DB /* Mmkv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mmkv.h; sourceTree = "<group>"; };
 		B8CC270125E65597009808A2 /* JSIUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JSIUtils.mm; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				B81384EB26E23A8D00A8507D /* MmkvHostObject.h */,
-				B81384E926E23A8500A8507D /* MmkvHostObject.m */,
+				B81384E926E23A8500A8507D /* MmkvHostObject.mm */,
 				B8CC270425E655AD009808A2 /* JSIUtils.h */,
 				B8CC270125E65597009808A2 /* JSIUtils.mm */,
 				B865949C25E63C5C002102DB /* Mmkv.h */,
@@ -124,7 +124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */,
-				B81384EA26E23A8500A8507D /* MmkvHostObject.m in Sources */,
+				B81384EA26E23A8500A8507D /* MmkvHostObject.mm in Sources */,
 				B8CC270225E65597009808A2 /* JSIUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
