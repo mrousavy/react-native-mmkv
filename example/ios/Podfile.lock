@@ -10,8 +10,6 @@ PODS:
     - React-jsi (= 0.64.0-rc.3)
     - ReactCommon/turbomodule/core (= 0.64.0-rc.3)
   - glog (0.3.5)
-  - hermes-engine (0.7.2)
-  - libevent (2.1.11)
   - MMKV (1.2.10):
     - MMKVCore (~> 1.2.10)
   - MMKVCore (1.2.10)
@@ -24,11 +22,6 @@ PODS:
     - boost-for-react-native
     - DoubleConversion
     - glog
-  - RCT-Folly/Futures (2020.01.13.00):
-    - boost-for-react-native
-    - DoubleConversion
-    - glog
-    - libevent
   - RCTRequired (0.64.0-rc.3)
   - RCTTypeSafety (0.64.0-rc.3):
     - FBLazyVector (= 0.64.0-rc.3)
@@ -84,16 +77,6 @@ PODS:
     - React-jsi (= 0.64.0-rc.3)
     - React-jsiexecutor (= 0.64.0-rc.3)
     - React-jsinspector (= 0.64.0-rc.3)
-    - React-perflogger (= 0.64.0-rc.3)
-    - Yoga
-  - React-Core/Hermes (0.64.0-rc.3):
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2020.01.13.00)
-    - RCT-Folly/Futures
-    - React-cxxreact (= 0.64.0-rc.3)
-    - React-jsi (= 0.64.0-rc.3)
-    - React-jsiexecutor (= 0.64.0-rc.3)
     - React-perflogger (= 0.64.0-rc.3)
     - Yoga
   - React-Core/RCTActionSheetHeaders (0.64.0-rc.3):
@@ -299,8 +282,6 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - hermes-engine (~> 0.7.2)
-  - libevent (from `../node_modules/react-native/third-party-podspecs/libevent.podspec`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -308,7 +289,6 @@ DEPENDENCIES:
   - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
   - React-Core (from `../node_modules/react-native/`)
   - React-Core/DevSupport (from `../node_modules/react-native/`)
-  - React-Core/Hermes (from `../node_modules/react-native/`)
   - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
   - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
@@ -334,7 +314,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
-    - hermes-engine
     - MMKV
     - MMKVCore
 
@@ -347,8 +326,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
-  libevent:
-    :podspec: "../node_modules/react-native/third-party-podspecs/libevent.podspec"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -408,8 +385,6 @@ SPEC CHECKSUMS:
   FBLazyVector: 9cafb8520d334de0720e1119b41db4cc16d3fbc9
   FBReactNativeSpec: c058de5a7f2e339ae2ea345a0790b9578a9aee56
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  hermes-engine: 7d97ba46a1e29bacf3e3c61ecb2804a5ddd02d4f
-  libevent: b00601ac33d4bf2545a3ded65f5c05c6f5fdc0d4
   MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
   MMKVCore: b00e7a09ec77a1b916aef336eedd3b99ec249978
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
@@ -439,6 +414,6 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: fe58eec522885718d6b297b7b658bf87d7ca557b
   Yoga: 31313df467e58b5b53f26a0319fa100159c79fa3
 
-PODFILE CHECKSUM: 6f74aa80952f3a27aa5fe811efc583f3395664a1
+PODFILE CHECKSUM: ff9edaeddbabd71ed0391ba2617d0998f8c3e9ba
 
 COCOAPODS: 1.10.2
