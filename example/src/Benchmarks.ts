@@ -1,12 +1,14 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MMKV } from 'react-native-mmkv';
 
+const storage = new MMKV({ id: 'benchmark' });
+
 export const benchmarkAgainstAsyncStorage = async () => {
   console.log('Starting benchmark...');
 
   await AsyncStorage.setItem('test', 'Some test string.');
   console.log('wrote test value to AsyncStorage');
-  MMKV.set('test', 'Some test string.');
+  storage.set('test', 'Some test string.');
   console.log('wrote test value to MMKV');
 
   const iters = 1000;
@@ -23,7 +25,7 @@ export const benchmarkAgainstAsyncStorage = async () => {
     const start = global.performance.now();
     for (let i = 0; i < iters; i++) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const value = MMKV.getString('test');
+      const value = storage.getString('test');
     }
     const end = global.performance.now();
     console.log(`MMKV: ${end - start}ms for ${iters}x get()`);
