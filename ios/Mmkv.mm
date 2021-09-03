@@ -1,5 +1,5 @@
 #import "Mmkv.h"
-#import "YeetJSIUtils.h"
+#import "JSIUtils.h"
 
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
