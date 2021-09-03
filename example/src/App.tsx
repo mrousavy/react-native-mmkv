@@ -4,7 +4,7 @@ import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import { benchmarkAgainstAsyncStorage } from './Benchmarks';
 
-const storage = new MMKV({});
+const storage = new MMKV();
 
 export default function App() {
   const [text, setText] = React.useState<string>('');

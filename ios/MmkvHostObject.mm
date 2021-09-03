@@ -13,6 +13,9 @@
 MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey) {
   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
   instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+  if (instance == nil) {
+    throw std::runtime_error("Failed to create MMKV instance!");
+  }
 }
 
 MmkvHostObject::~MmkvHostObject() {

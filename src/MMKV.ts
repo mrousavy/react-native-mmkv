@@ -10,8 +10,10 @@ export interface MMKVConfiguration {
    * const userStorage = new MMKV({ id: `user-${userId}-storage` })
    * const globalStorage = new MMKV({ id: 'global-app-storage' })
    * ```
+   *
+   * @default 'default'
    */
-  id?: string;
+  id: string;
   /**
    * The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization:
    *
@@ -82,9 +84,9 @@ export class MMKV implements MMKVInterface {
 
   /**
    * Creates a new MMKV instance with the given Configuration.
-   * Each key is optional.
+   * If no custom `id` is supplied, `'default'` will be used.
    */
-  constructor(configuration: MMKVConfiguration) {
+  constructor(configuration: MMKVConfiguration = { id: 'default' }) {
     // @ts-expect-error global func is a native JSI func
     if (global.mmkvCreateNewInstance == null) {
       throw new Error(
