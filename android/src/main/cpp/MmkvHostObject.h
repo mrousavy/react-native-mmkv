@@ -26,5 +26,5 @@ public:
 private:
   jsi::Value getFunction(jsi::Runtime& runtime, const std::string& propName);
   std::unordered_map<std::string, jsi::Function> functionCache;
-  std::unique_ptr<MMKV> instance;
+  MMKV* instance;
 };

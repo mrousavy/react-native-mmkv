@@ -10,8 +10,7 @@
 #include <MMKV.h>
 
 MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey) {
-  auto mmkv = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, &cryptKey, &path);
-  instance = std::unique_ptr<MMKV>(mmkv);
+  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, &cryptKey, &path);
 }
 
 MmkvHostObject::~MmkvHostObject() {
@@ -158,7 +157,6 @@ jsi::Value MmkvHostObject::getFunction(jsi::Runtime& runtime, const std::string&
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
                                                    auto keys = instance->allKeys();
-                                                   auto x = jsi::Array::createWithElements(runtime, keys);
                                                    auto array = jsi::Array(runtime, keys.size());
                                                    for (int i = 0; i < keys.size(); i++) {
                                                      array.setValueAtIndex(runtime, i, keys[i]);
