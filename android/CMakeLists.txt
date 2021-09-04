@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.9.0)
 
-add_subdirectory(../MMKV/Core Core)
-
 set (PACKAGE_NAME "react-native-mmkv")
 set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
+
+add_subdirectory(../MMKV/Core core)
 
 include_directories(
         ../MMKV/Core
