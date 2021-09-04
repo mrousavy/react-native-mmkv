@@ -13,6 +13,9 @@ MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string&
   this->path = path.size() > 0 ? new std::string(path) : nullptr;
   this->encryptionKey = cryptKey.size() > 0 ? new std::string(cryptKey) : nullptr;
   instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
+  if (instance == nullptr) {
+    throw std::runtime_error("Failed to create MMKV instance!");
+  }
 }
 
 MmkvHostObject::~MmkvHostObject() {
