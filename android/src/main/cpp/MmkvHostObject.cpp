@@ -8,8 +8,11 @@
 
 #include "MmkvHostObject.h"
 #include <MMKV.h>
+#include <android/log.h>
 
 MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string& path, const std::string& cryptKey) {
+  __android_log_print(ANDROID_LOG_INFO, "RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encryption-Key: %s)",
+                      instanceId.c_str(), path.c_str(), cryptKey.c_str());
   this->path = path.size() > 0 ? new std::string(path) : nullptr;
   this->encryptionKey = cryptKey.size() > 0 ? new std::string(cryptKey) : nullptr;
   instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
