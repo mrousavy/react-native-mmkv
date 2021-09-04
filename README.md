@@ -27,6 +27,9 @@
 
 * **Get** and **set** strings, booleans and numbers
 * **Fully synchronous** calls, no async/await, no Promises, no Bridge.
+* **Encryption** support (secure storage)
+* **Multiple instances** support (separate user-data with global data)
+* **Customize storage location**
 * **High performance** because everything is **written in C++** (even the JS functions have C++ bodies!)
 * **~30x faster than AsyncStorage**
 * Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
@@ -63,64 +66,86 @@ To correctly initialize MMKV on Android, please follow the [Installation guide](
 
 ## Usage
 
+### Create a new instance
+
+To create a new instance of the MMKV storage, use the `MMKV` constructor.
+
+#### Default
+
+```ts
+import { MMKV } from 'react-native-mmkv'
+
+const storage = new MMKV()
+```
+
+This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
+
+#### Customize
+
+```ts
+import { MMKV } from 'react-native-mmkv'
+
+const storage = new MMKV({
+  id: `user-${userId}-storage`,
+  path: USER_DIRECTORY + '/storage',
+  encryptionKey: 'some-encryption-key'
+})
+```
+
+This creates a new storage instance using a custom MMKV storage ID. By using a custom storage ID, your storage is separated from the default MMKV storage of your app.
+
+The following values can be configured:
+
+* `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separte the global app's storage and a logged-in user's storage. (default: `'mmkv.default'`)
+* `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization
+* `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV.
+
 ### Set
 
 ```js
-import { MMKV } from 'react-native-mmkv';
-
-MMKV.set('user.name', 'Marc')
-MMKV.set('user.age', 20)
-MMKV.set('is-mmkv-fast-asf', true)
+storage.set('user.name', 'Marc')
+storage.set('user.age', 20)
+storage.set('is-mmkv-fast-asf', true)
 ```
 
 ### Get
 
 ```js
-import { MMKV } from 'react-native-mmkv';
-
-const username = MMKV.getString('user.name') // 'Marc'
-const age = MMKV.getNumber('user.age') // 20
-const isMmkvFastAsf = MMKV.getBoolean('is-mmkv-fast-asf') // true
+const username = storage.getString('user.name') // 'Marc'
+const age = storage.getNumber('user.age') // 20
+const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
 ```
 
 ### Delete
 
 ```js
-import { MMKV } from 'react-native-mmkv';
-
-MMKV.delete('user.name')
+storage.delete('user.name')
 ```
 
 ### Get all keys
 
 ```js
-import { MMKV } from 'react-native-mmkv';
-
-const keys = MMKV.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
+const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
 ```
 
 ### Objects
 
 ```js
-import { MMKV } from 'react-native-mmkv';
-
 const user = {
   username: 'Marc',
   age: 20
 }
 
-MMKV.set('user', JSON.stringify(user))
+storage.set('user', JSON.stringify(user))
 
-const jsonUser = MMKV.getString('user') // { 'username': 'Marc', 'age': 20 }
+const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 20 }
 const userObject = JSON.parse(jsonUser)
 ```
 
 ### Delete all keys
 
 ```js
-import { MMKV } from 'react-native-mmkv';
-
-MMKV.deleteAllKeys()
+storage.deleteAllKeys()
 ```
 
 ## Migrate from AsyncStorage
@@ -136,22 +161,21 @@ As the library uses JSI for synchronous native methods access, remote debugging 
 If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-persist), create the following `storage` object:
 
 ```ts
-import { MMKV } from 'react-native-mmkv';
 import { Storage } from 'redux-persist';
 
 // Unfortunately redux-persist expects Promises,
 // so we have to wrap our sync calls with Promise resolvers/rejecters
-export const storage: Storage = {
+export const reduxStorage: Storage = {
   setItem: (key, value) => {
-    MMKV.set(key, value);
+    storage.set(key, value);
     return Promise.resolve(true);
   },
   getItem: (key) => {
-    const value = MMKV.getString(key);
+    const value = storage.getString(key);
     return Promise.resolve(value);
   },
   removeItem: (key) => {
-    MMKV.delete(key);
+    storage.delete(key);
     return Promise.resolve();
   },
 };
@@ -162,14 +186,13 @@ export const storage: Storage = {
 If you want to use MMKV with [mobx-persist-store](https://github.com/quarrant/mobx-persist-store), create the following `storage` object:
 
 ```ts
-import { MMKV } from 'react-native-mmkv';
 import { configurePersistable } from 'mobx-persist-store';
 
 configurePersistable({
   storage: {
-    setItem: (key, data) => MMKV.set(key, data),
-    getItem: (key) => MMKV.getString(key),
-    removeItem: (key) => MMKV.delete(key),
+    setItem: (key, data) => storage.set(key, data),
+    getItem: (key) => storage.getString(key),
+    removeItem: (key) => storage.delete(key),
   },
 });
 ```
