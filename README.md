@@ -104,7 +104,7 @@ The following values can be configured:
 
 ```js
 storage.set('user.name', 'Marc')
-storage.set('user.age', 20)
+storage.set('user.age', 21)
 storage.set('is-mmkv-fast-asf', true)
 ```
 
@@ -112,7 +112,7 @@ storage.set('is-mmkv-fast-asf', true)
 
 ```js
 const username = storage.getString('user.name') // 'Marc'
-const age = storage.getNumber('user.age') // 20
+const age = storage.getNumber('user.age') // 21
 const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
 ```
 
@@ -133,12 +133,12 @@ const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf
 ```js
 const user = {
   username: 'Marc',
-  age: 20
+  age: 21
 }
 
 storage.set('user', JSON.stringify(user))
 
-const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 20 }
+const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
 const userObject = JSON.parse(jsonUser)
 ```
 
