@@ -5,10 +5,9 @@
 
 using namespace facebook;
 
-std::string getPropertyAsStringOrNilFromObject(jsi::Object& object, const std::string& propertyName, jsi::Runtime& runtime) {
+std::string getPropertyAsStringOrEmptyFromObject(jsi::Object& object, const std::string& propertyName, jsi::Runtime& runtime) {
     jsi::Value value = object.getProperty(runtime, propertyName.c_str());
-    std::string string = value.isString() ? value.asString(runtime).utf8(runtime) : "";
-    return string.length() > 0 ? string : nullptr;
+    return value.isString() ? value.asString(runtime).utf8(runtime) : "";
 }
 
 void install(jsi::Runtime& jsiRuntime) {
@@ -25,9 +24,9 @@ void install(jsi::Runtime& jsiRuntime) {
                                                                          }
                                                                          jsi::Object config = arguments[0].asObject(runtime);
 
-                                                                         std::string instanceId = getPropertyAsStringOrNilFromObject(config, "id", runtime);
-                                                                         std::string path = getPropertyAsStringOrNilFromObject(config, "path", runtime);
-                                                                         std::string encryptionKey = getPropertyAsStringOrNilFromObject(config, "encryptionKey", runtime);
+                                                                         std::string instanceId = getPropertyAsStringOrEmptyFromObject(config, "id", runtime);
+                                                                         std::string path = getPropertyAsStringOrEmptyFromObject(config, "path", runtime);
+                                                                         std::string encryptionKey = getPropertyAsStringOrEmptyFromObject(config, "encryptionKey", runtime);
 
                                                                          auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
                                                                          return jsi::Object::createFromHostObject(runtime, instance);

@@ -9,12 +9,20 @@
 #include "MmkvHostObject.h"
 #include <MMKV.h>
 
-MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey) {
-  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, &cryptKey, &path);
+MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string& path, const std::string& cryptKey) {
+  this->path = path.size() > 0 ? new std::string(path) : nullptr;
+  this->encryptionKey = cryptKey.size() > 0 ? new std::string(cryptKey) : nullptr;
+  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
 }
 
 MmkvHostObject::~MmkvHostObject() {
   instance->close(); // also calls destructor
+  if (path) {
+    delete path;
+  }
+  if (encryptionKey) {
+    delete encryptionKey;
+  }
 }
 
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
