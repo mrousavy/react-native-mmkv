@@ -11,7 +11,7 @@ export interface MMKVConfiguration {
    * const globalStorage = new MMKV({ id: 'global-app-storage' })
    * ```
    *
-   * @default 'default'
+   * @default 'mmkv.default'
    */
   id: string;
   /**
@@ -86,7 +86,7 @@ export class MMKV implements MMKVInterface {
    * Creates a new MMKV instance with the given Configuration.
    * If no custom `id` is supplied, `'default'` will be used.
    */
-  constructor(configuration: MMKVConfiguration = { id: 'default' }) {
+  constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     // @ts-expect-error global func is a native JSI func
     if (global.mmkvCreateNewInstance == null) {
       throw new Error(
