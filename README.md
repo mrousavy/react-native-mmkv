@@ -1,5 +1,6 @@
 <div align="center">
   <h1 align="center">MMKV</h1>
+  <h3 align="center">The fastest key/value storage for React Native.</h3>
 </div>
 
 <div align="center">
