@@ -4,6 +4,8 @@ import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import { benchmarkAgainstAsyncStorage } from './Benchmarks';
 
+const storage = new MMKV();
+
 export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
@@ -16,7 +18,7 @@ export default function App() {
     }
     try {
       console.log('setting...');
-      MMKV.set(key, text);
+      storage.set(key, text);
       console.log('set.');
     } catch (e) {
       console.error('Error:', e);
@@ -30,7 +32,7 @@ export default function App() {
     }
     try {
       console.log('getting...');
-      const value = MMKV.getString(key);
+      const value = storage.getString(key);
       console.log('got:', value);
       Alert.alert('Result', `"${key}" = "${value}"`);
     } catch (e) {
@@ -42,7 +44,7 @@ export default function App() {
   React.useEffect(() => {
     try {
       console.log('getting all keys...');
-      const _keys = MMKV.getAllKeys();
+      const _keys = storage.getAllKeys();
       setKeys(_keys);
       console.log('MMKV keys:', _keys);
     } catch (e) {

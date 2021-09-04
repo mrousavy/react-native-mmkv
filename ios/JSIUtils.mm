@@ -6,10 +6,9 @@
 //  Copyright © 2019 Facebook. All rights reserved.
 //
 
-#include "YeetJSIUtils.h"
+#include "JSIUtils.h"
 #import <React/RCTConvert.h>
 #import <React/RCTBridgeModule.h>
-//#import <ReactCommon/TurboModuleUtils.h>
 
 /**
  * All helper functions are ObjC++ specific.

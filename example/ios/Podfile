@@ -8,16 +8,10 @@ target 'MmkvExample' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => true
+    :hermes_enabled => false
   )
 
   pod 'react-native-mmkv', :path => '../..'
-
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable these next few lines.
-  use_flipper!({ 'Flipper' => '0.74.0' })
 
   post_install do |installer|
     react_native_post_install(installer)

@@ -1,19 +1,9 @@
-//
-//  YeetJSIUTils.h
-//  yeet
-//
-//  Created by Jarred WSumner on 1/30/20.
-//  Copyright © 2020 Facebook. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 #import <jsi/jsi.h>
 #import <React/RCTBridgeModule.h>
 
 using namespace facebook;
-/**
- * All static helper functions are ObjC++ specific.
- */
+
 jsi::Value convertNSNumberToJSIBoolean(jsi::Runtime &runtime, NSNumber *value);
 jsi::Value convertNSNumberToJSINumber(jsi::Runtime &runtime, NSNumber *value);
 jsi::String convertNSStringToJSIString(jsi::Runtime &runtime, NSString *value);
