@@ -68,7 +68,7 @@ To correctly initialize MMKV on Android, please follow the [Installation guide](
 
 ### Create a new instance
 
-To create a new instance of the MMKV storage, use the `MMKV` constructor.
+To create a new instance of the MMKV storage, use the `MMKV` constructor. It is recommended that you re-use this instance throughout your entire app instead of creating a new instance each time, so `export` the `storage` object.
 
 #### Default
 
