@@ -1,4 +1,5 @@
 import { unstable_batchedUpdates } from 'react-native';
+import { createMMKV } from './createMMKV';
 
 interface Listener {
   remove: () => void;
@@ -92,13 +93,6 @@ export interface MMKVInterface {
   ) => Listener;
 }
 
-// global func declaration for JSI functions
-declare global {
-  function mmkvCreateNewInstance(
-    configuration: MMKVConfiguration
-  ): MMKVInterface;
-}
-
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
 /**
@@ -120,7 +114,7 @@ export class MMKV implements MMKVInterface {
       );
     }
     this.id = configuration.id;
-    this.nativeInstance = global.mmkvCreateNewInstance(configuration);
+    this.nativeInstance = createMMKV(configuration);
     this.functionCache = {};
   }
 
