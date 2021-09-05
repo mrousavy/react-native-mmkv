@@ -81,6 +81,7 @@ export interface MMKVInterface {
  */
 export class MMKV implements MMKVInterface {
   private nativeInstance: MMKVInterface;
+  private functionCache: Partial<MMKVInterface>;
 
   /**
    * Creates a new MMKV instance with the given Configuration.
@@ -95,27 +96,44 @@ export class MMKV implements MMKVInterface {
     }
     // @ts-expect-error global func is a native JSI func
     this.nativeInstance = global.mmkvCreateNewInstance(configuration);
+    this.functionCache = {};
+  }
+
+  private getFunctionFromCache<T extends keyof MMKVInterface>(
+    functionName: T
+  ): MMKVInterface[T] {
+    if (this.functionCache[functionName] == null) {
+      this.functionCache[functionName] = this.nativeInstance[functionName];
+    }
+    return this.functionCache[functionName] as MMKVInterface[T];
   }
 
   set(key: string, value: boolean | string | number): void {
-    return this.nativeInstance.set(key, value);
+    const func = this.getFunctionFromCache('set');
+    return func(key, value);
   }
   getBoolean(key: string): boolean {
-    return this.nativeInstance.getBoolean(key);
+    const func = this.getFunctionFromCache('getBoolean');
+    return func(key);
   }
   getString(key: string): string | undefined {
-    return this.nativeInstance.getString(key);
+    const func = this.getFunctionFromCache('getString');
+    return func(key);
   }
   getNumber(key: string): number {
-    return this.nativeInstance.getNumber(key);
+    const func = this.getFunctionFromCache('getNumber');
+    return func(key);
   }
   delete(key: string): void {
-    return this.nativeInstance.delete(key);
+    const func = this.getFunctionFromCache('delete');
+    return func(key);
   }
   getAllKeys(): string[] {
-    return this.nativeInstance.getAllKeys();
+    const func = this.getFunctionFromCache('getAllKeys');
+    return func();
   }
   clearAll(): void {
-    return this.nativeInstance.clearAll();
+    const func = this.getFunctionFromCache('clearAll');
+    return func();
   }
 }

@@ -10,7 +10,6 @@
 
 #include <jsi/jsi.h>
 #include <MMKV.h>
-#include <unordered_map>
 
 using namespace facebook;
 
@@ -24,8 +23,6 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
 
 private:
-  jsi::Value getFunction(jsi::Runtime& runtime, const std::string& propName);
-  std::unordered_map<std::string, jsi::Function> functionCache;
   MMKV* instance;
   std::string* path;
   std::string* encryptionKey;
