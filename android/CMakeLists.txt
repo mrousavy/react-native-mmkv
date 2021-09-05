@@ -15,7 +15,8 @@ include_directories(
 add_library(reactnativemmkv  # <-- Library name
         SHARED
         src/main/cpp/cpp-adapter.cpp
-        src/main/cpp/MmkvHostObject.cpp
+        src/main/cpp/shared/MmkvHostObject.cpp
+        src/main/cpp/shared/MmkvSetup.cpp
 )
 
 set_target_properties(

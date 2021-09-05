@@ -1,38 +1,5 @@
 #include <jni.h>
 #include <jsi/jsi.h>
-#include <MMKV.h>
-#include "MmkvHostObject.h"
-
-using namespace facebook;
-
-std::string getPropertyAsStringOrEmptyFromObject(jsi::Object& object, const std::string& propertyName, jsi::Runtime& runtime) {
-    jsi::Value value = object.getProperty(runtime, propertyName.c_str());
-    return value.isString() ? value.asString(runtime).utf8(runtime) : "";
-}
-
-void install(jsi::Runtime& jsiRuntime) {
-    // MMKV.createNewInstance()
-    auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(jsiRuntime,
-                                                                       jsi::PropNameID::forAscii(jsiRuntime, "mmkvCreateNewInstance"),
-                                                                       0,
-                                                                       [](jsi::Runtime& runtime,
-                                                                          const jsi::Value& thisValue,
-                                                                          const jsi::Value* arguments,
-                                                                          size_t count) -> jsi::Value {
-                                                                         if (count != 1) {
-                                                                             throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
-                                                                         }
-                                                                         jsi::Object config = arguments[0].asObject(runtime);
-
-                                                                         std::string instanceId = getPropertyAsStringOrEmptyFromObject(config, "id", runtime);
-                                                                         std::string path = getPropertyAsStringOrEmptyFromObject(config, "path", runtime);
-                                                                         std::string encryptionKey = getPropertyAsStringOrEmptyFromObject(config, "encryptionKey", runtime);
-
-                                                                         auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
-                                                                         return jsi::Object::createFromHostObject(runtime, instance);
-                                                                       });
-    jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
-}
 
 std::string jstringToStdString(JNIEnv *env, jstring jStr) {
     if (!jStr) return "";
@@ -55,11 +22,9 @@ std::string jstringToStdString(JNIEnv *env, jstring jStr) {
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_reactnativemmkv_MmkvModule_nativeInstall(JNIEnv *env, jobject clazz, jlong jsiPtr, jstring path) {
-    MMKV::initializeMMKV(jstringToStdString(env, path));
-
     auto runtime = reinterpret_cast<jsi::Runtime*>(jsiPtr);
     if (runtime) {
-        install(*runtime);
+        MmkvSetup::setupMmkv(runtime, jstringToStdString(env, path));
     }
     // if runtime was nullptr, MMKV will not be installed. This should only happen while Remote Debugging (Chrome), but will be weird either way.
 }

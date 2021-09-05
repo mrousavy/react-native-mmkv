@@ -1,11 +1,9 @@
 #import "RNMmkv.h"
-#import "JSIUtils.h"
-
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
 #import <jsi/jsi.h>
 
-#import "MmkvHostObject.h"
+#import "../cpp/MmkvSetup.h"
 
 using namespace facebook;
 
@@ -19,37 +17,6 @@ RCT_EXPORT_MODULE()
     return YES;
 }
 
-static void install(jsi::Runtime & jsiRuntime)
-{
-    // MMKV.createNewInstance()
-    auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(jsiRuntime,
-                                                                       jsi::PropNameID::forAscii(jsiRuntime, "mmkvCreateNewInstance"),
-                                                                       0,
-                                                                       [](jsi::Runtime& runtime,
-                                                                          const jsi::Value& thisValue,
-                                                                          const jsi::Value* arguments,
-                                                                          size_t count) -> jsi::Value {
-      if (count != 1) {
-        throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
-      }
-      jsi::Object config = arguments[0].asObject(runtime);
-      
-      NSString* instanceId = [RNMmkv getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
-      NSString* path = [RNMmkv getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
-      NSString* encryptionKey = [RNMmkv getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
-      
-      auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
-      return jsi::Object::createFromHostObject(runtime, instance);
-    });
-    jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
-}
-
-+ (NSString*)getPropertyAsStringOrNilFromObject:(jsi::Object&)object propertyName:(std::string)propertyName runtime:(jsi::Runtime&)runtime {
-  jsi::Value value = object.getProperty(runtime, propertyName.c_str());
-  std::string string = value.isString() ? value.asString(runtime).utf8(runtime) : "";
-  return string.length() > 0 ? [NSString stringWithUTF8String:string.c_str()] : nil;
-}
-
 - (void)setup
 {
     RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
@@ -61,8 +28,8 @@ static void install(jsi::Runtime & jsiRuntime)
         return;
     }
 
-    mmkv::MMKV::initializeMMKV(nullptr);
-    install(*(jsi::Runtime *)cxxBridge.runtime);
+    jsi::Runtime* runtime = (jsi::Runtime *)cxxBridge.runtime;
+    MmkvSetup::setupMmkv(*runtime, nullptr)
 }
 
 - (void)setBridge:(RCTBridge *)bridge

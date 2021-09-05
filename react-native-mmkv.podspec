@@ -28,7 +28,8 @@ Pod::Spec.new do |s|
   # Note how this does not include headers, since those can nameclash.
   s.source_files = [
     "ios/**/*.{m,mm}",
-    "ios/Mmkv.h",
+    "cpp/**/*.cpp",
+    "cpp/MmkvHostObject.h",
     "MMKV/Core",
     "MMKV/Core/*.{h,cpp,hpp}",
     "MMKV/Core/aes/*",
