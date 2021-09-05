@@ -6,11 +6,9 @@
 //  Copyright © 2021 Facebook. All rights reserved.
 //
 
-#pragma once
-
 #include <jsi/jsi.h>
 #include <MMKV.h>
-#include "shared/MmkvHostObject.h"
+#include "MmkvHostObject.h"
 
 using namespace facebook;
 using namespace mmkv;

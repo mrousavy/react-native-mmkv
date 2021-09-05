@@ -9,10 +9,17 @@
 #include "MmkvHostObject.h"
 #include <MMKV.h>
 
+using namespace mmkv;
+
 MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string& path, const std::string& cryptKey) {
   this->path = path.size() > 0 ? new std::string(path) : nullptr;
   this->encryptionKey = cryptKey.size() > 0 ? new std::string(cryptKey) : nullptr;
+#ifdef ON_ANDROID
   instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
+#else
+  instance = MMKV::mmkvWithID(instanceId, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
+#endif
+  
   if (instance == nullptr) {
     throw std::runtime_error("Failed to create MMKV instance!");
   }

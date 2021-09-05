@@ -23,7 +23,7 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
 
 private:
-  MMKV* instance;
+  mmkv::MMKV* instance;
   std::string* path;
   std::string* encryptionKey;
 };

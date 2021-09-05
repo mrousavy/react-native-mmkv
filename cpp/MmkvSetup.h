@@ -12,5 +12,5 @@
 #include <MMKV.h>
 
 namespace MmkvSetup {
-  void setupMmkv(facebook::jsi::Runtime& runtime);
+  void setupMmkv(facebook::jsi::Runtime& runtime, std::string path);
 }
