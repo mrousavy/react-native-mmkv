@@ -1,16 +1,15 @@
-#import "Mmkv.h"
+#import "RNMmkv.h"
 #import "JSIUtils.h"
 
 #import <React/RCTBridge+Private.h>
 #import <React/RCTUtils.h>
 #import <jsi/jsi.h>
 
-#import <MMKV/MMKV.h>
 #import "MmkvHostObject.h"
 
 using namespace facebook;
 
-@implementation Mmkv
+@implementation RNMmkv
 @synthesize bridge = _bridge;
 @synthesize methodQueue = _methodQueue;
 
@@ -35,9 +34,9 @@ static void install(jsi::Runtime & jsiRuntime)
       }
       jsi::Object config = arguments[0].asObject(runtime);
       
-      NSString* instanceId = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
-      NSString* path = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
-      NSString* encryptionKey = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
+      NSString* instanceId = [RNMmkv getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
+      NSString* path = [RNMmkv getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
+      NSString* encryptionKey = [RNMmkv getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
       
       auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
       return jsi::Object::createFromHostObject(runtime, instance);
@@ -62,7 +61,7 @@ static void install(jsi::Runtime & jsiRuntime)
         return;
     }
 
-    [MMKV initializeMMKV:nil];
+    mmkv::MMKV::initializeMMKV(nullptr);
     install(*(jsi::Runtime *)cxxBridge.runtime);
 }
 

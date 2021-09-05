@@ -11,9 +11,6 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.65.1)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - MMKV (1.2.10):
-    - MMKVCore (~> 1.2.10)
-  - MMKVCore (1.2.10)
   - RCT-Folly (2021.04.26.00):
     - boost-for-react-native
     - DoubleConversion
@@ -209,8 +206,7 @@ PODS:
     - React-jsi (= 0.65.1)
     - React-perflogger (= 0.65.1)
   - React-jsinspector (0.65.1)
-  - react-native-mmkv (1.2.5):
-    - MMKV
+  - react-native-mmkv (1.3.0):
     - React-Core
   - React-perflogger (0.65.1)
   - React-RCTActionSheet (0.65.1):
@@ -318,8 +314,6 @@ SPEC REPOS:
   trunk:
     - boost-for-react-native
     - fmt
-    - MMKV
-    - MMKVCore
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -390,8 +384,6 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: df8f81d2a7541ee6755a047b398a5cb5a72acd0e
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
-  MMKVCore: b00e7a09ec77a1b916aef336eedd3b99ec249978
   RCT-Folly: 0dd9e1eb86348ecab5ba76f910b56f4b5fef3c46
   RCTRequired: 6cf071ab2adfd769014b3d94373744ee6e789530
   RCTTypeSafety: b829c59453478bb5b02487b8de3336386ab93ab1
@@ -403,7 +395,7 @@ SPEC CHECKSUMS:
   React-jsi: 12913c841713a15f64eabf5c9ad98592c0ec5940
   React-jsiexecutor: 43f2542aed3c26e42175b339f8d37fe3dd683765
   React-jsinspector: 41e58e5b8e3e0bf061fdf725b03f2144014a8fb0
-  react-native-mmkv: b4087c6eb91e1dcfe44b74d55f53976c09246f03
+  react-native-mmkv: ecae12a5e7eba7887fe67034c86a94b7252d9c2c
   React-perflogger: fd28ee1f2b5b150b00043f0301d96bd417fdc339
   React-RCTActionSheet: 7f3fa0855c346aa5d7c60f9ced16e067db6d29fa
   React-RCTAnimation: 2119a18ee26159004b001bc56404ca5dbaae6077

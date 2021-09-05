@@ -10,7 +10,7 @@
 
 #import <Foundation/Foundation.h>
 #import <jsi/jsi.h>
-#import <MMKV/MMKV.h>
+#import "MMKV.h"
 
 using namespace facebook;
 
@@ -24,5 +24,5 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
 
 private:
-  MMKV* instance;
+  mmkv::MMKV* instance;
 };
