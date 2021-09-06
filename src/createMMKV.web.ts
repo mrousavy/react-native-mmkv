@@ -1,7 +1,12 @@
 /* global localStorage */
 import { Platform } from 'react-native';
 import type { MMKVConfiguration, MMKVInterface } from 'react-native-mmkv';
-import { canUseDOM } from 'fbjs/lib/ExecutionEnvironment';
+
+const canUseDOM = !!(
+  typeof window !== 'undefined' &&
+  window.document &&
+  window.document.createElement
+);
 
 export const createMMKV = (config: MMKVConfiguration): MMKVInterface => {
   const storage = () => {
