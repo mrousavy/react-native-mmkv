@@ -157,24 +157,24 @@ As the library uses JSI for synchronous native methods access, remote debugging 
 If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-persist), create the following `storage` object:
 
 ```ts
-import { Storage } from 'redux-persist';
+import { Storage } from 'redux-persist'
 
-// Unfortunately redux-persist expects Promises,
-// so we have to wrap our sync calls with Promise resolvers/rejecters
+const storage = new MMKV()
+
 export const reduxStorage: Storage = {
   setItem: (key, value) => {
-    storage.set(key, value);
-    return Promise.resolve(true);
+    storage.set(key, value)
+    return Promise.resolve(true)
   },
   getItem: (key) => {
-    const value = storage.getString(key);
-    return Promise.resolve(value);
+    const value = storage.getString(key)
+    return Promise.resolve(value)
   },
   removeItem: (key) => {
-    storage.delete(key);
-    return Promise.resolve();
+    storage.delete(key)
+    return Promise.resolve()
   },
-};
+}
 ```
 
 ## mobx-persist-store
@@ -182,7 +182,9 @@ export const reduxStorage: Storage = {
 If you want to use MMKV with [mobx-persist-store](https://github.com/quarrant/mobx-persist-store), create the following `storage` object:
 
 ```ts
-import { configurePersistable } from 'mobx-persist-store';
+import { configurePersistable } from 'mobx-persist-store'
+
+const storage = new MMKV()
 
 configurePersistable({
   storage: {
@@ -190,7 +192,7 @@ configurePersistable({
     getItem: (key) => storage.getString(key),
     removeItem: (key) => storage.delete(key),
   },
-});
+})
 ```
 
 For more information, check out [kanzitelli/rnn-starter](https://github.com/kanzitelli/rnn-starter).
