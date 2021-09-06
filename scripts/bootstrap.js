@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const child_process = require('child_process');
 
@@ -9,6 +10,10 @@ const options = {
   stdio: 'inherit',
   encoding: 'utf-8',
 };
+
+if (os.type() === 'Windows_NT') {
+  options.shell = true
+}
 
 let result;
 
