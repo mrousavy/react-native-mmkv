@@ -45,28 +45,12 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
 
 jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& propNameId) {
   auto propName = propNameId.utf8(runtime);
-
-  auto value = functionCache.find(propName);
-  if (value != functionCache.end()) {
-    return value->second.getFunction(runtime);
-  }
-
-  jsi::Value newValue = getFunction(runtime, propName);
-  if (newValue.isUndefined()) {
-    return jsi::Value::undefined();
-  }
-  jsi::Function newFunction = newValue.asObject(runtime).asFunction(runtime);
-  functionCache.insert({ propName, newFunction.getFunction(runtime) });
-  return newFunction;
-}
-
-jsi::Value MmkvHostObject::getFunction(jsi::Runtime& runtime, const std::string& propName) {
   auto funcName = "MMKV." + propName;
 
   if (propName == "set") {
     // MMKV.set(key: string, value: string | number | bool)
     return jsi::Function::createFromHostFunction(runtime,
-                                                 jsi::PropNameID::forAscii(runtime, funcName.c_str()),
+                                                 jsi::PropNameID::forAscii(runtime, funcName),
                                                  2,  // key, value
                                                  [this](jsi::Runtime& runtime,
                                                         const jsi::Value& thisValue,
