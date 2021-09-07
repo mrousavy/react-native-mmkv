@@ -6,11 +6,11 @@ on:
       - main
     paths:
       - '.github/workflows/validate-cpp.yml'
-      - 'cpp/**'
+      - 'android/src/main/cpp/**'
   pull_request:
     paths:
       - '.github/workflows/validate-cpp.yml'
-      - 'cpp/**'
+      - 'android/src/main/cpp/**'
 
 jobs:
   lint:
@@ -22,8 +22,8 @@ jobs:
         with:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
-          flags: --linelength=230 --exclude "android/src/main/cpp/reanimated-headers"
-          targets: --recursive cpp android/src/main/cpp
+          flags: --linelength=230
+          targets: --recursive android/src/main/cpp
           filter: "-legal/copyright\
             ,-readability/todo\
             ,-build/namespaces\
