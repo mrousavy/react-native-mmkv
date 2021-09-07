@@ -11,10 +11,18 @@
 #import "JSIUtils.h"
 
 MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey) {
-  NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
-  instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+  instance = [MMKV mmkvWithID:instanceId rootPath:path];
+
   if (instance == nil) {
     throw std::runtime_error("Failed to create MMKV instance!");
+  }
+
+  if (cryptKey != nil && [cryptKey length] > 0) {
+    NSData* cryptData = [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
+    bool result = [instance reKey:cryptData];
+    if (!result) {
+      throw std::runtime_error("Failed to encrypt MMKV instance!");
+    }
   }
 }
 

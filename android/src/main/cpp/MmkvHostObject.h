@@ -25,5 +25,4 @@ public:
 private:
   MMKV* instance;
   std::string* path;
-  std::string* encryptionKey;
 };

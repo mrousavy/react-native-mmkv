@@ -14,10 +14,17 @@ MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string&
   __android_log_print(ANDROID_LOG_INFO, "RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encryption-Key: %s)",
                       instanceId.c_str(), path.c_str(), cryptKey.c_str());
   this->path = path.size() > 0 ? new std::string(path) : nullptr;
-  this->encryptionKey = cryptKey.size() > 0 ? new std::string(cryptKey) : nullptr;
-  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
+  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path);
+
   if (instance == nullptr) {
     throw std::runtime_error("Failed to create MMKV instance!");
+  }
+
+  if (cryptKey.size() > 0) {
+    bool result = instance->reKey(*cryptKey);
+    if (!result) {
+      throw std::runtime_error("Failed to encrypt MMKV instance!");
+    }
   }
 }
 
@@ -25,9 +32,6 @@ MmkvHostObject::~MmkvHostObject() {
   instance->close(); // also calls destructor
   if (path) {
     delete path;
-  }
-  if (encryptionKey) {
-    delete encryptionKey;
   }
 }
 
