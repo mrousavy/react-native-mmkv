@@ -12,6 +12,7 @@ To install MMKV without Reanimated, open your Android project (the `android` fol
 
 ```java
 import com.reactnativemmkv.MmkvModulePackage;
+import com.facebook.react.bridge.JSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -81,6 +82,8 @@ public class ExampleJSIPackage extends ReanimatedJSIModulePackage {
 6. Open `MainApplication.java` and find the location where the `ReactNativeHost` is initialized. You have to override it's `getJSIModulePackage` method:
 
 ```java
+import com.facebook.react.bridge.JSIModulePackage;
+
 public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
