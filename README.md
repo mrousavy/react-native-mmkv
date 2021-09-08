@@ -197,6 +197,12 @@ configurePersistable({
 
 For more information, check out [kanzitelli/rnn-starter](https://github.com/kanzitelli/rnn-starter).
 
+## Adopting at scale
+
+react-native-mmkv is provided _as is_, I work on it in my free time.
+
+If you're integrating react-native-mmkv in a production app, consider [funding this project](https://github.com/sponsors/mrousavy) and <a href="mailto:marcrousavy@hotmail.com?subject=Adopting react-native-mmkv at scale">contact me</a> to receive premium enterprise support, help with issues, prioritize bugfixes, request features, help at integrating react-native-mmkv, and more.
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
