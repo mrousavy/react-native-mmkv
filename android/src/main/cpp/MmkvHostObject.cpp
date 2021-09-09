@@ -10,24 +10,14 @@
 #include <MMKV.h>
 #include <android/log.h>
 
-MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string& path, const std::string& cryptKey) {
+MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey) {
   __android_log_print(ANDROID_LOG_INFO, "RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encryption-Key: %s)",
                       instanceId.c_str(), path.c_str(), cryptKey.c_str());
-  this->path = path.size() > 0 ? new std::string(path) : nullptr;
-  this->encryptionKey = cryptKey.size() > 0 ? new std::string(cryptKey) : nullptr;
-  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, this->path, this->encryptionKey);
+  std::string* pathPtr = path.size() > 0 ? &path : nullptr;
+  std::string* cryptKeyPtr = cryptKey.size() > 0 ? &cryptKey : nullptr;
+  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, pathPtr, cryptKeyPtr);
   if (instance == nullptr) {
     throw std::runtime_error("Failed to create MMKV instance!");
-  }
-}
-
-MmkvHostObject::~MmkvHostObject() {
-  instance->close(); // also calls destructor
-  if (path) {
-    delete path;
-  }
-  if (encryptionKey) {
-    delete encryptionKey;
   }
 }
 
