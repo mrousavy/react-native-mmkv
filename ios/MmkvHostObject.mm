@@ -18,10 +18,6 @@ MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* c
   }
 }
 
-MmkvHostObject::~MmkvHostObject() {
-  [instance close];
-}
-
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   std::vector<jsi::PropNameID> result;
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));

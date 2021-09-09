@@ -22,7 +22,6 @@ MmkvHostObject::MmkvHostObject(const std::string& instanceId, const std::string&
 }
 
 MmkvHostObject::~MmkvHostObject() {
-  instance->close(); // also calls destructor
   if (path) {
     delete path;
   }
