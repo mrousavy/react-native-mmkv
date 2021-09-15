@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@actions/core@^1.2.6":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@actions/core/-/core-1.5.0.tgz#885b864700001a1b9a6fba247833a036e75ad9d3"
+  integrity sha512-eDOLH1Nq9zh+PJlYLqEMkS/jLQxhksPNmUGNBHfa4G+tQmnIhzpctxmchETtVGyBOvXgOVVpYuE40+eS4cUnwQ==
+
 "@babel/code-frame@7.12.11":
   version "7.12.11"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.11.tgz#f4ad435aa263db935b8f10f2c552d23fb716a63f"
@@ -1128,6 +1133,13 @@
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@istanbuljs/schema/-/schema-0.1.3.tgz#e45e384e4b8ec16bce2fd903af78450f6bf7ec98"
   integrity sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==
+
+"@jamesacarr/eslint-formatter-github-actions@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@jamesacarr/eslint-formatter-github-actions/-/eslint-formatter-github-actions-0.1.0.tgz#d00814b5b8b309cf97d488773cfdb140edf00932"
+  integrity sha512-ysXRx5C5pPVJ0t3Q1DpsMLWLQw5Fj8erEM0WnGhaOIgjLwZkOLmEiIw+4b5UhPsVCaf6jbUgdZuH2StR3jW0Ug==
+  dependencies:
+    "@actions/core" "^1.2.6"
 
 "@jest/console@^26.6.2":
   version "26.6.2"
