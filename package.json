@@ -25,15 +25,15 @@
     "README.md"
   ],
   "scripts": {
-    "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint-ci": "yarn lint -f ./node_modules/@firmnav/eslint-github-actions-formatter/dist/formatter.js",
     "prepare": "git submodule update --init --recursive && bob build",
     "update-submodule": "git submodule update --remote --merge",
     "release": "release-it",
     "example": "yarn --cwd example",
-    "pods": "cd example && pod-install --quiet",
-    "bootstrap": "git submodule update --init --recursive && yarn example && yarn && yarn pods"
+    "pods": "cd example && yarn pods",
+    "bootstrap": "git submodule update --init --recursive && yarn && cd example && yarn bootstrap"
   },
   "keywords": [
     "react-native",

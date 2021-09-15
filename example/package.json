@@ -6,7 +6,11 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "react-native start",
+    "lint": "eslint .",
+    "lint-ci": "yarn lint -f ../node_modules/@firmnav/eslint-github-actions-formatter/dist/formatter.js",
+    "pods": "cd ios && bundle exec pod install",
+    "bootstrap": "yarn && cd ios && bundle install && bundle exec pod install"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.8",
