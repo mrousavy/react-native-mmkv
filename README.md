@@ -4,10 +4,6 @@
 </div>
 
 <div align="center">
-  <a align="center" href='https://ko-fi.com/F1F8CLXG' target='_blank'>
-    <img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
-  </a>
-  <br/>
   <a align="center" href="https://github.com/mrousavy?tab=followers">
     <img src="https://img.shields.io/github/followers/mrousavy?label=Follow%20%40mrousavy&style=social" />
   </a>
@@ -15,8 +11,13 @@
   <a align="center" href="https://twitter.com/mrousavy">
     <img src="https://img.shields.io/twitter/follow/mrousavy?label=Follow%20%40mrousavy&style=social" />
   </a>
+  <br />
+  <a href="https://github.com/sponsors/mrousavy">
+    <img align="right" width="160" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+  </a>
 </div>
 <br/>
+
 
 * **MMKV** is an efficient, small mobile key-value storage framework developed by WeChat. See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
 * **react-native-mmkv** is a library that allows you to easily use **MMKV** inside your React Native applications. It provides fast and direct bindings to the native C++ library which are accessible through a simple JS API.
