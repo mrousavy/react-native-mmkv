@@ -14,6 +14,7 @@ include_directories(
 
 add_library(reactnativemmkv  # <-- Library name
         SHARED
+        "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
         src/main/cpp/cpp-adapter.cpp
         src/main/cpp/MmkvHostObject.cpp
 )
