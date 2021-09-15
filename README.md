@@ -113,16 +113,17 @@ const age = storage.getNumber('user.age') // 21
 const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
 ```
 
-### Delete
+### Keys
 
 ```js
-storage.delete('user.name')
-```
-
-### Get all keys
-
-```js
+// getting all keys
 const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
+
+// delete a specific key + value
+storage.delete('user.name')
+
+// delete all keys
+storage.deleteAllKeys()
 ```
 
 ### Objects
@@ -137,12 +138,6 @@ storage.set('user', JSON.stringify(user))
 
 const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
 const userObject = JSON.parse(jsonUser)
-```
-
-### Delete all keys
-
-```js
-storage.deleteAllKeys()
 ```
 
 ## Migrate from AsyncStorage
