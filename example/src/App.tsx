@@ -2,7 +2,12 @@ import * as React from 'react';
 
 import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
-import { benchmarkAgainstAsyncStorage } from './Benchmarks';
+
+// Uncomment to run benchmark
+// import { benchmarkAgainstAsyncStorage } from './Benchmarks';
+// setTimeout(async () => {
+//   await benchmarkAgainstAsyncStorage();
+// }, 5000);
 
 const storage = new MMKV();
 
@@ -51,13 +56,6 @@ export default function App() {
       console.error('Error:', e);
     }
   }, []);
-
-  // Uncomment to run benchmark
-  // React.useEffect(() => {
-  //   setTimeout(async () => {
-  //     await benchmarkAgainstAsyncStorage();
-  //   }, 5000);
-  // }, []);
 
   return (
     <View style={styles.container}>
