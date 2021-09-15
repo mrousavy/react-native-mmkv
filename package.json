@@ -54,7 +54,7 @@
     "@jamesacarr/eslint-formatter-github-actions": "^0.1.0",
     "@react-native-community/eslint-config": "^2.0.0",
     "@release-it/conventional-changelog": "^2.0.0",
-    "@types/jest": "^26.0.0",
+    "@types/jest": "^27.0.1",
     "@types/react": "^17.0.2",
     "@types/react-native": "0.63.50",
     "eslint": "^7.2.0",
