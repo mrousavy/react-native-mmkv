@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.1.0",
-    "@react-native-community/eslint-config": "^2.0.0",
+    "@react-native-community/eslint-config": "^3.0.1",
     "@release-it/conventional-changelog": "^2.0.0",
     "@types/jest": "^26.0.0",
     "@types/react": "^17.0.2",
