@@ -52,11 +52,12 @@ export default function App() {
     }
   }, []);
 
-  React.useEffect(() => {
-    setTimeout(async () => {
-      await benchmarkAgainstAsyncStorage();
-    }, 5000);
-  }, []);
+  // Uncomment to run benchmark
+  // React.useEffect(() => {
+  //   setTimeout(async () => {
+  //     await benchmarkAgainstAsyncStorage();
+  //   }, 5000);
+  // }, []);
 
   return (
     <View style={styles.container}>
