@@ -1,6 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MMKV } from 'react-native-mmkv';
 
+declare global {
+  var performance: {
+    now: () => number;
+  };
+}
+
 const storage = new MMKV({ id: 'benchmark' });
 
 export const benchmarkAgainstAsyncStorage = async () => {
