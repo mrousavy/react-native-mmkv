@@ -25,7 +25,7 @@ static void install(jsi::Runtime & jsiRuntime)
     // MMKV.createNewInstance()
     auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                        jsi::PropNameID::forAscii(jsiRuntime, "mmkvCreateNewInstance"),
-                                                                       0,
+                                                                       1,
                                                                        [](jsi::Runtime& runtime,
                                                                           const jsi::Value& thisValue,
                                                                           const jsi::Value* arguments,
@@ -34,11 +34,11 @@ static void install(jsi::Runtime & jsiRuntime)
         throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
       }
       jsi::Object config = arguments[0].asObject(runtime);
-      
+
       NSString* instanceId = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
       NSString* path = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
       NSString* encryptionKey = [Mmkv getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
-      
+
       auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
       return jsi::Object::createFromHostObject(runtime, instance);
     });

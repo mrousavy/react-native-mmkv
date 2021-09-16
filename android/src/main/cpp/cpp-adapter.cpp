@@ -14,7 +14,7 @@ void install(jsi::Runtime& jsiRuntime) {
     // MMKV.createNewInstance()
     auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(jsiRuntime,
                                                                        jsi::PropNameID::forAscii(jsiRuntime, "mmkvCreateNewInstance"),
-                                                                       0,
+                                                                       1,
                                                                        [](jsi::Runtime& runtime,
                                                                           const jsi::Value& thisValue,
                                                                           const jsi::Value* arguments,
