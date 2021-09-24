@@ -120,3 +120,34 @@ export const useNumber = createMMKVHook((instance, key) =>
 export const useMMKVBoolean = createMMKVHook((instance, key) =>
   instance.getBoolean(key)
 );
+/**
+ * Use an object value of the given `key` from the given MMKV storage instance.
+ *
+ * If no instance is provided, a shared default instance will be used.
+ *
+ * The object will be serialized using `JSON`.
+ *
+ * @example
+ * ```ts
+ * const [user, setUser] = useMMKVObject<User>("user")
+ * ```
+ */
+export function useMMKVObject<T>(
+  key: string,
+  instance?: MMKVInterface
+): [value: T | undefined, setValue: (value: T) => void] {
+  const [string, setString] = useMMKVString(key, instance);
+
+  const value = useMemo(() => {
+    if (string == null) return undefined;
+    return JSON.parse(string) as T;
+  }, [string]);
+  const setValue = useCallback(
+    (v: T) => {
+      setString(JSON.stringify(v));
+    },
+    [setString]
+  );
+
+  return [value, setValue];
+}
