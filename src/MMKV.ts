@@ -1,3 +1,5 @@
+import { unstable_batchedUpdates } from 'react-native';
+
 interface Listener {
   remove: () => void;
 }
@@ -120,13 +122,23 @@ export class MMKV implements MMKVInterface {
     return this.functionCache[functionName] as MMKVInterface[T];
   }
 
-  private onValueChanged(key: string) {
-    this.onValueChangedListeners.forEach((listener) => listener(key));
+  private onValuesAboutToChange(keys: string[]) {
+    if (this.onValueChangedListeners.length === 0) return;
+
+    setImmediate(() => {
+      unstable_batchedUpdates(() => {
+        for (const key of keys) {
+          for (const listener of this.onValueChangedListeners) {
+            listener(key);
+          }
+        }
+      });
+    });
   }
 
   set(key: string, value: boolean | string | number): void {
-    if (this.onValueChangedListeners.length > 0)
-      setImmediate(() => this.onValueChanged(key));
+    this.onValuesAboutToChange([key]);
+
     const func = this.getFunctionFromCache('set');
     return func(key, value);
   }
@@ -143,8 +155,8 @@ export class MMKV implements MMKVInterface {
     return func(key);
   }
   delete(key: string): void {
-    if (this.onValueChangedListeners.length > 0)
-      setImmediate(() => this.onValueChanged(key));
+    this.onValuesAboutToChange([key]);
+
     const func = this.getFunctionFromCache('delete');
     return func(key);
   }
@@ -153,14 +165,9 @@ export class MMKV implements MMKVInterface {
     return func();
   }
   clearAll(): void {
-    if (this.onValueChangedListeners.length > 0) {
-      const keys = this.getAllKeys();
-      setImmediate(() => {
-        keys.forEach((key) => {
-          this.onValueChanged(key);
-        });
-      });
-    }
+    const keys = this.getAllKeys();
+    this.onValuesAboutToChange(keys);
+
     const func = this.getFunctionFromCache('clearAll');
     func();
   }
