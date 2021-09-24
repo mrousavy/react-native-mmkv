@@ -1,3 +1,7 @@
+interface Listener {
+  remove: () => void;
+}
+
 /**
  * Used for configuration of a single MMKV instance.
  */
@@ -74,6 +78,12 @@ export interface MMKVInterface {
    * Delete all keys.
    */
   clearAll: () => void;
+  /**
+   * Adds a value changed listener.
+   */
+  addOnValueChangedListener: (
+    onValueChanged: (key: string) => void
+  ) => Listener;
 }
 
 /**
@@ -82,6 +92,7 @@ export interface MMKVInterface {
 export class MMKV implements MMKVInterface {
   private nativeInstance: MMKVInterface;
   private functionCache: Partial<MMKVInterface>;
+  private onValueChangedListeners: ((key: string) => void)[];
 
   /**
    * Creates a new MMKV instance with the given Configuration.
@@ -97,6 +108,7 @@ export class MMKV implements MMKVInterface {
     // @ts-expect-error global func is a native JSI func
     this.nativeInstance = global.mmkvCreateNewInstance(configuration);
     this.functionCache = {};
+    this.onValueChangedListeners = [];
   }
 
   private getFunctionFromCache<T extends keyof MMKVInterface>(
@@ -108,7 +120,13 @@ export class MMKV implements MMKVInterface {
     return this.functionCache[functionName] as MMKVInterface[T];
   }
 
+  private onValueChanged(key: string) {
+    this.onValueChangedListeners.forEach((listener) => listener(key));
+  }
+
   set(key: string, value: boolean | string | number): void {
+    if (this.onValueChangedListeners.length > 0)
+      setImmediate(() => this.onValueChanged(key));
     const func = this.getFunctionFromCache('set');
     return func(key, value);
   }
@@ -125,6 +143,8 @@ export class MMKV implements MMKVInterface {
     return func(key);
   }
   delete(key: string): void {
+    if (this.onValueChangedListeners.length > 0)
+      setImmediate(() => this.onValueChanged(key));
     const func = this.getFunctionFromCache('delete');
     return func(key);
   }
@@ -133,7 +153,28 @@ export class MMKV implements MMKVInterface {
     return func();
   }
   clearAll(): void {
+    if (this.onValueChangedListeners.length > 0) {
+      const keys = this.getAllKeys();
+      setImmediate(() => {
+        keys.forEach((key) => {
+          this.onValueChanged(key);
+        });
+      });
+    }
     const func = this.getFunctionFromCache('clearAll');
-    return func();
+    func();
+  }
+
+  addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
+    this.onValueChangedListeners.push(onValueChanged);
+
+    return {
+      remove: () => {
+        const index = this.onValueChangedListeners.indexOf(onValueChanged);
+        if (index !== -1) {
+          this.onValueChangedListeners.splice(index, 1);
+        }
+      },
+    };
   }
 }
