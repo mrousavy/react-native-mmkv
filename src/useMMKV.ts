@@ -40,83 +40,83 @@ export function useMMKV(
   return instance;
 }
 
-export function useMMKVString(
-  key: string,
-  instance?: MMKVInterface
-): [value: string | undefined, setValue: (value: string) => void] {
-  const mmkv = instance ?? getDefaultInstance();
-  const [value, setValue] = useState(() => mmkv.getString(key));
+function createMMKVHook<T>(
+  getter: (instance: MMKVInterface, key: string) => T
+) {
+  return (
+    key: string,
+    instance?: MMKVInterface
+  ): [value: T, setValue: (value: T) => void] => {
+    const mmkv = instance ?? getDefaultInstance();
+    const [value, setValue] = useState(() => getter(mmkv, key));
 
-  const set = useCallback(
-    (v: string) => {
-      mmkv.set(key, v);
-      setValue(v);
-    },
-    [key, mmkv]
-  );
+    const set = useCallback(
+      (v: T) => {
+        switch (typeof v) {
+          case 'number':
+          case 'string':
+          case 'boolean':
+            mmkv.set(key, v);
+            break;
+          default:
+            mmkv.set(key, JSON.stringify(v));
+            break;
+        }
+        setValue(v);
+      },
+      [key, mmkv]
+    );
 
-  useEffect(() => {
-    const listener = mmkv.addOnValueChangedListener((changedKey) => {
-      if (changedKey === key) {
-        setValue(mmkv.getString(key));
-      }
-    });
-    return () => listener.remove();
-  }, [key, mmkv]);
+    useEffect(() => {
+      const listener = mmkv.addOnValueChangedListener((changedKey) => {
+        if (changedKey === key) {
+          setValue(getter(mmkv, key));
+        }
+      });
+      return () => listener.remove();
+    }, [key, mmkv]);
 
-  return useMemo(() => [value, set], [value, set]);
+    return useMemo(() => [value, set], [value, set]);
+  };
 }
 
-export function useMMKVNumber(
-  key: string,
-  instance?: MMKVInterface
-): [value: number, setValue: (value: number) => void] {
-  const mmkv = instance ?? getDefaultInstance();
-  const [value, setValue] = useState(() => mmkv.getNumber(key));
+/**
+ * Use the string value of the given `key` from the given MMKV storage instance.
+ *
+ * If no instance is provided, a shared default instance will be used.
+ *
+ * @example
+ * ```ts
+ * const [username, setUsername] = useMMKVString("user.name")
+ * ```
+ */
+export const useMMKVString = createMMKVHook((instance, key) =>
+  instance.getString(key)
+);
 
-  const set = useCallback(
-    (v: number) => {
-      mmkv.set(key, v);
-      setValue(v);
-    },
-    [key, mmkv]
-  );
-
-  useEffect(() => {
-    const listener = mmkv.addOnValueChangedListener((changedKey) => {
-      if (changedKey === key) {
-        setValue(mmkv.getNumber(key));
-      }
-    });
-    return () => listener.remove();
-  }, [key, mmkv]);
-
-  return useMemo(() => [value, set], [value, set]);
-}
-
-export function useMMKVBoolean(
-  key: string,
-  instance?: MMKVInterface
-): [value: boolean, setValue: (value: boolean) => void] {
-  const mmkv = instance ?? getDefaultInstance();
-  const [value, setValue] = useState(() => mmkv.getBoolean(key));
-
-  const set = useCallback(
-    (v: boolean) => {
-      mmkv.set(key, v);
-      setValue(v);
-    },
-    [key, mmkv]
-  );
-
-  useEffect(() => {
-    const listener = mmkv.addOnValueChangedListener((changedKey) => {
-      if (changedKey === key) {
-        setValue(mmkv.getBoolean(key));
-      }
-    });
-    return () => listener.remove();
-  }, [key, mmkv]);
-
-  return useMemo(() => [value, set], [value, set]);
-}
+/**
+ * Use the number value of the given `key` from the given MMKV storage instance.
+ *
+ * If no instance is provided, a shared default instance will be used.
+ *
+ * @example
+ * ```ts
+ * const [age, setAge] = useNumber("user.age")
+ * ```
+ */
+export const useNumber = createMMKVHook((instance, key) =>
+  instance.getNumber(key)
+);
+/**
+ * Use the boolean value of the given `key` from the given MMKV storage instance.
+ *
+ * If no instance is provided, a shared default instance will be used.
+ *
+ * @example
+ * ```ts
+ * const [isPremiumAccount, setIsPremiumAccount] = useMMKVBoolean("user.isPremium")
+ * ```
+ */
+export const useMMKVBoolean = createMMKVHook((instance, key) =>
+  instance.getBoolean(key)
+);
