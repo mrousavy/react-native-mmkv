@@ -76,7 +76,7 @@ export interface MMKVInterface {
   clearAll: () => void;
 }
 
-// global func declaration from JSI functions
+// global func declaration for JSI functions
 declare global {
   function mmkvCreateNewInstance(
     configuration: MMKVConfiguration
