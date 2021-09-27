@@ -36,7 +36,7 @@
 ## Sponsors
 
 <div align="right">
-  <a href="https://getstream.io">
+  <a href="https://getstream.io/chat/react-native-chat/tutorial/?utm_source=github&utm_medium=github_repo_content_ad&utm_content=developer&utm_campaign=github_sept2021_reactnativechat">
     <img align="right" src="https://theme.zdassets.com/theme_assets/9442057/efc3820e436f9150bc8cf34267fff4df052a1f9c.png" height="40" />
   </a>
 </div>
