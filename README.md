@@ -33,6 +33,17 @@
 * **~30x faster than AsyncStorage**
 * Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
 
+## Sponsors
+
+<div align="right">
+  <a href="https://getstream.io">
+    <img align="right" src="https://theme.zdassets.com/theme_assets/9442057/efc3820e436f9150bc8cf34267fff4df052a1f9c.png" height="40" />
+  </a>
+</div>
+
+react-native-mmkv is sponsored by **getstream.io**. <br/>
+[Try the React Native Chat tutorial 💬](https://getstream.io/chat/react-native-chat/tutorial/?utm_source=github&utm_medium=github_repo_content_ad&utm_content=developer&utm_campaign=github_sept2021_reactnativechat)
+
 ## Benchmark
 
 <div align="center">
