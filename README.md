@@ -134,7 +134,7 @@ const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf
 storage.delete('user.name')
 
 // delete all keys
-storage.deleteAllKeys()
+storage.clearAll()
 ```
 
 ### Objects
