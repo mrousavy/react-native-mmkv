@@ -29,7 +29,7 @@ if (rootProject.ext.has('reactNativeAndroidRoot')) {
 } else {
   reactNativeDir = new File(
           projectDir,
-          '/../../../node_modules/react-native/android'
+          '/../node_modules/react-native/android'
   )
 }
 if (reactNativeDir.exists()) {
