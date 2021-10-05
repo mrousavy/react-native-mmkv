@@ -29,7 +29,7 @@ if (rootProject.ext.has('reactNativeAndroidRoot')) {
 } else {
   reactNativeDir = new File(
           projectDir,
-          '/../node_modules/react-native/android'
+          '/../../../node_modules/react-native/android'
   )
 }
 if (reactNativeDir.exists()) {
@@ -79,7 +79,7 @@ android {
   }
 
   packagingOptions {
-    excludes = ["**/libc++_shared.so", "**/libfbjni.so"]
+    excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libjsi.so"]
   }
 
   buildTypes {
@@ -128,35 +128,7 @@ dependencies {
   extractJNI(files(rnAAR))
 }
 
-task extractJNIFilesForExternal {
-  doLast {
-    configurations.extractJNI.files.each {
-      def file = it.absoluteFile
-
-      copy {
-        from zipTree(file)
-        into "$buildDir/$file.name"
-        include "jni/**/*"
-      }
-    }
-  }
-}
-
-task extractJNIFilesForDebug {
-  doLast {
-    configurations.extractJNI.files.each {
-      def file = it.absoluteFile
-
-      copy {
-        from zipTree(file)
-        into "$buildDir/$file.name"
-        include "jni/**/*"
-      }
-    }
-  }
-}
-
-task extractJNIFilesForRelease {
+task extractJNIFiles {
   doLast {
     configurations.extractJNI.files.each {
       def file = it.absoluteFile
@@ -172,14 +144,6 @@ task extractJNIFilesForRelease {
 
 tasks.whenTaskAdded { task ->
   if (task.name.contains('externalNativeBuild')) {
-    task.dependsOn(extractJNIFilesForExternal);
-  }
-
-  if (task.name.contains('generateJsonModelDebug')) {
-    task.dependsOn(extractJNIFilesForDebug);
-  }
-
-  if (task.name.contains('generateJsonModelRelease')) {
-    task.dependsOn(extractJNIFilesForRelease)
+    task.dependsOn(extractJNIFiles)
   }
 }
