@@ -79,7 +79,7 @@ android {
   }
 
   packagingOptions {
-    excludes = ["**/libc++_shared.so"]
+    excludes = ["**/libc++_shared.so", "**/libfbjni.so"]
   }
 
   buildTypes {
