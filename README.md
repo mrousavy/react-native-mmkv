@@ -127,6 +127,9 @@ const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
 ### Keys
 
 ```js
+// checking if a specific key exists
+const hasUsername = storage.contains('user.name')
+
 // getting all keys
 const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
 
