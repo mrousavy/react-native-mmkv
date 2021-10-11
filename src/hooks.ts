@@ -40,7 +40,7 @@ export function useMMKV(
   return instance;
 }
 
-function createMMKVHook<T>(
+function createMMKVHook<T extends boolean | number | (string | undefined)>(
   getter: (instance: MMKVInterface, key: string) => T
 ) {
   return (
@@ -58,11 +58,13 @@ function createMMKVHook<T>(
           case 'boolean':
             mmkv.set(key, v);
             break;
+          case 'undefined':
+            mmkv.delete(key);
+            break;
           default:
             mmkv.set(key, JSON.stringify(v));
             break;
         }
-        setValue(v);
       },
       [key, mmkv]
     );
