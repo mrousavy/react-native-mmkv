@@ -12,6 +12,18 @@ function App() {
 }
 ```
 
+## Clear a key
+
+```tsx
+function App() {
+  const [username, setUsername] = useMMKVString("user.name")
+  // ...
+  const onLogout = useCallback(() => {
+    setUsername(undefined)
+  }, [])
+}
+```
+
 ## Objects
 
 ```tsx
