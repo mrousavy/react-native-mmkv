@@ -148,8 +148,10 @@ const user = {
   age: 21
 }
 
+// Serialize the object into a JSON string
 storage.set('user', JSON.stringify(user))
 
+// Deserialize the JSON string into an object
 const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
 const userObject = JSON.parse(jsonUser)
 ```
