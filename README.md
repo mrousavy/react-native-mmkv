@@ -154,59 +154,17 @@ const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
 const userObject = JSON.parse(jsonUser)
 ```
 
+## Documentation
 
-## Migrate from AsyncStorage
-
-See [#52](https://github.com/mrousavy/react-native-mmkv/issues/52) for instructions on how to safely migrate your existing AsyncStorage database to MMKV.
+* [Hooks](./docs/HOOKS.md)
+* [Value-change Listeners](./docs/LISTENERS.md)
+* [Migrate from AsyncStorage](./docs/MIGRATE_FROM_ASYNC_STORAGE.md)
+* [Using MMKV with redux-persis](./docs/WRAPPER_REDUX.md)
+* [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 
 ## Limitations
 
 As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
-
-## redux-persist
-
-If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-persist), create the following `storage` object:
-
-```ts
-import { Storage } from 'redux-persist'
-
-const storage = new MMKV()
-
-export const reduxStorage: Storage = {
-  setItem: (key, value) => {
-    storage.set(key, value)
-    return Promise.resolve(true)
-  },
-  getItem: (key) => {
-    const value = storage.getString(key)
-    return Promise.resolve(value)
-  },
-  removeItem: (key) => {
-    storage.delete(key)
-    return Promise.resolve()
-  },
-}
-```
-
-## mobx-persist-store
-
-If you want to use MMKV with [mobx-persist-store](https://github.com/quarrant/mobx-persist-store), create the following `storage` object:
-
-```ts
-import { configurePersistable } from 'mobx-persist-store'
-
-const storage = new MMKV()
-
-configurePersistable({
-  storage: {
-    setItem: (key, data) => storage.set(key, data),
-    getItem: (key) => storage.getString(key),
-    removeItem: (key) => storage.delete(key),
-  },
-})
-```
-
-For more information, check out [kanzitelli/rnn-starter](https://github.com/kanzitelli/rnn-starter).
 
 ## Adopting at scale
 
