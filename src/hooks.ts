@@ -103,10 +103,10 @@ export const useMMKVString = createMMKVHook((instance, key) =>
  *
  * @example
  * ```ts
- * const [age, setAge] = useNumber("user.age")
+ * const [age, setAge] = useMMKVNumber("user.age")
  * ```
  */
-export const useNumber = createMMKVHook((instance, key) =>
+export const useMMKVNumber = createMMKVHook((instance, key) =>
   instance.getNumber(key)
 );
 /**
