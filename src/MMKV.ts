@@ -67,6 +67,10 @@ export interface MMKVInterface {
    */
   getNumber: (key: string) => number;
   /**
+   * Checks whether the given `key` is being stored in this MMKV instance.
+   */
+  contains: (key: string) => boolean;
+  /**
    * Delete the given `key`.
    */
   delete: (key: string) => void;
@@ -157,6 +161,10 @@ export class MMKV implements MMKVInterface {
   }
   getNumber(key: string): number {
     const func = this.getFunctionFromCache('getNumber');
+    return func(key);
+  }
+  contains(key: string): boolean {
+    const func = this.getFunctionFromCache('contains');
     return func(key);
   }
   delete(key: string): void {
