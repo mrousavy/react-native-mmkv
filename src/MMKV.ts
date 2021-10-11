@@ -169,7 +169,7 @@ export class MMKV implements MMKVInterface {
     this.onValuesAboutToChange(keys);
 
     const func = this.getFunctionFromCache('clearAll');
-    func();
+    return func();
   }
 
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
