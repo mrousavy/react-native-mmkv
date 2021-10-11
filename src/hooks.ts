@@ -46,27 +46,27 @@ function createMMKVHook<T extends boolean | number | (string | undefined)>(
   return (
     key: string,
     instance?: MMKVInterface
-  ): [value: T, setValue: (value: T) => void] => {
+  ): [value: T, setValue: (value: T | ((current: T) => T)) => void] => {
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
 
     const set = useCallback(
-      (v: T) => {
-        switch (typeof v) {
+      (v: T | ((current: T) => T)) => {
+        const newValue = typeof v === 'function' ? v(value) : v;
+        switch (typeof newValue) {
           case 'number':
           case 'string':
           case 'boolean':
-            mmkv.set(key, v);
+            mmkv.set(key, newValue);
             break;
           case 'undefined':
             mmkv.delete(key);
             break;
           default:
-            mmkv.set(key, JSON.stringify(v));
-            break;
+            throw new Error(`MMKV: Type ${typeof newValue} is not supported!`);
         }
       },
-      [key, mmkv]
+      [key, mmkv, value]
     );
 
     useEffect(() => {
