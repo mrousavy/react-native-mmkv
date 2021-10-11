@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
-import { MMKV } from 'react-native-mmkv';
+import { MMKV, useMMKVString } from 'react-native-mmkv';
 
 // Uncomment to run benchmark
 // import { benchmarkAgainstAsyncStorage } from './Benchmarks';
@@ -15,6 +15,8 @@ export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
   const [keys, setKeys] = React.useState<string[]>([]);
+
+  const [example, setExample] = useMMKVString('yeeeet');
 
   const save = React.useCallback(() => {
     if (key == null || key.length < 1) {
@@ -56,6 +58,18 @@ export default function App() {
       console.error('Error:', e);
     }
   }, []);
+
+  React.useEffect(() => {
+    console.log(`Value of useMMKVString: ${example}`);
+    const interval = setInterval(() => {
+      setExample((val) => {
+        return val === 'yeeeet' ? undefined : 'yeeeet';
+      });
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [example, setExample]);
 
   return (
     <View style={styles.container}>
