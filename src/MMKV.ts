@@ -1,3 +1,9 @@
+import { unstable_batchedUpdates } from 'react-native';
+
+interface Listener {
+  remove: () => void;
+}
+
 /**
  * Used for configuration of a single MMKV instance.
  */
@@ -74,6 +80,12 @@ export interface MMKVInterface {
    * Delete all keys.
    */
   clearAll: () => void;
+  /**
+   * Adds a value changed listener.
+   */
+  addOnValueChangedListener: (
+    onValueChanged: (key: string) => void
+  ) => Listener;
 }
 
 // global func declaration for JSI functions
@@ -89,6 +101,7 @@ declare global {
 export class MMKV implements MMKVInterface {
   private nativeInstance: MMKVInterface;
   private functionCache: Partial<MMKVInterface>;
+  private onValueChangedListeners: ((key: string) => void)[];
 
   /**
    * Creates a new MMKV instance with the given Configuration.
@@ -102,6 +115,7 @@ export class MMKV implements MMKVInterface {
     }
     this.nativeInstance = global.mmkvCreateNewInstance(configuration);
     this.functionCache = {};
+    this.onValueChangedListeners = [];
   }
 
   private getFunctionFromCache<T extends keyof MMKVInterface>(
@@ -113,7 +127,23 @@ export class MMKV implements MMKVInterface {
     return this.functionCache[functionName] as MMKVInterface[T];
   }
 
+  private onValuesAboutToChange(keys: string[]) {
+    if (this.onValueChangedListeners.length === 0) return;
+
+    setImmediate(() => {
+      unstable_batchedUpdates(() => {
+        for (const key of keys) {
+          for (const listener of this.onValueChangedListeners) {
+            listener(key);
+          }
+        }
+      });
+    });
+  }
+
   set(key: string, value: boolean | string | number): void {
+    this.onValuesAboutToChange([key]);
+
     const func = this.getFunctionFromCache('set');
     return func(key, value);
   }
@@ -130,6 +160,8 @@ export class MMKV implements MMKVInterface {
     return func(key);
   }
   delete(key: string): void {
+    this.onValuesAboutToChange([key]);
+
     const func = this.getFunctionFromCache('delete');
     return func(key);
   }
@@ -138,7 +170,23 @@ export class MMKV implements MMKVInterface {
     return func();
   }
   clearAll(): void {
+    const keys = this.getAllKeys();
+    this.onValuesAboutToChange(keys);
+
     const func = this.getFunctionFromCache('clearAll');
     return func();
+  }
+
+  addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
+    this.onValueChangedListeners.push(onValueChanged);
+
+    return {
+      remove: () => {
+        const index = this.onValueChangedListeners.indexOf(onValueChanged);
+        if (index !== -1) {
+          this.onValueChangedListeners.splice(index, 1);
+        }
+      },
+    };
   }
 }
