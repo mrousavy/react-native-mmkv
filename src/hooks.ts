@@ -40,18 +40,20 @@ export function useMMKV(
   return instance;
 }
 
-function createMMKVHook<T extends boolean | number | (string | undefined)>(
-  getter: (instance: MMKVInterface, key: string) => T
-) {
+function createMMKVHook<
+  T extends boolean | number | (string | undefined),
+  TSet extends T | undefined,
+  TSetAction extends TSet | ((current: T) => TSet)
+>(getter: (instance: MMKVInterface, key: string) => T) {
   return (
     key: string,
     instance?: MMKVInterface
-  ): [value: T, setValue: (value: T | ((current: T) => T)) => void] => {
+  ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
 
     const set = useCallback(
-      (v: T | ((current: T) => T)) => {
+      (v: TSetAction) => {
         const newValue = typeof v === 'function' ? v(value) : v;
         switch (typeof newValue) {
           case 'number':
