@@ -99,13 +99,15 @@ declare global {
   ): MMKVInterface;
 }
 
+const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
+
 /**
  * A single MMKV instance.
  */
 export class MMKV implements MMKVInterface {
   private nativeInstance: MMKVInterface;
   private functionCache: Partial<MMKVInterface>;
-  private onValueChangedListeners: ((key: string) => void)[];
+  private id: string;
 
   /**
    * Creates a new MMKV instance with the given Configuration.
@@ -117,9 +119,16 @@ export class MMKV implements MMKVInterface {
         'Failed to create a new MMKV instance, the native initializer function does not exist. Is the native MMKV library correctly installed? Make sure to disable any remote debugger (e.g. Chrome) to use JSI!'
       );
     }
+    this.id = configuration.id;
     this.nativeInstance = global.mmkvCreateNewInstance(configuration);
     this.functionCache = {};
-    this.onValueChangedListeners = [];
+  }
+
+  private get onValueChangedListeners(): ((key: string) => void)[] {
+    if (!onValueChangedListeners.has(this.id)) {
+      onValueChangedListeners.set(this.id, []);
+    }
+    return onValueChangedListeners.get(this.id)!;
   }
 
   private getFunctionFromCache<T extends keyof MMKVInterface>(
