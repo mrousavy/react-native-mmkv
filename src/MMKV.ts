@@ -1,3 +1,4 @@
+/* global WeakRef */
 import { unstable_batchedUpdates } from 'react-native';
 
 interface Listener {
