@@ -99,8 +99,6 @@ declare global {
   ): MMKVInterface;
 }
 
-const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
-
 /**
  * A single MMKV instance.
  */
@@ -108,6 +106,8 @@ export class MMKV implements MMKVInterface {
   private nativeInstance: MMKVInterface;
   private functionCache: Partial<MMKVInterface>;
   private id: string;
+  private onValueChangedListeners: ((key: string) => void)[];
+  private static instances = new Map<string, WeakRef<MMKV>[]>();
 
   /**
    * Creates a new MMKV instance with the given Configuration.
@@ -119,16 +119,14 @@ export class MMKV implements MMKVInterface {
         'Failed to create a new MMKV instance, the native initializer function does not exist. Is the native MMKV library correctly installed? Make sure to disable any remote debugger (e.g. Chrome) to use JSI!'
       );
     }
+
     this.id = configuration.id;
     this.nativeInstance = global.mmkvCreateNewInstance(configuration);
     this.functionCache = {};
-  }
+    this.onValueChangedListeners = [];
 
-  private get onValueChangedListeners(): ((key: string) => void)[] {
-    if (!onValueChangedListeners.has(this.id)) {
-      onValueChangedListeners.set(this.id, []);
-    }
-    return onValueChangedListeners.get(this.id)!;
+    const current = MMKV.instances.get(this.id) ?? [];
+    MMKV.instances.set(this.id, [...current, new WeakRef(this)]);
   }
 
   private getFunctionFromCache<T extends keyof MMKVInterface>(
@@ -141,12 +139,16 @@ export class MMKV implements MMKVInterface {
   }
 
   private onValuesAboutToChange(keys: string[]) {
-    if (this.onValueChangedListeners.length === 0) return;
+    const instances = MMKV.instances.get(this.id) ?? [];
+    const listeners = instances.flatMap(
+      (instance) => instance.deref()?.onValueChangedListeners ?? []
+    );
+    if (listeners.length === 0) return;
 
     setImmediate(() => {
       unstable_batchedUpdates(() => {
         for (const key of keys) {
-          for (const listener of this.onValueChangedListeners) {
+          for (const listener of listeners) {
             listener(key);
           }
         }
