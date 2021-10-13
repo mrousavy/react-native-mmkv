@@ -120,11 +120,6 @@ export class MMKV implements MMKVInterface {
    * If no custom `id` is supplied, `'default'` will be used.
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
-    if (global.mmkvCreateNewInstance == null) {
-      throw new Error(
-        'Failed to create a new MMKV instance, the native initializer function does not exist. Is the native MMKV library correctly installed? Make sure to disable any remote debugger (e.g. Chrome) to use JSI!'
-      );
-    }
     this.id = configuration.id;
     this.nativeInstance = createMMKV(configuration);
     this.functionCache = {};
