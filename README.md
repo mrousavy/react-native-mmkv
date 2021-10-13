@@ -32,6 +32,7 @@
 * **High performance** because everything is **written in C++** (even the JS functions have C++ bodies!)
 * **~30x faster than AsyncStorage**
 * Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
+* **iOS**, **Android** and **Web** support
 
 ## Sponsors
 
