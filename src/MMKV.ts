@@ -93,14 +93,26 @@ export interface MMKVInterface {
   ) => Listener;
 }
 
+export type NativeMMKV = Pick<
+  MMKVInterface,
+  | 'clearAll'
+  | 'contains'
+  | 'delete'
+  | 'getAllKeys'
+  | 'getBoolean'
+  | 'getNumber'
+  | 'getString'
+  | 'set'
+>;
+
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
 /**
  * A single MMKV instance.
  */
 export class MMKV implements MMKVInterface {
-  private nativeInstance: MMKVInterface;
-  private functionCache: Partial<MMKVInterface>;
+  private nativeInstance: NativeMMKV;
+  private functionCache: Partial<NativeMMKV>;
   private id: string;
 
   /**
@@ -125,13 +137,13 @@ export class MMKV implements MMKVInterface {
     return onValueChangedListeners.get(this.id)!;
   }
 
-  private getFunctionFromCache<T extends keyof MMKVInterface>(
+  private getFunctionFromCache<T extends keyof NativeMMKV>(
     functionName: T
-  ): MMKVInterface[T] {
+  ): NativeMMKV[T] {
     if (this.functionCache[functionName] == null) {
       this.functionCache[functionName] = this.nativeInstance[functionName];
     }
-    return this.functionCache[functionName] as MMKVInterface[T];
+    return this.functionCache[functionName] as NativeMMKV[T];
   }
 
   private onValuesAboutToChange(keys: string[]) {
