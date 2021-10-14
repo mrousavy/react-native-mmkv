@@ -163,7 +163,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   extractJNI("com.facebook.fbjni:fbjni:+")
 
-  def rnAAR = fileTree("${defaultDir}").matching({ it.include "**/**/*.aar" }).singleFile
+  def rnAAR = fileTree("${defaultDir.canonicalPath.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
   extractJNI(files(rnAAR))
 }
 
@@ -173,7 +173,7 @@ dependencies {
 
 def downloadsDir = new File("$buildDir/downloads")
 def thirdPartyNdkDir = new File("$buildDir/third-party-ndk")
-def thirdPartyVersionsFile = new File("${androidSourcesDir}/ReactAndroid/gradle.properties")
+def thirdPartyVersionsFile = new File("${androidSourcesDir.canonicalPath.toString()}/ReactAndroid/gradle.properties")
 def thirdPartyVersions = new Properties()
 thirdPartyVersions.load(new FileInputStream(thirdPartyVersionsFile))
 
