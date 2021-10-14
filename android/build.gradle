@@ -28,6 +28,11 @@ def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['Mmkv_' + name]).toInteger()
 }
 
+def found = false
+def defaultDir = null
+def androidSourcesDir = null
+def androidSourcesName = 'React Native sources'
+
 android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   buildToolsVersion getExtOrDefault('buildToolsVersion')
@@ -85,17 +90,15 @@ repositories {
   mavenCentral()
   google()
 
-  def found = false
-  def defaultDir = null
-  def androidSourcesName = 'React Native sources'
-
   if (rootProject.ext.has('reactNativeAndroidRoot')) {
     defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
+    androidSourcesDir = new File(defaultDir, '../')
   } else {
     defaultDir = new File(
       projectDir,
       '/../../../node_modules/react-native/android'
     )
+    androidSourcesDir = new File(defaultDir, '../')
   }
 
   if (defaultDir.exists()) {
@@ -113,7 +116,7 @@ repositories {
       if (found) return true
       parentDir = parentDir.parentFile
 
-      def androidSourcesDir = new File(
+      androidSourcesDir = new File(
         parentDir,
         'node_modules/react-native'
       )
@@ -160,7 +163,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   extractJNI("com.facebook.fbjni:fbjni:+")
 
-  def rnAAR = fileTree("${rootDir}/../node_modules/react-native/android").matching({ it.include "**/**/*.aar" }).singleFile
+  def rnAAR = fileTree("${defaultDir}").matching({ it.include "**/**/*.aar" }).singleFile
   extractJNI(files(rnAAR))
 }
 
@@ -170,7 +173,7 @@ dependencies {
 
 def downloadsDir = new File("$buildDir/downloads")
 def thirdPartyNdkDir = new File("$buildDir/third-party-ndk")
-def thirdPartyVersionsFile = new File("${rootDir}/../node_modules/react-native/ReactAndroid/gradle.properties")
+def thirdPartyVersionsFile = new File("${androidSourcesDir}/ReactAndroid/gradle.properties")
 def thirdPartyVersions = new Properties()
 thirdPartyVersions.load(new FileInputStream(thirdPartyVersionsFile))
 
