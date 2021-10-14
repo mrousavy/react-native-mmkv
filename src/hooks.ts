@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import { MMKV, MMKVConfiguration, MMKVInterface } from 'react-native-mmkv';
+import { MMKV, MMKVConfiguration, MMKVInterface } from './MMKV';
 
 function isConfigurationEqual(
   left: MMKVConfiguration,
