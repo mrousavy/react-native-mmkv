@@ -59,6 +59,7 @@ android {
   }
 
   packagingOptions {
+    exclude "META-INF/MANIFEST.MF"
     excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libjsi.so"]
   }
 
