@@ -111,7 +111,8 @@ repositories {
     found = true
   } else {
     def parentDir = rootProject.projectDir
-
+    defaultDir = new File(parentDir, '../node_modules/react-native/android')
+    
     1.upto(5, {
       if (found) return true
       parentDir = parentDir.parentFile
@@ -166,7 +167,6 @@ dependencies {
   def rnAAR = fileTree("${defaultDir.canonicalPath.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
   extractJNI(files(rnAAR))
 }
-
 
 // third-party-ndk deps headers
 // mostly a copy of https://github.com/software-mansion/react-native-reanimated/blob/master/android/build.gradle#L115
