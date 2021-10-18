@@ -33,6 +33,48 @@ def defaultDir = null
 def androidSourcesDir = null
 def androidSourcesName = 'React Native sources'
 
+if (rootProject.ext.has('reactNativeAndroidRoot')) {
+  defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
+  androidSourcesDir = defaultDir.parentFile.toString()
+} else {
+  defaultDir = new File(
+    projectDir,
+    '/../../../node_modules/react-native/android'
+  )
+  androidSourcesDir = defaultDir.parentFile.toString()
+}
+
+if (defaultDir.exists()) {
+  found = true
+} else {
+  def parentDir = rootProject.projectDir
+  defaultDir = new File(parentDir, '../node_modules/react-native/android')
+  
+  1.upto(5, {
+    if (found) return true
+    parentDir = parentDir.parentFile
+
+    androidSourcesDir = new File(
+      parentDir,
+      'node_modules/react-native'
+    )
+
+    def androidPrebuiltBinaryDir = new File(
+      parentDir,
+      'node_modules/react-native/android'
+    )
+
+    if (androidPrebuiltBinaryDir.exists()) {
+        found = true
+      } else if (androidSourcesDir.exists()) {
+        found = true
+      }
+  })
+}
+System.out.println("PRINTING OUT ${defaultDir.canonicalPath.toString()}")
+
+System.out.println("PRINTING ANDROID ${androidSourcesDir.canonicalPath.toString()}")
+
 android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   buildToolsVersion getExtOrDefault('buildToolsVersion')
@@ -90,17 +132,6 @@ repositories {
   mavenCentral()
   google()
 
-  if (rootProject.ext.has('reactNativeAndroidRoot')) {
-    defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
-    androidSourcesDir = new File(defaultDir, '../')
-  } else {
-    defaultDir = new File(
-      projectDir,
-      '/../../../node_modules/react-native/android'
-    )
-    androidSourcesDir = new File(defaultDir, '../')
-  }
-
   if (defaultDir.exists()) {
     maven {
       url defaultDir.toString()
@@ -108,25 +139,11 @@ repositories {
     }
 
     logger.info(":${project.name}:reactNativeAndroidRoot ${defaultDir.canonicalPath}")
-    found = true
   } else {
     def parentDir = rootProject.projectDir
     defaultDir = new File(parentDir, '../node_modules/react-native/android')
     
-    1.upto(5, {
-      if (found) return true
-      parentDir = parentDir.parentFile
-
-      androidSourcesDir = new File(
-        parentDir,
-        'node_modules/react-native'
-      )
-
-      def androidPrebuiltBinaryDir = new File(
-        parentDir,
-        'node_modules/react-native/android'
-      )
-
+    1.upto(5, {    
       if (androidPrebuiltBinaryDir.exists()) {
         maven {
           url androidPrebuiltBinaryDir.toString()
@@ -134,7 +151,6 @@ repositories {
         }
 
         logger.info(":${project.name}:reactNativeAndroidRoot ${androidPrebuiltBinaryDir.canonicalPath}")
-        found = true
       } else if (androidSourcesDir.exists()) {
         maven {
           url androidSourcesDir.toString()
@@ -142,7 +158,6 @@ repositories {
         }
 
         logger.info(":${project.name}:reactNativeAndroidRoot ${androidSourcesDir.canonicalPath}")
-        found = true
       }
     })
   }
@@ -171,9 +186,11 @@ dependencies {
 // third-party-ndk deps headers
 // mostly a copy of https://github.com/software-mansion/react-native-reanimated/blob/master/android/build.gradle#L115
 
+
+
 def downloadsDir = new File("$buildDir/downloads")
 def thirdPartyNdkDir = new File("$buildDir/third-party-ndk")
-def thirdPartyVersionsFile = new File("${androidSourcesDir.canonicalPath.toString()}/ReactAndroid/gradle.properties")
+def thirdPartyVersionsFile = new File("${androidSourcesDir.toString()}/ReactAndroid/gradle.properties")
 def thirdPartyVersions = new Properties()
 thirdPartyVersions.load(new FileInputStream(thirdPartyVersionsFile))
 
