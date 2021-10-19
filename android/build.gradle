@@ -71,9 +71,6 @@ if (defaultDir.exists()) {
       }
   })
 }
-System.out.println("PRINTING OUT ${defaultDir.canonicalPath.toString()}")
-
-System.out.println("PRINTING ANDROID ${androidSourcesDir.canonicalPath.toString()}")
 
 android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
@@ -90,7 +87,7 @@ android {
         cppFlags "-fexceptions", "-frtti", "-std=c++1y", "-DONANDROID"
         abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         arguments '-DANDROID_STL=c++_shared',
-          "-DNODE_MODULES_DIR=${rootDir}/../node_modules"
+          "-DNODE_MODULES_DIR=${defaultDir.parentFile.parentFile.toString()}"
       }
     }
   }
@@ -179,7 +176,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   extractJNI("com.facebook.fbjni:fbjni:+")
 
-  def rnAAR = fileTree("${defaultDir.canonicalPath.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
+  def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
   extractJNI(files(rnAAR))
 }
 
