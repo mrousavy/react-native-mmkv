@@ -43,7 +43,7 @@ export interface MMKVConfiguration {
 /**
  * Represents a single MMKV instance.
  */
-export interface MMKVInterface {
+interface MMKVInterface {
   /**
    * Set a value for the given `key`.
    */

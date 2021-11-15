@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
 } from 'react';
-import { MMKV, MMKVConfiguration, MMKVInterface } from './MMKV';
+import { MMKV, MMKVConfiguration } from './MMKV';
 
 function isConfigurationEqual(
   left: MMKVConfiguration,
@@ -18,8 +18,8 @@ function isConfigurationEqual(
   );
 }
 
-let defaultInstance: MMKVInterface | null = null;
-function getDefaultInstance(): MMKVInterface {
+let defaultInstance: MMKV | null = null;
+function getDefaultInstance(): MMKV {
   if (defaultInstance == null) {
     defaultInstance = new MMKV();
   }
@@ -28,8 +28,8 @@ function getDefaultInstance(): MMKVInterface {
 
 export function useMMKV(
   configuration: MMKVConfiguration
-): React.RefObject<MMKVInterface> {
-  const instance = useRef<MMKVInterface>();
+): React.RefObject<MMKV> {
+  const instance = useRef<MMKV>();
 
   const lastConfiguration = useRef<MMKVConfiguration>(configuration);
   if (!isConfigurationEqual(lastConfiguration.current, configuration)) {
@@ -44,10 +44,10 @@ function createMMKVHook<
   T extends boolean | number | (string | undefined),
   TSet extends T | undefined,
   TSetAction extends TSet | ((current: T) => TSet)
->(getter: (instance: MMKVInterface, key: string) => T) {
+>(getter: (instance: MMKV, key: string) => T) {
   return (
     key: string,
-    instance?: MMKVInterface
+    instance?: MMKV
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
@@ -138,7 +138,7 @@ export const useMMKVBoolean = createMMKVHook((instance, key) =>
  */
 export function useMMKVObject<T>(
   key: string,
-  instance?: MMKVInterface
+  instance?: MMKV
 ): [value: T | undefined, setValue: (value: T) => void] {
   const [string, setString] = useMMKVString(key, instance);
 
