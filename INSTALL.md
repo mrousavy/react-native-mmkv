@@ -1,6 +1,6 @@
 # Install MMKV
 
-MMKV uses JSI which has not been officially released. For now, you have to manually edit a Java file to correctly set up MMKV.
+MMKV uses JSI (a synchronous C++ API for the JavaScript Runtime), which does not have a way of autolinking packages yet. For now, you have to manually edit a Java file to correctly set up MMKV.
 
 Since react-native-reanimated also uses JSI, there will be conflicts if you install both libraries at the same time. That's why the installation steps are different:
 
