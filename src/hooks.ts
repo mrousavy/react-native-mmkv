@@ -32,7 +32,10 @@ export function useMMKV(
   const instance = useRef<MMKV>();
 
   const lastConfiguration = useRef<MMKVConfiguration>();
-  if (lastConfiguration.current == null || !isConfigurationEqual(lastConfiguration.current, configuration)) {
+  if (
+    lastConfiguration.current == null ||
+    !isConfigurationEqual(lastConfiguration.current, configuration)
+  ) {
     lastConfiguration.current = configuration;
     instance.current = new MMKV(configuration);
   }
