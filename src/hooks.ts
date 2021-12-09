@@ -43,7 +43,7 @@ export function useMMKV(
 function createMMKVHook<
   T extends boolean | number | (string | undefined),
   TSet extends T | undefined,
-  TSetAction extends TSet | ((current: T) => TSet)
+  TSetAction extends TSet | ((current: TSet) => TSet)
 >(getter: (instance: MMKV, key: string) => T) {
   return (
     key: string,
@@ -51,10 +51,12 @@ function createMMKVHook<
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
+    const nonReactiveValue = useRef<T>();
+    nonReactiveValue.current = value;
 
     const set = useCallback(
       (v: TSetAction) => {
-        const newValue = typeof v === 'function' ? v(value) : v;
+        const newValue = typeof v === 'function' ? v(nonReactiveValue.current) : v;
         switch (typeof newValue) {
           case 'number':
           case 'string':
@@ -68,7 +70,7 @@ function createMMKVHook<
             throw new Error(`MMKV: Type ${typeof newValue} is not supported!`);
         }
       },
-      [key, mmkv, value]
+      [key, mmkv]
     );
 
     useEffect(() => {
