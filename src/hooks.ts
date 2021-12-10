@@ -47,7 +47,7 @@ export function useMMKV(
 function createMMKVHook<
   T extends boolean | number | (string | undefined),
   TSet extends T | undefined,
-  TSetAction extends TSet | ((current: TSet) => TSet)
+  TSetAction extends TSet | ((current: T) => TSet)
 >(getter: (instance: MMKV, key: string) => T) {
   return (
     key: string,
@@ -55,12 +55,12 @@ function createMMKVHook<
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
-    const nonReactiveValue = useRef<T>();
-    nonReactiveValue.current = value;
+    const valueRef = useRef<T>(value);
+    valueRef.current = value;
 
     const set = useCallback(
       (v: TSetAction) => {
-        const newValue = typeof v === 'function' ? v(nonReactiveValue.current) : v;
+        const newValue = typeof v === 'function' ? v(valueRef.current) : v;
         switch (typeof newValue) {
           case 'number':
           case 'string':
