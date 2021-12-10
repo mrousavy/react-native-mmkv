@@ -139,7 +139,7 @@ export const useMMKVBoolean = createMMKVHook((instance, key) =>
 export function useMMKVObject<T>(
   key: string,
   instance?: MMKV
-): [value: T | undefined, setValue: (value: T | ((current: T) => TSet)) => void] {
+): [value: T | undefined, setValue: (value: T | ((current: T | undefined) => T)) => void] {
   const [string, setString] = useMMKVString(key, instance);
 
   const value = useMemo(() => {
