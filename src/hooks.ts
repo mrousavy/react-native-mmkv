@@ -85,6 +85,10 @@ function createMMKVHook<
       });
       return () => listener.remove();
     }, [key, mmkv]);
+    
+    useEffect(() => {
+      setValue(getter(mmkv, key));
+    }, [key, mmkv]);
 
     return useMemo(() => [value, set], [value, set]);
   };
