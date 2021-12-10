@@ -49,7 +49,7 @@ if (defaultDir.exists()) {
 } else {
   def parentDir = rootProject.projectDir
   defaultDir = new File(parentDir, '../node_modules/react-native/android')
-  
+
   1.upto(5, {
     if (found) return true
     parentDir = parentDir.parentFile
@@ -139,8 +139,8 @@ repositories {
   } else {
     def parentDir = rootProject.projectDir
     defaultDir = new File(parentDir, '../node_modules/react-native/android')
-    
-    1.upto(5, {    
+
+    1.upto(5, {
       if (androidPrebuiltBinaryDir.exists()) {
         maven {
           url androidPrebuiltBinaryDir.toString()
@@ -347,7 +347,7 @@ task extractJNIFiles {
 extractJNIFiles.mustRunAfter extractAARHeaders
 
 tasks.whenTaskAdded { task ->
-  if (task.name == 'externalNativeBuildDebug' || task.name == 'externalNativeBuildRelease') {
+  if (task.name.contains('externalNative') || task.name.contains('CMake')) {
     task.dependsOn(extractAARHeaders)
     task.dependsOn(extractJNIFiles)
     task.dependsOn(prepareThirdPartyNdkHeaders)
