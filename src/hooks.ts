@@ -31,8 +31,12 @@ export function useMMKV(
 ): React.RefObject<MMKV> {
   const instance = useRef<MMKV>();
 
-  const lastConfiguration = useRef<MMKVConfiguration>(configuration);
-  if (!isConfigurationEqual(lastConfiguration.current, configuration)) {
+  const lastConfiguration = useRef<MMKVConfiguration>();
+  if (
+    lastConfiguration.current == null ||
+    !isConfigurationEqual(lastConfiguration.current, configuration)
+  ) {
+    lastConfiguration.current = configuration;
     instance.current = new MMKV(configuration);
   }
 
