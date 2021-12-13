@@ -347,7 +347,7 @@ task extractJNIFiles {
 extractJNIFiles.mustRunAfter extractAARHeaders
 
 tasks.whenTaskAdded { task ->
-  if (task.name.contains('externalNative') || task.name.contains('CMake')) {
+  if (!task.name.contains('Clean') && (task.name.contains('externalNative') || task.name.contains('CMake'))) {
     task.dependsOn(extractAARHeaders)
     task.dependsOn(extractJNIFiles)
     task.dependsOn(prepareThirdPartyNdkHeaders)
