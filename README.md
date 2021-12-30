@@ -72,6 +72,10 @@ cd ios && pod install
 
 To correctly initialize MMKV on Android, please follow the [Installation guide](./INSTALL.md).
 
+### Expo
+
+See this comment for more information: [mrousavy/react-native-mmkv#157 (comment)](https://github.com/mrousavy/react-native-mmkv/issues/157#issuecomment-960647481).
+
 ## Usage
 
 ### Create a new instance
