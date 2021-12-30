@@ -1,4 +1,5 @@
 import { unstable_batchedUpdates } from 'react-native';
+import { createMMKV } from './createMMKV';
 
 interface Listener {
   remove: () => void;
@@ -92,12 +93,17 @@ interface MMKVInterface {
   ) => Listener;
 }
 
-// global func declaration for JSI functions
-declare global {
-  function mmkvCreateNewInstance(
-    configuration: MMKVConfiguration
-  ): MMKVInterface;
-}
+export type NativeMMKV = Pick<
+  MMKVInterface,
+  | 'clearAll'
+  | 'contains'
+  | 'delete'
+  | 'getAllKeys'
+  | 'getBoolean'
+  | 'getNumber'
+  | 'getString'
+  | 'set'
+>;
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
@@ -105,8 +111,8 @@ const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
  * A single MMKV instance.
  */
 export class MMKV implements MMKVInterface {
-  private nativeInstance: MMKVInterface;
-  private functionCache: Partial<MMKVInterface>;
+  private nativeInstance: NativeMMKV;
+  private functionCache: Partial<NativeMMKV>;
   private id: string;
 
   /**
@@ -114,13 +120,8 @@ export class MMKV implements MMKVInterface {
    * If no custom `id` is supplied, `'default'` will be used.
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
-    if (global.mmkvCreateNewInstance == null) {
-      throw new Error(
-        'Failed to create a new MMKV instance, the native initializer function does not exist. Is the native MMKV library correctly installed? Make sure to disable any remote debugger (e.g. Chrome) to use JSI!'
-      );
-    }
     this.id = configuration.id;
-    this.nativeInstance = global.mmkvCreateNewInstance(configuration);
+    this.nativeInstance = createMMKV(configuration);
     this.functionCache = {};
   }
 
@@ -131,13 +132,13 @@ export class MMKV implements MMKVInterface {
     return onValueChangedListeners.get(this.id)!;
   }
 
-  private getFunctionFromCache<T extends keyof MMKVInterface>(
+  private getFunctionFromCache<T extends keyof NativeMMKV>(
     functionName: T
-  ): MMKVInterface[T] {
+  ): NativeMMKV[T] {
     if (this.functionCache[functionName] == null) {
       this.functionCache[functionName] = this.nativeInstance[functionName];
     }
-    return this.functionCache[functionName] as MMKVInterface[T];
+    return this.functionCache[functionName] as NativeMMKV[T];
   }
 
   private onValuesAboutToChange(keys: string[]) {
