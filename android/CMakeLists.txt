@@ -12,10 +12,23 @@ include_directories(
         "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi"
 )
 
+if(${REACT_NATIVE_VERSION} LESS 66)
+        set (
+                INCLUDE_JSI_CPP
+                "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
+        )
+        set (
+                INCLUDE_JSIDYNAMIC_CPP
+                "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/JSIDynamic.cpp"
+        )
+endif()
+
 add_library(reactnativemmkv  # <-- Library name
         SHARED
         src/main/cpp/cpp-adapter.cpp
         src/main/cpp/MmkvHostObject.cpp
+        ${INCLUDE_JSI_CPP} # only on older RN versions
+        ${INCLUDE_JSIDYNAMIC_CPP} # only on older RN versions
 )
 
 set_target_properties(
@@ -32,17 +45,23 @@ find_library(
         log
 )
 find_library(
-        JSI_LIB
-        jsi
-        PATHS ${LIBRN_DIR}
-        NO_CMAKE_FIND_ROOT_PATH
-)
-find_library(
         REACT_NATIVE_JNI_LIB
         reactnativejni
         PATHS ${LIBRN_DIR}
         NO_CMAKE_FIND_ROOT_PATH
 )
+if(${REACT_NATIVE_VERSION} LESS 66)
+        # JSI lib didn't exist on RN 0.65 and before. Simply omit it.
+        set (JSI_LIB "")
+else()
+        # RN 0.66 distributes libjsi.so, can be used instead of compiling jsi.cpp manually.
+        find_library(
+                JSI_LIB
+                jsi
+                PATHS ${LIBRN_DIR}
+                NO_CMAKE_FIND_ROOT_PATH
+        )
+endif()
 
 target_link_libraries(
         reactnativemmkv

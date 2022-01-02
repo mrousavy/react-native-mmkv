@@ -72,6 +72,11 @@ if (defaultDir.exists()) {
   })
 }
 
+
+def reactProperties = new Properties()
+file("$projectDir/../node_modules/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
+def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME").split("\\.")[1].toInteger()
+
 android {
   compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
   buildToolsVersion getExtOrDefault('buildToolsVersion')
@@ -87,7 +92,8 @@ android {
         cppFlags "-fexceptions", "-frtti", "-std=c++1y", "-DONANDROID"
         abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         arguments '-DANDROID_STL=c++_shared',
-          "-DNODE_MODULES_DIR=${defaultDir.parentFile.parentFile.toString()}"
+                  "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
+                  "-DNODE_MODULES_DIR=${defaultDir.parentFile.parentFile.toString()}"
       }
     }
   }
