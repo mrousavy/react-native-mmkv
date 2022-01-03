@@ -1,7 +1,11 @@
 import * as React from 'react';
 
 import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
-import { MMKV, useMMKVString } from 'react-native-mmkv';
+import {
+  MMKV,
+  useMMKVString,
+  useMMKVValueChangedListener,
+} from 'react-native-mmkv';
 
 // Uncomment to run benchmark
 // import { benchmarkAgainstAsyncStorage } from './Benchmarks';
@@ -70,6 +74,14 @@ export default function App() {
       clearInterval(interval);
     };
   }, [example, setExample]);
+
+  useMMKVValueChangedListener((changedKey, instance) => {
+    console.log(
+      `MMKV Value Changed key: ${changedKey} value: ${instance.getString(
+        changedKey
+      )}`
+    );
+  }, storage);
 
   return (
     <View style={styles.container}>
