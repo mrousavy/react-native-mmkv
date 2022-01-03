@@ -1,7 +1,7 @@
 {
   "name": "react-native-mmkv",
   "version": "1.6.0",
-  "description": "An efficient, small mobile key-value storage framework developed by WeChat. Works on Android and iOS.",
+  "description": "The fastest key/value storage for React Native. ~30x faster than AsyncStorage! Works on Android, iOS and Web.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
