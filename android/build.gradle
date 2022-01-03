@@ -54,7 +54,7 @@ if (rootProject.ext.has('reactNativeAndroidRoot')) {
   defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
   androidSourcesDir = defaultDir.parentFile.toString()
 } else {
-  defaultDir = new File(nodeModules, "react-native", "android")
+  defaultDir = file("$nodeModules/react-native/android")
   androidSourcesDir = defaultDir.parentFile.toString()
 }
 
