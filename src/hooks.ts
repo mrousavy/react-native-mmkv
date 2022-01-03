@@ -161,3 +161,21 @@ export function useMMKVObject<T>(
 
   return [value, setValue];
 }
+
+export function useMMKVValueChangedListener(
+  callback: (changedKey: string, storage: MMKV) => void,
+  instance: MMKV | null
+) {
+  useEffect(() => {
+    if (!instance) return;
+
+    const listener = instance.addOnValueChangedListener((changedKey) =>
+      callback(changedKey, instance)
+    );
+    // cleanup function
+    return () => {
+      listener.remove();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [instance]);
+}
