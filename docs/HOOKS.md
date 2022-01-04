@@ -60,3 +60,23 @@ function App() {
   const [username, setUsername] = useMMKVString("user.name", userStorage)
 }
 ```
+
+## Reactively use MMKV Value Changed Listener
+
+```tsx
+function App() {
+  const userStorage = useMMKV({ id: `${userId}.storage` })
+
+  useMMKVValueChangedListener((changedKey, store) => {
+    console.log(
+      `"${changedKey}" new value: ${store.getString(
+        changedKey
+      )}`
+    )
+  }, userStorage.current)
+
+  const onLogin = useCallback(() => {
+    userStorage.current.set("user.name", "Marc")
+  }, [userStorage])
+}
+```
