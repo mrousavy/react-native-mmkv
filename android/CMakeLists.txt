@@ -17,10 +17,6 @@ if(${REACT_NATIVE_VERSION} LESS 66)
                 INCLUDE_JSI_CPP
                 "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
         )
-        set (
-                INCLUDE_JSIDYNAMIC_CPP
-                "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/JSIDynamic.cpp"
-        )
 endif()
 
 add_library(reactnativemmkv  # <-- Library name
@@ -28,7 +24,6 @@ add_library(reactnativemmkv  # <-- Library name
         src/main/cpp/cpp-adapter.cpp
         src/main/cpp/MmkvHostObject.cpp
         ${INCLUDE_JSI_CPP} # only on older RN versions
-        ${INCLUDE_JSIDYNAMIC_CPP} # only on older RN versions
 )
 
 set_target_properties(
