@@ -46,6 +46,12 @@ def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['Mmkv_' + name]).toInteger()
 }
 
+def reactNativeArchitectures() {
+    def value = project.getProperties().get("reactNativeArchitectures")
+    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
+def sourceBuild = false
 def defaultDir = null
 def androidSourcesDir = null
 def androidSourcesName = 'React Native sources'
@@ -53,6 +59,10 @@ def androidSourcesName = 'React Native sources'
 if (rootProject.ext.has('reactNativeAndroidRoot')) {
   defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
   androidSourcesDir = defaultDir.parentFile.toString()
+} else if (findProject(':ReactAndroid') != null) {
+    sourceBuild = true
+    defaultDir = project(':ReactAndroid').projectDir
+    androidSourcesDir = defaultDir.parentFile.toString()
 } else {
   defaultDir = file("$nodeModules/react-native/android")
   androidSourcesDir = defaultDir.parentFile.toString()
@@ -63,6 +73,11 @@ if (!defaultDir.exists()) {
       "${project.name}: React Native android directory (node_modules/react-native/android) does not exist! Resolved node_modules to: ${nodeModules}"
     )
 }
+
+def prebuiltDir = sourceBuild
+    ? "$nodeModules/react-native/ReactAndroid/src/main/jni/prebuilt/lib"
+    : "$buildDir/react-native-0*/jni"
+
 
 def reactProperties = new Properties()
 file("$nodeModules/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
@@ -81,11 +96,14 @@ android {
     externalNativeBuild {
       cmake {
         cppFlags "-fexceptions", "-frtti", "-std=c++1y", "-DONANDROID"
-        abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         arguments '-DANDROID_STL=c++_shared',
                   "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
-                  "-DNODE_MODULES_DIR=${nodeModules}"
+                  "-DNODE_MODULES_DIR=${nodeModules}",
+                  "-DPREBUILT_DIR=${prebuiltDir}"
       }
+    }
+    ndk {
+      abiFilters (*reactNativeArchitectures())
     }
   }
 
@@ -141,8 +159,10 @@ dependencies {
   //noinspection GradleDynamicVersion
   extractJNI("com.facebook.fbjni:fbjni:+")
 
-  def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
-  extractJNI(files(rnAAR))
+  if (!sourceBuild) {
+    def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
+    extractJNI(files(rnAAR))
+  }
 }
 
 // third-party-ndk deps headers
@@ -311,10 +331,22 @@ task extractJNIFiles {
 }
 extractJNIFiles.mustRunAfter extractAARHeaders
 
-tasks.whenTaskAdded { task ->
-  if (!task.name.contains('Clean') && (task.name.contains('externalNative') || task.name.contains('CMake'))) {
-    task.dependsOn(extractAARHeaders)
-    task.dependsOn(extractJNIFiles)
-    task.dependsOn(prepareThirdPartyNdkHeaders)
+def nativeBuildDependsOn(dependsOnTask, variant) {
+  def buildTasks = tasks.findAll({ task ->
+      !task.name.contains("Clean") && (task.name.contains("externalNative") || task.name.contains("CMake")) })
+  if (variant != null) {
+    buildTasks = buildTasks.findAll({ task -> task.name.contains(variant) })
+  }
+  buildTasks.forEach { task -> task.dependsOn(dependsOnTask) }
+}
+
+afterEvaluate {
+  if (sourceBuild) {
+    nativeBuildDependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck", "Debug")
+    nativeBuildDependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck", "Rel")
+  } else {
+    nativeBuildDependsOn(extractAARHeaders, null)
+    nativeBuildDependsOn(extractJNIFiles, null)
+    nativeBuildDependsOn(prepareThirdPartyNdkHeaders, null)
   }
 }
