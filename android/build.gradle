@@ -345,8 +345,8 @@ afterEvaluate {
     nativeBuildDependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck", "Debug")
     nativeBuildDependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck", "Rel")
   } else {
-    nativeBuildDependsOn(extractAARHeaders)
-    nativeBuildDependsOn(extractJNIFiles)
-    nativeBuildDependsOn(prepareThirdPartyNdkHeaders)
+    nativeBuildDependsOn(extractAARHeaders, null)
+    nativeBuildDependsOn(extractJNIFiles, null)
+    nativeBuildDependsOn(prepareThirdPartyNdkHeaders, null)
   }
 }
