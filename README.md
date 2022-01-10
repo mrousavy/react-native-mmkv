@@ -37,7 +37,7 @@
 ## Sponsors
 
 <div align="right">
-  <a href="https://getstream.io/chat/react-native-chat/tutorial/?utm_source=github&utm_medium=github_repo_content_ad&utm_content=developer&utm_campaign=github_sept2021_reactnativechat">
+  <a href="https://getstream.io/chat/react-native-chat/tutorial/?utm_source=Github&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=Github_Jan2022_ReactNative&utm_term=react-native-mmkv">
     <img align="right" src="https://theme.zdassets.com/theme_assets/9442057/efc3820e436f9150bc8cf34267fff4df052a1f9c.png" height="40" />
   </a>
 </div>
