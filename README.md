@@ -43,7 +43,7 @@
 </div>
 
 react-native-mmkv is sponsored by **getstream.io**. <br/>
-[Try the React Native Chat tutorial 💬](https://getstream.io/chat/react-native-chat/tutorial/?utm_source=github&utm_medium=github_repo_content_ad&utm_content=developer&utm_campaign=github_sept2021_reactnativechat)
+[Try the React Native Chat tutorial 💬](https://getstream.io/chat/react-native-chat/tutorial/?utm_source=Github&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=Github_Jan2022_ReactNative&utm_term=react-native-mmkv)
 
 ## Benchmark
 
