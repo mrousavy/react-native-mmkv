@@ -7,21 +7,24 @@ import { create } from "mobx-persist";
 import { MMKV } from "react-native-mmkv";
 
 const storage = new MMKV();
-const promise = (callback: () => any) =>
-  new Promise((resolve, reject) => {
-    try {
-      const value = callback?.();
-      resolve(value);
-    } catch (err) {
-      reject(err);
-    }
-  });
 
 const mmkvStorage = {
-  clear: () => promise(storage.clearAll),
-  setItem: (key: string, value: any) => promise(() => storage.set(key, value)),
-  getItem: (key: string) => promise(() => storage.getString(key)),
-  removeItem: (key: string) => promise(() => storage.delete(key)),
+  clear: () => {
+    storage.clearAll()
+    return Promise.resolve()
+  },
+  setItem: (key, value) => {
+    storage.set(key, value)
+    return Promise.resolve(true)
+  },
+  getItem: (key) => {
+    const value = storage.getString(key)
+    return Promise.resolve(value)
+  },
+  removeItem: (key) => {
+    storage.delete(key)
+    return Promise.resolve()
+  },
 };
 
 const hydrate = create({
