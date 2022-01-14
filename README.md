@@ -37,13 +37,13 @@
 ## Sponsors
 
 <div align="right">
-  <a href="https://getstream.io/chat/react-native-chat/tutorial/?utm_source=github&utm_medium=github_repo_content_ad&utm_content=developer&utm_campaign=github_sept2021_reactnativechat">
+  <a href="https://getstream.io/chat/react-native-chat/tutorial/?utm_source=Github&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=Github_Jan2022_ReactNative&utm_term=react-native-mmkv">
     <img align="right" src="https://theme.zdassets.com/theme_assets/9442057/efc3820e436f9150bc8cf34267fff4df052a1f9c.png" height="40" />
   </a>
 </div>
 
 react-native-mmkv is sponsored by **getstream.io**. <br/>
-[Try the React Native Chat tutorial 💬](https://getstream.io/chat/react-native-chat/tutorial/?utm_source=github&utm_medium=github_repo_content_ad&utm_content=developer&utm_campaign=github_sept2021_reactnativechat)
+[Try the React Native Chat tutorial 💬](https://getstream.io/chat/react-native-chat/tutorial/?utm_source=Github&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=Github_Jan2022_ReactNative&utm_term=react-native-mmkv)
 
 ## Benchmark
 
@@ -169,6 +169,8 @@ const userObject = JSON.parse(jsonUser)
 * [Using MMKV with redux-persis](./docs/WRAPPER_REDUX.md)
 * [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 * [Using MMKV with zustand + persist middleware](./docs/WRAPPER_ZUSTAND.md)
+* [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
+
 
 ## Limitations
 

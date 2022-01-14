@@ -33,7 +33,7 @@ set_target_properties(
         POSITION_INDEPENDENT_CODE ON
 )
 
-file (GLOB LIBRN_DIR "${BUILD_DIR}/react-native-0*/jni/${ANDROID_ABI}")
+file (GLOB LIBRN_DIR "${PREBUILT_DIR}/${ANDROID_ABI}")
 
 find_library(
         log-lib
