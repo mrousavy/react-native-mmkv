@@ -1,6 +1,6 @@
 #import <React/RCTBridgeModule.h>
 
-@interface Mmkv : NSObject <RCTBridgeModule>
+@interface MmkvModule : NSObject <RCTBridgeModule>
 
 @property (nonatomic, assign) BOOL setBridgeOnMainQueue;
 
