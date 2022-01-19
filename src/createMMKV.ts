@@ -6,6 +6,9 @@ declare global {
   function mmkvCreateNewInstance(configuration: MMKVConfiguration): NativeMMKV;
 }
 
+// Root directory of all MMKV stores
+const ROOT_DIRECTORY: string | null = null;
+
 export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
   // Check if the constructor exists. If not, try installing the JSI bindings.
   if (global.mmkvCreateNewInstance == null) {
@@ -16,7 +19,7 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
         'The native MMKV Module could not be found! Is it correctly installed and autolinked?'
       );
     // Call the synchronous blocking install() function
-    const result = MMKVModule.install();
+    const result = MMKVModule.install(ROOT_DIRECTORY);
     if (result !== true)
       throw new Error(
         `The native MMKV Module could not be installed! Looks like something went wrong when installing JSI bindings: ${result}`
