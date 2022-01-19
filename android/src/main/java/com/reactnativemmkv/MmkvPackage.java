@@ -15,7 +15,6 @@ public class MmkvPackage implements ReactPackage {
   @NonNull
   @Override
   public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-    // TODO: Remove this dummy init, once TurboModules are stable I will migrate to those.
     return Collections.singletonList(new MmkvModule());
   }
 
