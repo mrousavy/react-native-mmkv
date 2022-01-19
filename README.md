@@ -57,25 +57,19 @@ react-native-mmkv is sponsored by **getstream.io**. <br/>
 
 ## Installation
 
-```sh
-npm install react-native-mmkv
-```
-
-### iOS
-
-iOS installation is automatic, just run:
+### React Native
 
 ```sh
+yarn add react-native-mmkv
 cd ios && pod install
 ```
 
-### Android
-
-To correctly initialize MMKV on Android, please follow the [Installation guide](./INSTALL.md).
-
 ### Expo
 
-See this comment for more information: [mrousavy/react-native-mmkv#157 (comment)](https://github.com/mrousavy/react-native-mmkv/issues/157#issuecomment-960647481).
+```sh
+expo install react-native-mmkv
+expo prebuild
+```
 
 ## Usage
 
