@@ -27,7 +27,7 @@ public class MmkvModule extends ReactContextBaseJavaModule {
     try {
       System.loadLibrary("reactnativemmkv");
       JavaScriptContextHolder jsContext = getReactApplicationContext().getJavaScriptContextHolder();
-      String storageDirectory = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/mmkv"
+      String storageDirectory = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/mmkv";
       nativeInstall(jsContext.get(), storageDirectory);
       return true;
     } catch (Exception ignored) {
