@@ -15,7 +15,7 @@ public class MmkvPackage implements ReactPackage {
   @NonNull
   @Override
   public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-    return Collections.singletonList(new MmkvModule());
+    return Collections.singletonList(new MmkvModule(reactContext));
   }
 
   @NonNull

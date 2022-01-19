@@ -22,7 +22,7 @@ RCT_EXPORT_MODULE(MMKV)
     return string.length() > 0 ? [NSString stringWithUTF8String:string.c_str()] : nil;
 }
 
-RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirectory)
 {
     NSLog(@"Installing global.mmkvCreateNewInstance...");
     RCTBridge* bridge = [RCTBridge currentBridge];
@@ -38,6 +38,8 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install)
         return @false;
     }
     auto& runtime = *jsiRuntime;
+  
+    [MMKV initializeMMKV:storageDirectory];
 
     // MMKV.createNewInstance()
     auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(runtime,

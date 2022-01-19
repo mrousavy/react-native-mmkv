@@ -1,6 +1,9 @@
 package com.reactnativemmkv;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -23,14 +26,21 @@ public class MmkvModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod(isBlockingSynchronousMethod = true)
-  public boolean install() {
+  public boolean install(@Nullable String rootDirectory) {
     try {
+      Log.i(NAME, "Loading C++ library...");
       System.loadLibrary("reactnativemmkv");
+
       JavaScriptContextHolder jsContext = getReactApplicationContext().getJavaScriptContextHolder();
-      String storageDirectory = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/mmkv";
-      nativeInstall(jsContext.get(), storageDirectory);
+      if (rootDirectory == null) {
+        rootDirectory = getReactApplicationContext().getFilesDir().getAbsolutePath() + "/mmkv";
+      }
+      Log.i(NAME, "Installing MMKV JSI Bindings for MMKV root directory: " + rootDirectory);
+      nativeInstall(jsContext.get(), rootDirectory);
+      Log.i(NAME, "Successfully installed MMKV JSI Bindings!");
       return true;
-    } catch (Exception ignored) {
+    } catch (Exception exception) {
+      Log.e(NAME, "Failed to install MMKV JSI Bindings!", exception);
       return false;
     }
   }
