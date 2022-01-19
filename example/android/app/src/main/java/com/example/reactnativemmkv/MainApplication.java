@@ -8,6 +8,9 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JSIModulePackage;
 import com.facebook.soloader.SoLoader;
+import com.reactnativemmkv.MmkvPackage;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -21,7 +24,9 @@ public class MainApplication extends Application implements ReactApplication {
 
         @Override
         protected List<ReactPackage> getPackages() {
-          return new PackageList(this).getPackages();
+          ArrayList<ReactPackage> packages = new PackageList(this).getPackages();
+          packages.add(new MmkvPackage());
+          return packages;
         }
 
         @Override
