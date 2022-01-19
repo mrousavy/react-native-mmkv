@@ -67,9 +67,9 @@ function App() {
 function App() {
   const userStorage = useMMKV({ id: `${userId}.storage` })
 
-  useMMKVValueChangedListener((changedKey, store) => {
+  useMMKVValueChangedListener((changedKey) => {
     console.log(
-      `"${changedKey}" new value: ${store.getString(
+      `"${changedKey}" new value: ${userStorage.current.getString(
         changedKey
       )}`
     )

@@ -75,9 +75,9 @@ export default function App() {
     };
   }, [example, setExample]);
 
-  useMMKVValueChangedListener((changedKey, instance) => {
+  useMMKVValueChangedListener((changedKey) => {
     console.log(
-      `MMKV Value Changed key: ${changedKey} value: ${instance.getString(
+      `MMKV Value Changed key: ${changedKey} value: ${storage.getString(
         changedKey
       )}`
     );

@@ -168,10 +168,10 @@ export function useMMKVValueChangedListener(
 ) {
   const callbackRef = useRef(callback);
   callbackRef.current = callback;
-  
+
   useEffect(() => {
     const listener = instance.addOnValueChangedListener((changedKey) => {
-      callbackRef.current(changedKey)
+      callbackRef.current(changedKey);
     });
     return () => listener.remove();
   }, [instance]);
