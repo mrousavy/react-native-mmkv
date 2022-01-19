@@ -163,19 +163,16 @@ export function useMMKVObject<T>(
 }
 
 export function useMMKVValueChangedListener(
-  callback: (changedKey: string, storage: MMKV) => void,
-  instance: MMKV | null
+  callback: (changedKey: string) => void,
+  instance: MMKV
 ) {
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
+  
   useEffect(() => {
-    if (!instance) return;
-
-    const listener = instance.addOnValueChangedListener((changedKey) =>
-      callback(changedKey, instance)
-    );
-    // cleanup function
-    return () => {
-      listener.remove();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const listener = instance.addOnValueChangedListener((changedKey) => {
+      callbackRef.current(changedKey)
+    });
+    return () => listener.remove();
   }, [instance]);
 }
