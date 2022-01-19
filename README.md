@@ -160,7 +160,7 @@ const userObject = JSON.parse(jsonUser)
 * [Hooks](./docs/HOOKS.md)
 * [Value-change Listeners](./docs/LISTENERS.md)
 * [Migrate from AsyncStorage](./docs/MIGRATE_FROM_ASYNC_STORAGE.md)
-* [Using MMKV with redux-persis](./docs/WRAPPER_REDUX.md)
+* [Using MMKV with redux-persist](./docs/WRAPPER_REDUX.md)
 * [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 * [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
 
