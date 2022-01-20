@@ -10,7 +10,7 @@ import { MMKV } from 'react-native-mmkv';
 
 export interface ZustandStorage {
     getItem: (name: string) => string | null | Promise<string | null>
-    setItem: (key: string, value: string) => void | Promise<void>
+    setItem: (name: string, value: string) => void | Promise<void>
     removeItem: (name: string) => void | Promise<void>
 }
 
@@ -18,7 +18,7 @@ const storage = new MMKV();
 
 export const mmkvStorage: ZustandStorage = {
     setItem: (key, value) => storage.set(key, value),
-    getItem: (key) => storage.getString(key),
+    getItem: (key) => storage.getString(key) || null,
     removeItem: (key) => storage.delete(key)
 }
 ```
