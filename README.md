@@ -163,6 +163,7 @@ const userObject = JSON.parse(jsonUser)
 * [Using MMKV with redux-persist](./docs/WRAPPER_REDUX.md)
 * [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 * [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
+* [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
 
 ## Limitations
 
