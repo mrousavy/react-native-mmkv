@@ -86,7 +86,7 @@ function createMMKVHook<
       return () => listener.remove();
     }, [key, mmkv]);
 
-    return useMemo(() => [value, set], [value, set]);
+    return [value, set];
   };
 }
 
