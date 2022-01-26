@@ -145,7 +145,7 @@ export const useMMKVBoolean = createMMKVHook((instance, key) =>
 export function useMMKVObject<T>(
   key: string,
   instance?: MMKV
-): [value: T | undefined, setValue: (value: T) => void] {
+): [value: T | undefined, setValue: (value: T | undefined) => void] {
   const [string, setString] = useMMKVString(key, instance);
 
   const value = useMemo(() => {
@@ -153,8 +153,14 @@ export function useMMKVObject<T>(
     return JSON.parse(string) as T;
   }, [string]);
   const setValue = useCallback(
-    (v: T) => {
-      setString(JSON.stringify(v));
+    (v: T | undefined) => {
+      if (v == null) {
+        // Clear the Value
+        setString(undefined);
+      } else {
+        // Store the Object as a serialized Value
+        setString(JSON.stringify(v));
+      }
     },
     [setString]
   );
