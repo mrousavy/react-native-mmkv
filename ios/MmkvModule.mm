@@ -39,7 +39,9 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
     }
     auto& runtime = *jsiRuntime;
   
-    [MMKV initializeMMKV:storageDirectory];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+      [MMKV initializeMMKV:storageDirectory];
+    });
 
     // MMKV.createNewInstance()
     auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(runtime,
