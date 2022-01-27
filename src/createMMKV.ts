@@ -27,9 +27,10 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
         message += '\n* Make sure gradle is synced.';
       }
       // check if Expo
-      const ExpoConstants = NativeModules.ExponentConstants;
+      const ExpoConstants =
+        NativeModules.NativeUnimoduleProxy?.modulesConstants?.ExponentConstants;
       if (ExpoConstants != null) {
-        if (ExpoConstants.executionEnvironment === 'storeClient') {
+        if (ExpoConstants.appOwnership === 'expo') {
           // We're running Expo Go
           throw new Error(
             'react-native-mmkv is not supported in Expo Go! Use EAS (`expo prebuild`) or eject to a bare workflow instead.'
