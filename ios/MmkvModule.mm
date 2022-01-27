@@ -11,8 +11,6 @@
 using namespace facebook;
 
 @implementation MmkvModule
-@synthesize bridge = _bridge;
-@synthesize methodQueue = _methodQueue;
 
 RCT_EXPORT_MODULE(MMKV)
 
@@ -38,7 +36,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
         return @false;
     }
     auto& runtime = *jsiRuntime;
-  
+
     [MMKV initializeMMKV:storageDirectory];
 
     // MMKV.createNewInstance()
