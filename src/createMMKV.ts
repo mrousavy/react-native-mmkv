@@ -28,12 +28,13 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
       }
       try {
         const Constants = require('expo-constants');
-        if (Constants.expoVersion != null) {
-          // .expoVersion only exists in Expo Go!
+        if (Constants.executionEnvironment === 'storeClient') {
+          // We're running Expo Go
           throw new Error(
             'react-native-mmkv is not supported in Expo Go! Use EAS (`expo prebuild`) or eject to a bare workflow instead.'
           );
         } else {
+          // We're running Expo prebuild
           message += '\n* Make sure you ran `expo prebuild`.';
         }
       } catch (e) {
