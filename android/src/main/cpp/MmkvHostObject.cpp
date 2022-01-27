@@ -9,6 +9,7 @@
 #include "MmkvHostObject.h"
 #include <MMKV.h>
 #include <android/log.h>
+#include <string>
 
 MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey) {
   __android_log_print(ANDROID_LOG_INFO, "RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encryption-Key: %s)",
