@@ -69,7 +69,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       if (!arguments[0].isString()) {
         throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
       }
-      
+
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
 
       if (arguments[1].isBool()) {
@@ -82,7 +82,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       } else {
         throw jsi::JSError(runtime, "Second argument ('value') has to be of type bool, number or string!");
       }
-      
+
       return jsi::Value::undefined();
     });
   }
@@ -101,7 +101,14 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-      bool value = [instance getBoolForKey:keyName];
+      auto value = [instance getBoolForKey:keyName];
+      if (value == false) {
+        // If the value is false (default value), we check if it even exists.
+        if (![instance containsKey:keyName]) {
+          // The key does not exist in storage, so let's return undefined
+          return jsi::Value::undefined();
+        }
+      }
       return jsi::Value(value);
     });
   }
@@ -121,10 +128,11 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       auto value = [instance getStringForKey:keyName];
-      if (value != nil)
+      if (value != nil) {
         return convertNSStringToJSIString(runtime, value);
-      else
+      } else {
         return jsi::Value::undefined();
+      }
     });
   }
 
@@ -143,6 +151,13 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       auto value = [instance getDoubleForKey:keyName];
+      if (value == 0.0) {
+        // If the value is 0.0 (default value), we check if it even exists.
+        if (![instance containsKey:keyName]) {
+          // The key does not exist in storage, so let's return undefined
+          return jsi::Value::undefined();
+        }
+      }
       return jsi::Value(value);
     });
   }

@@ -52,23 +52,23 @@ interface MMKVInterface {
    */
   set: (key: string, value: boolean | string | number) => void;
   /**
-   * Get a boolean value for the given `key`.
+   * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
-   * @default false
+   * @default undefined
    */
-  getBoolean: (key: string) => boolean;
+  getBoolean: (key: string) => boolean | undefined;
   /**
-   * Get a string value for the given `key`.
+   * Get the string value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
   getString: (key: string) => string | undefined;
   /**
-   * Get a number value for the given `key`.
+   * Get the number value for the given `key`, or `undefined` if it does not exist.
    *
-   * @default 0
+   * @default undefined
    */
-  getNumber: (key: string) => number;
+  getNumber: (key: string) => number | undefined;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
@@ -175,7 +175,7 @@ export class MMKV implements MMKVInterface {
     const func = this.getFunctionFromCache('set');
     return func(key, value);
   }
-  getBoolean(key: string): boolean {
+  getBoolean(key: string): boolean | undefined {
     const func = this.getFunctionFromCache('getBoolean');
     return func(key);
   }
@@ -183,7 +183,7 @@ export class MMKV implements MMKVInterface {
     const func = this.getFunctionFromCache('getString');
     return func(key);
   }
-  getNumber(key: string): number {
+  getNumber(key: string): number | undefined {
     const func = this.getFunctionFromCache('getNumber');
     return func(key);
   }
