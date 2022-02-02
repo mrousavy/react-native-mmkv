@@ -17,7 +17,6 @@ using namespace facebook;
 class JSI_EXPORT MmkvHostObject: public jsi::HostObject {
 public:
   MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey);
-  MmkvHostObject(MMKV* instance);
 
 public:
   jsi::Value get(jsi::Runtime&, const jsi::PropNameID& name) override;

@@ -18,8 +18,6 @@ MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* c
   }
 }
 
-MmkvHostObject::MmkvHostObject(MMKV* mmkv): instance(mmkv) {}
-
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   std::vector<jsi::PropNameID> result;
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));
@@ -116,7 +114,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       return jsi::Value(value);
     });
   }
-
+  
   if (propName == "contains") {
     // MMKV.contains(key: string)
     return jsi::Function::createFromHostFunction(runtime,
@@ -127,13 +125,13 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
       if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-
+      
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       bool containsKey = [instance containsKey:keyName];
       return jsi::Value(containsKey);
     });
   }
-
+  
   if (propName == "delete") {
     // MMKV.delete(key: string)
     return jsi::Function::createFromHostFunction(runtime,
@@ -144,7 +142,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
       if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-
+      
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       [instance removeValueForKey:keyName];
       return jsi::Value::undefined();

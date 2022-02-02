@@ -61,19 +61,6 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
     });
     runtime.global().setProperty(runtime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
 
-    // MMKV.getDefaultInstance()
-    auto mmkvGetDefaultInstance = jsi::Function::createFromHostFunction(runtime,
-                                                                        jsi::PropNameID::forAscii(runtime, "mmkvGetDefaultInstance"),
-                                                                        1,
-                                                                        [](jsi::Runtime& runtime,
-                                                                           const jsi::Value& thisValue,
-                                                                           const jsi::Value* arguments,
-                                                                           size_t count) -> jsi::Value {
-        auto instance = std::make_shared<MmkvHostObject>([MMKV defaultMMKV]);
-        return jsi::Object::createFromHostObject(runtime, instance);
-    });
-    runtime.global().setProperty(runtime, "mmkvGetDefaultInstance", std::move(mmkvGetDefaultInstance));
-
     NSLog(@"Installed global.mmkvCreateNewInstance!");
     return @true;
 }

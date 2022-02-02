@@ -1,5 +1,5 @@
 import { unstable_batchedUpdates } from 'react-native';
-import { createMMKV, getDefaultMMKV } from './createMMKV';
+import { createMMKV } from './createMMKV';
 
 interface Listener {
   remove: () => void;

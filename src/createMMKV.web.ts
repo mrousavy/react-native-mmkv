@@ -40,7 +40,3 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     contains: (key) => storage().getItem(key) != null,
   };
 };
-
-export const getDefaultMMKV = (): NativeMMKV => {
-  return createMMKV({ id: '' });
-};

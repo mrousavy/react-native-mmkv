@@ -32,19 +32,6 @@ void install(jsi::Runtime& jsiRuntime) {
                                                                          return jsi::Object::createFromHostObject(runtime, instance);
                                                                        });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
-
-    // MMKV.getDefaultInstance()
-    auto mmkvGetDefaultInstance = jsi::Function::createFromHostFunction(jsiRuntime,
-                                                                       jsi::PropNameID::forAscii(jsiRuntime, "mmkvGetDefaultInstance"),
-                                                                       1,
-                                                                       [](jsi::Runtime& runtime,
-                                                                          const jsi::Value& thisValue,
-                                                                          const jsi::Value* arguments,
-                                                                          size_t count) -> jsi::Value {
-                                                                         auto instance = std::make_shared<MmkvHostObject>(MMKV::defaultMMKV());
-                                                                         return jsi::Object::createFromHostObject(runtime, instance);
-                                                                       });
-    jsiRuntime.global().setProperty(jsiRuntime, "mmkvGetDefaultInstance", std::move(mmkvGetDefaultInstance));
 }
 
 std::string jstringToStdString(JNIEnv *env, jstring jStr) {
