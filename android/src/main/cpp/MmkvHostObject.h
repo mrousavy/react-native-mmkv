@@ -10,6 +10,7 @@
 
 #include <jsi/jsi.h>
 #include <MMKV.h>
+#include <string>
 
 using namespace facebook;
 
