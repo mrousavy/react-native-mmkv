@@ -4,13 +4,14 @@ import type { MMKVConfiguration, NativeMMKV } from 'react-native-mmkv';
 // global func declaration for JSI functions
 declare global {
   function mmkvCreateNewInstance(configuration: MMKVConfiguration): NativeMMKV;
+  function mmkvGetDefaultInstance(): NativeMMKV;
   function nativeCallSyncHook(): unknown;
 }
 
 // Root directory of all MMKV stores
 const ROOT_DIRECTORY: string | null = null;
 
-export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
+function assertNativeModuleInstalled() {
   // Check if the constructor exists. If not, try installing the JSI bindings.
   if (global.mmkvCreateNewInstance == null) {
     // Get the native MMKV ReactModule
@@ -65,6 +66,16 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
         'Failed to create a new MMKV instance, the native initializer function does not exist. Are you trying to use MMKV from different JS Runtimes?'
       );
   }
+}
+
+export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
+  assertNativeModuleInstalled();
 
   return global.mmkvCreateNewInstance(config);
+};
+
+export const getDefaultMMKV = (): NativeMMKV => {
+  assertNativeModuleInstalled();
+
+  return global.mmkvGetDefaultInstance();
 };

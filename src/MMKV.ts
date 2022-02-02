@@ -1,5 +1,5 @@
 import { unstable_batchedUpdates } from 'react-native';
-import { createMMKV } from './createMMKV';
+import { createMMKV, getDefaultMMKV } from './createMMKV';
 
 interface Listener {
   remove: () => void;
@@ -206,5 +206,13 @@ export class MMKV implements MMKVInterface {
         }
       },
     };
+  }
+
+  static get defaultInstance(): MMKV {
+    const instance = Object.create(this.prototype) as MMKV;
+    instance.id = '';
+    instance.nativeInstance = getDefaultMMKV();
+    instance.functionCache = {};
+    return instance;
   }
 }

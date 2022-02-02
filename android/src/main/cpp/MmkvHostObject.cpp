@@ -21,6 +21,8 @@ MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, 
   }
 }
 
+MmkvHostObject::MmkvHostObject(MMKV* mmkv): instance(mmkv) {}
+
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   std::vector<jsi::PropNameID> result;
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));
