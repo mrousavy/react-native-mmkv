@@ -117,7 +117,7 @@ export class MMKV implements MMKVInterface {
 
   /**
    * Creates a new MMKV instance with the given Configuration.
-   * If no custom `id` is supplied, `'default'` will be used.
+   * If no custom `id` is supplied, `'mmkv.default'` will be used.
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
