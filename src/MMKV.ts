@@ -208,11 +208,12 @@ export class MMKV implements MMKVInterface {
     };
   }
 
+  private static _defaultInstance?: MMKV;
   static get defaultInstance(): MMKV {
-    const instance = Object.create(this.prototype) as MMKV;
-    instance.id = '';
-    instance.nativeInstance = getDefaultMMKV();
-    instance.functionCache = {};
-    return instance;
+    if (this._defaultInstance == null) {
+      this._defaultInstance = new MMKV({ id: '' });
+    }
+
+    return this._defaultInstance;
   }
 }
