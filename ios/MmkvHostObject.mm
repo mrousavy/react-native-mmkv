@@ -187,11 +187,17 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value& thisValue,
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
-      if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('encryptionKey') has to be of type string!");
-
-      NSString* encryptionKey = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-      NSData* encryptionKeyBytes = [encryptionKey dataUsingEncoding:NSUTF8StringEncoding];
-      [instance reKey:encryptionKeyBytes];
+      if (arguments[0].isUndefined()) {
+        // reset encryption key to "no encryption"
+        [instance reKey:nil];
+      } else if (arguments[0].isString()) {
+        // reKey(..) with new encryption-key
+        NSString* encryptionKey = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+        NSData* encryptionKeyBytes = [encryptionKey dataUsingEncoding:NSUTF8StringEncoding];
+        [instance reKey:encryptionKeyBytes];
+      } else {
+        throw jsi::JSError(runtime, "First argument ('encryptionKey') has to be of type string (or undefined)!");
+      }
       return jsi::Value::undefined();
     });
   }
