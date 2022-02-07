@@ -39,7 +39,7 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     getAllKeys: () => Object.keys(storage()),
     contains: (key) => storage().getItem(key) != null,
     encrypt: () => {
-      throw new Error("`encrypt(..)` is not supported on Web!");
+      throw new Error('`encrypt(..)` is not supported on Web!');
     },
   };
 };
