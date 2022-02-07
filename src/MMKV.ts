@@ -86,6 +86,12 @@ interface MMKVInterface {
    */
   clearAll: () => void;
   /**
+   * Sets (or updates) the encryption-key to encrypt all data in this MMKV instance with.
+   *
+   * To remove encryption, pass `undefined` as a key.
+   */
+  encrypt: (key: string | undefined) => void;
+  /**
    * Adds a value changed listener.
    */
   addOnValueChangedListener: (
@@ -103,6 +109,7 @@ export type NativeMMKV = Pick<
   | 'getNumber'
   | 'getString'
   | 'set'
+  | 'encrypt'
 >;
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
@@ -193,6 +200,10 @@ export class MMKV implements MMKVInterface {
 
     const func = this.getFunctionFromCache('clearAll');
     return func();
+  }
+  encrypt(key: string | undefined): void {
+    const func = this.getFunctionFromCache('encrypt');
+    return func(key);
   }
 
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
