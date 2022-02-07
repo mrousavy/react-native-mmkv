@@ -31,6 +31,7 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("delete")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getAllKeys")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("deleteAll")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("encrypt")));
   return result;
 }
 
@@ -181,6 +182,25 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
                                                    instance->clearAll();
+
+                                                   return jsi::Value::undefined();
+                                                 });
+  }
+
+  if (propName == "encrypt") {
+    // MMKV.encrypt(key)
+    return jsi::Function::createFromHostFunction(runtime,
+                                                 jsi::PropNameID::forAscii(runtime, funcName),
+                                                 0,
+                                                 [this](jsi::Runtime& runtime,
+                                                        const jsi::Value& thisValue,
+                                                        const jsi::Value* arguments,
+                                                        size_t count) -> jsi::Value {
+                                                   if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('encryptionKey') has to be of type string!");
+
+                                                   auto encryptionKey = arguments[0].getString(runtime).utf8(runtime);
+                                                   instance->reKey(encryptionKey);
+
                                                    return jsi::Value::undefined();
                                                  });
   }
