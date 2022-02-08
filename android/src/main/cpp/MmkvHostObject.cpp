@@ -93,17 +93,15 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
 
       auto keyName = arguments[0].getString(runtime).utf8(runtime);
-      auto value = instance->getBool(keyName);
 
-      if (value == false) {
-        // If the value is `false` (default value), we check if the key even exists.
-        if (!instance->containsKey(keyName)) {
-          // The key doesn't even exist, so let's return `undefined` instead of `false`.
-          return jsi::Value::undefined();
-        }
+      bool hasValue;
+      auto value = instance->getBool(keyName, false, &hasValue);
+
+      if (hasValue) {
+        return jsi::Value(value);
+      } else {
+        return jsi::Value::undefined();
       }
-
-      return jsi::Value(value);
     });
   }
 
@@ -124,6 +122,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
       std::string result;
       bool hasValue = instance->getString(keyName, result);
+
       if (hasValue) {
         return jsi::Value(runtime, jsi::String::createFromUtf8(runtime, result));
       } else {
@@ -146,17 +145,14 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
       auto keyName = arguments[0].getString(runtime).utf8(runtime);
 
-      auto value = instance->getDouble(keyName);
+      bool hasValue;
+      auto value = instance->getDouble(keyName, 0.0, &hasValue);
 
-      if (value == 0.0) {
-        // If the value is `0.0` (default value), we check if the key even exists.
-        if (!instance->containsKey(keyName)) {
-          // The key doesn't even exist, so let's return `undefined` instead of `0.0`.
-          return jsi::Value::undefined();
-        }
+      if (hasValue) {
+        return jsi::Value(value);
+      } else {
+        return jsi::Value::undefined();
       }
-
-      return jsi::Value(value);
     });
   }
 
