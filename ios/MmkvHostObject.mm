@@ -28,6 +28,7 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("delete")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getAllKeys")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("deleteAll")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("encrypt")));
   return result;
 }
 
@@ -114,7 +115,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       return jsi::Value(value);
     });
   }
-  
+
   if (propName == "contains") {
     // MMKV.contains(key: string)
     return jsi::Function::createFromHostFunction(runtime,
@@ -125,13 +126,13 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
       if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-      
+
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       bool containsKey = [instance containsKey:keyName];
       return jsi::Value(containsKey);
     });
   }
-  
+
   if (propName == "delete") {
     // MMKV.delete(key: string)
     return jsi::Function::createFromHostFunction(runtime,
@@ -142,7 +143,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
       if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
-      
+
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       [instance removeValueForKey:keyName];
       return jsi::Value::undefined();
@@ -173,6 +174,30 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         const jsi::Value* arguments,
                                                         size_t count) -> jsi::Value {
       [instance clearAll];
+      return jsi::Value::undefined();
+    });
+  }
+
+  if (propName == "encrypt") {
+    // MMKV.encrypt(key)
+    return jsi::Function::createFromHostFunction(runtime,
+                                                 jsi::PropNameID::forAscii(runtime, funcName),
+                                                 0,
+                                                 [this](jsi::Runtime& runtime,
+                                                        const jsi::Value& thisValue,
+                                                        const jsi::Value* arguments,
+                                                        size_t count) -> jsi::Value {
+      if (arguments[0].isUndefined()) {
+        // reset encryption key to "no encryption"
+        [instance reKey:nil];
+      } else if (arguments[0].isString()) {
+        // reKey(..) with new encryption-key
+        NSString* encryptionKey = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+        NSData* encryptionKeyBytes = [encryptionKey dataUsingEncoding:NSUTF8StringEncoding];
+        [instance reKey:encryptionKeyBytes];
+      } else {
+        throw jsi::JSError(runtime, "First argument ('encryptionKey') has to be of type string (or undefined)!");
+      }
       return jsi::Value::undefined();
     });
   }
