@@ -13,17 +13,17 @@ const listener = storage.addOnValueChangedListener((changedKey) => {
 })
 ```
 
-Don't forget to remove the listener when no longer needed. For example, in a `useEffect` hook:
+Don't forget to remove the listener when no longer needed. For example, when the user logs out:
 
 ```ts
-useEffect(() => {
-  const listener = storage.addOnValueChangedListener((changedKey) => {
-    const newValue = storage.getString(changedKey)
-    console.log(`"${changedKey}" new value: ${newValue}`)
-  })
-  // cleanup function
-  return () => {
+function SettingsScreen() {
+  // ...
+
+  const onLogout = useCallback(() => {
+    // ...
     listener.remove()
-  }
-}, [storage])
+  }, [])
+
+  // ...
+}
 ```
