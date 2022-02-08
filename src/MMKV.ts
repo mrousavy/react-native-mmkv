@@ -206,6 +206,10 @@ export class MMKV implements MMKVInterface {
     return func(key);
   }
 
+  toString(): string {
+    return `MMKV (${this.id}): [${this.getAllKeys().join(', ')}]`;
+  }
+
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
     this.onValueChangedListeners.push(onValueChanged);
 
