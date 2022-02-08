@@ -31,7 +31,7 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("delete")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getAllKeys")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("deleteAll")));
-  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("encrypt")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("recrypt")));
   return result;
 }
 
@@ -187,8 +187,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                  });
   }
 
-  if (propName == "encrypt") {
-    // MMKV.encrypt(key)
+  if (propName == "recrypt") {
+    // MMKV.recrypt(key)
     return jsi::Function::createFromHostFunction(runtime,
                                                  jsi::PropNameID::forAscii(runtime, funcName),
                                                  0,

@@ -155,6 +155,16 @@ const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
 const userObject = JSON.parse(jsonUser)
 ```
 
+### Encryption
+
+```js
+// encrypt all data with a private key
+storage.recrypt('hunter2')
+
+// remove encryption
+storage.recrypt(undefined)
+```
+
 ## Documentation
 
 * [Hooks](./docs/HOOKS.md)

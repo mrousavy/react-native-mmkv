@@ -33,6 +33,8 @@ export interface MMKVConfiguration {
   /**
    * The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV.
    *
+   * Encryption keys can have a maximum length of 16 bytes.
+   *
    * @example
    * ```ts
    * const secureStorage = new MMKV({ encryptionKey: 'my-encryption-key!' })
@@ -89,10 +91,15 @@ interface MMKVInterface {
    * Sets (or updates) the encryption-key to encrypt all data in this MMKV instance with.
    *
    * To remove encryption, pass `undefined` as a key.
+   *
+   * Encryption keys can have a maximum length of 16 bytes.
    */
-  encrypt: (key: string | undefined) => void;
+  recrypt: (key: string | undefined) => void;
   /**
-   * Adds a value changed listener.
+   * Adds a value changed listener. The Listener will be called whenever any value
+   * in this storage instance changes (set or delete).
+   *
+   * To unsubscribe from value changes, call `remove()` on the Listener.
    */
   addOnValueChangedListener: (
     onValueChanged: (key: string) => void
@@ -109,7 +116,7 @@ export type NativeMMKV = Pick<
   | 'getNumber'
   | 'getString'
   | 'set'
-  | 'encrypt'
+  | 'recrypt'
 >;
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
@@ -201,8 +208,8 @@ export class MMKV implements MMKVInterface {
     const func = this.getFunctionFromCache('clearAll');
     return func();
   }
-  encrypt(key: string | undefined): void {
-    const func = this.getFunctionFromCache('encrypt');
+  recrypt(key: string | undefined): void {
+    const func = this.getFunctionFromCache('recrypt');
     return func(key);
   }
 
