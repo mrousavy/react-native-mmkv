@@ -82,7 +82,7 @@ To create a new instance of the MMKV storage, use the `MMKV` constructor. It is 
 ```js
 import { MMKV } from 'react-native-mmkv'
 
-const storage = new MMKV()
+export const storage = new MMKV()
 ```
 
 This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
@@ -92,7 +92,7 @@ This creates a new storage instance using the default MMKV storage ID (`mmkv.def
 ```js
 import { MMKV } from 'react-native-mmkv'
 
-const storage = new MMKV({
+export const storage = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
   encryptionKey: 'some-encryption-key'
