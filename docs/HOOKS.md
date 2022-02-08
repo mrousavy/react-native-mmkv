@@ -60,3 +60,25 @@ function App() {
   const [username, setUsername] = useMMKVString("user.name", userStorage)
 }
 ```
+
+## Listen to value changes
+
+```tsx
+function App() {
+  useMMKVListener((key) => {
+    console.log(`Value for "${key}" changed!`)
+  })
+}
+```
+
+## Listen to value changes on a specific instance
+
+```tsx
+function App() {
+  const storage = useMMKV({ id: `${userId}.storage` })
+
+  useMMKVListener((key) => {
+    console.log(`Value for "${key}" changed in user storage!`)
+  }, storage)
+}
+```
