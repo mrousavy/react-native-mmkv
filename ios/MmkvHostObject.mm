@@ -74,7 +74,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       if (!arguments[0].isString()) throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-      auto value = [instance getBoolForKey:keyName];
+      bool value = [instance getBoolForKey:keyName];
       return jsi::Value(value);
     });
   }
