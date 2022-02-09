@@ -16,7 +16,18 @@ MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, 
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* cryptKeyPtr = cryptKey.size() > 0 ? &cryptKey : nullptr;
   instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, cryptKeyPtr, pathPtr);
+
   if (instance == nullptr) {
+    // Check if instanceId is invalid
+    if (instanceId.empty()) {
+      throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
+    }
+
+    // Check if encryptionKey is invalid
+    if (cryptKey.size() > 16) {
+      throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
+    }
+
     throw std::runtime_error("Failed to create MMKV instance!");
   }
 }
