@@ -13,7 +13,25 @@
 MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey) {
   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
   instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+
   if (instance == nil) {
+    // Check if instanceId is invalid
+    if ([instanceId length] == 0) {
+      throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
+    }
+
+    // Check if encryptionKey is invalid
+    if (cryptData != nil && [cryptData length] > 16) {
+      throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
+    }
+
+    // Check if path is invalid
+    NSFileManager* fileManager = [[NSFileManager alloc] init];
+    bool pathExists = [fileManager fileExistsAtPath:path isDirectory:nil];
+    if (!pathExists) {
+      throw std::runtime_error("Failed to create MMKV instance! The given Storage Path does not exist!");
+    }
+
     throw std::runtime_error("Failed to create MMKV instance!");
   }
 }
