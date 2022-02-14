@@ -1,4 +1,3 @@
-import { unstable_batchedUpdates } from 'react-native';
 import { createMMKV } from './createMMKV';
 
 interface Listener {
@@ -158,14 +157,12 @@ export class MMKV implements MMKVInterface {
   private onValuesAboutToChange(keys: string[]) {
     if (this.onValueChangedListeners.length === 0) return;
 
-    setImmediate(() => {
-      unstable_batchedUpdates(() => {
-        for (const key of keys) {
-          for (const listener of this.onValueChangedListeners) {
-            listener(key);
-          }
+    requestAnimationFrame(() => {
+      for (const key of keys) {
+        for (const listener of this.onValueChangedListeners) {
+          listener(key);
         }
-      });
+      }
     });
   }
 
