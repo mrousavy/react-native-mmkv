@@ -3,10 +3,10 @@
 If you want to use MMKV with [mobx-persist](https://github.com/pinqy520/mobx-persist), create the following `hydrate` function:
 
 ```ts
-import { create } from "mobx-persist";
-import { MMKV } from "react-native-mmkv";
+import { create } from "mobx-persist"
+import { MMKV } from "react-native-mmkv"
 
-const storage = new MMKV();
+const storage = new MMKV()
 
 const mmkvStorage = {
   clear: () => {
@@ -25,12 +25,12 @@ const mmkvStorage = {
     storage.delete(key)
     return Promise.resolve()
   },
-};
+}
 
 const hydrate = create({
   storage: mmkvStorage,
   jsonify: true,
-});
+})
 
 ```
 
