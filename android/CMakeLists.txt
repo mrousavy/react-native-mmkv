@@ -13,9 +13,10 @@ include_directories(
 )
 
 if(${REACT_NATIVE_VERSION} LESS 66)
-        set (
-                INCLUDE_JSI_CPP
+        file(
+                TO_CMAKE_PATH 
                 "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
+                INCLUDE_JSI_CPP
         )
 endif()
 
