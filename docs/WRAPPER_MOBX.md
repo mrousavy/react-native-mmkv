@@ -4,6 +4,7 @@ If you want to use MMKV with [mobx-persist-store](https://github.com/quarrant/mo
 
 ```ts
 import { configurePersistable } from 'mobx-persist-store'
+import { MMKV } from "react-native-mmkv"
 
 const storage = new MMKV()
 
