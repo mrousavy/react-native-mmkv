@@ -10,7 +10,7 @@ import { MMKV } from 'react-native-mmkv'
 const storage = new MMKV()
 
 const zustandStorage: StateStorage = {
-  setItem: async (name, value) => {
+  setItem: (name, value) => {
     storage.set(name, value)
     return Promise.resolve()
   },
