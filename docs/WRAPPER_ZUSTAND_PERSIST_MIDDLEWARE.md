@@ -15,7 +15,7 @@ const zustandStorage: StateStorage = {
   },
   getItem: (name) => {
     const value = storage.getString(name)
-    return value || null
+    return value ?? null
   },
   removeItem: (name) => {
     return storage.delete(name)
