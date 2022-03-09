@@ -28,41 +28,41 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
     if (cxxBridge == nil) {
         return @false;
     }
-
+    
     using namespace facebook;
-
+    
     auto jsiRuntime = (jsi::Runtime*) cxxBridge.runtime;
     if (jsiRuntime == nil) {
         return @false;
     }
     auto& runtime = *jsiRuntime;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-    [MMKV initializeMMKV:storageDirectory];
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [MMKV initializeMMKV:storageDirectory];
     });
-  
+    
     // MMKV.createNewInstance()
     auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(runtime,
-                                                                        jsi::PropNameID::forAscii(runtime, "mmkvCreateNewInstance"),
-                                                                        1,
-                                                                        [](jsi::Runtime& runtime,
-                                                                           const jsi::Value& thisValue,
-                                                                           const jsi::Value* arguments,
-                                                                           size_t count) -> jsi::Value {
+                                                                       jsi::PropNameID::forAscii(runtime, "mmkvCreateNewInstance"),
+                                                                       1,
+                                                                       [](jsi::Runtime& runtime,
+                                                                          const jsi::Value& thisValue,
+                                                                          const jsi::Value* arguments,
+                                                                          size_t count) -> jsi::Value {
         if (count != 1) {
             throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
         }
         jsi::Object config = arguments[0].asObject(runtime);
-
+        
         NSString* instanceId = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
         NSString* path = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
         NSString* encryptionKey = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
-
+        
         auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
         return jsi::Object::createFromHostObject(runtime, instance);
     });
     runtime.global().setProperty(runtime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
-
+    
     NSLog(@"Installed global.mmkvCreateNewInstance!");
     return @true;
 }
