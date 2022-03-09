@@ -58,6 +58,7 @@ function createMMKVHook<
     const valueRef = useRef<T>(value);
     valueRef.current = value;
 
+    // update value by user set
     const set = useCallback(
       (v: TSetAction) => {
         const newValue = typeof v === 'function' ? v(valueRef.current) : v;
@@ -77,6 +78,16 @@ function createMMKVHook<
       [key, mmkv]
     );
 
+    // update value if key changes
+    const keyRef = useRef(key);
+    useEffect(() => {
+      if (key !== keyRef.current) {
+        setValue(getter(mmkv, key));
+        keyRef.current = key;
+      }
+    }, [key, mmkv]);
+
+    // update value if it changes somewhere else (second hook, same key)
     useEffect(() => {
       const listener = mmkv.addOnValueChangedListener((changedKey) => {
         if (changedKey === key) {
