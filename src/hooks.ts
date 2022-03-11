@@ -1,16 +1,12 @@
-import React, {
-  useRef,
-  useState,
-  useMemo,
-  useCallback,
-  useEffect,
-} from 'react';
+import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { MMKV, MMKVConfiguration } from './MMKV';
 
 function isConfigurationEqual(
-  left: MMKVConfiguration,
-  right: MMKVConfiguration
+  left?: MMKVConfiguration,
+  right?: MMKVConfiguration
 ): boolean {
+  if (left == null || right == null) return left == null && right == null;
+
   return (
     left.encryptionKey === right.encryptionKey &&
     left.id === right.id &&
@@ -26,14 +22,23 @@ function getDefaultInstance(): MMKV {
   return defaultInstance;
 }
 
-export function useMMKV(
-  configuration: MMKVConfiguration
-): React.RefObject<MMKV> {
+/**
+ * Use the default, shared MMKV instance.
+ */
+export function useMMKV(): MMKV;
+/**
+ * Use a custom MMKV instance with the given configuration.
+ * @param configuration The configuration to initialize the MMKV instance with. Does not have to be memoized.
+ */
+export function useMMKV(configuration: MMKVConfiguration): MMKV;
+export function useMMKV(configuration?: MMKVConfiguration): MMKV {
   const instance = useRef<MMKV>();
-
   const lastConfiguration = useRef<MMKVConfiguration>();
+
+  if (configuration == null) return getDefaultInstance();
+
   if (
-    lastConfiguration.current == null ||
+    instance.current == null ||
     !isConfigurationEqual(lastConfiguration.current, configuration)
   ) {
     lastConfiguration.current = configuration;
