@@ -14,7 +14,10 @@ using namespace facebook;
 
 RCT_EXPORT_MODULE(MMKV)
 
-+ (NSString*)getPropertyAsStringOrNilFromObject:(jsi::Object&)object propertyName:(std::string)propertyName runtime:(jsi::Runtime&)runtime {
++ (NSString*)getPropertyAsStringOrNilFromObject:(jsi::Object&)object
+                                   propertyName:(std::string)propertyName
+                                        runtime:(jsi::Runtime&)runtime
+{
     jsi::Value value = object.getProperty(runtime, propertyName.c_str());
     std::string string = value.isString() ? value.asString(runtime).utf8(runtime) : "";
     return string.length() > 0 ? [NSString stringWithUTF8String:string.c_str()] : nil;

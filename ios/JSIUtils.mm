@@ -75,16 +75,13 @@ jsi::Value convertObjCObjectToJSIValue(jsi::Runtime &runtime, id value)
     return jsi::Value::undefined();
 }
 
-id convertJSIValueToObjCObject(
-                               jsi::Runtime &runtime,
-                               const jsi::Value &value);
+id convertJSIValueToObjCObject(jsi::Runtime &runtime, const jsi::Value &value);
 NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::String &value)
 {
     return [NSString stringWithUTF8String:value.utf8(runtime).c_str()];
 }
 
-NSArray *convertJSIArrayToNSArray(
-                                  jsi::Runtime &runtime,
+NSArray *convertJSIArrayToNSArray(jsi::Runtime &runtime,
                                   const jsi::Array &value)
 {
     size_t size = value.size(runtime);
@@ -97,8 +94,7 @@ NSArray *convertJSIArrayToNSArray(
     return [result copy];
 }
 
-NSDictionary *convertJSIObjectToNSDictionary(
-                                             jsi::Runtime &runtime,
+NSDictionary *convertJSIObjectToNSDictionary(jsi::Runtime &runtime,
                                              const jsi::Object &value)
 {
     jsi::Array propertyNames = value.getPropertyNames(runtime);
@@ -115,8 +111,7 @@ NSDictionary *convertJSIObjectToNSDictionary(
     return [result copy];
 }
 
-RCTResponseSenderBlock convertJSIFunctionToCallback(
-                                                    jsi::Runtime &runtime,
+RCTResponseSenderBlock convertJSIFunctionToCallback(jsi::Runtime &runtime,
                                                     const jsi::Function &value)
 {
     __block auto cb = value.getFunction(runtime);
@@ -126,8 +121,7 @@ RCTResponseSenderBlock convertJSIFunctionToCallback(
     };
 }
 
-id convertJSIValueToObjCObject(
-                               jsi::Runtime &runtime,
+id convertJSIValueToObjCObject(jsi::Runtime &runtime,
                                const jsi::Value &value)
 {
     if (value.isUndefined() || value.isNull()) {
@@ -170,8 +164,7 @@ void Promise::reject(const std::string &message) {
     reject_.call(runtime_, error);
 }
 
-jsi::Value createPromiseAsJSIValue(
-                                   jsi::Runtime &rt,
+jsi::Value createPromiseAsJSIValue(jsi::Runtime &rt,
                                    const PromiseSetupFunctionType func) {
     jsi::Function JSPromise = rt.global().getPropertyAsFunction(rt, "Promise");
     jsi::Function fn = jsi::Function::createFromHostFunction(
