@@ -181,6 +181,10 @@ storage.recrypt(undefined)
 
 As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
 
+## Debugging
+
+Use [flipper-plugin-react-native-mmkv](https://github.com/muchobien/flipper-plugin-react-native-mmkv) to debug your MMKV storage using Flipper. You can also simply `console.log` an MMKV instance.
+
 ## Adopting at scale
 
 react-native-mmkv is provided _as is_, I work on it in my free time.
