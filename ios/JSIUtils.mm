@@ -29,6 +29,7 @@ jsi::String convertNSStringToJSIString(jsi::Runtime &runtime, NSString *value)
 }
 
 jsi::Value convertObjCObjectToJSIValue(jsi::Runtime &runtime, id value);
+
 jsi::Object convertNSDictionaryToJSIObject(jsi::Runtime &runtime, NSDictionary *value)
 {
     jsi::Object result = jsi::Object(runtime);
@@ -76,6 +77,7 @@ jsi::Value convertObjCObjectToJSIValue(jsi::Runtime &runtime, id value)
 }
 
 id convertJSIValueToObjCObject(jsi::Runtime &runtime, const jsi::Value &value);
+
 NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::String &value)
 {
     return [NSString stringWithUTF8String:value.utf8(runtime).c_str()];
@@ -142,7 +144,8 @@ id convertJSIValueToObjCObject(jsi::Runtime &runtime,
             return convertJSIArrayToNSArray(runtime, o.getArray(runtime));
         }
         if (o.isFunction(runtime)) {
-            return convertJSIFunctionToCallback(runtime, std::move(o.getFunction(runtime)));
+            return convertJSIFunctionToCallback(runtime,
+                                                std::move(o.getFunction(runtime)));
         }
         return convertJSIObjectToNSDictionary(runtime, o);
     }
@@ -153,33 +156,36 @@ id convertJSIValueToObjCObject(jsi::Runtime &runtime,
 Promise::Promise(jsi::Runtime &rt, jsi::Function resolve, jsi::Function reject)
 : runtime_(rt), resolve_(std::move(resolve)), reject_(std::move(reject)) {}
 
-void Promise::resolve(const jsi::Value &result) {
+void Promise::resolve(const jsi::Value &result)
+{
     resolve_.call(runtime_, result);
 }
 
-void Promise::reject(const std::string &message) {
+void Promise::reject(const std::string &message)
+{
     jsi::Object error(runtime_);
-    error.setProperty(
-                      runtime_, "message", jsi::String::createFromUtf8(runtime_, message));
+    error.setProperty(runtime_,
+                      "message",
+                      jsi::String::createFromUtf8(runtime_, message));
     reject_.call(runtime_, error);
 }
 
 jsi::Value createPromiseAsJSIValue(jsi::Runtime &rt,
-                                   const PromiseSetupFunctionType func) {
+                                   const PromiseSetupFunctionType func)
+{
     jsi::Function JSPromise = rt.global().getPropertyAsFunction(rt, "Promise");
-    jsi::Function fn = jsi::Function::createFromHostFunction(
-                                                             rt,
+    jsi::Function fn = jsi::Function::createFromHostFunction(rt,
                                                              jsi::PropNameID::forAscii(rt, "fn"),
                                                              2,
-                                                             [func](
-                                                                    jsi::Runtime &rt2,
+                                                             [func](jsi::Runtime &rt2,
                                                                     const jsi::Value &thisVal,
                                                                     const jsi::Value *args,
                                                                     size_t count) {
         jsi::Function resolve = args[0].getObject(rt2).getFunction(rt2);
         jsi::Function reject = args[1].getObject(rt2).getFunction(rt2);
-        auto wrapper = std::make_shared<Promise>(
-                                                 rt2, std::move(resolve), std::move(reject));
+        auto wrapper = std::make_shared<Promise>(rt2,
+                                                 std::move(resolve),
+                                                 std::move(reject));
         func(rt2, wrapper);
         return jsi::Value::undefined();
     });
