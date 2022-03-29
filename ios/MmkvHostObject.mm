@@ -10,7 +10,8 @@
 #import "MmkvHostObject.h"
 #import "JSIUtils.h"
 
-MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey) {
+MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey)
+{
   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
   instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
 
@@ -36,7 +37,8 @@ MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* c
   }
 }
 
-std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
+std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt)
+{
   std::vector<jsi::PropNameID> result;
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBoolean")));
@@ -50,7 +52,8 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   return result;
 }
 
-jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& propNameId) {
+jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& propNameId)
+{
   auto propName = propNameId.utf8(runtime);
   auto funcName = "MMKV." + propName;
 
