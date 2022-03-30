@@ -34,8 +34,16 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     delete: (key) => storage().removeItem(key),
     set: (key, value) => storage().setItem(key, value.toString()),
     getString: (key) => storage().getItem(key) ?? undefined,
-    getNumber: (key) => Number(storage().getItem(key) ?? 0),
-    getBoolean: (key) => Boolean(storage().getItem(key) ?? false),
+    getNumber: (key) => {
+      const value = storage().getItem(key);
+      if (value == null) return undefined;
+      return Number(value);
+    },
+    getBoolean: (key) => {
+      const value = storage().getItem(key);
+      if (value == null) return undefined;
+      return Boolean(value);
+    },
     getAllKeys: () => Object.keys(storage()),
     contains: (key) => storage().getItem(key) != null,
     recrypt: () => {
