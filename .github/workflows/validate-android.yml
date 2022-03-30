@@ -7,11 +7,13 @@ on:
     paths:
       - '.github/workflows/validate-android.yml'
       - 'android/**'
+      - 'MMKV/**'
       - '.editorconfig'
   pull_request:
     paths:
       - '.github/workflows/validate-android.yml'
       - 'android/**'
+      - 'MMKV/**'
       - '.editorconfig'
 
 jobs:

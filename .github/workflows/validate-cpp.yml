@@ -7,11 +7,13 @@ on:
     paths:
       - '.github/workflows/validate-cpp.yml'
       - 'cpp/**'
+      - 'MMKV/**'
       - 'android/src/main/cpp/**'
   pull_request:
     paths:
       - '.github/workflows/validate-cpp.yml'
       - 'cpp/**'
+      - 'MMKV/**'
       - 'android/src/main/cpp/**'
 
 jobs:
