@@ -11,9 +11,9 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.66.0)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - MMKV (1.2.10):
-    - MMKVCore (~> 1.2.10)
-  - MMKVCore (1.2.10)
+  - MMKV (1.2.13):
+    - MMKVCore (~> 1.2.13)
+  - MMKVCore (1.2.13)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -213,7 +213,7 @@ PODS:
   - React-logger (0.66.0):
     - glog
   - react-native-mmkv (2.2.0):
-    - MMKV
+    - MMKV (>= 1.2.13)
     - React-Core
   - React-perflogger (0.66.0)
   - React-RCTActionSheet (0.66.0):
@@ -399,8 +399,8 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 3b1e86618e902743fde35b40cf9ebd100fd655b7
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
-  MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
-  MMKVCore: b00e7a09ec77a1b916aef336eedd3b99ec249978
+  MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
+  MMKVCore: 3388952ded307e41b3ed8a05892736a236ed1b8e
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: e4a18a90004e0ed97bba9081099104fd0f658dc9
   RCTTypeSafety: 8a3c31d38de58e1a6a7df6e4e643644a60b00e22
@@ -413,7 +413,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 6a05173dc0142abc582bd4edd2d23146b8cc218a
   React-jsinspector: be95ad424ba9f7b817aff22732eb9b1b810a000a
   React-logger: 9a9cd87d4ea681ae929b32ef580638ff1b50fb24
-  react-native-mmkv: 2a15aadabf649c364cab7975eef52848611eea25
+  react-native-mmkv: b3fbff006ba573aa9244174166bbf18d8dc210a7
   React-perflogger: 1f554c2b684e2f484f9edcdfdaeedab039fbaca8
   React-RCTActionSheet: 610d5a5d71ab4808734782c8bca6a12ec3563672
   React-RCTAnimation: ec6ed97370ace32724c253f29f0586cafcab8126
@@ -431,4 +431,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ff9edaeddbabd71ed0391ba2617d0998f8c3e9ba
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2
