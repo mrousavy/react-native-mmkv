@@ -72,13 +72,17 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
       if (arguments[1].isBool()) {
+        // Set as boolean
         [instance setBool:arguments[1].getBool() forKey:keyName];
       } else if (arguments[1].isNumber()) {
+        // Set as number (double in JS)
         [instance setDouble:arguments[1].getNumber() forKey:keyName];
       } else if (arguments[1].isString()) {
+        // Set as UTF-8 string
         auto stringValue = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
         [instance setString:stringValue forKey:keyName];
       } else {
+        // Invalid type
         throw jsi::JSError(runtime, "Second argument ('value') has to be of type bool, number or string!");
       }
 
