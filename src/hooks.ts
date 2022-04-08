@@ -45,8 +45,7 @@ export function useMMKV(configuration?: MMKVConfiguration): MMKV {
     instance.current = new MMKV(configuration);
   }
 
-  // @ts-expect-error it's not null, I promise.
-  return instance;
+  return instance.current;
 }
 
 function createMMKVHook<
