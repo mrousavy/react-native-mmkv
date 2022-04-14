@@ -1580,10 +1580,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^17.0.21":
-  version "17.0.27"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.27.tgz#6498ed9b3ad117e818deb5525fa1946c09f2e0e6"
-  integrity sha512-zgiJwtsggVGtr53MndV7jfiUESTqrbxOcBvwfe6KS/9bzaVPCTDieTWnFNecVNx6EAaapg5xsLLWFfHHR437AA==
+"@types/react@*", "@types/react@^18.0.4":
+  version "18.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.4.tgz#88e9eddd8788fdf60dcf260b1cff2fb7487e4373"
+  integrity sha512-Zm4ryWh9xQbMX6ge7Ej/nS6VBoT+9wzvwd/hZ+9EONGjBkejyyvEKndZt/DZHHj1lSU/YeTPyJAn22S3GnYchQ==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
