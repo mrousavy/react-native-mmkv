@@ -228,10 +228,10 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
   }
 
   if (propName == "recrypt") {
-    // MMKV.recrypt(key)
+    // MMKV.recrypt(encryptionKey)
     return jsi::Function::createFromHostFunction(runtime,
                                                  jsi::PropNameID::forAscii(runtime, funcName),
-                                                 0,
+                                                 1, // encryptionKey
                                                  [this](jsi::Runtime& runtime,
                                                         const jsi::Value& thisValue,
                                                         const jsi::Value* arguments,
