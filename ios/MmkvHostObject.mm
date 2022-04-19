@@ -107,7 +107,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       BOOL hasValue;
       auto value = [instance getBoolForKey:keyName defaultValue:false hasValue:&hasValue];
       if (hasValue) {
-        return jsi::Value(value);
+        return jsi::Value(value == true);
       } else {
         return jsi::Value::undefined();
       }
