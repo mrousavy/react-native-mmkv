@@ -42,7 +42,7 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     getBoolean: (key) => {
       const value = storage().getItem(key);
       if (value == null) return undefined;
-      return Boolean(value);
+      return value === 'true';
     },
     getAllKeys: () => Object.keys(storage()),
     contains: (key) => storage().getItem(key) != null,
