@@ -42,14 +42,6 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     getBoolean: (key) => {
       const value = storage().getItem(key);
       if (value == null) return undefined;
-      /**
-       * local storage saves keys and values in utf-16 dom strings
-       * @link https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage#description
-       * true is saved as 'true', false as 'false'
-       * so if value == 'true' return true
-       * if value == 'false' return false
-       * I just simplified the conditions
-       */
       return value === 'true';
     },
     getAllKeys: () => Object.keys(storage()),
