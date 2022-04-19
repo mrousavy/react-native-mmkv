@@ -104,7 +104,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-      bool hasValue;
+      BOOL hasValue;
       auto value = [instance getBoolForKey:keyName defaultValue:false hasValue:&hasValue];
       if (hasValue) {
         return jsi::Value(value);
@@ -151,7 +151,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
 
       auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
-      bool hasValue;
+      BOOL hasValue;
       auto value = [instance getDoubleForKey:keyName defaultValue:0.0 hasValue:&hasValue];
       if (hasValue) {
         return jsi::Value(value);
