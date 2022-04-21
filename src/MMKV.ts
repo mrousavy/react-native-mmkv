@@ -1,4 +1,3 @@
-import { unstable_batchedUpdates } from 'react-native';
 import { createMMKV } from './createMMKV';
 
 interface Listener {
@@ -155,25 +154,21 @@ export class MMKV implements MMKVInterface {
     return this.functionCache[functionName] as NativeMMKV[T];
   }
 
-  private onValuesAboutToChange(keys: string[]) {
+  private onValuesChanged(keys: string[]) {
     if (this.onValueChangedListeners.length === 0) return;
 
-    setImmediate(() => {
-      unstable_batchedUpdates(() => {
-        for (const key of keys) {
-          for (const listener of this.onValueChangedListeners) {
-            listener(key);
-          }
-        }
-      });
-    });
+    for (const key of keys) {
+      for (const listener of this.onValueChangedListeners) {
+        listener(key);
+      }
+    }
   }
 
   set(key: string, value: boolean | string | number): void {
-    this.onValuesAboutToChange([key]);
-
     const func = this.getFunctionFromCache('set');
-    return func(key, value);
+    func(key, value);
+
+    this.onValuesChanged([key]);
   }
   getBoolean(key: string): boolean | undefined {
     const func = this.getFunctionFromCache('getBoolean');
@@ -192,10 +187,10 @@ export class MMKV implements MMKVInterface {
     return func(key);
   }
   delete(key: string): void {
-    this.onValuesAboutToChange([key]);
-
     const func = this.getFunctionFromCache('delete');
-    return func(key);
+    func(key);
+
+    this.onValuesChanged([key]);
   }
   getAllKeys(): string[] {
     const func = this.getFunctionFromCache('getAllKeys');
@@ -203,10 +198,11 @@ export class MMKV implements MMKVInterface {
   }
   clearAll(): void {
     const keys = this.getAllKeys();
-    this.onValuesAboutToChange(keys);
 
     const func = this.getFunctionFromCache('clearAll');
-    return func();
+    func();
+
+    this.onValuesChanged(keys);
   }
   recrypt(key: string | undefined): void {
     const func = this.getFunctionFromCache('recrypt');
