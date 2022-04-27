@@ -232,7 +232,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                                         size_t count) -> jsi::Value {
       if (arguments[0].isUndefined()) {
         // reset encryption key to "no encryption"
-        instance->reKey(nullptr);
+        instance->reKey(std::string());
       } else if (arguments[0].isString()) {
         // reKey(..) with new encryption-key
         auto encryptionKey = arguments[0].getString(runtime).utf8(runtime);
