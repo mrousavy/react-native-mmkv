@@ -170,6 +170,10 @@ storage.recrypt('hunter2')
 storage.recrypt(undefined)
 ```
 
+## Testing with Jest
+
+A mocked MMKV instance is automatically used when testing with Jest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [example/test/MMKV.test.ts](example/test/MMKV.test.ts) for an example.
+
 ## Documentation
 
 * [Hooks](./docs/HOOKS.md)
