@@ -1,4 +1,5 @@
 {
+  "exclude": ["example"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

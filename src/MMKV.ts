@@ -1,4 +1,6 @@
 import { createMMKV } from './createMMKV';
+import { createMockMMKV } from './createMMKV.mock';
+import { isJest } from './PlatformChecker';
 
 interface Listener {
   remove: () => void;
@@ -134,7 +136,9 @@ export class MMKV implements MMKVInterface {
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
-    this.nativeInstance = createMMKV(configuration);
+    this.nativeInstance = isJest()
+      ? createMockMMKV()
+      : createMMKV(configuration);
     this.functionCache = {};
   }
 
