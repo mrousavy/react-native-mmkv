@@ -3,12 +3,6 @@ import * as React from 'react';
 import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV, useMMKVString } from 'react-native-mmkv';
 
-// Uncomment to run benchmark
-// import { benchmarkAgainstAsyncStorage } from './Benchmarks';
-// setTimeout(async () => {
-//   await benchmarkAgainstAsyncStorage();
-// }, 5000);
-
 const storage = new MMKV();
 
 export default function App() {

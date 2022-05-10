@@ -52,11 +52,15 @@ react-native-mmkv is sponsored by **getstream.io**. <br/>
 
 ## Benchmark
 
+[StorageBenchmark](https://github.com/mrousavy/StorageBenchmark) compares popular storage libraries against each other by reading a value from storage for 1000 times:
+
 <div align="center">
-  <img src="./img/benchmark_1000_get.png" />
+  <a href="https://github.com/mrousavy/StorageBenchmark">
+    <img src="./img/benchmark_1000_get.png" />
+  </a>
   <p>
-    <b>AsyncStorage vs MMKV</b>: Reading a value from Storage 1000 times. <br/>
-    Measured in milliseconds on an iPhone 8, lower is better.
+    <b>MMKV vs other storage libraries</b>: Reading a value from Storage 1000 times. <br/>
+    Measured in milliseconds on an iPhone 11 Pro, lower is better. <br/>
   </p>
 </div>
 
