@@ -212,7 +212,7 @@ PODS:
   - React-jsinspector (0.66.0)
   - React-logger (0.66.0):
     - glog
-  - react-native-mmkv (2.3.2):
+  - react-native-mmkv (2.3.3):
     - MMKV (>= 1.2.13)
     - React-Core
   - React-perflogger (0.66.0)
@@ -413,7 +413,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 6a05173dc0142abc582bd4edd2d23146b8cc218a
   React-jsinspector: be95ad424ba9f7b817aff22732eb9b1b810a000a
   React-logger: 9a9cd87d4ea681ae929b32ef580638ff1b50fb24
-  react-native-mmkv: bea43e43a28ef57896879ac8074f1fe6e9f4bb5a
+  react-native-mmkv: 30297e5e2a65341b36a727c1c79b0aff0132b396
   React-perflogger: 1f554c2b684e2f484f9edcdfdaeedab039fbaca8
   React-RCTActionSheet: 610d5a5d71ab4808734782c8bca6a12ec3563672
   React-RCTAnimation: ec6ed97370ace32724c253f29f0586cafcab8126
