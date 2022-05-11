@@ -30,6 +30,7 @@
     "lint-ci": "yarn lint -f ./node_modules/@firmnav/eslint-github-actions-formatter/dist/formatter.js",
     "prepare": "git submodule update --init --recursive",
     "build": "bob build",
+    "prepack": "bob build",
     "update-submodule": "git submodule update --remote --merge",
     "release": "release-it",
     "example": "yarn --cwd example",
