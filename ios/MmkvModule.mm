@@ -60,8 +60,9 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
         NSString* instanceId = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
         NSString* path = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
         NSString* encryptionKey = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
+        NSString* appGroup = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"appGroup" runtime:runtime];
         
-        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
+        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey, appGroup);
         return jsi::Object::createFromHostObject(runtime, instance);
     });
     runtime.global().setProperty(runtime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
