@@ -42,6 +42,15 @@ export interface MMKVConfiguration {
    * ```
    */
   encryptionKey?: string;
+  /**
+   * The MMKV instance's app group name `(IOS Only)`. It is used to share MMKV instances between apps and extensions within the app group. Check this https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration
+   * 
+   * @example
+   * ```ts
+   * const mmkvInstance = new MMKV({appGroup: 'group.mmkv-example'})
+   * ```
+   */
+   appGroup?: string;
 }
 
 /**
