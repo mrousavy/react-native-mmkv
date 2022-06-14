@@ -37,3 +37,11 @@ export const atomWithStorage = <T>(key: string, initialValue: T) =>
     })),
   );
 ```
+
+Then simply use this `atomWithStorage` when creating an atom you'd like to persist accross app starts.
+
+```ts
+const myAtom = atomWithStorage('my-atom-key', 'value');
+```
+
+See the official Jotai doc here: https://jotai.org/docs/utils/atom-with-storage
