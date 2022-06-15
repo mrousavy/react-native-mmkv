@@ -10,15 +10,16 @@
 #import "MmkvHostObject.h"
 #import "JSIUtils.h"
 
-MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey, NSString* appGroup)
+MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey)
 {
-  NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup].path;
   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
-  if (appGroup == nil) {
-    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
-  } else {
-    [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+
+  // Get appGroup value from info.plist using key "AppGroup"
+  NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+  if (appGroup != nil) {
     instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData mode:MMKVMultiProcess];
+  } else {
+    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
   }
 
   if (instance == nil) {
