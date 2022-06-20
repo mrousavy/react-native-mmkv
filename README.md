@@ -187,6 +187,7 @@ A mocked MMKV instance is automatically used when testing with Jest, so you will
 * [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 * [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
 * [Using MMKV with zustand persist-middleware](./docs/WRAPPER_ZUSTAND_PERSIST_MIDDLEWARE.md)
+* [Using MMKV with Jotai](./docs/WRAPPER_JOTAI.md)
 * [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
 
 ## Limitations
