@@ -160,7 +160,19 @@ dependencies {
   extractJNI("com.facebook.fbjni:fbjni:+")
 
   if (!sourceBuild) {
-    def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include "**/**/*.aar" }).singleFile
+    def buildType = "debug"
+    tasks.all({ task ->
+        if (task.name == "buildCMakeRelease") {
+            buildType = "release"
+        }
+    })
+    def rnAarMatcher = "**/react-native/**/*${buildType}.aar"
+    def (major, minor, patch) = reactProperties.getProperty("VERSION_NAME").tokenize('.')
+    def rnMinorVersion = Integer.parseInt(minor)
+    if (rnMinorVersion < 69) {
+        rnAarMatcher = "**/**/*.aar"
+    }
+    def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include rnAarMatcher }).singleFile
     extractJNI(files(rnAAR))
   }
 }
