@@ -162,13 +162,13 @@ dependencies {
   if (!sourceBuild) {
     def buildType = "debug"
     tasks.all({ task ->
-        if (task.name == "buildCMakeRelease") {
-            buildType = "release"
-        }
+      if (task.name == "buildCMakeRelease") {
+        buildType = "release"
+      }
     })
     def rnAarMatcher = "**/react-native/**/*${buildType}.aar"
     if (REACT_NATIVE_VERSION < 69) {
-        rnAarMatcher = "**/**/*.aar"
+      rnAarMatcher = "**/**/*.aar"
     }
     def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include rnAarMatcher }).singleFile
     extractJNI(files(rnAAR))
