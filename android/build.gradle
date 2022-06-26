@@ -167,9 +167,7 @@ dependencies {
         }
     })
     def rnAarMatcher = "**/react-native/**/*${buildType}.aar"
-    def (major, minor, patch) = reactProperties.getProperty("VERSION_NAME").tokenize('.')
-    def rnMinorVersion = Integer.parseInt(minor)
-    if (rnMinorVersion < 69) {
+    if (REACT_NATIVE_VERSION < 69) {
         rnAarMatcher = "**/**/*.aar"
     }
     def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include rnAarMatcher }).singleFile
