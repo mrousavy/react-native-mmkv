@@ -84,12 +84,25 @@ function createMMKVHook<
 
     // update value if key changes
     const keyRef = useRef(key);
+
     useEffect(() => {
       if (key !== keyRef.current) {
         setValue(getter(mmkv, key));
         keyRef.current = key;
       }
     }, [key, mmkv]);
+
+    // update value if instance changes
+    // Note: the ref should be the instance ID 
+    const instanceRef = useRef(JSON.stringify(mmkv));
+
+    useEffect(() => {
+      // Note: we should compare instance id for better performance
+      if (instanceRef.current !== JSON.stringify(mmkv)) {
+        setValue(getter(mmkv, key));
+        instanceRef.current = JSON.stringify(mmkv);
+      }
+    }, [mmkv]);
 
     // update value if it changes somewhere else (second hook, same key)
     useEffect(() => {
