@@ -82,13 +82,9 @@ function createMMKVHook<
       [key, mmkv]
     );
 
-    // update value if key changes
-    const keyRef = useRef(key);
+    // update value if key or instance changes
     useEffect(() => {
-      if (key !== keyRef.current) {
-        setValue(getter(mmkv, key));
-        keyRef.current = key;
-      }
+      setValue(getter(mmkv, key));
     }, [key, mmkv]);
 
     // update value if it changes somewhere else (second hook, same key)
