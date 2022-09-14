@@ -26,7 +26,7 @@ function clearAll(): void {
 }
 
 export const atomWithMMKV = <T>(key: string, initialValue: T) =>
-  jotaiAtomWithStorage<T>(
+  atomWithStorage<T>(
     key,
     initialValue,
     createJSONStorage<T>(() => ({
