@@ -357,8 +357,12 @@ def nativeBuildDependsOn(dependsOnTask, variant) {
 
 afterEvaluate {
   if (sourceBuild) {
-    nativeBuildDependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck", "Debug")
-    nativeBuildDependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck", "Rel")
+    if (REACT_NATIVE_VERSION < 68) {
+      nativeBuildDependsOn(":ReactAndroid:packageReactNdkLibsForBuck", null)
+    } else {
+      nativeBuildDependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck", "Debug")
+      nativeBuildDependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck", "Rel")
+    }
   } else {
     nativeBuildDependsOn(extractAARHeaders, null)
     nativeBuildDependsOn(extractJNIFiles, null)
