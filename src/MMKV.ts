@@ -51,7 +51,7 @@ interface MMKVInterface {
   /**
    * Set a value for the given `key`.
    */
-  set: (key: string, value: boolean | string | number) => void;
+  set: (key: string, value: boolean | string | number | Uint8Array) => void;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
@@ -70,6 +70,12 @@ interface MMKVInterface {
    * @default undefined
    */
   getNumber: (key: string) => number | undefined;
+  /**
+   * Get a raw buffer of unsigned 8-bit (0-255) data.
+   *
+   * @default undefined
+   */
+  getBuffer: (key: string) => Uint8Array | undefined;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
@@ -116,6 +122,7 @@ export type NativeMMKV = Pick<
   | 'getBoolean'
   | 'getNumber'
   | 'getString'
+  | 'getBuffer'
   | 'set'
   | 'recrypt'
 >;
@@ -168,7 +175,7 @@ export class MMKV implements MMKVInterface {
     }
   }
 
-  set(key: string, value: boolean | string | number): void {
+  set(key: string, value: boolean | string | number | Uint8Array): void {
     const func = this.getFunctionFromCache('set');
     func(key, value);
 
@@ -184,6 +191,10 @@ export class MMKV implements MMKVInterface {
   }
   getNumber(key: string): number | undefined {
     const func = this.getFunctionFromCache('getNumber');
+    return func(key);
+  }
+  getBuffer(key: string): Uint8Array | undefined {
+    const func = this.getFunctionFromCache('getBuffer');
     return func(key);
   }
   contains(key: string): boolean {
