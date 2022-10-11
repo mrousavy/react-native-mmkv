@@ -22,6 +22,7 @@ export const createMockMMKV = (): NativeMMKV => {
     },
     getAllKeys: () => Array.from(storage.keys()),
     contains: (key) => storage.has(key),
+    trim: () => {},
     recrypt: () => {
       console.warn('Encryption is not supported in mocked MMKV instances!');
     },
