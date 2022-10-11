@@ -194,7 +194,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         if (hasValue) {
           auto length = buffer.length();
           TypedArray<TypedArrayKind::Uint8Array> array(runtime, length);
-          unsigned char* data = (unsigned char*) buffer.getPtr();
+          auto data = static_cast<const unsigned char*>(buffer.getPtr());
           std::vector<unsigned char> vector(length);
           vector.assign(data, data + length);
           array.update(runtime, vector);
