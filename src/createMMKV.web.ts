@@ -1,5 +1,6 @@
 /* global localStorage */
 import type { MMKVConfiguration, NativeMMKV } from 'react-native-mmkv';
+import { createTextEncoder } from './createTextEncoder';
 
 const canUseDOM =
   typeof window !== 'undefined' && window.document?.createElement != null;
@@ -29,6 +30,8 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     return domStorage;
   };
 
+  const textEncoder = createTextEncoder();
+
   return {
     clearAll: () => storage().clear(),
     delete: (key) => storage().removeItem(key),
@@ -43,6 +46,11 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
       const value = storage().getItem(key);
       if (value == null) return undefined;
       return value === 'true';
+    },
+    getBuffer: (key) => {
+      const value = storage().getItem(key);
+      if (value == null) return undefined;
+      return textEncoder.encode(value);
     },
     getAllKeys: () => Object.keys(storage()),
     contains: (key) => storage().getItem(key) != null,
