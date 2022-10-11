@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "MmkvHostObject.h"
 #import "JSIUtils.h"
+#import "TypedArray.h"
+#import <vector>
 
 MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey)
 {
@@ -81,6 +83,20 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         // Set as UTF-8 string
         auto stringValue = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
         [instance setString:stringValue forKey:keyName];
+      } else if (arguments[1].isObject()) {
+        // object
+        auto object = arguments[1].asObject(runtime);
+        if (isTypedArray(runtime, object)) {
+          // Uint8Array
+          auto typedArray = getTypedArray(runtime, object);
+          auto bufferValue = typedArray.getBuffer(runtime);
+          auto data = [[NSData alloc] initWithBytes:bufferValue.data(runtime)
+                                             length:bufferValue.length(runtime)];
+          [instance setData:data forKey:keyName];
+        } else {
+          // unknown object
+          throw jsi::JSError(runtime, "MMKV::set: 'value' argument is an object, but not of type Uint8Array!");
+        }
       } else {
         // Invalid type
         throw jsi::JSError(runtime, "Second argument ('value') has to be of type bool, number or string!");
@@ -136,7 +152,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
     });
   }
-
+    
   if (propName == "getNumber") {
     // MMKV.getNumber(key: string)
     return jsi::Function::createFromHostFunction(runtime,
@@ -155,6 +171,34 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       auto value = [instance getDoubleForKey:keyName defaultValue:0.0 hasValue:&hasValue];
       if (hasValue) {
         return jsi::Value(value);
+      } else {
+        return jsi::Value::undefined();
+      }
+    });
+  }
+
+  if (propName == "getBuffer") {
+    // MMKV.getBuffer(key: string)
+    return jsi::Function::createFromHostFunction(runtime,
+                                                 jsi::PropNameID::forAscii(runtime, funcName),
+                                                 1,  // key
+                                                 [this](jsi::Runtime& runtime,
+                                                        const jsi::Value& thisValue,
+                                                        const jsi::Value* arguments,
+                                                        size_t count) -> jsi::Value {
+      if (!arguments[0].isString()) {
+        throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
+      }
+
+      auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
+      auto data = [instance getDataForKey:keyName];
+      if (data != nil) {
+        TypedArray<TypedArrayKind::Uint8Array> array(runtime, data.length);
+        auto charArray = static_cast<const unsigned char*>([data bytes]);
+        std::vector<unsigned char> vector(data.length);
+        vector.assign(charArray, charArray + data.length);
+        array.update(runtime, vector);
+        return array;
       } else {
         return jsi::Value::undefined();
       }

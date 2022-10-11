@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Mmkv.mm */; };
 		B81384EA26E23A8500A8507D /* MmkvHostObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B81384E926E23A8500A8507D /* MmkvHostObject.mm */; };
+		B8A8A9BE28F5797400345076 /* MmkvModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8A8A9BD28F5797400345076 /* MmkvModule.mm */; };
 		B8CC270225E65597009808A2 /* JSIUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8CC270125E65597009808A2 /* JSIUtils.mm */; };
 /* End PBXBuildFile section */
 
@@ -26,10 +26,11 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libMmkv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMmkv.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5891CC2AC0600A0062D /* Mmkv.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Mmkv.mm; sourceTree = "<group>"; };
 		B81384E926E23A8500A8507D /* MmkvHostObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MmkvHostObject.mm; sourceTree = "<group>"; };
 		B81384EB26E23A8D00A8507D /* MmkvHostObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmkvHostObject.h; sourceTree = "<group>"; };
-		B865949C25E63C5C002102DB /* Mmkv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mmkv.h; sourceTree = "<group>"; };
+		B8A8A9BC28F5797400345076 /* MmkvModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MmkvModule.h; sourceTree = "<group>"; };
+		B8A8A9BD28F5797400345076 /* MmkvModule.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MmkvModule.mm; sourceTree = "<group>"; };
+		B8A8A9BF28F5798100345076 /* cpp */ = {isa = PBXFileReference; lastKnownFileType = folder; name = cpp; path = ../cpp; sourceTree = "<group>"; };
 		B8CC270125E65597009808A2 /* JSIUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JSIUtils.mm; sourceTree = "<group>"; };
 		B8CC270425E655AD009808A2 /* JSIUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JSIUtils.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -60,8 +61,9 @@
 				B81384E926E23A8500A8507D /* MmkvHostObject.mm */,
 				B8CC270425E655AD009808A2 /* JSIUtils.h */,
 				B8CC270125E65597009808A2 /* JSIUtils.mm */,
-				B865949C25E63C5C002102DB /* Mmkv.h */,
-				B3E7B5891CC2AC0600A0062D /* Mmkv.mm */,
+				B8A8A9BC28F5797400345076 /* MmkvModule.h */,
+				B8A8A9BD28F5797400345076 /* MmkvModule.mm */,
+				B8A8A9BF28F5798100345076 /* cpp */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -123,8 +125,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E555C0D2413F4C50049A1A2 /* Mmkv.mm in Sources */,
 				B81384EA26E23A8500A8507D /* MmkvHostObject.mm in Sources */,
+				B8A8A9BE28F5797400345076 /* MmkvModule.mm in Sources */,
 				B8CC270225E65597009808A2 /* JSIUtils.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
