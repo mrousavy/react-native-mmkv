@@ -20,7 +20,7 @@
     "ios/**/*.m",
     "ios/**/*.mm",
     "ios/**/*.cpp",
-    "ios/Mmkv.xcodeproj/project.pbxproj",
+    "ios/RNMMKV.xcodeproj/project.pbxproj",
     "react-native-mmkv.podspec",
     "README.md"
   ],
