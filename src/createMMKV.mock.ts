@@ -2,7 +2,7 @@ import type { NativeMMKV } from 'react-native-mmkv';
 
 /* Mock MMKV instance for use in tests */
 export const createMockMMKV = (): NativeMMKV => {
-  const storage = new Map<string, string | boolean | number>();
+  const storage = new Map<string, string | boolean | number | Uint8Array>();
 
   return {
     clearAll: () => storage.clear(),
@@ -19,6 +19,10 @@ export const createMockMMKV = (): NativeMMKV => {
     getBoolean: (key) => {
       const result = storage.get(key);
       return typeof result === 'boolean' ? result : undefined;
+    },
+    getBuffer: (key) => {
+      const result = storage.get(key);
+      return result instanceof Uint8Array ? result : undefined;
     },
     getAllKeys: () => Array.from(storage.keys()),
     contains: (key) => storage.has(key),

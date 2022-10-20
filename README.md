@@ -174,6 +174,14 @@ storage.recrypt('hunter2')
 storage.recrypt(undefined)
 ```
 
+### Buffers
+
+```js
+storage.set('someToken', new Uint8Array([1, 100, 255]))
+const buffer = storage.getBuffer('someToken')
+console.log(buffer) // [1, 100, 255]
+```
+
 ## Testing with Jest
 
 A mocked MMKV instance is automatically used when testing with Jest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [example/test/MMKV.test.ts](example/test/MMKV.test.ts) for an example.

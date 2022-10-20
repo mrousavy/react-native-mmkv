@@ -7,6 +7,7 @@ add_subdirectory(../MMKV/Core core)
 
 include_directories(
         ../MMKV/Core
+        ../cpp
         "${NODE_MODULES_DIR}/react-native/React"
         "${NODE_MODULES_DIR}/react-native/React/Base"
         "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi"
@@ -14,7 +15,7 @@ include_directories(
 
 if(${REACT_NATIVE_VERSION} LESS 66)
         file(
-                TO_CMAKE_PATH 
+                TO_CMAKE_PATH
                 "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
                 INCLUDE_JSI_CPP
         )
@@ -24,6 +25,7 @@ add_library(reactnativemmkv  # <-- Library name
         SHARED
         src/main/cpp/cpp-adapter.cpp
         src/main/cpp/MmkvHostObject.cpp
+        ../cpp/TypedArray.cpp
         ${INCLUDE_JSI_CPP} # only on older RN versions
 )
 

@@ -12,6 +12,7 @@
     "android/build.gradle",
     "android/gradle.properties",
     "android/CMakeLists.txt",
+    "cpp",
     "MMKV/Core",
     "lib/commonjs",
     "lib/module",
