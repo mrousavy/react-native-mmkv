@@ -49,7 +49,7 @@ export function useMMKV(configuration?: MMKVConfiguration): MMKV {
 }
 
 function createMMKVHook<
-  T extends (boolean | number | string) | undefined,
+  T extends (boolean | number | string | Uint8Array) | undefined,
   TSet extends T | undefined,
   TSetAction extends TSet | ((current: T) => TSet)
 >(getter: (instance: MMKV, key: string) => T) {
@@ -140,6 +140,19 @@ export const useMMKVNumber = createMMKVHook((instance, key) =>
  */
 export const useMMKVBoolean = createMMKVHook((instance, key) =>
   instance.getBoolean(key)
+);
+/**
+ * Use the buffer value (unsigned 8-bit (0-255)) of the given `key` from the given MMKV storage instance.
+ *
+ * If no instance is provided, a shared default instance will be used.
+ *
+ * @example
+ * ```ts
+ * const [privateKey, setPrivateKey] = useMMKVBuffer("user.privateKey")
+ * ```
+ */
+export const useMMKVBuffer = createMMKVHook((instance, key) =>
+  instance.getBuffer(key)
 );
 /**
  * Use an object value of the given `key` from the given MMKV storage instance.

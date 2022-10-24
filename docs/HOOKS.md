@@ -9,6 +9,7 @@ function App() {
   const [username, setUsername] = useMMKVString("user.name")
   const [age, setAge] = useMMKVNumber("user.age")
   const [isPremiumUser, setIsPremiumUser] = useMMKVBoolean("user.isPremium")
+  const [privateKey, setPrivateKey] = useMMKVBuffer("user.privateKey")
 }
 ```
 
