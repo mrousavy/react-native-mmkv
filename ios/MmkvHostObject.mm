@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MmkvHostObject.h"
 #import "JSIUtils.h"
-#import "TypedArray.h"
+#import "../cpp/TypedArray.h"
 #import <vector>
 
 MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey)
@@ -152,7 +152,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
     });
   }
-    
+
   if (propName == "getNumber") {
     // MMKV.getNumber(key: string)
     return jsi::Function::createFromHostFunction(runtime,
