@@ -39,6 +39,7 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   std::vector<jsi::PropNameID> result;
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBoolean")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBuffer")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getString")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getNumber")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("contains")));
