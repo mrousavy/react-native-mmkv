@@ -93,7 +93,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.mrousavy"
+    namespace "com.mrousavy.reactnativemmkv"
     defaultConfig {
         applicationId "com.mrousavy.reactnativemmkv"
         minSdkVersion rootProject.ext.minSdkVersion
