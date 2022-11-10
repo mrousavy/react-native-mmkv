@@ -140,27 +140,6 @@ android {
       }
     }
   }
-
-  sourceSets.main {
-    java {
-      // Include "common/" only when it's not provided by Reanimated to mitigate
-      // multiple definitions of the same class preventing build
-      if (shouldUseCommonInterfaceFromReanimated()) {
-        srcDirs += 'reanimated/src/main/java'
-      } else {
-        srcDirs += 'common/src/main/java'
-        srcDirs += 'noreanimated/src/main/java'
-      }
-
-      if (isNewArchitectureEnabled()) {
-        srcDirs += 'src/fabric/java'
-      } else {
-        // this folder also includes files from codegen so the library can compile with
-        // codegen turned off
-        srcDirs += 'src/paper/java'
-      }
-    }
-  }
 }
 
 dependencies {
