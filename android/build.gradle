@@ -21,6 +21,9 @@ def isNewArchitectureEnabled() {
   // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
   return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
 }
+if (!isNewArchitectureEnabled()) {
+  throw new Exception("react-native-mmkv requires the new architecture to build. Make sure you're running react-native 0.71 or higher and have enabled the new architecture in settings.gradle, then clean and rebuild.")
+}
 
 static def findNodeModulePath(baseDir, packageName) {
   def basePath = baseDir.toPath().normalize()
@@ -43,9 +46,7 @@ def findNodeModulePath(packageName) {
   return findNodeModulePath(projectDir.toPath().parent.parent.toFile(), packageName)
 }
 
-if (isNewArchitectureEnabled()) {
-  apply plugin: 'com.facebook.react'
-}
+apply plugin: 'com.facebook.react'
 apply plugin: 'com.android.library'
 
 def safeExtGet(prop, fallback) {
@@ -57,39 +58,7 @@ def reactNativeArchitectures() {
   return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
-def shouldAssertNoMultipleInstances() {
-  if (rootProject.hasProperty("disableMultipleInstancesCheck")) {
-    return rootProject.property("disableMultipleInstancesCheck") != "true"
-  } else {
-    return true
-  }
-}
-
-def noMultipleInstancesAssertion() {
-  Set<File> files = fileTree(rootDir.parent) {
-    include "node_modules/**/react-native-mmkv/package.json"
-    exclude "**/.yarn/**"
-  }.files
-
-  if (files.size() > 1) {
-    String parsedLocation = files.stream().map({ File file -> "- " + file.toString().replace("/package.json", "") }).collect().join("\n")
-    String exceptionMessage = "\n[MMKV] Multiple instances of react-native-mmkv were detected. Only one instance of react-native-mmkv can be installed in a project. You need to resolve the conflict manually. \n\nConflict between: \n" + parsedLocation + "\n";
-    throw new Exception(exceptionMessage);
-  }
-}
-
 def REACT_NATIVE_DIR = findNodeModulePath("react-native")
-
-def assertionTask = task assertNoMultipleInstances {
-  onlyIf { shouldAssertNoMultipleInstances() }
-  doFirst {
-    noMultipleInstancesAssertion()
-  }
-}
-
-tasks.preBuild {
-  dependsOn assertionTask
-}
 
 repositories {
   mavenCentral()
@@ -112,17 +81,15 @@ android {
     targetSdkVersion safeExtGet('targetSdkVersion', 28)
     versionCode 1
     versionName "1.0"
-    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-    if (isNewArchitectureEnabled()) {
-      var appProject = rootProject.allprojects.find {it.plugins.hasPlugin('com.android.application')}
-      externalNativeBuild {
-        cmake {
-          cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
-          arguments "-DAPP_BUILD_DIR=${appProject.buildDir}",
-                  "-DREACT_NATIVE_DIR=${REACT_NATIVE_DIR}",
-                  "-DANDROID_STL=c++_shared"
-          abiFilters (*reactNativeArchitectures())
-        }
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
+    var appProject = rootProject.allprojects.find {it.plugins.hasPlugin('com.android.application')}
+    externalNativeBuild {
+      cmake {
+        cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
+        arguments "-DAPP_BUILD_DIR=${appProject.buildDir}",
+                "-DREACT_NATIVE_DIR=${REACT_NATIVE_DIR}",
+                "-DANDROID_STL=c++_shared"
+        abiFilters (*reactNativeArchitectures())
       }
     }
   }
@@ -132,37 +99,29 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
-  if (isNewArchitectureEnabled()) {
-    externalNativeBuild {
-      cmake {
-        path "CMakeLists.txt"
-      }
+  externalNativeBuild {
+    cmake {
+      path "CMakeLists.txt"
     }
   }
 }
 
 dependencies {
   //noinspection GradleDynamicVersion
-  if (isNewArchitectureEnabled()) {
-    implementation project(':ReactAndroid')
-  } else {
-    implementation 'com.facebook.react:react-native:+'
-  }
+  implementation 'com.facebook.react:react-native:+'
 }
 
-if (isNewArchitectureEnabled()) {
-  // Resolves "LOCAL_SRC_FILES points to a missing file, Check that libfb.so exists or that its path is correct".
-  tasks.whenTaskAdded { task ->
-    if (task.name.contains("configureCMakeDebug")) {
-      rootProject.getTasksByName("packageReactNdkDebugLibs", true).forEach {
-        task.dependsOn(it)
-      }
+// Resolves "LOCAL_SRC_FILES points to a missing file, Check that libfb.so exists or that its path is correct".
+tasks.whenTaskAdded { task ->
+  if (task.name.contains("configureCMakeDebug")) {
+    rootProject.getTasksByName("packageReactNdkDebugLibs", true).forEach {
+      task.dependsOn(it)
     }
-    // We want to add a dependency for both configureCMakeRelease and configureCMakeRelWithDebInfo
-    if (task.name.contains("configureCMakeRel")) {
-      rootProject.getTasksByName("packageReactNdkReleaseLibs", true).forEach {
-        task.dependsOn(it)
-      }
+  }
+  // We want to add a dependency for both configureCMakeRelease and configureCMakeRelWithDebInfo
+  if (task.name.contains("configureCMakeRel")) {
+    rootProject.getTasksByName("packageReactNdkReleaseLibs", true).forEach {
+      task.dependsOn(it)
     }
   }
 }
