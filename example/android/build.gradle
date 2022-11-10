@@ -32,6 +32,10 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
+        maven {
+            // Dirty hotfix because of Maven outage (you need to download the maven-local folder from https://github.com/facebook/react-native/releases/tag/v0.71.0-rc.0)
+            url("/Users/mrousavy/Downloads/maven-local")
+        }
         mavenCentral()
         google()
         maven { url 'https://www.jitpack.io' }
