@@ -150,7 +150,7 @@ dependencies {
     implementation 'com.facebook.react:react-native:+'
   }
 
-  implementation 'androidx.appcompat:appcompat:1.2.0'
+  implementation 'androidx.appcompat:appcompat:1.5.1'
 }
 
 if (isNewArchitectureEnabled()) {
