@@ -1,371 +1,205 @@
 import groovy.json.JsonSlurper
-import org.apache.tools.ant.filters.ReplaceTokens
 import java.nio.file.Paths
 
-static def findNodeModules(baseDir) {
+buildscript {
+  def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['RNGH_kotlinVersion']
+
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+    mavenCentral()
+    google()
+  }
+
+  dependencies {
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+    classpath("com.android.tools.build:gradle:7.2.2")
+    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.7.2")
+  }
+}
+
+def isNewArchitectureEnabled() {
+  // To opt-in for the New Architecture, you can either:
+  // - Set `newArchEnabled` to true inside the `gradle.properties` file
+  // - Invoke gradle with `-newArchEnabled=true`
+  // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
+static def findNodeModulePath(baseDir, packageName) {
   def basePath = baseDir.toPath().normalize()
   // Node's module resolution algorithm searches up to the root directory,
   // after which the base path will be null
   while (basePath) {
-    def nodeModulesPath = Paths.get(basePath.toString(), "node_modules")
-    def reactNativePath = Paths.get(nodeModulesPath.toString(), "react-native")
-    if (nodeModulesPath.toFile().exists() && reactNativePath.toFile().exists()) {
-      return nodeModulesPath.toString()
+    def candidatePath = Paths.get(basePath.toString(), "node_modules", packageName)
+    if (candidatePath.toFile().exists()) {
+      return candidatePath.toString()
     }
     basePath = basePath.getParent()
   }
-  throw new GradleException("MMKV: Failed to find node_modules/ path!")
+  return null
 }
 
-def nodeModules = findNodeModules(projectDir)
-logger.warn("MMKV: node_modules/ found at: ${nodeModules}")
-
-buildscript {
-  repositories {
-    google()
-    jcenter()
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-
-  dependencies {
-    classpath 'com.android.tools.build:gradle:4.2.2'
-    classpath 'de.undercouch:gradle-download-task:4.1.2'
-  }
+def findNodeModulePath(packageName) {
+  // Don't start in the project dir, as its path ends with node_modules/react-native-gesture-handler/android
+  // we want to go two levels up, so we end up in the first_node modules and eventually
+  // search upwards if the package is not found there
+  return findNodeModulePath(projectDir.toPath().parent.parent.toFile(), packageName)
 }
 
+if (isNewArchitectureEnabled()) {
+  apply plugin: 'com.facebook.react'
+}
 apply plugin: 'com.android.library'
-apply plugin: 'de.undercouch.download'
+apply plugin: 'kotlin-android'
 
-def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['Mmkv_' + name]
+if (project == rootProject) {
+  apply from: "spotless.gradle"
 }
 
-def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['Mmkv_' + name]).toInteger()
+def safeExtGet(prop, fallback) {
+  rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
 
 def reactNativeArchitectures() {
-    def value = project.getProperties().get("reactNativeArchitectures")
-    return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+  def value = project.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
-def sourceBuild = false
-def defaultDir = null
-def androidSourcesDir = null
-def androidSourcesName = 'React Native sources'
-
-if (rootProject.ext.has('reactNativeAndroidRoot')) {
-  defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
-  androidSourcesDir = defaultDir.parentFile.toString()
-} else if (findProject(':ReactAndroid') != null) {
-    sourceBuild = true
-    defaultDir = project(':ReactAndroid').projectDir
-    androidSourcesDir = defaultDir.parentFile.toString()
-} else {
-  defaultDir = file("$nodeModules/react-native/android")
-  androidSourcesDir = defaultDir.parentFile.toString()
+def shouldAssertNoMultipleInstances() {
+  if (rootProject.hasProperty("disableMultipleInstancesCheck")) {
+    return rootProject.property("disableMultipleInstancesCheck") != "true"
+  } else {
+    return true
+  }
 }
 
-if (!defaultDir.exists()) {
-    throw new GradleException(
-      "${project.name}: React Native android directory (node_modules/react-native/android) does not exist! Resolved node_modules to: ${nodeModules}"
-    )
+def noMultipleInstancesAssertion() {
+  Set<File> files = fileTree(rootDir.parent) {
+    include "node_modules/**/react-native-mmkv/package.json"
+    exclude "**/.yarn/**"
+  }.files
+
+  if (files.size() > 1) {
+    String parsedLocation = files.stream().map({ File file -> "- " + file.toString().replace("/package.json", "") }).collect().join("\n")
+    String exceptionMessage = "\n[MMKV] Multiple instances of react-native-mmkv were detected. Only one instance of react-native-mmkv can be installed in a project. You need to resolve the conflict manually. \n\nConflict between: \n" + parsedLocation + "\n";
+    throw new Exception(exceptionMessage);
+  }
 }
 
-def prebuiltDir = sourceBuild
-    ? "$nodeModules/react-native/ReactAndroid/src/main/jni/prebuilt/lib"
-    : "$buildDir/react-native-0*/jni"
+def REACT_NATIVE_DIR = findNodeModulePath("react-native")
 
+def assertionTask = task assertNoMultipleInstances {
+  onlyIf { shouldAssertNoMultipleInstances() }
+  doFirst {
+    noMultipleInstancesAssertion()
+  }
+}
 
-def reactProperties = new Properties()
-file("$nodeModules/react-native/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
-def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME").split("\\.")[1].toInteger()
+tasks.preBuild {
+  dependsOn assertionTask
+}
+
+repositories {
+  mavenCentral()
+}
 
 android {
-  compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
-  buildToolsVersion getExtOrDefault('buildToolsVersion')
-  ndkVersion getExtOrDefault('ndkVersion')
+  compileSdkVersion safeExtGet("compileSdkVersion", 28)
+
+  // Used to override the NDK path/version on internal CI or by allowing
+  // users to customize the NDK path/version from their root project (e.g. for M1 support)
+  if (rootProject.hasProperty("ndkPath")) {
+    ndkPath rootProject.ext.ndkPath
+  }
+  if (rootProject.hasProperty("ndkVersion")) {
+    ndkVersion rootProject.ext.ndkVersion
+  }
 
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
+    minSdkVersion safeExtGet('minSdkVersion', 16)
+    targetSdkVersion safeExtGet('targetSdkVersion', 28)
     versionCode 1
     versionName "1.0"
-    externalNativeBuild {
-      cmake {
-        cppFlags "-fexceptions", "-frtti", "-std=c++1y", "-DONANDROID"
-        arguments '-DANDROID_STL=c++_shared',
-                  "-DREACT_NATIVE_VERSION=${REACT_NATIVE_VERSION}",
-                  "-DNODE_MODULES_DIR=${nodeModules}",
-                  "-DPREBUILT_DIR=${prebuiltDir}"
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+    if (isNewArchitectureEnabled()) {
+      var appProject = rootProject.allprojects.find {it.plugins.hasPlugin('com.android.application')}
+      externalNativeBuild {
+        cmake {
+          cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
+          arguments "-DAPP_BUILD_DIR=${appProject.buildDir}",
+                  "-DREACT_NATIVE_DIR=${REACT_NATIVE_DIR}",
+                  "-DANDROID_STL=c++_shared"
+          abiFilters (*reactNativeArchitectures())
+        }
       }
     }
-    ndk {
-      abiFilters (*reactNativeArchitectures())
-    }
   }
 
-  dexOptions {
-    javaMaxHeapSize "4g"
-  }
-
-  externalNativeBuild {
-    cmake {
-      path "CMakeLists.txt"
-    }
-  }
-
-  packagingOptions {
-    excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libreactnativejni.so", "**/libjsi.so", "**/MANIFEST.MF"]
-  }
-
-  buildTypes {
-    release {
-      minifyEnabled false
-    }
-  }
-  lintOptions {
-    disable 'GradleCompatible'
-  }
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
-  configurations {
-    extractHeaders
-    extractJNI
+  if (isNewArchitectureEnabled()) {
+    externalNativeBuild {
+      cmake {
+        path "src/main/jni/CMakeLists.txt"
+      }
+    }
+  }
+
+  sourceSets.main {
+    java {
+      // Include "common/" only when it's not provided by Reanimated to mitigate
+      // multiple definitions of the same class preventing build
+      if (shouldUseCommonInterfaceFromReanimated()) {
+        srcDirs += 'reanimated/src/main/java'
+      } else {
+        srcDirs += 'common/src/main/java'
+        srcDirs += 'noreanimated/src/main/java'
+      }
+
+      if (isNewArchitectureEnabled()) {
+        srcDirs += 'src/fabric/java'
+      } else {
+        // this folder also includes files from codegen so the library can compile with
+        // codegen turned off
+        srcDirs += 'src/paper/java'
+      }
+    }
   }
 }
 
-repositories {
-  mavenCentral()
-  google()
-
-  maven {
-    url defaultDir.toString()
-    name androidSourcesName
-  }
-}
+def kotlin_version = safeExtGet('kotlinVersion', project.properties['RNGH_kotlinVersion'])
 
 dependencies {
-  // noinspection GradleDynamicVersion
-  implementation 'com.facebook.react:react-native:+'
-
   //noinspection GradleDynamicVersion
-  extractHeaders("com.facebook.fbjni:fbjni:+:headers")
-  //noinspection GradleDynamicVersion
-  extractJNI("com.facebook.fbjni:fbjni:+")
-
-  if (!sourceBuild) {
-    def buildType = "debug"
-    tasks.all({ task ->
-      if (task.name == "buildCMakeRelease") {
-        buildType = "release"
-      }
-    })
-    def rnAarMatcher = "**/react-native/**/*${buildType}.aar"
-    if (REACT_NATIVE_VERSION < 69) {
-      rnAarMatcher = "**/**/*.aar"
-    }
-    def rnAAR = fileTree("${defaultDir.toString()}").matching({ it.include rnAarMatcher }).singleFile
-    extractJNI(files(rnAAR))
-  }
-}
-
-// third-party-ndk deps headers
-// mostly a copy of https://github.com/software-mansion/react-native-reanimated/blob/master/android/build.gradle#L115
-
-
-def customDownloadsDir = System.getenv("REACT_NATIVE_DOWNLOADS_DIR")
-def downloadsDir = customDownloadsDir ? new File(customDownloadsDir) : new File("$buildDir/downloads")
-def thirdPartyNdkDir = new File("$buildDir/third-party-ndk")
-def thirdPartyVersionsFile = new File("${androidSourcesDir.toString()}/ReactAndroid/gradle.properties")
-def thirdPartyVersions = new Properties()
-thirdPartyVersions.load(new FileInputStream(thirdPartyVersionsFile))
-
-def BOOST_VERSION = thirdPartyVersions["BOOST_VERSION"]
-def boost_file = new File(downloadsDir, "boost_${BOOST_VERSION}.tar.gz")
-def DOUBLE_CONVERSION_VERSION = thirdPartyVersions["DOUBLE_CONVERSION_VERSION"]
-def double_conversion_file = new File(downloadsDir, "double-conversion-${DOUBLE_CONVERSION_VERSION}.tar.gz")
-def FOLLY_VERSION = thirdPartyVersions["FOLLY_VERSION"]
-def folly_file = new File(downloadsDir, "folly-${FOLLY_VERSION}.tar.gz")
-def GLOG_VERSION = thirdPartyVersions["GLOG_VERSION"]
-def glog_file = new File(downloadsDir, "glog-${GLOG_VERSION}.tar.gz")
-
-task createNativeDepsDirectories {
-  doLast {
-    downloadsDir.mkdirs()
-    thirdPartyNdkDir.mkdirs()
-  }
-}
-
-task downloadBoost(dependsOn: createNativeDepsDirectories, type: Download) {
-  def transformedVersion = BOOST_VERSION.replace("_", ".")
-  def srcUrl = "https://boostorg.jfrog.io/artifactory/main/release/${transformedVersion}/source/boost_${BOOST_VERSION}.tar.gz"
-  if (REACT_NATIVE_VERSION < 69) {
-    srcUrl = "https://github.com/react-native-community/boost-for-react-native/releases/download/v${transformedVersion}-0/boost_${BOOST_VERSION}.tar.gz"
-  }
-  src(srcUrl)
-  onlyIfNewer(true)
-  overwrite(false)
-  dest(boost_file)
-}
-
-task prepareBoost(dependsOn: downloadBoost, type: Copy) {
-  from(tarTree(resources.gzip(downloadBoost.dest)))
-  from("src/main/jni/third-party/boost/Android.mk")
-  include("Android.mk", "boost_${BOOST_VERSION}/boost/**/*.hpp", "boost/boost/**/*.hpp")
-  includeEmptyDirs = false
-  into("$thirdPartyNdkDir") // /boost_X_XX_X
-  doLast {
-    file("$thirdPartyNdkDir/boost_${BOOST_VERSION}").renameTo("$thirdPartyNdkDir/boost")
-  }
-}
-
-task downloadDoubleConversion(dependsOn: createNativeDepsDirectories, type: Download) {
-  src("https://github.com/google/double-conversion/archive/v${DOUBLE_CONVERSION_VERSION}.tar.gz")
-  onlyIfNewer(true)
-  overwrite(false)
-  dest(double_conversion_file)
-}
-
-task prepareDoubleConversion(dependsOn: downloadDoubleConversion, type: Copy) {
-  from(tarTree(downloadDoubleConversion.dest))
-  from("src/main/jni/third-party/double-conversion/Android.mk")
-  include("double-conversion-${DOUBLE_CONVERSION_VERSION}/src/**/*", "Android.mk")
-  filesMatching("*/src/**/*", { fname -> fname.path = "double-conversion/${fname.name}" })
-  includeEmptyDirs = false
-  into("$thirdPartyNdkDir/double-conversion")
-}
-
-task downloadFolly(dependsOn: createNativeDepsDirectories, type: Download) {
-  src("https://github.com/facebook/folly/archive/v${FOLLY_VERSION}.tar.gz")
-  onlyIfNewer(true)
-  overwrite(false)
-  dest(folly_file)
-}
-
-task prepareFolly(dependsOn: downloadFolly, type: Copy) {
-  from(tarTree(downloadFolly.dest))
-  from("src/main/jni/third-party/folly/Android.mk")
-  include("folly-${FOLLY_VERSION}/folly/**/*", "Android.mk")
-  eachFile { fname -> fname.path = (fname.path - "folly-${FOLLY_VERSION}/") }
-  includeEmptyDirs = false
-  into("$thirdPartyNdkDir/folly")
-}
-
-task downloadGlog(dependsOn: createNativeDepsDirectories, type: Download) {
-  src("https://github.com/google/glog/archive/v${GLOG_VERSION}.tar.gz")
-  onlyIfNewer(true)
-  overwrite(false)
-  dest(glog_file)
-}
-
-task prepareGlog(dependsOn: downloadGlog, type: Copy) {
-  from(tarTree(downloadGlog.dest))
-  from("src/main/jni/third-party/glog/")
-  include("glog-${GLOG_VERSION}/src/**/*", "Android.mk", "config.h")
-  includeEmptyDirs = false
-  filesMatching("**/*.h.in") {
-    filter(ReplaceTokens, tokens: [
-      ac_cv_have_unistd_h           : "1",
-      ac_cv_have_stdint_h           : "1",
-      ac_cv_have_systypes_h         : "1",
-      ac_cv_have_inttypes_h         : "1",
-      ac_cv_have_libgflags          : "0",
-      ac_google_start_namespace     : "namespace google {",
-      ac_cv_have_uint16_t           : "1",
-      ac_cv_have_u_int16_t          : "1",
-      ac_cv_have___uint16           : "0",
-      ac_google_end_namespace       : "}",
-      ac_cv_have___builtin_expect   : "1",
-      ac_google_namespace           : "google",
-      ac_cv___attribute___noinline  : "__attribute__ ((noinline))",
-      ac_cv___attribute___noreturn  : "__attribute__ ((noreturn))",
-      ac_cv___attribute___printf_4_5: "__attribute__((__format__ (__printf__, 4, 5)))"
-    ])
-    it.path = (it.name - ".in")
-  }
-  into("$thirdPartyNdkDir/glog")
-
-  doLast {
-    copy {
-      from(fileTree(dir: "$thirdPartyNdkDir/glog", includes: ["stl_logging.h", "logging.h", "raw_logging.h", "vlog_is_on.h", "**/src/glog/log_severity.h"]).files)
-      includeEmptyDirs = false
-      into("$thirdPartyNdkDir/glog/exported/glog")
-    }
-  }
-}
-
-task prepareThirdPartyNdkHeaders {
-  if (!boost_file.exists()) {
-    dependsOn(prepareBoost)
-  }
-  if (!double_conversion_file.exists()) {
-    dependsOn(prepareDoubleConversion)
-  }
-  if (!folly_file.exists()) {
-    dependsOn(prepareFolly)
-  }
-  if (!glog_file.exists()) {
-    dependsOn(prepareGlog)
-  }
-}
-
-prepareThirdPartyNdkHeaders.mustRunAfter createNativeDepsDirectories
-
-task extractAARHeaders {
-  doLast {
-    configurations.extractHeaders.files.each {
-      def file = it.absoluteFile
-      copy {
-        from zipTree(file)
-        into "$buildDir/$file.name"
-        include "**/*.h"
-      }
-    }
-  }
-}
-extractAARHeaders.mustRunAfter prepareThirdPartyNdkHeaders
-
-task extractJNIFiles {
-  doLast {
-    configurations.extractJNI.files.each {
-      def file = it.absoluteFile
-
-      copy {
-        from zipTree(file)
-        into "$buildDir/$file.name"
-        include "jni/**/*"
-      }
-    }
-  }
-}
-extractJNIFiles.mustRunAfter extractAARHeaders
-
-def nativeBuildDependsOn(dependsOnTask, variant) {
-  def buildTasks = tasks.findAll({ task ->
-      !task.name.contains("Clean") && (task.name.contains("externalNative") || task.name.contains("CMake")) })
-  if (variant != null) {
-    buildTasks = buildTasks.findAll({ task -> task.name.contains(variant) })
-  }
-  buildTasks.forEach { task -> task.dependsOn(dependsOnTask) }
-}
-
-afterEvaluate {
-  if (sourceBuild) {
-    if (REACT_NATIVE_VERSION < 68) {
-      nativeBuildDependsOn(":ReactAndroid:packageReactNdkLibsForBuck", null)
-    } else {
-      nativeBuildDependsOn(":ReactAndroid:packageReactNdkDebugLibsForBuck", "Debug")
-      nativeBuildDependsOn(":ReactAndroid:packageReactNdkReleaseLibsForBuck", "Rel")
-    }
+  if (isNewArchitectureEnabled()) {
+    implementation project(':ReactAndroid')
   } else {
-    nativeBuildDependsOn(extractAARHeaders, null)
-    nativeBuildDependsOn(extractJNIFiles, null)
-    nativeBuildDependsOn(prepareThirdPartyNdkHeaders, null)
+    implementation 'com.facebook.react:react-native:+'
+  }
+
+  implementation 'androidx.appcompat:appcompat:1.2.0'
+  implementation "androidx.core:core-ktx:1.6.0"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+if (isNewArchitectureEnabled()) {
+  // Resolves "LOCAL_SRC_FILES points to a missing file, Check that libfb.so exists or that its path is correct".
+  tasks.whenTaskAdded { task ->
+    if (task.name.contains("configureCMakeDebug")) {
+      rootProject.getTasksByName("packageReactNdkDebugLibs", true).forEach {
+        task.dependsOn(it)
+      }
+    }
+    // We want to add a dependency for both configureCMakeRelease and configureCMakeRelWithDebInfo
+    if (task.name.contains("configureCMakeRel")) {
+      rootProject.getTasksByName("packageReactNdkReleaseLibs", true).forEach {
+        task.dependsOn(it)
+      }
+    }
   }
 }

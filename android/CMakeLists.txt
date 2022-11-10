@@ -1,34 +1,27 @@
+project(ReactNativeMMKV)
 cmake_minimum_required(VERSION 3.9.0)
 
 set (PACKAGE_NAME "react-native-mmkv")
 set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_CXX_STANDARD 17)
 
-add_subdirectory(../MMKV/Core core)
-
+# Add headers search paths
 include_directories(
         ../MMKV/Core
         ../cpp
-        "${NODE_MODULES_DIR}/react-native/React"
-        "${NODE_MODULES_DIR}/react-native/React/Base"
-        "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi"
 )
 
-if(${REACT_NATIVE_VERSION} LESS 66)
-        file(
-                TO_CMAKE_PATH
-                "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
-                INCLUDE_JSI_CPP
-        )
-endif()
-
+# Add MMKV core sources
+add_subdirectory(../MMKV/Core core)
+# Add react-native-mmkv sources
 add_library(reactnativemmkv  # <-- Library name
         SHARED
         src/main/cpp/cpp-adapter.cpp
         src/main/cpp/MmkvHostObject.cpp
         ../cpp/TypedArray.cpp
-        ${INCLUDE_JSI_CPP} # only on older RN versions
 )
-
+# Configure C++ 17
 set_target_properties(
         reactnativemmkv PROPERTIES
         CXX_STANDARD 17
@@ -36,36 +29,29 @@ set_target_properties(
         POSITION_INDEPENDENT_CODE ON
 )
 
-file (GLOB LIBRN_DIR "${PREBUILT_DIR}/${ANDROID_ABI}")
+# Add react-native core libraries
+set(REACT_ANDROID_DIR "${REACT_NATIVE_DIR}/ReactAndroid")
+set(REACT_COMMON_DIR "${REACT_NATIVE_DIR}/ReactCommon")
+set(REACT_NDK_EXPORT_DIR "${APP_BUILD_DIR}/react-ndk/exported")
 
+# 1. JSI lib
+add_library(jsi SHARED IMPORTED GLOBAL)
+set_target_properties(jsi
+        PROPERTIES
+        IMPORTED_LOCATION
+        ${REACT_NDK_EXPORT_DIR}/${ANDROID_ABI}/libjsi.so)
+target_include_directories(jsi INTERFACE ${REACT_COMMON_DIR}/jsi)
+
+# 2. Logcat Logger
 find_library(
         log-lib
         log
 )
-find_library(
-        REACT_NATIVE_JNI_LIB
-        reactnativejni
-        PATHS ${LIBRN_DIR}
-        NO_CMAKE_FIND_ROOT_PATH
-)
-if(${REACT_NATIVE_VERSION} LESS 66)
-        # JSI lib didn't exist on RN 0.65 and before. Simply omit it.
-        set (JSI_LIB "")
-else()
-        # RN 0.66 distributes libjsi.so, can be used instead of compiling jsi.cpp manually.
-        find_library(
-                JSI_LIB
-                jsi
-                PATHS ${LIBRN_DIR}
-                NO_CMAKE_FIND_ROOT_PATH
-        )
-endif()
 
 target_link_libraries(
         reactnativemmkv
         core
         ${log-lib}
-        ${JSI_LIB}
-        ${REACT_NATIVE_JNI_LIB}
+        jsi
         android
 )
