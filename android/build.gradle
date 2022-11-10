@@ -12,7 +12,6 @@ buildscript {
 
   dependencies {
     classpath("com.android.tools.build:gradle:7.2.2")
-    classpath("com.diffplug.spotless:spotless-plugin-gradle:6.7.2")
   }
 }
 
@@ -49,10 +48,6 @@ if (isNewArchitectureEnabled()) {
   apply plugin: 'com.facebook.react'
 }
 apply plugin: 'com.android.library'
-
-if (project == rootProject) {
-  apply from: "spotless.gradle"
-}
 
 def safeExtGet(prop, fallback) {
   rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
