@@ -177,7 +177,6 @@ dependencies {
   }
 
   implementation 'androidx.appcompat:appcompat:1.2.0'
-  implementation "androidx.core:core-ktx:1.6.0"
 }
 
 if (isNewArchitectureEnabled()) {
