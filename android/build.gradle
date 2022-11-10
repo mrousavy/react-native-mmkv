@@ -76,6 +76,10 @@ android {
     ndkVersion rootProject.ext.ndkVersion
   }
 
+  buildFeatures {
+    prefab true
+  }
+
   defaultConfig {
     minSdkVersion safeExtGet('minSdkVersion', 16)
     targetSdkVersion safeExtGet('targetSdkVersion', 28)
