@@ -1,5 +1,4 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
   "exclude": ["example"],
   "compilerOptions": {
     "baseUrl": ".",
