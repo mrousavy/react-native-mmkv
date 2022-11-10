@@ -29,29 +29,13 @@ set_target_properties(
         POSITION_INDEPENDENT_CODE ON
 )
 
-# Add react-native core libraries
-set(REACT_ANDROID_DIR "${REACT_NATIVE_DIR}/ReactAndroid")
-set(REACT_COMMON_DIR "${REACT_NATIVE_DIR}/ReactCommon")
-set(REACT_NDK_EXPORT_DIR "${APP_BUILD_DIR}/react-ndk/exported")
-
-# 1. JSI lib
-add_library(jsi SHARED IMPORTED GLOBAL)
-set_target_properties(jsi
-        PROPERTIES
-        IMPORTED_LOCATION
-        ${REACT_NDK_EXPORT_DIR}/${ANDROID_ABI}/libjsi.so)
-target_include_directories(jsi INTERFACE ${REACT_COMMON_DIR}/jsi)
-
-# 2. Logcat Logger
-find_library(
-        log-lib
-        log
-)
+find_package(ReactAndroid REQUIRED CONFIG)
+find_library(log-lib log)
 
 target_link_libraries(
         reactnativemmkv
-        core
-        ${log-lib}
-        jsi
-        android
+        core                # <-- MMKV core
+        ${log-lib}          # <-- Logcat logger
+        ReactAndroid::jsi   # <-- JSI
+        android             # <-- Android JNI core
 )
