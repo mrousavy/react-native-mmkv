@@ -510,7 +510,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativemmkv;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.reactnativemmkv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MmkvExample.app/MmkvExample";
 			};
@@ -529,7 +529,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativemmkv;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.reactnativemmkv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MmkvExample.app/MmkvExample";
 			};
@@ -551,7 +551,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativemmkv;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.reactnativemmkv;
 				PRODUCT_NAME = MmkvExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -574,7 +574,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativemmkv;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.reactnativemmkv;
 				PRODUCT_NAME = MmkvExample;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
