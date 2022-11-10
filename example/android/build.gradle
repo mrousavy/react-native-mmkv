@@ -22,10 +22,6 @@ buildscript {
     }
 }
 
-plugins {
-    id "de.undercouch.download" version "4.0.2"
-}
-
 allprojects {
     repositories {
         maven {
