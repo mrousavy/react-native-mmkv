@@ -60,7 +60,6 @@
     "@release-it/conventional-changelog": "^5.1.1",
     "@tsconfig/react-native": "^2.0.2",
     "@types/react": "^18.0.25",
-    "@types/react-native": "^0.70.6",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.37.0",
     "eslint": "^8.27.0",
