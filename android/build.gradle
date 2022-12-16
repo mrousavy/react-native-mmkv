@@ -23,7 +23,7 @@ logger.warn("MMKV: node_modules/ found at: ${nodeModules}")
 buildscript {
   repositories {
     google()
-    jcenter()
+    mavenCentral()
     maven {
       url "https://plugins.gradle.org/m2/"
     }

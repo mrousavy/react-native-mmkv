@@ -17,7 +17,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",
     "react": "^17.0.2",
-    "react-native": "^0.66.0"
+    "react-native": "^0.66.5"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
