@@ -1,5 +1,3 @@
-import java.nio.file.Paths
-
 buildscript {
   repositories {
     maven {
@@ -14,38 +12,6 @@ buildscript {
   }
 }
 
-def isNewArchitectureEnabled() {
-  // To opt-in for the New Architecture, you can either:
-  // - Set `newArchEnabled` to true inside the `gradle.properties` file
-  // - Invoke gradle with `-newArchEnabled=true`
-  // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
-  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
-}
-if (!isNewArchitectureEnabled()) {
-  throw new Exception("react-native-mmkv requires the new architecture to build. Make sure you're running react-native 0.71 or higher and have enabled the new architecture in settings.gradle, then clean and rebuild.")
-}
-
-static def findNodeModulePath(baseDir, packageName) {
-  def basePath = baseDir.toPath().normalize()
-  // Node's module resolution algorithm searches up to the root directory,
-  // after which the base path will be null
-  while (basePath) {
-    def candidatePath = Paths.get(basePath.toString(), "node_modules", packageName)
-    if (candidatePath.toFile().exists()) {
-      return candidatePath.toString()
-    }
-    basePath = basePath.getParent()
-  }
-  return null
-}
-
-def findNodeModulePath(packageName) {
-  // Don't start in the project dir, as its path ends with node_modules/react-native-gesture-handler/android
-  // we want to go two levels up, so we end up in the first_node modules and eventually
-  // search upwards if the package is not found there
-  return findNodeModulePath(projectDir.toPath().parent.parent.toFile(), packageName)
-}
-
 apply plugin: 'com.facebook.react'
 apply plugin: 'com.android.library'
 
@@ -57,8 +23,6 @@ def reactNativeArchitectures() {
   def value = project.getProperties().get("reactNativeArchitectures")
   return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
-
-def REACT_NATIVE_DIR = findNodeModulePath("react-native")
 
 repositories {
   mavenCentral()
@@ -86,13 +50,10 @@ android {
     versionCode 1
     versionName "1.0"
     buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
-    var appProject = rootProject.allprojects.find {it.plugins.hasPlugin('com.android.application')}
     externalNativeBuild {
       cmake {
         cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
-        arguments "-DAPP_BUILD_DIR=${appProject.buildDir}",
-                "-DREACT_NATIVE_DIR=${REACT_NATIVE_DIR}",
-                "-DANDROID_STL=c++_shared"
+        arguments "-DANDROID_STL=c++_shared"
         abiFilters (*reactNativeArchitectures())
       }
     }
