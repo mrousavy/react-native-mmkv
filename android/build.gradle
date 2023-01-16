@@ -12,6 +12,21 @@ buildscript {
   }
 }
 
+def resolveBuildType() {
+    Gradle gradle = getGradle()
+    String tskReqStr = gradle.getStartParameter().getTaskRequests()['args'].toString()
+
+    return tskReqStr.contains('Release') ? 'release' : 'debug'
+}
+
+def isNewArchitectureEnabled() {
+  // To opt-in for the New Architecture, you can either:
+  // - Set `newArchEnabled` to true inside the `gradle.properties` file
+  // - Invoke gradle with `-newArchEnabled=true`
+  // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
 apply plugin: 'com.facebook.react'
 apply plugin: 'com.android.library'
 
@@ -49,7 +64,7 @@ android {
     targetSdkVersion safeExtGet('targetSdkVersion', 28)
     versionCode 1
     versionName "1.0"
-    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
     externalNativeBuild {
       cmake {
         cppFlags "-O2 -frtti -fexceptions -Wall -Wno-unused-variable -fstack-protector-all"
@@ -68,6 +83,14 @@ android {
     cmake {
       path "CMakeLists.txt"
     }
+  }
+  packagingOptions {
+    doNotStrip resolveBuildType() == 'debug' ? "**/**/*.so" : ''
+    excludes = [
+            "META-INF",
+            "META-INF/**",
+            "**/libjsi.so",
+    ]
   }
 }
 
