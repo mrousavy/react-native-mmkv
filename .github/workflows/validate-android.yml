@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./android
+        working-directory: ./example/android
     steps:
       - uses: actions/checkout@v2
       - name: Setup JDK 11
@@ -42,9 +42,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install node_modules
-        run: yarn install --frozen-lockfile --cwd ..
+        run: yarn install --frozen-lockfile --cwd ../..
       - name: Install node_modules for example/
-        run: yarn install --frozen-lockfile --cwd ../example
+        run: yarn install --frozen-lockfile --cwd ..
 
       - name: Restore Gradle cache
         uses: actions/cache@v2
