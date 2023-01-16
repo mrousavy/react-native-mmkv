@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#import <React-RCTAppDelegate/RCTAppDelegate.h>
+#import <RCTAppDelegate.h>
 #import <UIKit/UIKit.h>
 
 @interface AppDelegate : RCTAppDelegate

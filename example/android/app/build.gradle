@@ -150,12 +150,12 @@ android {
 
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
-    implementation("com.facebook.react:react-native")
+    implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
     if (hermesEnabled.toBoolean()) {
-        implementation("com.facebook.react:hermes-engine")
+        implementation("com.facebook.react:hermes-android")
     } else {
         implementation jscFlavor
     }

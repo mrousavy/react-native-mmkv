@@ -65,7 +65,7 @@
     "eslint": "^8.27.0",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
-    "react-native": "^0.71.0-rc.0",
+    "react-native": "^0.71.0",
     "react-native-builder-bob": "^0.20.1",
     "release-it": "^15.5.0",
     "typescript": "^4.8.4"
@@ -128,8 +128,6 @@
       "@react-native-community",
       "prettier"
     ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
     "rules": {
       "prettier/prettier": [
         "error",
