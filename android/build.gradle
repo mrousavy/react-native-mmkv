@@ -27,7 +27,9 @@ def isNewArchitectureEnabled() {
   return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
 }
 
-apply plugin: 'com.facebook.react'
+if (isNewArchitectureEnabled()) {
+  apply plugin: 'com.facebook.react'
+}
 apply plugin: 'com.android.library'
 
 def safeExtGet(prop, fallback) {
