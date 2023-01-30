@@ -55,7 +55,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
   auto funcName = "MMKV." + propName;
 
   if (propName == "set") {
-    // MMKV.set(key: string, value: string | number | bool)
+    // MMKV.set(key: string, value: string | number | bool | Uint8Array)
     return jsi::Function::createFromHostFunction(runtime,
                                                  jsi::PropNameID::forAscii(runtime, funcName),
                                                  2,  // key, value
