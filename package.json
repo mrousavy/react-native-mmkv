@@ -67,8 +67,10 @@
     "react": "^18.2.0",
     "react-native": "^0.71.0",
     "react-native-builder-bob": "^0.20.3",
+    "react-native-windows": "0.71.0",
     "release-it": "^15.6.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "metro-config": "^0.73.7"
   },
   "peerDependencies": {
     "react": "*",
