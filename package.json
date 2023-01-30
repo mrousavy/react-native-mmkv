@@ -36,7 +36,8 @@
     "release": "release-it",
     "example": "yarn --cwd example",
     "pods": "cd example && yarn pods",
-    "bootstrap": "git submodule update --init --recursive && yarn && cd example && yarn bootstrap"
+    "bootstrap": "git submodule update --init --recursive && yarn && cd example && yarn bootstrap",
+    "windows": "react-native run-windows"
   },
   "keywords": [
     "react-native",
