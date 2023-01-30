@@ -6040,7 +6040,7 @@ metro-cache@0.73.7:
     metro-core "0.73.7"
     rimraf "^3.0.2"
 
-metro-config@0.73.7:
+metro-config@0.73.7, metro-config@^0.73.7:
   version "0.73.7"
   resolved "https://registry.yarnpkg.com/metro-config/-/metro-config-0.73.7.tgz#8935054ece6155d214420c263272cd3a690a82e2"
   integrity sha512-pD/F+vK3u37cbj1skYmI6cUsEEscqNRtW2KlDKu1m+n8nooDB2oGTOZatlS5WQa7Ga6jYQRydftlq4CLDexAfA==
