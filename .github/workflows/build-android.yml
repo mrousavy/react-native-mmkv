@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/build-android.yml'
       - 'android/**'
+      - 'cpp/**'
       - 'MMKV/**'
       - 'example/android/**'
       - 'yarn.lock'
@@ -15,6 +16,7 @@ on:
     paths:
       - '.github/workflows/build-android.yml'
       - 'android/**'
+      - 'cpp/**'
       - 'MMKV/**'
       - 'example/android/**'
       - 'yarn.lock'
