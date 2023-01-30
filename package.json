@@ -165,5 +165,10 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "reactnativemmkv",
+    "type": "modules",
+    "jsSrcsDir": "./lib/module"
   }
 }
