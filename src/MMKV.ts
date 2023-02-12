@@ -42,6 +42,17 @@ export interface MMKVConfiguration {
    * ```
    */
   encryptionKey?: string;
+  /**
+   * Configure fast writes for MMKV.
+   *
+   * When set to `true`, all calls to `set(..)` do not overwrite the previous
+   * value to avoid storage resizing, this speeds up writes.
+   *
+   * Only enable this if you use a small MMKV storage, as this uses more RAM.
+   *
+   * @default false
+   */
+  fastWrites?: boolean;
 }
 
 /**
@@ -136,6 +147,7 @@ export class MMKV implements MMKVInterface {
   private nativeInstance: NativeMMKV;
   private functionCache: Partial<NativeMMKV>;
   private id: string;
+  private fastWrites: boolean;
 
   /**
    * Creates a new MMKV instance with the given Configuration.
@@ -143,6 +155,7 @@ export class MMKV implements MMKVInterface {
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
+    this.fastWrites = configuration.fastWrites ?? false;
     this.nativeInstance = isJest()
       ? createMockMMKV()
       : createMMKV(configuration);
@@ -176,6 +189,10 @@ export class MMKV implements MMKVInterface {
   }
 
   set(key: string, value: boolean | string | number | Uint8Array): void {
+    if (!this.fastWrites) {
+       // Delete the value first. MMKV just leaves old values dangling by default
+       this.delete(key);
+    }
     const func = this.getFunctionFromCache('set');
     func(key, value);
 
