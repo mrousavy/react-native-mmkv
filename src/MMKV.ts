@@ -44,9 +44,11 @@ export interface MMKVConfiguration {
   encryptionKey?: string;
   /**
    * Configure fast writes for MMKV.
-   * 
+   *
    * When set to `true`, all calls to `set(..)` do not overwrite the previous
    * value to avoid storage resizing, this speeds up writes.
+   *
+   * Only enable this if you use a small MMKV storage, as this uses more RAM.
    *
    * @default false
    */
@@ -151,9 +153,9 @@ export class MMKV implements MMKVInterface {
    * Creates a new MMKV instance with the given Configuration.
    * If no custom `id` is supplied, `'mmkv.default'` will be used.
    */
-  constructor(configuration: MMKVConfiguration = { id: 'mmkv.default', fastWrites: false }) {
+  constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
-    this.fastWrites = configuration.fastWrites;
+    this.fastWrites = configuration.fastWrites ?? false;
     this.nativeInstance = isJest()
       ? createMockMMKV()
       : createMMKV(configuration);
