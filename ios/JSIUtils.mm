@@ -80,7 +80,8 @@ id convertJSIValueToObjCObject(jsi::Runtime &runtime, const jsi::Value &value);
 
 NSString *convertJSIStringToNSString(jsi::Runtime &runtime, const jsi::String &value)
 {
-    return [NSString stringWithUTF8String:value.utf8(runtime).c_str()];
+    auto string = value.utf8(runtime);
+    return [NSString stringWithUTF8String:string.c_str()];
 }
 
 NSArray *convertJSIArrayToNSArray(jsi::Runtime &runtime,
