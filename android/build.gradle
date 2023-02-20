@@ -92,6 +92,7 @@ android {
             "META-INF",
             "META-INF/**",
             "**/libjsi.so",
+            "**/libc++_shared.so"
     ]
   }
 }
