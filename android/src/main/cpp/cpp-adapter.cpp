@@ -36,7 +36,7 @@ void install(jsi::Runtime& jsiRuntime) {
 
     // Adds the PropNameIDCache object to the Runtime. If the Runtime gets destroyed, the Object gets destroyed and the cache gets invalidated.
     auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(runtime);
-    runtime.global().setProperty(runtime, "mmkvArrayBufferPropNameIdCache", jsi::Object::createFromHostObject(propNameIdCache));
+    runtime.global().setProperty(runtime, "mmkvArrayBufferPropNameIdCache", jsi::Object::createFromHostObject(runtime, propNameIdCache));
 }
 
 std::string jstringToStdString(JNIEnv *env, jstring jStr) {

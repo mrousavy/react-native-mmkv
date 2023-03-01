@@ -69,7 +69,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
 
     // Adds the PropNameIDCache object to the Runtime. If the Runtime gets destroyed, the Object gets destroyed and the cache gets invalidated.
     auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(runtime);
-    runtime.global().setProperty(runtime, "mmkvArrayBufferPropNameIdCache", jsi::Object::createFromHostObject(propNameIdCache));
+    runtime.global().setProperty(runtime, "mmkvArrayBufferPropNameIdCache", jsi::Object::createFromHostObject(runtime, propNameIdCache));
 
     NSLog(@"Installed global.mmkvCreateNewInstance!");
     return @true;
