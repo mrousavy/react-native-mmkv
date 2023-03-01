@@ -2,6 +2,7 @@
 #include <jsi/jsi.h>
 #include <MMKV.h>
 #include "MmkvHostObject.h"
+#include "TypedArray.h"
 
 using namespace facebook;
 
@@ -32,6 +33,10 @@ void install(jsi::Runtime& jsiRuntime) {
                                                                          return jsi::Object::createFromHostObject(runtime, instance);
                                                                        });
     jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
+
+    // Adds the PropNameIDCache object to the Runtime. If the Runtime gets destroyed, the Object gets destroyed and the cache gets invalidated.
+    auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>();
+    runtime.global().setProperty(runtime, "mmkvArrayBufferPropNameIdCache", jsi::Object::createFromHostObject(propNameIdCache));
 }
 
 std::string jstringToStdString(JNIEnv *env, jstring jStr) {
