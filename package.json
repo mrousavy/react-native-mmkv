@@ -1,6 +1,6 @@
 {
   "name": "react-native-mmkv",
-  "version": "2.4.1",
+  "version": "2.6.3",
   "description": "The fastest key/value storage for React Native. ~30x faster than AsyncStorage! Works on Android, iOS and Web.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -12,6 +12,7 @@
     "android/build.gradle",
     "android/gradle.properties",
     "android/CMakeLists.txt",
+    "cpp",
     "MMKV/Core",
     "lib/commonjs",
     "lib/module",
@@ -28,8 +29,7 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "lint-ci": "yarn lint -f ./node_modules/@firmnav/eslint-github-actions-formatter/dist/formatter.js",
-    "prepare": "git submodule update --init --recursive",
-    "build": "bob build",
+    "prepare": "git submodule update --init --recursive && bob build",
     "prepack": "bob build",
     "update-submodule": "git submodule update --remote --merge",
     "release": "release-it",
@@ -54,23 +54,24 @@
   },
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.1.0",
-    "@react-native-community/eslint-config": "^3.0.1",
-    "@react-native-community/eslint-plugin": "^1.1.0",
-    "@release-it/conventional-changelog": "^3.3.0",
-    "@types/react": "^17.0.21",
-    "@types/react-native": "^0.65.5",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "eslint": "^7.32.0",
-    "prettier": "^2.4.0",
-    "react": "^17.0.2",
-    "react-native": "^0.66.0",
-    "react-native-builder-bob": "^0.18.1",
-    "release-it": "^14.11.5",
-    "typescript": "^4.4.3"
+    "@react-native-community/eslint-config": "^3.2.0",
+    "@react-native-community/eslint-plugin": "^1.3.0",
+    "@release-it/conventional-changelog": "^5.1.1",
+    "@tsconfig/react-native": "^2.0.3",
+    "@types/react": "^18.0.26",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
+    "@typescript-eslint/parser": "^5.48.1",
+    "eslint": "^8.32.0",
+    "prettier": "^2.8.3",
+    "react": "^18.2.0",
+    "react-native": "^0.71.0",
+    "react-native-builder-bob": "^0.20.3",
+    "release-it": "^15.6.0",
+    "typescript": "^4.9.4"
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": ">=0.71.0"
   },
   "jest": {
     "preset": "react-native",
@@ -159,9 +160,14 @@
       [
         "typescript",
         {
-          "project": "tsconfig.build.json"
+          "project": "tsconfig.json"
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "reactnativemmkv",
+    "type": "modules",
+    "jsSrcsDir": "./lib/module"
   }
 }

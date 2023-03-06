@@ -112,7 +112,7 @@ This creates a new storage instance using a custom MMKV storage ID. By using a c
 
 The following values can be configured:
 
-* `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separte the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
+* `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
 * `appGroup`: The MMKV instance's app group name (iOS only). It is used to share MMKV instances between apps and extensions within the same app group. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration))
@@ -175,6 +175,14 @@ storage.recrypt('hunter2')
 storage.recrypt(undefined)
 ```
 
+### Buffers
+
+```js
+storage.set('someToken', new Uint8Array([1, 100, 255]))
+const buffer = storage.getBuffer('someToken')
+console.log(buffer) // [1, 100, 255]
+```
+
 ## Testing with Jest
 
 A mocked MMKV instance is automatically used when testing with Jest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [example/test/MMKV.test.ts](example/test/MMKV.test.ts) for an example.
@@ -188,6 +196,8 @@ A mocked MMKV instance is automatically used when testing with Jest, so you will
 * [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 * [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
 * [Using MMKV with zustand persist-middleware](./docs/WRAPPER_ZUSTAND_PERSIST_MIDDLEWARE.md)
+* [Using MMKV with jotai](./docs/WRAPPER_JOTAI.md)
+* [Using MMKV with react-query](./docs/WRAPPER_REACT_QUERY.md)
 * [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
 
 ## Limitations

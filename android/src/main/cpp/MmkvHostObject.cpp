@@ -7,9 +7,11 @@
 //
 
 #include "MmkvHostObject.h"
+#include "TypedArray.h"
 #include <MMKV.h>
 #include <android/log.h>
 #include <string>
+#include <vector>
 
 MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey) {
   __android_log_print(ANDROID_LOG_INFO, "RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encryption-Key: %s)",
@@ -37,6 +39,7 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   std::vector<jsi::PropNameID> result;
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBoolean")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBuffer")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getString")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getNumber")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("contains")));
@@ -52,7 +55,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
   auto funcName = "MMKV." + propName;
 
   if (propName == "set") {
-    // MMKV.set(key: string, value: string | number | bool)
+    // MMKV.set(key: string, value: string | number | bool | Uint8Array)
     return jsi::Function::createFromHostFunction(runtime,
                                                  jsi::PropNameID::forAscii(runtime, funcName),
                                                  2,  // key, value
@@ -65,16 +68,37 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
 
       auto keyName = arguments[0].getString(runtime).utf8(runtime);
+
       if (arguments[1].isBool()) {
+        // bool
         instance->set(arguments[1].getBool(), keyName);
       } else if (arguments[1].isNumber()) {
+        // number
         instance->set(arguments[1].getNumber(), keyName);
       } else if (arguments[1].isString()) {
+        // string
         auto stringValue = arguments[1].getString(runtime).utf8(runtime);
         instance->set(stringValue, keyName);
+      } else if (arguments[1].isObject()) {
+        // object
+        auto object = arguments[1].asObject(runtime);
+        if (isTypedArray(runtime, object)) {
+          // Uint8Array
+          auto typedArray = getTypedArray(runtime, object);
+          auto bufferValue = typedArray.getBuffer(runtime);
+          mmkv::MMBuffer buffer(bufferValue.data(runtime),
+                                bufferValue.size(runtime),
+                                mmkv::MMBufferCopyFlag::MMBufferNoCopy);
+          instance->set(buffer, keyName);
+        } else {
+          // unknown object
+          throw jsi::JSError(runtime, "MMKV::set: 'value' argument is an object, but not of type Uint8Array!");
+        }
       } else {
-        throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number or string!");
+        // unknown type
+        throw jsi::JSError(runtime, "MMKV::set: 'value' argument is not of type bool, number, string or buffer!");
       }
+
       return jsi::Value::undefined();
     });
   }
@@ -150,6 +174,37 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       }
     });
   }
+
+
+    if (propName == "getBuffer") {
+        // MMKV.getBuffer(key: string)
+        return jsi::Function::createFromHostFunction(runtime,
+                                                     jsi::PropNameID::forAscii(runtime, funcName),
+                                                     1,  // key
+                                                     [this](jsi::Runtime& runtime,
+                                                            const jsi::Value& thisValue,
+                                                            const jsi::Value* arguments,
+                                                            size_t count) -> jsi::Value {
+        if (!arguments[0].isString()) {
+          throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
+        }
+
+        auto keyName = arguments[0].getString(runtime).utf8(runtime);
+        mmkv::MMBuffer buffer;
+        bool hasValue = instance->getBytes(keyName, buffer);
+        if (hasValue) {
+          auto length = buffer.length();
+          TypedArray<TypedArrayKind::Uint8Array> array(runtime, length);
+          auto data = static_cast<const unsigned char*>(buffer.getPtr());
+          std::vector<unsigned char> vector(length);
+          vector.assign(data, data + length);
+          array.update(runtime, vector);
+          return array;
+        } else {
+          return jsi::Value::undefined();
+        }
+      });
+    }
 
   if (propName == "contains") {
     // MMKV.contains(key: string)

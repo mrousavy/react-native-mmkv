@@ -49,7 +49,7 @@ export function useMMKV(configuration?: MMKVConfiguration): MMKV {
 }
 
 function createMMKVHook<
-  T extends (boolean | number | string) | undefined,
+  T extends (boolean | number | string | Uint8Array) | undefined,
   TSet extends T | undefined,
   TSetAction extends TSet | ((current: T) => TSet)
 >(getter: (instance: MMKV, key: string) => T) {
@@ -75,6 +75,13 @@ function createMMKVHook<
           case 'undefined':
             mmkv.delete(key);
             break;
+          case 'object':
+            if (newValue instanceof Uint8Array) {
+              mmkv.set(key, newValue)
+              break;
+            } else {
+              throw new Error(`MMKV: Type object (${newValue}) is not supported!`)
+            }
           default:
             throw new Error(`MMKV: Type ${typeof newValue} is not supported!`);
         }
@@ -82,13 +89,9 @@ function createMMKVHook<
       [key, mmkv]
     );
 
-    // update value if key changes
-    const keyRef = useRef(key);
+    // update value if key or instance changes
     useEffect(() => {
-      if (key !== keyRef.current) {
-        setValue(getter(mmkv, key));
-        keyRef.current = key;
-      }
+      setValue(getter(mmkv, key));
     }, [key, mmkv]);
 
     // update value if it changes somewhere else (second hook, same key)
@@ -144,6 +147,19 @@ export const useMMKVNumber = createMMKVHook((instance, key) =>
  */
 export const useMMKVBoolean = createMMKVHook((instance, key) =>
   instance.getBoolean(key)
+);
+/**
+ * Use the buffer value (unsigned 8-bit (0-255)) of the given `key` from the given MMKV storage instance.
+ *
+ * If no instance is provided, a shared default instance will be used.
+ *
+ * @example
+ * ```ts
+ * const [privateKey, setPrivateKey] = useMMKVBuffer("user.privateKey")
+ * ```
+ */
+export const useMMKVBuffer = createMMKVHook((instance, key) =>
+  instance.getBuffer(key)
 );
 /**
  * Use an object value of the given `key` from the given MMKV storage instance.

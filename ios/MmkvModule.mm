@@ -7,6 +7,7 @@
 
 #import <MMKV/MMKV.h>
 #import "MmkvHostObject.h"
+#import "../cpp/TypedArray.h"
 
 using namespace facebook;
 
@@ -31,16 +32,15 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
     if (cxxBridge == nil) {
         return @false;
     }
-    
+
     using namespace facebook;
-    
+
     auto jsiRuntime = (jsi::Runtime*) cxxBridge.runtime;
     if (jsiRuntime == nil) {
         return @false;
     }
     auto& runtime = *jsiRuntime;
-    
-    
+
     RCTUnsafeExecuteOnMainQueueSync(^{
       // Get appGroup value from info.plist using key "AppGroup"
       NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
@@ -51,7 +51,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
           [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
       }
     });
-    
+
     // MMKV.createNewInstance()
     auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(runtime,
                                                                        jsi::PropNameID::forAscii(runtime, "mmkvCreateNewInstance"),
@@ -64,16 +64,20 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
             throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
         }
         jsi::Object config = arguments[0].asObject(runtime);
-        
+
         NSString* instanceId = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"id" runtime:runtime];
         NSString* path = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"path" runtime:runtime];
         NSString* encryptionKey = [MmkvModule getPropertyAsStringOrNilFromObject:config propertyName:"encryptionKey" runtime:runtime];
-        
+
         auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
         return jsi::Object::createFromHostObject(runtime, instance);
     });
     runtime.global().setProperty(runtime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
-    
+
+    // Adds the PropNameIDCache object to the Runtime. If the Runtime gets destroyed, the Object gets destroyed and the cache gets invalidated.
+    auto propNameIdCache = std::make_shared<InvalidateCacheOnDestroy>(runtime);
+    runtime.global().setProperty(runtime, "mmkvArrayBufferPropNameIdCache", jsi::Object::createFromHostObject(runtime, propNameIdCache));
+
     NSLog(@"Installed global.mmkvCreateNewInstance!");
     return @true;
 }

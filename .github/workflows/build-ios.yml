@@ -6,15 +6,19 @@ on:
       - main
     paths:
       - '.github/workflows/build-ios.yml'
+      - 'cpp/**'
       - 'ios/**'
       - '*.podspec'
       - 'example/ios/**'
+      - 'MMKV/**'
   pull_request:
     paths:
       - '.github/workflows/build-ios.yml'
+      - 'cpp/**'
       - 'ios/**'
       - '*.podspec'
       - 'example/ios/**'
+      - 'MMKV/**'
 
 jobs:
   build:

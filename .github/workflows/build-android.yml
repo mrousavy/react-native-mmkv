@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/build-android.yml'
       - 'android/**'
+      - 'cpp/**'
       - 'MMKV/**'
       - 'example/android/**'
       - 'yarn.lock'
@@ -15,6 +16,7 @@ on:
     paths:
       - '.github/workflows/build-android.yml'
       - 'android/**'
+      - 'cpp/**'
       - 'MMKV/**'
       - 'example/android/**'
       - 'yarn.lock'
@@ -27,10 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup JDK 1.8
+      - name: Setup JDK 11
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 11
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -57,7 +59,5 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Run Gradle Build for android/
-        run: cd android && ./gradlew assembleDebug --build-cache && cd ..
       - name: Run Gradle Build for example/android/
         run: cd example/android && ./gradlew assembleDebug --build-cache && cd ../..
