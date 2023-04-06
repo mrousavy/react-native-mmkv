@@ -95,6 +95,10 @@ interface MMKVInterface {
    */
   clearAll: () => void;
   /**
+   * Trim unused space on the storage file
+   */
+  trim: () => void;
+  /**
    * Sets (or updates) the encryption-key to encrypt all data in this MMKV instance with.
    *
    * To remove encryption, pass `undefined` as a key.
@@ -124,6 +128,7 @@ export type NativeMMKV = Pick<
   | 'getString'
   | 'getBuffer'
   | 'set'
+  | 'trim'
   | 'recrypt'
 >;
 
@@ -222,6 +227,10 @@ export class MMKV implements MMKVInterface {
   recrypt(key: string | undefined): void {
     const func = this.getFunctionFromCache('recrypt');
     return func(key);
+  }
+  trim(): void {
+    const func = this.getFunctionFromCache('trim');
+    return func();
   }
 
   toString(): string {

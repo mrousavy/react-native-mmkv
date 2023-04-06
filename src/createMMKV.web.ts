@@ -54,6 +54,7 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     },
     getAllKeys: () => Object.keys(storage()),
     contains: (key) => storage().getItem(key) != null,
+    trim: () => {},
     recrypt: () => {
       throw new Error('`recrypt(..)` is not supported on Web!');
     },

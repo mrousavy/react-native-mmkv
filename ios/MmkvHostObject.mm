@@ -272,6 +272,22 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
     });
   }
 
+  if (propName == "trim") {
+    // MMKV.trim()
+    return jsi::Function::createFromHostFunction(runtime,
+                                                 jsi::PropNameID::forAscii(runtime, funcName),
+                                                 0,
+                                                 [this](jsi::Runtime& runtime,
+                                                        const jsi::Value& thisValue,
+                                                        const jsi::Value* arguments,
+                                                        size_t count) -> jsi::Value {
+        NSLog(@"Before: %zu / %zu", [instance actualSize], [instance totalSize]);
+      [instance trim];
+        NSLog(@"After: %zu / %zu", [instance actualSize], [instance totalSize]);
+      return jsi::Value::undefined();
+    });
+  }
+
   if (propName == "recrypt") {
     // MMKV.recrypt(encryptionKey)
     return jsi::Function::createFromHostFunction(runtime,
