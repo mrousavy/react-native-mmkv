@@ -65,7 +65,7 @@
     "prettier": "^2.8.3",
     "react": "^18.2.0",
     "react-native": "^0.71.0",
-    "react-native-builder-bob": "^0.20.3",
+    "react-native-builder-bob": "^0.20.4",
     "release-it": "^15.6.0",
     "typescript": "^4.9.4"
   },
