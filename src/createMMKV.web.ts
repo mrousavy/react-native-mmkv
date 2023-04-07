@@ -6,9 +6,6 @@ const canUseDOM =
   typeof window !== 'undefined' && window.document?.createElement != null;
 
 export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
-  if (config.id !== 'mmkv.default') {
-    throw new Error("MMKV: 'id' is not supported on Web!");
-  }
   if (config.encryptionKey != null) {
     throw new Error("MMKV: 'encryptionKey' is not supported on Web!");
   }
@@ -32,28 +29,47 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
 
   const textEncoder = createTextEncoder();
 
+  if (config.id.indexOf('\\') !== -1) {
+    throw new Error('MMKV: `id` cannot contain the backslash character (`\\`)!');
+  }
+
+  const keyPrefix = (config.id && config.id !== 'mmkv.default') ? `${config.id}\\` : null;
+  const prefixedKey = (key: string) => {
+    if (keyPrefix === null) return key;
+    return `${keyPrefix}\\${key}`;
+  };
+
   return {
     clearAll: () => storage().clear(),
-    delete: (key) => storage().removeItem(key),
-    set: (key, value) => storage().setItem(key, value.toString()),
-    getString: (key) => storage().getItem(key) ?? undefined,
+    delete: (key) => storage().removeItem(prefixedKey(key)),
+    set: (key, value) => {
+      if (key.indexOf('\\') !== -1) {
+        throw new Error('MMKV: `key` cannot contain the backslash character (`\\`)!');
+      }
+      storage().setItem(prefixedKey(key), value.toString())
+    },
+    getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
     getNumber: (key) => {
-      const value = storage().getItem(key);
+      const value = storage().getItem(prefixedKey(key));
       if (value == null) return undefined;
       return Number(value);
     },
     getBoolean: (key) => {
-      const value = storage().getItem(key);
+      const value = storage().getItem(prefixedKey(key));
       if (value == null) return undefined;
       return value === 'true';
     },
     getBuffer: (key) => {
-      const value = storage().getItem(key);
+      const value = storage().getItem(prefixedKey(key));
       if (value == null) return undefined;
       return textEncoder.encode(value);
     },
-    getAllKeys: () => Object.keys(storage()),
-    contains: (key) => storage().getItem(key) != null,
+    getAllKeys: () => {
+      const keys = Object.keys(storage());
+      if (keyPrefix === null) return keys;
+      return keys.filter(key => key.startsWith(keyPrefix));
+    },
+    contains: (key) => storage().getItem(prefixedKey(key)) != null,
     recrypt: () => {
       throw new Error('`recrypt(..)` is not supported on Web!');
     },
