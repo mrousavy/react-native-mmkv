@@ -77,10 +77,12 @@ function createMMKVHook<
             break;
           case 'object':
             if (newValue instanceof Uint8Array) {
-              mmkv.set(key, newValue)
+              mmkv.set(key, newValue);
               break;
             } else {
-              throw new Error(`MMKV: Type object (${newValue}) is not supported!`)
+              throw new Error(
+                `MMKV: Type object (${newValue}) is not supported!`
+              );
             }
           default:
             throw new Error(`MMKV: Type ${typeof newValue} is not supported!`);
