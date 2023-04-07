@@ -21,6 +21,16 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
         'Tried to access storage on the server. Did you forget to call this in useEffect?'
       );
     }
+
+    try {
+      // throws ACCESS_DENIED error
+      window.localStorage;
+    } catch {
+      if (config.webFallbackStorage) {
+        return config.webFallbackStorage;
+      }
+    }
+
     const domStorage =
       global?.localStorage ?? window?.localStorage ?? localStorage;
     if (domStorage == null) {

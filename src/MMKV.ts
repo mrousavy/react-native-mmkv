@@ -42,6 +42,17 @@ export interface MMKVConfiguration {
    * ```
    */
   encryptionKey?: string;
+  /**
+   * An alternative (fallback) storage that is conforming to the `Storage` type. Used when user disables localStorage. Allows your application to manage such situations gracefully with custom storage
+   *
+   * Your store must conform same API as LocalStorage
+   *
+   * @example
+   * ```ts
+   * const storageWithFallback = new MMKV({ webFallbackStorage: inMemoryStorage })
+   * ```
+   */
+  webFallbackStorage?: Storage;
 }
 
 /**
