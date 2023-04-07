@@ -261,7 +261,7 @@ let _storage = {}
 const inMemoryStorage: Storage = {
     key: (nth: number) => Object
         .keys(_storage)
-        .at(nth),
+        .at(nth) ?? null,,
     clear: () => {
         _storage = {}
     },
