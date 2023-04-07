@@ -295,6 +295,38 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
       return jsi::Value::undefined();
     });
   }
+  
+  if (propName == "applyBatchedWrites") {
+    // MMKV.applyBatchedWrites(Map<K, V>, DELETE_SYMBOL)
+    return jsi::Function::createFromHostFunction(runtime,
+                                                 jsi::PropNameID::forAscii(runtime, funcName),
+                                                 1, // encryptionKey
+                                                 [this](jsi::Runtime& runtime,
+                                                        const jsi::Value& thisValue,
+                                                        const jsi::Value* arguments,
+                                                        size_t count) -> jsi::Value {
+      auto run = [this](jsi::Runtime& runtime,
+                        const jsi::Value& thisValue,
+                        const jsi::Value* arguments,
+                        size_t count) -> jsi::Value {
+        auto resolve = arguments[0].asObject(runtime).asFunction(runtime);
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+          // TODO: Read from Map and apply everything here?
+          
+          // TODO: Resolve on CallInvoker
+        });
+        
+        return jsi::Value::undefined();
+      };
+      
+      auto newPromise = runtime.global().getPropertyAsFunction(runtime, "Promise");
+      auto runFunction = jsi::Function::createFromHostFunction(runtime, jsi::PropNameID::forAscii(runtime, "Promise::run"), 1, std::move(run));
+      
+      return newPromise.callAsConstructor(runtime, runFunction, 1);
+    });
+    
+  }
 
   return jsi::Value::undefined();
 }

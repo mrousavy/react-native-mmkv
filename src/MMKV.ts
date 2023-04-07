@@ -1,5 +1,6 @@
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
+import { DELETE_SYMBOL, MemoryCache, MemoryCacheMap } from './MemoryCache';
 import { isJest } from './PlatformChecker';
 
 interface Listener {
@@ -127,13 +128,10 @@ export type NativeMMKV = Pick<
   | 'recrypt'
 > & {
   applyBatchedWrites: (
-    map: Map<string, string | boolean | number | Uint8Array>
+    map: MemoryCacheMap,
+    deleteFlag: typeof DELETE_SYMBOL
   ) => Promise<void>;
 };
-
-function combineArrays<T>(...arrays: T[][]): T[] {
-  return [...new Set(arrays.flat())];
-}
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
@@ -246,55 +244,30 @@ export class MMKV implements MMKVInterface {
    * in-memory `Map<K, V>` instead of writing it to the  file.
    * The Map can later be used to apply all writes in a single batch.
    */
-  private createInMemoryCopy(
-    memoryCache: Map<string, string | boolean | number | Uint8Array | null>
-  ): MMKVInterface {
+  private createInMemoryCopy(memoryCache: MemoryCache): MMKVInterface {
     return {
       addOnValueChangedListener: this.addOnValueChangedListener,
-      clearAll: () => {
-        memoryCache.clear();
-        for (const key of this.getAllKeys()) {
-          memoryCache.set(key, null);
-        }
-      },
-      contains: (key) => {
-        if (memoryCache.has(key)) return memoryCache.get(key) != null;
-        else return this.contains(key);
-      },
-      delete: (key) => memoryCache.set(key, null),
-      getAllKeys: () => {
-        return [...new Set([...this.getAllKeys(), ...memoryCache.keys()])];
-      },
-      getBoolean: (key) => {
-        if (!memoryCache.has(key)) {
-          memoryCache.set(key, this.getBoolean(key));
-        }
-        if (memoryCache.has(key)) {
-          return Boolean(memoryCache.get(key));
-        }
-      },
-      getBuffer: (key) =>
-        memoryCache.has(key)
-          ? (memoryCache.get(key) as Uint8Array)
-          : this.getBuffer(key),
-      getNumber: (key) =>
-        memoryCache.has(key)
-          ? Number(memoryCache.get(key))
-          : this.getNumber(key),
-      getString: (key) =>
-        memoryCache.has(key)
-          ? String(memoryCache.get(key))
-          : this.getString(key),
+      clearAll: memoryCache.clear,
+      contains: memoryCache.has,
+      delete: memoryCache.delete,
+      getAllKeys: memoryCache.getAllKeys,
+      getBoolean: memoryCache.getBoolean,
+      getBuffer: memoryCache.getBuffer,
+      getNumber: memoryCache.getNumber,
+      getString: memoryCache.getString,
       recrypt: this.recrypt,
-      set: (key, value) => memoryCache.set(key, value),
+      set: memoryCache.set,
     };
   }
 
   batch(callback: (storage: MMKVInterface) => void): Promise<void> {
-    const map = new Map();
-    const copy = this.createInMemoryCopy(map);
+    const memoryCache = new MemoryCache(this);
+    const copy = this.createInMemoryCopy(memoryCache);
     callback(copy);
-    return this.nativeInstance.applyBatchedWrites(map);
+    return this.nativeInstance.applyBatchedWrites(
+      memoryCache.map,
+      DELETE_SYMBOL
+    );
   }
 
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
