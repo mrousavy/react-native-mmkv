@@ -5,6 +5,8 @@ import { createTextEncoder } from './createTextEncoder';
 const canUseDOM =
   typeof window !== 'undefined' && window.document?.createElement != null;
 
+const KEY_WILDCARD = "\\"
+
 export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
   if (config.encryptionKey != null) {
     throw new Error("MMKV: 'encryptionKey' is not supported on Web!");
@@ -29,23 +31,29 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
 
   const textEncoder = createTextEncoder();
 
-  if (config.id.indexOf('\\') !== -1) {
+  if (config.id.includes(KEY_WILDCARD)) {
     throw new Error('MMKV: `id` cannot contain the backslash character (`\\`)!');
   }
 
-  const keyPrefix = (config.id && config.id !== 'mmkv.default') ? `${config.id}\\` : null;
+  const keyPrefix = `${config.id}${KEY_WILDCARD}` // mmkv.default\\
   const prefixedKey = (key: string) => {
-    if (keyPrefix === null) return key;
-    return `${keyPrefix}\\${key}`;
-  };
+    if (key.includes('\\')) {
+      throw new Error('MMKV: `key` cannot contain the backslash character (`\\`)!');
+    }
+    return `${keyPrefix}${key}`
+  }
 
   return {
-    clearAll: () => storage().clear(),
+    clearAll: () => {
+      const keys = Object.keys(storage())
+      for (const key of keys) {
+        if (key.startsWith(keyPrefix)) {
+          storage().removeItem(key)
+        }
+      }
+    },
     delete: (key) => storage().removeItem(prefixedKey(key)),
     set: (key, value) => {
-      if (key.indexOf('\\') !== -1) {
-        throw new Error('MMKV: `key` cannot contain the backslash character (`\\`)!');
-      }
       storage().setItem(prefixedKey(key), value.toString())
     },
     getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
@@ -66,7 +74,6 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     },
     getAllKeys: () => {
       const keys = Object.keys(storage());
-      if (keyPrefix === null) return keys;
       return keys.filter(key => key.startsWith(keyPrefix));
     },
     contains: (key) => storage().getItem(prefixedKey(key)) != null,
