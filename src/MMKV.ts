@@ -45,7 +45,7 @@ export interface MMKVConfiguration {
   /**
    * An alternative (fallback) storage that is conforming to the `Storage` type. Used when user disables localStorage. Allows your application to manage such situations gracefully with custom storage
    *
-   * Your store must conform same API as LocalStorage
+   * Your storage that must conform same API as LocalStorage
    *
    * @example
    * ```ts
