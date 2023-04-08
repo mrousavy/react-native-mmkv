@@ -26,9 +26,18 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
       // throws ACCESS_DENIED error
       window.localStorage;
     } catch {
-      if (config.webFallbackStorage) {
-        return config.webFallbackStorage;
-      }
+      console.warn(
+        'MMKV: LocalStorage has been disabled. Your experience will be limited to in-memory storage!'
+      );
+
+      const inMemoryStorage = new Map<string, string>();
+
+      return {
+        getItem: inMemoryStorage.get,
+        setItem: inMemoryStorage.set,
+        removeItem: inMemoryStorage.delete,
+        clear: inMemoryStorage.clear,
+      };
     }
 
     const domStorage =

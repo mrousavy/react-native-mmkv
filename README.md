@@ -104,8 +104,7 @@ import { MMKV } from 'react-native-mmkv'
 export const storage = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
-  encryptionKey: 'hunter2',
-  webFallbackStorage: inMemoryStorage
+  encryptionKey: 'hunter2'
 })
 ```
 
@@ -116,7 +115,6 @@ The following values can be configured:
 * `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
-* `webFallbackStorage`: An alternative storage solution conforming to the `Storage` type. This is utilized as a fallback for web environments when, for instance, a user disables `localStorage` in their browser. This feature enables your application to manage such situations gracefully, offering eg. in-memory storage as an alternative (see example below). Please note that this property is optional; by default, an error will be thrown in case of a disabled localStorage.
 
 ### Set
 
@@ -250,33 +248,6 @@ storage.recrypt(undefined)
 storage.set('someToken', new Uint8Array([1, 100, 255]))
 const buffer = storage.getBuffer('someToken')
 console.log(buffer) // [1, 100, 255]
-```
-
-### Example of fallback in-memory storage
-
-```typescript
-let _storage = {}
-
-// Storage is a global type
-const inMemoryStorage: Storage = {
-    key: (nth: number) => Object
-        .keys(_storage)
-        .at(nth) ?? null,
-    clear: () => {
-        _storage = {}
-    },
-    removeItem: (key: string) => {
-        delete _storage[key]
-    },
-    setItem: (key: string, value: string) => {
-        _storage[key] = value
-    },
-    getItem: (key: string) => _storage[key]
-}
-
-export const storage = new MMKV({
-    webFallbackStorage: inMemoryStorage
-})
 ```
 
 ## Testing with Jest
@@ -295,6 +266,10 @@ A mocked MMKV instance is automatically used when testing with Jest, so you will
 * [Using MMKV with jotai](./docs/WRAPPER_JOTAI.md)
 * [Using MMKV with react-query](./docs/WRAPPER_REACT_QUERY.md)
 * [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
+
+## LocalStorage and In-Memory Storage (Web)
+
+If a user chooses to disable LocalStorage in their browser, the library will automatically provide a limited in-memory storage as an alternative. However, this in-memory storage won't persist data, and users may experience data loss if they refresh the page or close their browser. To optimize user experience, consider implementing a suitable solution within your app to address this scenario.
 
 ## Limitations
 
