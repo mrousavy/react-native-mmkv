@@ -33,10 +33,11 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
       const inMemoryStorage = new Map<string, string>();
 
       return {
-        getItem: inMemoryStorage.get,
-        setItem: inMemoryStorage.set,
-        removeItem: inMemoryStorage.delete,
-        clear: inMemoryStorage.clear,
+        getItem: (key: string) => inMemoryStorage.get(key),
+        setItem: (key: string, value: string) =>
+          inMemoryStorage.set(key, value),
+        removeItem: (key: string) => inMemoryStorage.delete(key),
+        clear: () => inMemoryStorage.clear(),
       };
     }
 
