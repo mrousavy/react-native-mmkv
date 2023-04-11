@@ -5,7 +5,19 @@ import { createTextEncoder } from './createTextEncoder';
 const canUseDOM =
   typeof window !== 'undefined' && window.document?.createElement != null;
 
+const hasAccessToLocalStorage = () => {
+  try {
+    // throws ACCESS_DENIED error
+    window.localStorage;
+
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 const KEY_WILDCARD = '\\';
+const inMemoryStorage = new Map<string, string>();
 
 export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
   if (config.encryptionKey != null) {
@@ -15,12 +27,31 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     throw new Error("MMKV: 'path' is not supported on Web!");
   }
 
+  if (!hasAccessToLocalStorage()) {
+    console.warn(
+      'MMKV: LocalStorage has been disabled. Your experience will be limited to in-memory storage!'
+    );
+  }
+
   const storage = () => {
     if (!canUseDOM) {
       throw new Error(
         'Tried to access storage on the server. Did you forget to call this in useEffect?'
       );
     }
+
+    if (!hasAccessToLocalStorage()) {
+      return {
+        getItem: (key: string) => inMemoryStorage.get(key) ?? null,
+        setItem: (key: string, value: string) =>
+          inMemoryStorage.set(key, value),
+        removeItem: (key: string) => inMemoryStorage.delete(key),
+        clear: () => inMemoryStorage.clear(),
+        length: inMemoryStorage.size,
+        key: (index: number) => Object.keys(inMemoryStorage).at(index) ?? null,
+      } as Storage;
+    }
+
     const domStorage =
       global?.localStorage ?? window?.localStorage ?? localStorage;
     if (domStorage == null) {

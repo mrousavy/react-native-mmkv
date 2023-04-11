@@ -200,6 +200,10 @@ A mocked MMKV instance is automatically used when testing with Jest, so you will
 * [Using MMKV with react-query](./docs/WRAPPER_REACT_QUERY.md)
 * [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
 
+## LocalStorage and In-Memory Storage (Web)
+
+If a user chooses to disable LocalStorage in their browser, the library will automatically provide a limited in-memory storage as an alternative. However, this in-memory storage won't persist data, and users may experience data loss if they refresh the page or close their browser. To optimize user experience, consider implementing a suitable solution within your app to address this scenario.
+
 ## Limitations
 
 As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
