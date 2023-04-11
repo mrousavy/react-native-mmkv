@@ -192,6 +192,7 @@ A mocked MMKV instance is automatically used when testing with Jest, so you will
 * [Value-change Listeners](./docs/LISTENERS.md)
 * [Migrate from AsyncStorage](./docs/MIGRATE_FROM_ASYNC_STORAGE.md)
 * [Using MMKV with redux-persist](./docs/WRAPPER_REDUX.md)
+* [Using MMKV with recoil](./docs/WRAPPER_RECOIL.md)
 * [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
 * [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
 * [Using MMKV with zustand persist-middleware](./docs/WRAPPER_ZUSTAND_PERSIST_MIDDLEWARE.md)
