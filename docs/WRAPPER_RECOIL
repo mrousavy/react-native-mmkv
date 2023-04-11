@@ -6,9 +6,9 @@ If you want to use MMKV with [recoil](https://recoiljs.org/), Use the following 
 const persistAtom = (key) => ({ setSelf, onSet }) => {
   setSelf(() => {
     let data = storage.getString(key);
-    if(data != null){
+    if (data != null){
       return JSON.parse(data);
-    }else {
+    } else {
       return new DefaultValue();
     }
   });
