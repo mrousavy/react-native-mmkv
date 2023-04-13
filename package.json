@@ -22,6 +22,7 @@
     "ios/**/*.mm",
     "ios/**/*.cpp",
     "ios/Mmkv.xcodeproj/project.pbxproj",
+    "src",
     "react-native-mmkv.podspec",
     "README.md"
   ],
