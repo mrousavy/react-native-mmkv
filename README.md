@@ -76,8 +76,8 @@ cd ios && pod install
 ### Expo
 
 ```sh
-expo install react-native-mmkv
-expo prebuild
+npx expo install react-native-mmkv
+npx expo prebuild
 ```
 
 ## Usage
