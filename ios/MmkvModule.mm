@@ -42,7 +42,14 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install:(nullable NSString*)storageDirect
     auto& runtime = *jsiRuntime;
 
     RCTUnsafeExecuteOnMainQueueSync(^{
-      [MMKV initializeMMKV:storageDirectory];
+        // Get appGroup value from info.plist using key "AppGroup"
+        NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+        if (appGroup == nil) {
+            [MMKV initializeMMKV:storageDirectory];
+        } else {
+            NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup].path;
+            [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+        }
     });
 
     // MMKV.createNewInstance()

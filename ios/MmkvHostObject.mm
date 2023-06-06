@@ -15,7 +15,17 @@
 MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey)
 {
   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
-  instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+  
+  // Get appGroup value from info.plist using key "AppGroup"
+  NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+  if (appGroup != nil) {
+    if (path != nil) {
+      std::cout << "Warning: `path` is ignored when `appGroup` is set!" << std::endl;
+    }
+    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData mode:MMKVMultiProcess];
+  } else {
+    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+  }
 
   if (instance == nil) {
     // Check if instanceId is invalid
@@ -28,11 +38,13 @@ MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* c
       throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
     }
 
-    // Check if path is invalid
-    NSFileManager* fileManager = [[NSFileManager alloc] init];
-    bool pathExists = [fileManager fileExistsAtPath:path isDirectory:nil];
-    if (!pathExists) {
-      throw std::runtime_error("Failed to create MMKV instance! The given Storage Path does not exist!");
+    if (appGroup == nil) {
+      // Check if path is invalid
+      NSFileManager* fileManager = [[NSFileManager alloc] init];
+      bool pathExists = [fileManager fileExistsAtPath:path isDirectory:nil];
+      if (!pathExists) {
+        throw std::runtime_error("Failed to create MMKV instance! The given Storage Path does not exist!");
+      }
     }
 
     throw std::runtime_error("Failed to create MMKV instance!");
