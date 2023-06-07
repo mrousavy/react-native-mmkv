@@ -18,13 +18,13 @@ MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* c
   
   // Get appGroup value from info.plist using key "AppGroup"
   NSString *appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-  if (appGroup != nil) {
-    if (path != nil) {
-      std::cout << "Warning: `path` is ignored when `appGroup` is set!" << std::endl;
-    }
-    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData mode:MMKVMultiProcess];
+  if (appGroup == nil) {
+      instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
   } else {
-    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+      if (path != nil) {
+          NSLog(@"Warning: `path` is ignored when `appGroup` is set!");
+      }
+      instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData mode:MMKVMultiProcess];
   }
 
   if (instance == nil) {
