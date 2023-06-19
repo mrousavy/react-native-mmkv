@@ -46,6 +46,7 @@ repositories {
 }
 
 android {
+  namespace = "com.reactnativemmkv"
   compileSdkVersion safeExtGet("compileSdkVersion", 28)
 
   // Used to override the NDK path/version on internal CI or by allowing
