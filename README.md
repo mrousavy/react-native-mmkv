@@ -208,9 +208,13 @@ If a user chooses to disable LocalStorage in their browser, the library will aut
 
 As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
 
-## Debugging
+### Flipper
 
 Use [flipper-plugin-react-native-mmkv](https://github.com/muchobien/flipper-plugin-react-native-mmkv) to debug your MMKV storage using Flipper. You can also simply `console.log` an MMKV instance.
+
+### Reactotron
+
+Use [reactotron-react-native-mmkv](https://www.npmjs.com/package/reactotron-react-native-mmkv) to automatically log writes to your MMKV storage using Reactotron. [See the docs for how to setup this plugin with Reactotron.](https://www.npmjs.com/package/reactotron-react-native-mmkv)
 
 ## Adopting at scale
 
