@@ -1,6 +1,6 @@
 {
   "name": "react-native-mmkv",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "description": "The fastest key/value storage for React Native. ~30x faster than AsyncStorage! Works on Android, iOS and Web.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
