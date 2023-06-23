@@ -24,11 +24,15 @@ export interface MMKVConfiguration {
   id: string;
   /**
    * The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization:
-   *
+
    * @example
    * ```ts
    * const temporaryStorage = new MMKV({ path: '/tmp/' })
    * ```
+   * 
+   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions. 
+   * In this case `path` property will be ignored.
+   * See more on MMKV configuration [here](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
    */
   path?: string;
   /**
