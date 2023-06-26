@@ -26,8 +26,9 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
   if (config.path != null) {
     throw new Error("MMKV: 'path' is not supported on Web!");
   }
-
-  if (!hasAccessToLocalStorage()) {
+  
+  // canUseDOM check prevents spam in Node server environments, such as Next.js server side props.
+  if (!hasAccessToLocalStorage() && canUseDOM) {
     console.warn(
       'MMKV: LocalStorage has been disabled. Your experience will be limited to in-memory storage!'
     );
