@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include <jsi/jsi.h>
 #include <MMKV.h>
+#include <jsi/jsi.h>
 
 using namespace facebook;
 
-class JSI_EXPORT MmkvHostObject: public jsi::HostObject {
+class JSI_EXPORT MmkvHostObject : public jsi::HostObject {
 public:
   MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey);
 
