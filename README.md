@@ -221,6 +221,10 @@ Use [flipper-plugin-react-native-mmkv](https://github.com/muchobien/flipper-plug
 
 Use [reactotron-react-native-mmkv](https://www.npmjs.com/package/reactotron-react-native-mmkv) to automatically log writes to your MMKV storage using Reactotron. [See the docs for how to setup this plugin with Reactotron.](https://www.npmjs.com/package/reactotron-react-native-mmkv)
 
+## Community Discord
+
+[**Join the Margelo Community Discord**](https://discord.gg/6CSHz2qAvA) to chat about react-native-mmkv or other Margelo libraries.
+
 ## Adopting at scale
 
 react-native-mmkv is provided _as is_, I work on it in my free time.
