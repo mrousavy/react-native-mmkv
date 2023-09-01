@@ -9,12 +9,12 @@
 #pragma once
 
 #import <Foundation/Foundation.h>
-#import <jsi/jsi.h>
 #import <MMKV/MMKV.h>
+#import <jsi/jsi.h>
 
 using namespace facebook;
 
-class JSI_EXPORT MmkvHostObject: public jsi::HostObject {
+class JSI_EXPORT MmkvHostObject : public jsi::HostObject {
 public:
   MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey);
 
