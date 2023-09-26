@@ -7,7 +7,10 @@ export const createMockMMKV = (): NativeMMKV => {
   return {
     clearAll: () => storage.clear(),
     delete: (key) => storage.delete(key),
-    set: (key, value) => storage.set(key, value),
+    set: (key, value) => {
+      storage.set(key, value);
+      return true;
+    },
     getString: (key) => {
       const result = storage.get(key);
       return typeof result === 'string' ? result : undefined;
@@ -28,6 +31,7 @@ export const createMockMMKV = (): NativeMMKV => {
     contains: (key) => storage.has(key),
     recrypt: () => {
       console.warn('Encryption is not supported in mocked MMKV instances!');
+      return true;
     },
   };
 };

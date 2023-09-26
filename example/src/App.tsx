@@ -9,6 +9,7 @@ export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
   const [keys, setKeys] = React.useState<string[]>([]);
+  const [success, setSuccess] = React.useState<boolean | undefined>();
 
   const [example, setExample] = useMMKVString('yeeeet');
 
@@ -19,7 +20,8 @@ export default function App() {
     }
     try {
       console.log('setting...');
-      storage.set(key, text);
+      const result = storage.set(key, text);
+      setSuccess(result);
       console.log('set.');
     } catch (e) {
       console.error('Error:', e);
@@ -85,6 +87,9 @@ export default function App() {
           value={text}
           onChangeText={setText}
         />
+      </View>
+      <View style={styles.row}>
+        {success && <Text>Saved: {success ? 'successfully' : 'failed'}</Text>}
       </View>
       <Button onPress={save} title="Save to MMKV" />
       <Button onPress={read} title="Read from MMKV" />

@@ -82,18 +82,18 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime,
                                "MMKV::set: First argument ('key') has to be of type string!");
           }
-
+          bool result = false;
           auto keyName = convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
           if (arguments[1].isBool()) {
             // Set as boolean
-            [instance setBool:arguments[1].getBool() forKey:keyName];
+            result = [instance setBool:arguments[1].getBool() forKey:keyName];
           } else if (arguments[1].isNumber()) {
             // Set as number (double in JS)
-            [instance setDouble:arguments[1].getNumber() forKey:keyName];
+            result = [instance setDouble:arguments[1].getNumber() forKey:keyName];
           } else if (arguments[1].isString()) {
             // Set as UTF-8 string
             auto stringValue = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
-            [instance setString:stringValue forKey:keyName];
+            result = [instance setString:stringValue forKey:keyName];
           } else if (arguments[1].isObject()) {
             // object
             auto object = arguments[1].asObject(runtime);
@@ -103,7 +103,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
               auto bufferValue = typedArray.getBuffer(runtime);
               auto data = [[NSData alloc] initWithBytes:bufferValue.data(runtime)
                                                  length:bufferValue.length(runtime)];
-              [instance setData:data forKey:keyName];
+              result = [instance setData:data forKey:keyName];
             } else {
               // unknown object
               throw jsi::JSError(
@@ -115,7 +115,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                 runtime, "Second argument ('value') has to be of type bool, number or string!");
           }
 
-          return jsi::Value::undefined();
+          return jsi::Value(result);
         });
   }
 
@@ -273,21 +273,22 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // encryptionKey
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
+          bool result;
           if (arguments[0].isUndefined()) {
             // reset encryption key to "no encryption"
-            [instance reKey:nil];
+            result = [instance reKey:nil];
           } else if (arguments[0].isString()) {
             // reKey(..) with new encryption-key
             NSString* encryptionKey =
                 convertJSIStringToNSString(runtime, arguments[0].getString(runtime));
             NSData* encryptionKeyBytes = [encryptionKey dataUsingEncoding:NSUTF8StringEncoding];
-            [instance reKey:encryptionKeyBytes];
+            result = [instance reKey:encryptionKeyBytes];
           } else {
             throw jsi::JSError(
                 runtime,
                 "First argument ('encryptionKey') has to be of type string (or undefined)!");
           }
-          return jsi::Value::undefined();
+          return jsi::Value(result);
         });
   }
 

@@ -29,8 +29,8 @@ export interface MMKVConfiguration {
    * ```ts
    * const temporaryStorage = new MMKV({ path: '/tmp/' })
    * ```
-   * 
-   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions. 
+   *
+   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions.
    * In this case `path` property will be ignored.
    * See more on MMKV configuration [here](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
    */
@@ -55,7 +55,7 @@ interface MMKVInterface {
   /**
    * Set a value for the given `key`.
    */
-  set: (key: string, value: boolean | string | number | Uint8Array) => void;
+  set: (key: string, value: boolean | string | number | Uint8Array) => boolean;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
@@ -105,7 +105,7 @@ interface MMKVInterface {
    *
    * Encryption keys can have a maximum length of 16 bytes.
    */
-  recrypt: (key: string | undefined) => void;
+  recrypt: (key: string | undefined) => boolean;
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
@@ -179,11 +179,12 @@ export class MMKV implements MMKVInterface {
     }
   }
 
-  set(key: string, value: boolean | string | number | Uint8Array): void {
+  set(key: string, value: boolean | string | number | Uint8Array): boolean {
     const func = this.getFunctionFromCache('set');
-    func(key, value);
+    const result = func(key, value);
 
     this.onValuesChanged([key]);
+    return result;
   }
   getBoolean(key: string): boolean | undefined {
     const func = this.getFunctionFromCache('getBoolean');
@@ -223,7 +224,7 @@ export class MMKV implements MMKVInterface {
 
     this.onValuesChanged(keys);
   }
-  recrypt(key: string | undefined): void {
+  recrypt(key: string | undefined): boolean {
     const func = this.getFunctionFromCache('recrypt');
     return func(key);
   }
