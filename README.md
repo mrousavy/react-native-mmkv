@@ -1,5 +1,9 @@
 <a href="https://margelo.io">
-  <img src="./img/banner.svg" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./img/banner-dark.png" />
+    <source media="(prefers-color-scheme: light)" srcset="./img/banner-light.png" />
+    <img alt="VisionCamera" src="./img/banner-light.png" />
+  </picture>
 </a>
 
 <div align="center">
