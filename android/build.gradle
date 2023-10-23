@@ -48,6 +48,13 @@ repositories {
 android {
   namespace = "com.reactnativemmkv"
   compileSdkVersion safeExtGet("compileSdkVersion", 28)
+  def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+
+  if (agpVersion.tokenize('.')[0].toInteger() >= 8) {
+      buildFeatures {
+          buildConfig = true
+      }
+  }
 
   // Used to override the NDK path/version on internal CI or by allowing
   // users to customize the NDK path/version from their root project (e.g. for M1 support)
