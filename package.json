@@ -24,7 +24,9 @@
     "ios/Mmkv.xcodeproj/project.pbxproj",
     "src",
     "react-native-mmkv.podspec",
-    "README.md"
+    "README.md",
+    "img/banner-light.png",
+    "img/banner-dark.png"
   ],
   "scripts": {
     "typescript": "tsc --noEmit",
