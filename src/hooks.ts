@@ -59,13 +59,11 @@ function createMMKVHook<
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
-    const valueRef = useRef<T>(value);
-    valueRef.current = value;
 
     // update value by user set
     const set = useCallback(
       (v: TSetAction) => {
-        const newValue = typeof v === 'function' ? v(valueRef.current) : v;
+        const newValue = typeof v === 'function' ? v(getter(mmkv, key)) : v;
         switch (typeof newValue) {
           case 'number':
           case 'string':
