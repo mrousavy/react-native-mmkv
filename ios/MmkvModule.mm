@@ -13,13 +13,7 @@ using namespace facebook;
 
 @implementation MmkvModule
 
-@synthesize bridge=_bridge;
-
 RCT_EXPORT_MODULE(MMKV)
-
-- (void)setBridge:(RCTBridge *)bridge {
-  _bridge = bridge;
-}
 
 + (NSString*)getPropertyAsStringOrNilFromObject:(jsi::Object&)object
                                    propertyName:(std::string)propertyName
@@ -31,7 +25,8 @@ RCT_EXPORT_MODULE(MMKV)
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDirectory) {
   NSLog(@"Installing global.mmkvCreateNewInstance...");
-  RCTCxxBridge* cxxBridge = (RCTCxxBridge*)_bridge;
+  RCTBridge* bridge = [RCTBridge currentBridge];
+  RCTCxxBridge* cxxBridge = (RCTCxxBridge*)bridge;
   if (cxxBridge == nil) {
     return @false;
   }
