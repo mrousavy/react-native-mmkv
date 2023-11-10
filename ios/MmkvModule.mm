@@ -14,12 +14,11 @@ using namespace facebook;
 @implementation MmkvModule
 
 @synthesize bridge=_bridge;
-@synthesize methodQueue = _methodQueue;
 
 RCT_EXPORT_MODULE(MMKV)
 
-+ (BOOL)requiresMainQueueSetup {
-  return YES;
+- (void)setBridge:(RCTBridge *)bridge {
+  _bridge = bridge;
 }
 
 + (NSString*)getPropertyAsStringOrNilFromObject:(jsi::Object&)object
@@ -28,16 +27,6 @@ RCT_EXPORT_MODULE(MMKV)
   jsi::Value value = object.getProperty(runtime, propertyName.c_str());
   std::string string = value.isString() ? value.asString(runtime).utf8(runtime) : "";
   return string.length() > 0 ? [NSString stringWithUTF8String:string.c_str()] : nil;
-}
-
-- (void)setBridge:(RCTBridge *)bridge {
-  _bridge = bridge;
-  _setBridgeOnMainQueue = RCTIsMainQueue();
-
-  RCTCxxBridge *cxxBridge = (RCTCxxBridge *)self.bridge;
-  if (!cxxBridge.runtime) {
-    return;
-  }
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDirectory) {
@@ -55,8 +44,6 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
   }
   auto& runtime = *jsiRuntime;
 
-  NSLog(@"Installing to runtime %p", &runtime);
-
   RCTUnsafeExecuteOnMainQueueSync(^{
     // Get appGroup value from info.plist using key "AppGroup"
     NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
@@ -69,8 +56,6 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
       [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
     }
   });
-
-    NSLog(@"Create createMmkvInstance...");
 
   // MMKV.createNewInstance()
   auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(
@@ -96,12 +81,6 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
         return jsi::Object::createFromHostObject(runtime, instance);
       });
   runtime.global().setProperty(runtime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));
-
-    NSLog(@"set global.mmkvCreateNewInstance...");
-
-    auto mmkvCreateNewInstanceString = runtime.global().getProperty(runtime, "mmkvCreateNewInstance").toString(runtime).utf8(runtime);
-    NSString *nsString = [NSString stringWithUTF8String:mmkvCreateNewInstanceString.c_str()];
-    NSLog(@"%@", nsString);
 
   // Adds the PropNameIDCache object to the Runtime. If the Runtime gets destroyed, the Object gets
   // destroyed and the cache gets invalidated.
