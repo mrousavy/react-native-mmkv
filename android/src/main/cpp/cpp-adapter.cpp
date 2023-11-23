@@ -13,6 +13,22 @@ std::string getPropertyAsStringOrEmptyFromObject(jsi::Object& object,
   return value.isString() ? value.asString(runtime).utf8(runtime) : "";
 }
 
+MMKVMode getPropertyAsMMKVModeFromObject(jsi::Object& object,
+                           const std::string& propertyName,
+                           jsi::Runtime& runtime) {
+  jsi::Value value = object.getProperty(runtime, propertyName.c_str());
+
+  // Checks that the value is a number without any fractional part
+  double integralPart;
+  if (!value.isNumber() || modf(value.asNumber(), &integralPart) != 0) {
+      // The value is not an integer which does not make sense. Return a default value
+      return MMKV_SINGLE_PROCESS;
+  }
+
+  // Cast to uint32_t value
+  return static_cast<MMKVMode>(integralPart);
+}
+
 void install(jsi::Runtime& jsiRuntime) {
   // MMKV.createNewInstance()
   auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(
@@ -28,8 +44,9 @@ void install(jsi::Runtime& jsiRuntime) {
         std::string path = getPropertyAsStringOrEmptyFromObject(config, "path", runtime);
         std::string encryptionKey =
             getPropertyAsStringOrEmptyFromObject(config, "encryptionKey", runtime);
+        MMKVMode mode = getPropertyAsMMKVModeFromObject(config, "mode", runtime);
 
-        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
+        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey, mode);
         return jsi::Object::createFromHostObject(runtime, instance);
       });
   jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance",

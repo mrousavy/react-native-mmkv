@@ -7,6 +7,14 @@ interface Listener {
 }
 
 /**
+ * All the possible MMKV modes. The values are extracted from [MMKV.h](https://github.com/Tencent/MMKV/blob/a8d3cdd2a43a8e5c5ab5043dfad111c96a4963bf/Core/MMKV.h#L41)
+ */
+export enum MMKVMode {
+  SingleProcess = 1 << 0,
+  MultiProcess = 1 << 1,
+}
+
+/**
  * Used for configuration of a single MMKV instance.
  */
 export interface MMKVConfiguration {
@@ -46,6 +54,20 @@ export interface MMKVConfiguration {
    * ```
    */
   encryptionKey?: string;
+  /**
+   * *Android Only*: The MMKV mode. It is set to SingleProcess by default. You can set its value to MultiProcess to support simultaneous read-write access between processus at the cost of performance.
+   *
+   * This is useful when you want to share data between your react-native app and native extensions such as widgets.
+   *
+   * @example
+   * ```ts
+   * const extensionStorage = new MMKV({ mode: MMKVMode.MultiProcess })
+   * ```
+   *
+   * _Notice_: On iOS, this will automatically be set to MMKVMode.MultiProcess if you set an AppGroup in the plist configuration.
+   * More information on AppGroups [here](https://github.com/mrousavy/react-native-mmkv/tree/master#app-groups)
+   */
+  mode?: MMKVMode;
 }
 
 /**
