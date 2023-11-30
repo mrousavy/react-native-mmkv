@@ -13,20 +13,17 @@ std::string getPropertyAsStringOrEmptyFromObject(jsi::Object& object,
   return value.isString() ? value.asString(runtime).utf8(runtime) : "";
 }
 
+const std::string MMKV_MULTI_PROCESS_MODE = "multi-process";
 MMKVMode getPropertyAsMMKVModeFromObject(jsi::Object& object,
                            const std::string& propertyName,
                            jsi::Runtime& runtime) {
-  jsi::Value value = object.getProperty(runtime, propertyName.c_str());
-
-  // Checks that the value is a number without any fractional part
-  double integralPart;
-  if (!value.isNumber() || modf(value.asNumber(), &integralPart) != 0) {
-      // The value is not an integer which does not make sense. Return a default value
-      return MMKV_SINGLE_PROCESS;
+  std::string value = getPropertyAsStringOrEmptyFromObject(object, propertyName, runtime);
+  if (value == MMKV_MULTI_PROCESS_MODE) {
+    return MMKV_MULTI_PROCESS;
   }
 
-  // Cast to uint32_t value
-  return static_cast<MMKVMode>(integralPart);
+  // Use Single Process as default value
+  return MMKV_SINGLE_PROCESS;
 }
 
 void install(jsi::Runtime& jsiRuntime) {
