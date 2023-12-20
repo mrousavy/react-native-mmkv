@@ -26,7 +26,7 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
   if (config.path != null) {
     throw new Error("MMKV: 'path' is not supported on Web!");
   }
-  
+
   // canUseDOM check prevents spam in Node server environments, such as Next.js server side props.
   if (!hasAccessToLocalStorage() && canUseDOM) {
     console.warn(
@@ -110,7 +110,9 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     },
     getAllKeys: () => {
       const keys = Object.keys(storage());
-      return keys.filter((key) => key.startsWith(keyPrefix));
+      return keys
+        .filter((key) => key.startsWith(keyPrefix))
+        .map((key) => key.slice(keyPrefix.length));
     },
     contains: (key) => storage().getItem(prefixedKey(key)) != null,
     recrypt: () => {
