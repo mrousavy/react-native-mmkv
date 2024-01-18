@@ -177,24 +177,29 @@ export function useMMKVObject<T>(
   key: string,
   instance?: MMKV
 ): [value: T | undefined, setValue: (value: T | undefined) => void] {
-  const [string, setString] = useMMKVString(key, instance);
+  const [json, setJson] = useMMKVString(key, instance);
 
   const value = useMemo(() => {
-    if (string == null) return undefined;
-    return JSON.parse(string) as T;
-  }, [string]);
+    if (json == null) return undefined;
+    return JSON.parse(json) as T;
+  }, [json]);
+
   const setValue = useCallback(
-    (v: T | undefined) => {
-      if (v == null) {
-        // Clear the Value
-        setString(undefined);
+    (v: (T | undefined) | ((prev: T | undefined) => (T | undefined))) => {
+      if (v instanceof Function) {
+        setJson((currentJson) => {
+          const currentValue = currentJson != null ? JSON.parse(currentJson) as T : undefined
+          const newValue = v(currentValue);
+          // Store the Object as a serialized Value or clear the value
+          return newValue != null ? JSON.stringify(newValue) : undefined;
+        });
       } else {
-        // Store the Object as a serialized Value
-        setString(JSON.stringify(v));
+        // Store the Object as a serialized Value or clear the value
+        const newValue = v != null ? JSON.stringify(v) : undefined
+        setJson(newValue);
       }
-    },
-    [setString]
-  );
+  },
+  [setJson]);
 
   return [value, setValue];
 }
