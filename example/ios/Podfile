@@ -10,6 +10,14 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+def __apply_Xcode_15_post_install_workaround(installer)
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', '_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION']
+    end
+  end
+end
+
 target 'MmkvExample' do
   config = use_native_modules!
 
@@ -42,5 +50,6 @@ target 'MmkvExample' do
       :mac_catalyst_enabled => false
     )
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+    __apply_Xcode_15_post_install_workaround(installer)
   end
 end
