@@ -185,9 +185,8 @@ export function useMMKVObject<T>(
     (v: (T | undefined) | ((prev: T | undefined) => T | undefined)) => {
       if (typeof v === 'function') {
         setJson((currentJson) => {
-          const newValue = v(
-            currentJson ? JSON.parse(currentJson) : undefined,
-          );
+          const currentValue = currentJson != null ? JSON.parse(currentJson) : undefined
+          const newValue = v(currentValue);
           return JSON.stringify(newValue);
         });
       } else {
