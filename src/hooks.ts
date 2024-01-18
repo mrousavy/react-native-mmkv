@@ -185,7 +185,7 @@ export function useMMKVObject<T>(
   }, [json]);
 
   const setValue = useCallback(
-    (v: (T | undefined) | ((prev: T | undefined) => T | undefined)) => {
+    (v: (T | undefined) | ((prev: T | undefined) => (T | undefined))) => {
       if (typeof v === 'function') {
         setJson((currentJson) => {
           const currentValue = currentJson != null ? JSON.parse(currentJson) : undefined
