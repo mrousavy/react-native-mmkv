@@ -1,3 +1,9 @@
+import com.android.Version
+
+def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+def agpVersionMajor = agpVersion.tokenize('.')[0].toInteger()
+def androidManifestPath = agpVersionMajor >= 7 ? 'src/main/AndroidManifest.xml' : 'src/hasNamespace/AndroidManifest.xml'
+
 buildscript {
   repositories {
     maven {
@@ -46,14 +52,21 @@ repositories {
 }
 
 android {
-  namespace = "com.reactnativemmkv"
   compileSdkVersion safeExtGet("compileSdkVersion", 28)
-  def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
+  if (agpVersionMajor >= 7) {
+    namespace = "com.reactnativemmkv"
+  }
 
-  if (agpVersion.tokenize('.')[0].toInteger() >= 8) {
+  if (agpVersionMajor >= 8) {
       buildFeatures {
           buildConfig = true
       }
+  }
+
+  sourceSets {
+    main {
+      manifest.srcFile androidManifestPath
+    }
   }
 
   // Used to override the NDK path/version on internal CI or by allowing
