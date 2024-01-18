@@ -186,10 +186,11 @@ export function useMMKVObject<T>(
 
   const setValue = useCallback(
     (v: (T | undefined) | ((prev: T | undefined) => (T | undefined))) => {
-      if (typeof v === 'function') {
+      if (v instanceof Function) {
         setJson((currentJson) => {
-          const currentValue = currentJson != null ? JSON.parse(currentJson) : undefined
+          const currentValue = currentJson != null ? JSON.parse(currentJson) as T : undefined
           const newValue = v(currentValue);
+          // Store the Object as a serialized Value or clear the value
           return newValue != null ? JSON.stringify(newValue) : undefined;
         });
       } else {
