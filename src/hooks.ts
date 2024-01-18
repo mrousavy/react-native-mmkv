@@ -190,7 +190,7 @@ export function useMMKVObject<T>(
         setJson((currentJson) => {
           const currentValue = currentJson != null ? JSON.parse(currentJson) : undefined
           const newValue = v(currentValue);
-          return JSON.stringify(newValue);
+          return newValue != null ? JSON.stringify(newValue) : undefined;
         });
       } else {
         // Store the Object as a serialized Value or clear the value
