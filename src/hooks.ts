@@ -192,7 +192,8 @@ export function useMMKVObject<T>(
         });
       } else {
         // Store the Object as a serialized Value or clear the value
-        setJson(v ? JSON.stringify(v) : undefined);
+        const newValue = v != null ? JSON.stringify(v) : undefined
+        setJson(newValue);
       }
   },
   [setJson]);
