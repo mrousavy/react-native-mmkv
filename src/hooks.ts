@@ -179,7 +179,10 @@ export function useMMKVObject<T>(
 ): [value: T | undefined, setValue: (value: T | undefined) => void] {
   const [json, setJson] = useMMKVString(key, instance);
 
-  const value = useMemo(() => (json ? JSON.parse(json) : undefined), [json]);
+  const value = useMemo(() => {
+    if (json == null) return undefined;
+    return JSON.parse(json) as T;
+  }, [json]);
 
   const setValue = useCallback(
     (v: (T | undefined) | ((prev: T | undefined) => T | undefined)) => {
