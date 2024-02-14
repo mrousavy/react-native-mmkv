@@ -44,7 +44,11 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
   }
   auto& runtime = *jsiRuntime;
   
-  MMKVLogLevel logLevel = DEBUG ? MMKVLogDebug : MMKVLogError;
+#if DEBUG
+  MMKVLogLevel logLevel = MMKVLogDebug;
+#else
+  MMKVLogLevel logLevel = MMKVLogError;
+#endif
 
   RCTUnsafeExecuteOnMainQueueSync(^{
     // Get appGroup value from info.plist using key "AppGroup"
