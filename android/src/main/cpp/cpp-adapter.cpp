@@ -66,7 +66,11 @@ extern "C" JNIEXPORT void JNICALL Java_com_reactnativemmkv_MmkvModule_nativeInst
                                                                                     jobject clazz,
                                                                                     jlong jsiPtr,
                                                                                     jstring path) {
-  MMKVLogLevel logLevel = DEBUG ? MMKVLogDebug : MMKVLogError;
+#if DEBUG
+  MMKVLogLevel logLevel = MMKVLogDebug;
+#else
+  MMKVLogLevel logLevel = MMKVLogError;
+#endif
   std::string storageDirectory = jstringToStdString(env, path);
   MMKV::initializeMMKV(storageDirectory, logLevel);
 
