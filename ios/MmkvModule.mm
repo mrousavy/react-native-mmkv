@@ -43,17 +43,23 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
     return @false;
   }
   auto& runtime = *jsiRuntime;
+  
+#if DEBUG
+  MMKVLogLevel logLevel = MMKVLogDebug;
+#else
+  MMKVLogLevel logLevel = MMKVLogError;
+#endif
 
   RCTUnsafeExecuteOnMainQueueSync(^{
     // Get appGroup value from info.plist using key "AppGroup"
     NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
     if (appGroup == nil) {
-      [MMKV initializeMMKV:storageDirectory];
+      [MMKV initializeMMKV:storageDirectory logLevel:logLevel];
     } else {
       NSString* groupDir = [[NSFileManager defaultManager]
                                containerURLForSecurityApplicationGroupIdentifier:appGroup]
                                .path;
-      [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogNone];
+      [MMKV initializeMMKV:nil groupDir:groupDir logLevel:logLevel];
     }
   });
 
