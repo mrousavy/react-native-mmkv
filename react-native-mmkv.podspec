@@ -27,6 +27,6 @@ Pod::Spec.new do |s|
     'ios/**/*.h'
   ]
 
-  s.dependency "MMKV", ">= 1.2.13"
+  s.dependency "MMKV", ">= 1.3.3"
   s.dependency "React-Core"
 end
