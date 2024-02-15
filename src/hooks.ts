@@ -58,17 +58,15 @@ function createMMKVHook<
     instance?: MMKV
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
-    const [value, setValue] = useState(() => getter(mmkv, key));
 
-    // whenever those values change, we also need to synchronously update value
-    const initialMmkv = useRef(mmkv);
-    const initialKey = useRef(key);
-    // Update value whenever instance or key changes
-    if (initialKey.current !== key || initialMmkv.current !== mmkv) {
-      setValue(getter(mmkv, key));
-      initialKey.current = key;
-      initialMmkv.current = mmkv;
-    }
+    const [bump, setBump] = useState(0);
+    const value = useMemo(() => {
+      // bump is here as an additional outside dependency, so this useMemo
+      // re-computes the value each time bump changes, effectively acting as a hint
+      // that the outside value (storage) has changed. setting bump refreshes this value.
+      bump;
+      return getter(mmkv, key);
+    }, [mmkv, key, bump]);
 
     // update value by user set
     const set = useCallback(
@@ -103,7 +101,7 @@ function createMMKVHook<
     useEffect(() => {
       const listener = mmkv.addOnValueChangedListener((changedKey) => {
         if (changedKey === key) {
-          setValue(getter(mmkv, key));
+          setBump((b) => b++);
         }
       });
       return () => listener.remove();
