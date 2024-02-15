@@ -101,7 +101,7 @@ function createMMKVHook<
     useEffect(() => {
       const listener = mmkv.addOnValueChangedListener((changedKey) => {
         if (changedKey === key) {
-          setBump((b) => b++);
+          setBump((b) => b + 1);
         }
       });
       return () => listener.remove();
