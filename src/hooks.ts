@@ -58,7 +58,15 @@ function createMMKVHook<
     instance?: MMKV
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultInstance();
-    const [value, setValue] = useState(() => getter(mmkv, key));
+
+    const [bump, setBump] = useState(0);
+    const value = useMemo(() => {
+      // bump is here as an additional outside dependency, so this useMemo
+      // re-computes the value each time bump changes, effectively acting as a hint
+      // that the outside value (storage) has changed. setting bump refreshes this value.
+      bump;
+      return getter(mmkv, key);
+    }, [mmkv, key, bump]);
 
     // update value by user set
     const set = useCallback(
@@ -89,16 +97,11 @@ function createMMKVHook<
       [key, mmkv]
     );
 
-    // update value if key or instance changes
-    useEffect(() => {
-      setValue(getter(mmkv, key));
-    }, [key, mmkv]);
-
     // update value if it changes somewhere else (second hook, same key)
     useEffect(() => {
       const listener = mmkv.addOnValueChangedListener((changedKey) => {
         if (changedKey === key) {
-          setValue(getter(mmkv, key));
+          setBump((b) => b + 1);
         }
       });
       return () => listener.remove();
@@ -185,21 +188,23 @@ export function useMMKVObject<T>(
   }, [json]);
 
   const setValue = useCallback(
-    (v: (T | undefined) | ((prev: T | undefined) => (T | undefined))) => {
+    (v: (T | undefined) | ((prev: T | undefined) => T | undefined)) => {
       if (v instanceof Function) {
         setJson((currentJson) => {
-          const currentValue = currentJson != null ? JSON.parse(currentJson) as T : undefined
+          const currentValue =
+            currentJson != null ? (JSON.parse(currentJson) as T) : undefined;
           const newValue = v(currentValue);
           // Store the Object as a serialized Value or clear the value
           return newValue != null ? JSON.stringify(newValue) : undefined;
         });
       } else {
         // Store the Object as a serialized Value or clear the value
-        const newValue = v != null ? JSON.stringify(v) : undefined
+        const newValue = v != null ? JSON.stringify(v) : undefined;
         setJson(newValue);
       }
-  },
-  [setJson]);
+    },
+    [setJson]
+  );
 
   return [value, setValue];
 }
