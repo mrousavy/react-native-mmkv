@@ -60,6 +60,16 @@ function createMMKVHook<
     const mmkv = instance ?? getDefaultInstance();
     const [value, setValue] = useState(() => getter(mmkv, key));
 
+    // whenever those values change, we also need to synchronously update value
+    const initialMmkv = useRef(mmkv);
+    const initialKey = useRef(key);
+    // Update value whenever instance or key changes
+    if (initialKey.current !== key || initialMmkv.current !== mmkv) {
+      setValue(getter(mmkv, key));
+      initialKey.current = key;
+      initialMmkv.current = mmkv;
+    }
+
     // update value by user set
     const set = useCallback(
       (v: TSetAction) => {
@@ -88,11 +98,6 @@ function createMMKVHook<
       },
       [key, mmkv]
     );
-
-    // update value if key or instance changes
-    useEffect(() => {
-      setValue(getter(mmkv, key));
-    }, [key, mmkv]);
 
     // update value if it changes somewhere else (second hook, same key)
     useEffect(() => {
@@ -185,21 +190,23 @@ export function useMMKVObject<T>(
   }, [json]);
 
   const setValue = useCallback(
-    (v: (T | undefined) | ((prev: T | undefined) => (T | undefined))) => {
+    (v: (T | undefined) | ((prev: T | undefined) => T | undefined)) => {
       if (v instanceof Function) {
         setJson((currentJson) => {
-          const currentValue = currentJson != null ? JSON.parse(currentJson) as T : undefined
+          const currentValue =
+            currentJson != null ? (JSON.parse(currentJson) as T) : undefined;
           const newValue = v(currentValue);
           // Store the Object as a serialized Value or clear the value
           return newValue != null ? JSON.stringify(newValue) : undefined;
         });
       } else {
         // Store the Object as a serialized Value or clear the value
-        const newValue = v != null ? JSON.stringify(v) : undefined
+        const newValue = v != null ? JSON.stringify(v) : undefined;
         setJson(newValue);
       }
-  },
-  [setJson]);
+    },
+    [setJson]
+  );
 
   return [value, setValue];
 }
