@@ -4430,6 +4430,14 @@ eslint-plugin-ft-flow@^2.0.1:
     lodash "^4.17.21"
     string-natural-compare "^3.0.1"
 
+eslint-plugin-ft-flow@^3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ft-flow/-/eslint-plugin-ft-flow-3.0.4.tgz#cd19ead98c03e39aff186382edc5bca3215d359d"
+  integrity sha512-afH0HSk5BPbnNFE8G7aNzTK+DQNgAA3/xZ6wSxYexmERo3iBFiYtWpd8QoPa4xwxnC2Us5bJTA1AGSlkJfkHBg==
+  dependencies:
+    lodash "^4.17.21"
+    string-natural-compare "^3.0.1"
+
 eslint-plugin-jest@^26.5.3:
   version "26.9.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.9.0.tgz#7931c31000b1c19e57dbfb71bbf71b817d1bf949"
