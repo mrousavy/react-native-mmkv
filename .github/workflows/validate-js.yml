@@ -33,7 +33,7 @@ jobs:
     name: Compile JS (tsc)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install reviewdog
       uses: reviewdog/action-setup@v1
@@ -71,7 +71,7 @@ jobs:
     name: Lint JS (eslint, prettier)
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
@@ -109,7 +109,7 @@ jobs:
     name: Test JS
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
