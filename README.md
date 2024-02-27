@@ -113,7 +113,8 @@ import { MMKV } from 'react-native-mmkv'
 export const storage = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
-  encryptionKey: 'hunter2'
+  encryptionKey: 'hunter2',
+  mode: 'single-mode'
 })
 ```
 
@@ -124,7 +125,7 @@ The following values can be configured:
 * `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
-
+- `mode`: The MMKV mode. You can set its value to `multi-process` to support simultaneous read-write access between process at the cost of performance. This is useful when you want to share data between your react-native app and native extensions such as widgets. On iOS additionally you need to set the AppGroup bundle property to share the same storage between your app and its extensions. If you don't set the AppGroup, the mode will be ignored and the mmkv will use the default storage location. More information on AppGroups [here](https://github.com/mrousavy/react-native-mmkv/tree/master#app-groups). For backward compatibility, the mode is set to `single-process` on android and for iOS it'll use `multi-process` if `AppGroup` exists.
 ### Set
 
 ```js

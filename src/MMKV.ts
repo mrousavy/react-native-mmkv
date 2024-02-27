@@ -57,8 +57,8 @@ export interface MMKVConfiguration {
    * ```
    *
    * _Notice_: on iOS additionally you need to set the AppGroup bundle property to share the same storage between your app and its extensions. If you don't set the AppGroup, the mode will be ignored and the mmkv will use the default storage location.
-   * _Notice_: for backward compatibility, the mode is set to `single-process` by on android and `multi-process` on iOS.
    * More information on AppGroups [here](https://github.com/mrousavy/react-native-mmkv/tree/master#app-groups)
+   * _Notice_: for backward compatibility, the mode is set to `single-process` on android and for iOS it'll use `multi-process` if `AppGroup` exists.
    */
   mode?: 'single-process' | 'multi-process';
 }
