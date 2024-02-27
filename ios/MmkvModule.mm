@@ -50,24 +50,11 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
   MMKVLogLevel logLevel = MMKVLogError;
 #endif
 
-  RCTUnsafeExecuteOnMainQueueSync(^{
-    // Get appGroup value from info.plist using key "AppGroup"
-    NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-    if (appGroup == nil) {
-      [MMKV initializeMMKV:storageDirectory logLevel:logLevel];
-    } else {
-      NSString* groupDir = [[NSFileManager defaultManager]
-                               containerURLForSecurityApplicationGroupIdentifier:appGroup]
-                               .path;
-      [MMKV initializeMMKV:nil groupDir:groupDir logLevel:logLevel];
-    }
-  });
-
   // MMKV.createNewInstance()
   auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(
       runtime, jsi::PropNameID::forAscii(runtime, "mmkvCreateNewInstance"), 1,
-      [](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
-         size_t count) -> jsi::Value {
+      [=](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
+          size_t count) -> jsi::Value {
         if (count != 1) {
           throw jsi::JSError(runtime, "MMKV.createNewInstance(..) expects one argument (object)!");
         }
@@ -82,8 +69,25 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install : (nullable NSString*)storageDire
         NSString* encryptionKey = [MmkvModule getPropertyAsStringOrNilFromObject:config
                                                                     propertyName:"encryptionKey"
                                                                          runtime:runtime];
+        NSString* mode = [MmkvModule getPropertyAsStringOrNilFromObject:config
+                                                           propertyName:"mode"
+                                                                runtime:runtime];
 
-        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
+        RCTUnsafeExecuteOnMainQueueSync(^{
+          NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+          if ([mode isEqualToString:@"single-process"]) {
+            [MMKV initializeMMKV:storageDirectory logLevel:logLevel];
+          } else if (appGroup != nil) {
+            NSString* groupDir = [[NSFileManager defaultManager]
+                                     containerURLForSecurityApplicationGroupIdentifier:appGroup]
+                                     .path;
+            [MMKV initializeMMKV:nil groupDir:groupDir logLevel:logLevel];
+          } else {
+            [MMKV initializeMMKV:storageDirectory logLevel:logLevel];
+          }
+        });
+
+        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey, mode);
         return jsi::Object::createFromHostObject(runtime, instance);
       });
   runtime.global().setProperty(runtime, "mmkvCreateNewInstance", std::move(mmkvCreateNewInstance));

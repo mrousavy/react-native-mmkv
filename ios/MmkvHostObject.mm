@@ -12,18 +12,25 @@
 #import <Foundation/Foundation.h>
 #import <vector>
 
-MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey) {
+MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey,
+                               NSString* mode) {
   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
 
   // Get appGroup value from info.plist using key "AppGroup"
   NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-  if (appGroup == nil) {
+  if ([mode isEqualToString:@"single-process"]) {
+    if (appGroup != nil) {
+      NSLog(@"Warning: `mode` is set to 'single-process' but `appGroup` is also set in bundle! "
+            @"Ignoring `app groups` from bundle and using `mode` instead!");
+    }
     instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
-  } else {
+  } else if (appGroup != nil) {
     if (path != nil) {
       NSLog(@"Warning: `path` is ignored when `appGroup` is set!");
     }
     instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData mode:MMKVMultiProcess];
+  } else {
+    instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
   }
 
   if (instance == nil) {

@@ -15,7 +15,8 @@ using namespace facebook;
 
 class JSI_EXPORT MmkvHostObject : public jsi::HostObject {
 public:
-  MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey);
+  MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey,
+                 MMKVMode mmkvMode);
 
 public:
   jsi::Value get(jsi::Runtime&, const jsi::PropNameID& name) override;
