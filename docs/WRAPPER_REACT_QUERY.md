@@ -39,7 +39,7 @@ import { persistQueryClient } from "@tanstack/react-query-persist-client";
 
 persistQueryClient({
   queryClient,
-  persisted: clientPersister,
+  persister: clientPersister,
 });
 
 const App = () => {
