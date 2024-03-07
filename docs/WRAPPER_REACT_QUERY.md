@@ -1,6 +1,6 @@
 # react-query wrapper
 
-If you want to use MMKV with [react-query](https://tanstack.com/query/v4/docs/plugins/persistQueryClient), follow further steps:
+If you want to use MMKV with [react-query](https://tanstack.com/query/latest/docs/framework/react/overview), follow further steps:
 
 1. Install `react-query` persist packages
 
@@ -35,15 +35,21 @@ export const clientPersister = createSyncStoragePersister({ storage: clientStora
 3. Use created `clientPersister` in your root component (eg. `App.tsx`)
 
 ```ts
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
+import { QueryClientProvider } from "@tanstack/react-query";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
+
+persistQueryClient({
+  queryClient,
+  persister: clientPersister,
+});
 
 const App = () => {
   return (
-    <PersistQueryClientProvider persistOptions={{ persister: clientPersister }}>
+    <QueryClientProvider client={queryClient}>
       {...}
-    </PersistQueryClientProvider>
+    </QueryClientProvider>
   );
 };
 ```
 
-For more information check their official [docs](https://tanstack.com/query/v4/docs/plugins/persistQueryClient#persistqueryclientprovider)
+For more information check their official [docs](https://tanstack.com/query/latest/docs/framework/react/plugins/createSyncStoragePersister)
