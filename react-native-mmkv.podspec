@@ -28,5 +28,9 @@ Pod::Spec.new do |s|
   ]
 
   s.dependency "MMKV", ">= 1.3.3"
-  s.dependency "React-Core"
+  if respond_to?(:install_modules_dependencies, true)
+    install_modules_dependencies(s)
+  else
+    s.dependency "React-Core"
+  end
 end
