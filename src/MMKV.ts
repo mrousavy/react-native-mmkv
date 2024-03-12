@@ -46,6 +46,20 @@ export interface MMKVConfiguration {
    * ```
    */
   encryptionKey?: string;
+  /**
+   * *Android Only*: The MMKV mode. It is set to `single-process` by default. You can set its value to `multi-process` to support simultaneous read-write access between processus at the cost of performance.
+   *
+   * This is useful when you want to share data between your react-native app and native extensions such as widgets.
+   *
+   * @example
+   * ```ts
+   * const extensionStorage = new MMKV({ id: 'mmkv.default', mode: 'multi-process' })
+   * ```
+   *
+   * _Notice_: On iOS, this will automatically be set to `multi-process` if you set an AppGroup in the plist configuration.
+   * More information on AppGroups [here](https://github.com/mrousavy/react-native-mmkv/tree/master#app-groups)
+   */
+  mode?: 'single-process' | 'multi-process';
 }
 
 /**

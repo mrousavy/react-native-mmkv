@@ -13,6 +13,19 @@ std::string getPropertyAsStringOrEmptyFromObject(jsi::Object& object,
   return value.isString() ? value.asString(runtime).utf8(runtime) : "";
 }
 
+const std::string MMKV_MULTI_PROCESS_MODE = "multi-process";
+MMKVMode getPropertyAsMMKVModeFromObject(jsi::Object& object,
+                           const std::string& propertyName,
+                           jsi::Runtime& runtime) {
+  std::string value = getPropertyAsStringOrEmptyFromObject(object, propertyName, runtime);
+  if (value == MMKV_MULTI_PROCESS_MODE) {
+    return MMKV_MULTI_PROCESS;
+  }
+
+  // Use Single Process as default value
+  return MMKV_SINGLE_PROCESS;
+}
+
 void install(jsi::Runtime& jsiRuntime) {
   // MMKV.createNewInstance()
   auto mmkvCreateNewInstance = jsi::Function::createFromHostFunction(
@@ -28,8 +41,9 @@ void install(jsi::Runtime& jsiRuntime) {
         std::string path = getPropertyAsStringOrEmptyFromObject(config, "path", runtime);
         std::string encryptionKey =
             getPropertyAsStringOrEmptyFromObject(config, "encryptionKey", runtime);
+        MMKVMode mode = getPropertyAsMMKVModeFromObject(config, "mode", runtime);
 
-        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey);
+        auto instance = std::make_shared<MmkvHostObject>(instanceId, path, encryptionKey, mode);
         return jsi::Object::createFromHostObject(runtime, instance);
       });
   jsiRuntime.global().setProperty(jsiRuntime, "mmkvCreateNewInstance",

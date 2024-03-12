@@ -14,14 +14,14 @@
 #include <vector>
 
 MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path,
-                               std::string cryptKey) {
+                               std::string cryptKey, MMKVMode mmkvMode) {
   bool hasEncryptionKey = cryptKey.size() > 0;
   __android_log_print(ANDROID_LOG_INFO, "RNMMKV",
                       "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %b)",
                       instanceId.c_str(), path.c_str(), hasEncryptionKey);
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* cryptKeyPtr = cryptKey.size() > 0 ? &cryptKey : nullptr;
-  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, cryptKeyPtr,
+  instance = MMKV::mmkvWithID(instanceId, mmkv::DEFAULT_MMAP_SIZE, mmkvMode, cryptKeyPtr,
                               pathPtr);
 
   if (instance == nullptr) {
