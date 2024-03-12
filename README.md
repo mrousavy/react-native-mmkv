@@ -159,18 +159,17 @@ storage.clearAll()
 
 ### Objects
 
-```js
+```tsx
 const user = {
   username: 'Marc',
   age: 21
 }
 
-// Serialize the object into a JSON string
-storage.set('user', JSON.stringify(user))
+// Set
+storage.setObject('user', user)
 
-// Deserialize the JSON string into an object
-const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
-const userObject = JSON.parse(jsonUser)
+// Get
+const userObject = storage.getObject<typeof user>('user') // {name: 'Marc', age: 21}
 ```
 
 ### Encryption

@@ -185,6 +185,15 @@ export class MMKV implements MMKVInterface {
 
     this.onValuesChanged([key]);
   }
+  setObject(key: string, value: any): boolean {
+    try {
+      this.getFunctionFromCache('set')(key, JSON.stringify(value));
+      this.onValuesChanged([key]);
+      return true;
+    } catch {
+      return false;
+    }
+  }
   getBoolean(key: string): boolean | undefined {
     const func = this.getFunctionFromCache('getBoolean');
     return func(key);
@@ -192,6 +201,14 @@ export class MMKV implements MMKVInterface {
   getString(key: string): string | undefined {
     const func = this.getFunctionFromCache('getString');
     return func(key);
+  }
+  getObject<T = any>(key: string): T | null {
+    try {
+      const valueString = this.getFunctionFromCache('getString')(key);
+      return typeof valueString === 'string' ? JSON.parse(valueString) : null;
+    } catch {
+      return null;
+    }
   }
   getNumber(key: string): number | undefined {
     const func = this.getFunctionFromCache('getNumber');
