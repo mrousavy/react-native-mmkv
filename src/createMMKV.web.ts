@@ -91,6 +91,7 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     delete: (key) => storage().removeItem(prefixedKey(key)),
     set: (key, value) => {
       storage().setItem(prefixedKey(key), value.toString());
+      return true;
     },
     getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
     getNumber: (key) => {

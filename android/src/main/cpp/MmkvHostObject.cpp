@@ -71,18 +71,19 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                "MMKV::set: First argument ('key') has to be of type string!");
           }
 
+          bool result = false;
           auto keyName = arguments[0].getString(runtime).utf8(runtime);
 
           if (arguments[1].isBool()) {
             // bool
-            instance->set(arguments[1].getBool(), keyName);
+            result = instance->set(arguments[1].getBool(), keyName);
           } else if (arguments[1].isNumber()) {
             // number
-            instance->set(arguments[1].getNumber(), keyName);
+            result = instance->set(arguments[1].getNumber(), keyName);
           } else if (arguments[1].isString()) {
             // string
             auto stringValue = arguments[1].getString(runtime).utf8(runtime);
-            instance->set(stringValue, keyName);
+            result = instance->set(stringValue, keyName);
           } else if (arguments[1].isObject()) {
             // object
             auto object = arguments[1].asObject(runtime);
@@ -92,7 +93,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
               auto bufferValue = typedArray.getBuffer(runtime);
               mmkv::MMBuffer buffer(bufferValue.data(runtime), bufferValue.size(runtime),
                                     mmkv::MMBufferCopyFlag::MMBufferNoCopy);
-              instance->set(buffer, keyName);
+              result = instance->set(buffer, keyName);
             } else {
               // unknown object
               throw jsi::JSError(
@@ -105,7 +106,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                 "MMKV::set: 'value' argument is not of type bool, number, string or buffer!");
           }
 
-          return jsi::Value::undefined();
+          return jsi::Value(result);
         });
   }
 
@@ -270,19 +271,20 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // encryptionKey
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
+          bool result;
           if (arguments[0].isUndefined()) {
             // reset encryption key to "no encryption"
-            instance->reKey(std::string());
+            result = instance->reKey(std::string());
           } else if (arguments[0].isString()) {
             // reKey(..) with new encryption-key
             auto encryptionKey = arguments[0].getString(runtime).utf8(runtime);
-            instance->reKey(encryptionKey);
+            result = instance->reKey(encryptionKey);
           } else {
             throw jsi::JSError(
                 runtime,
                 "First argument ('encryptionKey') has to be of type string (or undefined)!");
           }
-          return jsi::Value::undefined();
+          return jsi::Value(result);
         });
   }
 
