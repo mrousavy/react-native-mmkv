@@ -1,7 +1,8 @@
 import type { NativeMMKV } from 'react-native-mmkv';
+import { MMKVConfiguration } from 'react-native-mmkv';
 
 /* Mock MMKV instance for use in tests */
-export const createMockMMKV = (): NativeMMKV => {
+export const createMMKV = (_: MMKVConfiguration): NativeMMKV => {
   const storage = new Map<string, string | boolean | number | Uint8Array>();
 
   return {

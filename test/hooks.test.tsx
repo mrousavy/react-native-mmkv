@@ -9,6 +9,8 @@ import {
 } from '@testing-library/react-native';
 import { MMKV, useMMKVNumber, useMMKVString } from '../src';
 
+jest.mock('../src/createMMKV', () => require('../src/createMMKV.mock.ts'));
+
 const mmkv = new MMKV();
 
 beforeEach(() => {

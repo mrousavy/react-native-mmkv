@@ -1,6 +1,4 @@
 import { createMMKV } from './createMMKV';
-import { createMockMMKV } from './createMMKV.mock';
-import { isJest } from './PlatformChecker';
 
 interface Listener {
   remove: () => void;
@@ -29,8 +27,8 @@ export interface MMKVConfiguration {
    * ```ts
    * const temporaryStorage = new MMKV({ path: '/tmp/' })
    * ```
-   * 
-   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions. 
+   *
+   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions.
    * In this case `path` property will be ignored.
    * See more on MMKV configuration [here](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
    */
@@ -147,9 +145,7 @@ export class MMKV implements MMKVInterface {
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
-    this.nativeInstance = isJest()
-      ? createMockMMKV()
-      : createMMKV(configuration);
+    this.nativeInstance = createMMKV(configuration);
     this.functionCache = {};
   }
 
