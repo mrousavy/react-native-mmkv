@@ -179,7 +179,7 @@ export const useMMKVBuffer = createMMKVHook((instance, key) =>
 export function useMMKVObject<T>(
   key: string,
   instance?: MMKV
-): [T | undefined, (value: T | undefined | ((prevValue: T | undefined) => T | undefined)) => void] {
+): [value: T | undefined, setValue: (value: T | undefined | ((prevValue: T | undefined) => T | undefined)) => void] {
   const [json, setJson] = useMMKVString(key, instance);
 
   const value = useMemo(() => {
