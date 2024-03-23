@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		98C0B5D62BAE685D0048CB38 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 98C0B5CE2BAE60F40048CB38 /* PrivacyInfo.xcprivacy */; };
 		B81384EA26E23A8500A8507D /* MmkvHostObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = B81384E926E23A8500A8507D /* MmkvHostObject.mm */; };
 		B8A8A9BE28F5797400345076 /* MmkvModule.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8A8A9BD28F5797400345076 /* MmkvModule.mm */; };
 		B8CC270225E65597009808A2 /* JSIUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = B8CC270125E65597009808A2 /* JSIUtils.mm */; };
@@ -26,6 +27,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libMmkv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMmkv.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		98C0B5CE2BAE60F40048CB38 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		B81384E926E23A8500A8507D /* MmkvHostObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MmkvHostObject.mm; sourceTree = "<group>"; };
 		B81384EB26E23A8D00A8507D /* MmkvHostObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MmkvHostObject.h; sourceTree = "<group>"; };
 		B8A8A9BC28F5797400345076 /* MmkvModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MmkvModule.h; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				98C0B5CE2BAE60F40048CB38 /* PrivacyInfo.xcprivacy */,
 				B81384EB26E23A8D00A8507D /* MmkvHostObject.h */,
 				B81384E926E23A8500A8507D /* MmkvHostObject.mm */,
 				B8CC270425E655AD009808A2 /* JSIUtils.h */,
@@ -78,6 +81,7 @@
 				58B511D71A9E6C8500147676 /* Sources */,
 				58B511D81A9E6C8500147676 /* Frameworks */,
 				58B511D91A9E6C8500147676 /* CopyFiles */,
+				98C0B5D02BAE63F90048CB38 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -119,6 +123,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		98C0B5D02BAE63F90048CB38 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				98C0B5D62BAE685D0048CB38 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		58B511D71A9E6C8500147676 /* Sources */ = {
