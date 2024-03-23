@@ -1,50 +1,67 @@
 {
   "name": "react-native-mmkv",
-  "version": "0.1.0",
-  "description": "MMKVVVVVv",
+  "version": "2.12.2",
+  "description": "The fastest key/value storage for React Native. ~30x faster than AsyncStorage! Works on Android, iOS and Web.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
-    "src",
-    "lib",
-    "android",
-    "ios",
+    "android/src",
+    "android/build.gradle",
+    "android/CMakeLists.txt",
+    "android/cpp-adapter.cpp",
+    "android/gradle.properties",
     "cpp",
-    "*.podspec",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
-    "!**/.*"
+    "MMKV/Core",
+    "lib/commonjs",
+    "lib/module",
+    "lib/typescript",
+    "ios/**/*.h",
+    "ios/**/*.m",
+    "ios/**/*.mm",
+    "ios/**/*.cpp",
+    "src",
+    "react-native-mmkv.podspec",
+    "README.md",
+    "img/banner-light.png",
+    "img/banner-dark.png"
   ],
   "scripts": {
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "lint-ci": "yarn lint -f ./node_modules/@firmnav/eslint-github-actions-formatter/dist/formatter.js",
+    "lint-cpp": "scripts/clang-format.sh",
     "example": "yarn workspace react-native-mmkv-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
-    "release": "release-it"
+    "prepare": "git submodule update --init --recursive && bob build",
+    "prepack": "bob build",
+    "update-submodule": "git submodule update --remote --merge",
+    "pods": "cd example && yarn pods",
+    "release": "release-it",
+    "codegen": "npx react-native codegen"
   },
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "mmkv",
+    "storage",
+    "key",
+    "value",
+    "fast",
+    "turbo",
+    "async"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mrousavy/react-native-mmkv.git"
   },
   "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
-  "license": "MIT",
+  "license": "(MIT AND BSD-3-Clause)",
   "bugs": {
     "url": "https://github.com/mrousavy/react-native-mmkv/issues"
   },
@@ -53,13 +70,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@commitlint/config-conventional": "^17.0.2",
-    "@evilmartians/lefthook": "^1.5.0",
     "@react-native/eslint-config": "^0.73.1",
     "@release-it/conventional-changelog": "^5.0.0",
     "@types/jest": "^29.5.5",
     "@types/react": "^18.2.44",
-    "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
@@ -70,7 +84,6 @@
     "react-native": "0.73.6",
     "react-native-builder-bob": "^0.20.0",
     "release-it": "^15.0.0",
-    "turbo": "^1.10.7",
     "typescript": "^5.2.2"
   },
   "resolutions": {
@@ -91,11 +104,6 @@
       "<rootDir>/lib/"
     ]
   },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
   "release-it": {
     "git": {
       "commitMessage": "chore: release ${version}",
@@ -109,7 +117,31 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
-        "preset": "angular"
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "✨ Features"
+            },
+            {
+              "type": "fix",
+              "section": "🐛 Bug Fixes"
+            },
+            {
+              "type": "perf",
+              "section": "💨 Performance Improvements"
+            },
+            {
+              "type": "chore(deps)",
+              "section": "🛠️ Dependency Upgrades"
+            },
+            {
+              "type": "docs",
+              "section": "📚 Documentation"
+            }
+          ]
+        }
       }
     }
   },
@@ -161,5 +193,8 @@
     "name": "RNMmkvSpec",
     "type": "modules",
     "jsSrcsDir": "src"
+  },
+  "dependencies": {
+    "@testing-library/react-native": "^12.4.4"
   }
 }
