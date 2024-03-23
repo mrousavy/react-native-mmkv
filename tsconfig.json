@@ -1,7 +1,6 @@
 {
-  "exclude": ["example"],
   "compilerOptions": {
-    "baseUrl": ".",
+    "rootDir": ".",
     "paths": {
       "react-native-mmkv": ["./src/index"]
     },
@@ -9,20 +8,21 @@
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react-native",
-    "lib": ["esnext", "DOM"],
+    "jsx": "react",
+    "lib": ["esnext"],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "esnext"
-  },
-  "include": ["src"]
+    "target": "esnext",
+    "verbatimModuleSyntax": true
+  }
 }
