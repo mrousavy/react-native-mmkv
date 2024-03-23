@@ -12,6 +12,7 @@ Pod::Spec.new do |s|
 
   s.platforms    = { :ios => "11.0", :tvos => "12.0", :osx => "10.14" }
   s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
+  s.resource     = 'ios/PrivacyInfo.xcprivacy'
 
   # All source files that should be publicly visible
   # Note how this does not include headers, since those can nameclash.
