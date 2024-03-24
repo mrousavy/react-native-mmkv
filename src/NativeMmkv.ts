@@ -1,9 +1,12 @@
 import { NativeModules, Platform, TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-import { MMKVConfiguration, NativeMMKV } from './MMKV';
+import { UnsafeObject } from 'react-native/Libraries/Types/CodegenTypes';
+import { MMKVConfiguration } from './MMKV';
+
+export type Config = MMKVConfiguration;
 
 export interface Spec extends TurboModule {
-  createMMKV(configuration: MMKVConfiguration): NativeMMKV;
+  createMMKV(configuration: Config): UnsafeObject;
 }
 
 const module = TurboModuleRegistry.get<Spec>('Mmkv');
