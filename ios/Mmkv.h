@@ -1,15 +1,9 @@
-#ifdef __cplusplus
-#import "react-native-mmkv.h"
+#ifndef RCT_NEW_ARCH_ENABLED
+#error react-native-mmkv only works if the new architecture is enabled!
 #endif
 
-#ifdef RCT_NEW_ARCH_ENABLED
 #import "RNMmkvSpec.h"
 
 @interface Mmkv : NSObject <NativeMmkvSpec>
-#else
-#import <React/RCTBridgeModule.h>
-
-@interface Mmkv : NSObject <RCTBridgeModule>
-#endif
 
 @end

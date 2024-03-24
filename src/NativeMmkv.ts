@@ -1,9 +1,12 @@
 import { NativeModules, Platform, TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import { UnsafeObject } from 'react-native/Libraries/Types/CodegenTypes';
-import { MMKVConfiguration } from './MMKV';
 
-export type Config = MMKVConfiguration;
+export type Config = {
+  id: string;
+  path?: string;
+  encryptionKey?: string;
+};
 
 export interface Spec extends TurboModule {
   createMMKV(configuration: Config): UnsafeObject;
