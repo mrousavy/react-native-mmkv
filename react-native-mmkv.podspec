@@ -15,9 +15,12 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
 
   s.pod_target_xcconfig = {
-    "CLANG_CXX_LANGUAGE_STANDARD" => "c++17"
+    "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
+    "OTHER_CPLUSPLUSFLAGS" => "-x objective-c++",
   }
   s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}"
+
+  s.dependency 'MMKVCore'
 
   install_modules_dependencies(s)
 end

@@ -7,6 +7,7 @@ PODS:
   - hermes-engine (0.74.0-rc.4):
     - hermes-engine/Pre-built (= 0.74.0-rc.4)
   - hermes-engine/Pre-built (0.74.0-rc.4)
+  - MMKVCore (1.3.4)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -939,6 +940,7 @@ PODS:
     - DoubleConversion
     - glog
     - hermes-engine
+    - MMKVCore
     - RCT-Folly (= 2024.01.01.00)
     - RCTRequired
     - RCTTypeSafety
@@ -1248,6 +1250,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - MMKVCore
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -1370,6 +1373,7 @@ SPEC CHECKSUMS:
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   hermes-engine: dfdcadd89a22aa872ef552b07e415d88df68af55
+  MMKVCore: a67a1cede26175c413176f404a7cedec43f96a0b
   RCT-Folly: 045d6ecaa59d826c5736dfba0b2f4083ff8d79df
   RCTDeprecation: 1c5ab5895f9fc7e8ae9fcde04859f0d246283209
   RCTRequired: 79e2e81174db06336f470c49aea7603ff29817a7
@@ -1394,7 +1398,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 309dfee3932996fd4c60368ab8ce1289f6176e5a
   React-logger: 6004e0cf41b7e9714ca26b1648e5d76fcfd638b5
   React-Mapbuffer: 0a378ecbf2020c5efe9dedf07aaa564faf8787b5
-  react-native-mmkv: e7b3e8c1ea3a6c07cef9aa5c1b6db13e0500f7cd
+  react-native-mmkv: 3e95b92c6738762d51f483d23f062110e88bb75c
   React-nativeconfig: 70c11d02425186137e7cdc069fa39e8af1c827de
   React-NativeModulesApple: 3509a8c7f19349e86aa0f452cc0092614bfea1a6
   React-perflogger: 0d62c0261b6fd3920605850de91abc8135dd3ee9
