@@ -1826,6 +1826,13 @@
   dependencies:
     joi "^17.2.1"
 
+"@react-native-community/cli-types@^13.6.3":
+  version "13.6.3"
+  resolved "https://registry.yarnpkg.com/@react-native-community/cli-types/-/cli-types-13.6.3.tgz#06215dee91b96d60d5e1a9e83669305c0bfac0d4"
+  integrity sha512-giiq+JJc5nO8DVDZKd8shWVdy/cGI1u2QHZhHmAYqBSkGfXYLel8YZKL9jpImUUWhm5dLcR9p5Oovq/ZDHB5vQ==
+  dependencies:
+    joi "^17.2.1"
+
 "@react-native-community/cli@13.6.2":
   version "13.6.2"
   resolved "https://registry.yarnpkg.com/@react-native-community/cli/-/cli-13.6.2.tgz#3a44aa38a87a35f3b5933d8bad8e08e939405fd4"
