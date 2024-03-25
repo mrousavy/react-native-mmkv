@@ -9,6 +9,7 @@ export type Config = {
 };
 
 export interface Spec extends TurboModule {
+  initialize(basePath: string | undefined): boolean;
   createMMKV(configuration: Config): UnsafeObject;
 }
 
@@ -43,5 +44,9 @@ if (module == null) {
   message += '\n* Make sure you rebuilt the app.';
   throw new Error(message);
 }
+
+// Initialize MMKV
+const BASE_PATH: string | undefined = undefined;
+module.initialize(BASE_PATH);
 
 export const MMKVTurboModule = module;

@@ -25,7 +25,11 @@ class NativeMmkvModule : public NativeMmkvCxxSpec<NativeMmkvModule> {
 public:
   NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker);
   
+  bool initialize(jsi::Runtime& runtime, std::optional<std::string> basePath);
   jsi::Object createMMKV(jsi::Runtime& runtime, MmkvConfiguration config);
+  
+private:
+  std::string getDefaultBasePath();
 };
 
 }
