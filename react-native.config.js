@@ -8,9 +8,12 @@ module.exports = {
        */
       ios: {},
       /**
-       * @type {import('@react-native-community/cli-types').AndroidProjectParams}
+       * @type {import('@react-native-community/cli-types').AndroidDependencyParams}
        */
-      android: {},
+      android: {
+        cxxModuleCMakeListsModuleName: 'react_native_mmkv_core',
+        cxxModuleHeaderName: 'NativeMmkvModule',
+      },
     },
   },
 };

@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.74.0-rc.4"
+    "react-native": "0.74.0-rc.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -22,6 +22,9 @@
     "@react-native/metro-config": "0.75.0-main",
     "@react-native/typescript-config": "0.75.0-main",
     "babel-plugin-module-resolver": "^5.0.0"
+  },
+  "resolutions": {
+    "@react-native-community/cli": "^14.0.0-alpha.1"
   },
   "engines": {
     "node": ">=18"
