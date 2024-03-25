@@ -11,7 +11,8 @@ module.exports = {
        * @type {import('@react-native-community/cli-types').AndroidDependencyParams}
        */
       android: {
-        cxxModuleCMakeListsModuleName: 'react_native_mmkv_core',
+        cxxModuleCMakeListsModuleName: 'reactnativemmkv',
+        cxxModuleCMakeListsPath: './CMakeLists.txt',
         cxxModuleHeaderName: 'NativeMmkvModule',
       },
     },
