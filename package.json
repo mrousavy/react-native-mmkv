@@ -189,7 +189,14 @@
   "codegenConfig": {
     "name": "RNMmkvSpec",
     "type": "modules",
-    "jsSrcsDir": "src"
+    "jsSrcsDir": "src",
+    "outputDir": {
+      "ios": "ios/generated",
+      "android": "android/generated"
+    },
+    "android": {
+      "javaPackageName": "com.mrousavy.mmkv"
+    }
   },
   "dependencies": {
     "@testing-library/react-native": "^12.4.4"

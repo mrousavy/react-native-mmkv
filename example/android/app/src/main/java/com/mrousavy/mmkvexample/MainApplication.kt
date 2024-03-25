@@ -1,4 +1,4 @@
-package com.mmkvexample
+package com.mrousavy.mmkvexample
 
 import android.app.Application
 import com.facebook.react.PackageList

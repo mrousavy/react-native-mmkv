@@ -1,4 +1,4 @@
-package com.mmkv;
+package com.mrousavy.mmkv;
 
 import androidx.annotation.Nullable;
 

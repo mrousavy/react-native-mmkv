@@ -38,7 +38,7 @@ def supportsNamespace() {
 
 android {
   if (supportsNamespace()) {
-    namespace "com.mmkv"
+    namespace "com.mrousavy.mmkv"
 
     sourceSets {
       main {
@@ -116,6 +116,6 @@ if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
     libraryName = "Mmkv"
-    codegenJavaPackageName = "com.mmkv"
+    codegenJavaPackageName = "com.mrousavy.mmkv"
   }
 }

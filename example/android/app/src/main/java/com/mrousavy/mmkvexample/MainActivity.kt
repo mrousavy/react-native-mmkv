@@ -1,4 +1,4 @@
-package com.mmkvexample
+package com.mrousavy.mmkvexample
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
