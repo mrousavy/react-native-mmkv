@@ -8,7 +8,7 @@
 #pragma once
 
 #include <jsi/jsi.h>
-#include <MMKVCore/MMKV.h>
+#include <MMKVCore/MMBuffer.h>
 
 using namespace facebook;
 

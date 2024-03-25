@@ -18,6 +18,7 @@ using namespace mmkv;
 class MmkvHostObject : public jsi::HostObject {
 public:
   MmkvHostObject(const MmkvConfiguration& config);
+  ~MmkvHostObject();
 
 public:
   jsi::Value get(jsi::Runtime&, const jsi::PropNameID& name) override;
