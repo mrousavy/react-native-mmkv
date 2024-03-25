@@ -372,6 +372,25 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           return jsi::Value::undefined();
         });
   }
+  
+  if (propName == "trim") {
+    // MMKV.trim()
+    return jsi::Function::createFromHostFunction(
+        runtime, jsi::PropNameID::forAscii(runtime, funcName),
+        0,
+        [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
+               size_t count) -> jsi::Value {
+           instance->trim();
+
+          return jsi::Value::undefined();
+        });
+  }
+  
+  if (propName == "size") {
+    // MMKV.size
+    size_t size = instance->actualSize();
+    return jsi::Value(static_cast<int>(size));
+  }
 
   return jsi::Value::undefined();
 }

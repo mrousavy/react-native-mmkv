@@ -1,3 +1,4 @@
+import { AppState } from 'react-native';
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
 import { isJest } from './PlatformChecker';
@@ -107,6 +108,20 @@ interface MMKVInterface {
    */
   recrypt: (key: string | undefined) => void;
   /**
+   * Trims the storage space and clears memory cache.
+   *
+   * Since MMKV does not resize itself after deleting keys, you can call `trim()`
+   * after deleting a bunch of keys to manually trim the memory- and
+   * disk-file to reduce storage and memory usage.
+   *
+   * In most applications, this is not needed at all.
+   */
+  trim(): void;
+  /**
+   * Get the current total size of the storage, in bytes.
+   */
+  readonly size: number;
+  /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
    *
@@ -129,6 +144,8 @@ export type NativeMMKV = Pick<
   | 'getBuffer'
   | 'set'
   | 'recrypt'
+  | 'trim'
+  | 'size'
 >;
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
@@ -151,6 +168,11 @@ export class MMKV implements MMKVInterface {
       ? createMockMMKV()
       : createMMKV(configuration);
     this.functionCache = {};
+
+    const weakSelf = new WeakRef(this);
+    AppState.addEventListener('memoryWarning', () => {
+      weakSelf.deref()?.trim();
+    });
   }
 
   private get onValueChangedListeners() {
@@ -179,6 +201,9 @@ export class MMKV implements MMKVInterface {
     }
   }
 
+  get size(): number {
+    return this.nativeInstance.size;
+  }
   set(key: string, value: boolean | string | number | ArrayBuffer): void {
     const func = this.getFunctionFromCache('set');
     func(key, value);
@@ -226,6 +251,10 @@ export class MMKV implements MMKVInterface {
   recrypt(key: string | undefined): void {
     const func = this.getFunctionFromCache('recrypt');
     return func(key);
+  }
+  trim(): void {
+    const func = this.getFunctionFromCache('trim');
+    func();
   }
 
   toString(): string {

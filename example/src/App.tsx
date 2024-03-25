@@ -5,6 +5,10 @@ import { MMKV, useMMKVString } from 'react-native-mmkv';
 
 const storage = new MMKV();
 
+storage.addOnValueChangedListener((key) => {
+  console.log(`${key} changed! New size: ${storage.size}`);
+});
+
 export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
