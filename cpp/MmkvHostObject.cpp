@@ -64,6 +64,8 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getAllKeys")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("deleteAll")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("recrypt")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("trim")));
+  result.push_back(jsi::PropNameID::forUtf8(rt, std::string("size")));
   return result;
 }
 
