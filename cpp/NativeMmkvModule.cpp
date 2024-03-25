@@ -9,6 +9,7 @@
 #include "MmkvHostObject.h"
 #include "MmkvConfig.h"
 #include "Logger.h"
+#include "MmkvPlatformContext.h"
 
 namespace facebook::react {
 
@@ -16,7 +17,7 @@ NativeMmkvModule::NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker): Nati
 }
 
 bool NativeMmkvModule::initialize(jsi::Runtime &runtime, std::optional<std::string> customBasePath) {
-  std::string basePath = getDefaultBasePath();
+  std::string basePath = MmkvPlatformContext::getDefaultBasePath();
   if (customBasePath.has_value()) {
     Logger::log("RNMMKV", "Default path is %s, but user specified a custom path: %s", basePath.c_str(), customBasePath.value().c_str());
     basePath = customBasePath.value();
@@ -35,35 +36,6 @@ bool NativeMmkvModule::initialize(jsi::Runtime &runtime, std::optional<std::stri
 jsi::Object NativeMmkvModule::createMMKV(jsi::Runtime& runtime, MmkvConfiguration config) {
   auto instance = std::make_shared<MmkvHostObject>(config);
   return jsi::Object::createFromHostObject(runtime, instance);
-}
-
-std::string NativeMmkvModule::getDefaultBasePath() {
-#ifdef __APPLE__
-#if TARGET_OS_TV
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-#else
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-#endif
-  NSString* documentPath = (NSString *) [paths firstObject];
-  if ([documentPath length] > 0) {
-    NSString* basePath = [documentPath stringByAppendingPathComponent:@"mmkv"];
-    std::string string = [basePath UTF8String];
-    return string;
-  } else {
-    return "";
-  }
-  
-#else
-  
-#ifdef ANDROID
-  
-#else
-  
-  return "";
-  
-#endif
-  
-#endif
 }
 
 }
