@@ -11,7 +11,7 @@ RCT_EXPORT_MODULE()
     return std::make_shared<facebook::react::NativeMmkvSpecJSI>(params);
 }
 
-- (NSDictionary *)createMMKV:(JS::NativeMmkv::Config &)configuration { 
+- (NSDictionary *)createMMKV:(JS::NativeMmkv::Config &)configuration {
   return @{};
 }
 

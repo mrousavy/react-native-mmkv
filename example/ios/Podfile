@@ -21,7 +21,6 @@ target 'MmkvExample' do
 
   use_react_native!(
     :path => config[:reactNativePath],
-    :flipper_configuration => FlipperConfiguration.disabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
@@ -36,7 +35,8 @@ target 'MmkvExample' do
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false
+      :mac_catalyst_enabled => false,
+      # :ccache_enabled => true
     )
   end
 end

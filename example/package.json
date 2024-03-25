@@ -12,15 +12,15 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.73.6"
+    "react-native": "0.74.0-rc.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.73.21",
-    "@react-native/metro-config": "0.73.5",
-    "@react-native/typescript-config": "0.73.1",
+    "@react-native/babel-preset": "0.75.0-main",
+    "@react-native/metro-config": "0.75.0-main",
+    "@react-native/typescript-config": "0.75.0-main",
     "babel-plugin-module-resolver": "^5.0.0"
   },
   "engines": {

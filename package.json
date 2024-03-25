@@ -69,10 +69,10 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@react-native/eslint-config": "^0.73.1",
-    "@release-it/conventional-changelog": "^5.0.0",
+    "@react-native/eslint-config": "^0.75.0-main",
+    "@release-it/conventional-changelog": "^8.0.1",
     "@types/jest": "^29.5.5",
-    "@types/react": "^18.2.44",
+    "@types/react": "^18.2.70",
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
@@ -81,8 +81,8 @@
     "prettier": "^3.0.3",
     "react": "18.2.0",
     "react-native": "0.74.0-rc.4",
-    "react-native-builder-bob": "^0.20.0",
-    "release-it": "^15.0.0",
+    "react-native-builder-bob": "^0.23.2",
+    "release-it": "^17.1.1",
     "typescript": "^5.2.2"
   },
   "resolutions": {
