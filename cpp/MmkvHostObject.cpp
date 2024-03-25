@@ -50,7 +50,11 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
 }
 
 MmkvHostObject::~MmkvHostObject() {
-  instance->close();
+  if (instance != nullptr) {
+    instance->clearMemoryCache();
+    instance->close();
+  }
+  instance = nullptr;
 }
 
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
@@ -398,6 +402,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         runtime, jsi::PropNameID::forAscii(runtime, funcName), 0,
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
+          instance->clearMemoryCache();
           instance->trim();
 
           return jsi::Value::undefined();
