@@ -15,29 +15,31 @@
 
 using namespace mmkv;
 
-MmkvHostObject::MmkvHostObject(const std::string& instanceId, std::string path,
-                               std::string cryptKey) {
-  bool hasEncryptionKey = cryptKey.size() > 0;
-  Logger::log("RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %b)",
-              instanceId.c_str(), path.c_str(), hasEncryptionKey);
+MmkvHostObject::MmkvHostObject(const MmkvConfiguration& config) {
+  std::string path = config.path.has_value() ? config.path.value() : "";
+  std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
+  bool hasEncryptionKey = encryptionKey.size() > 0;
+  Logger::log("RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
+              config.instanceId.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
+  
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
-  std::string* cryptKeyPtr = cryptKey.size() > 0 ? &cryptKey : nullptr;
+  std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
   
 #ifdef __APPLE__
-  instance = MMKV::mmkvWithID(instanceId, MMKV_SINGLE_PROCESS, cryptKeyPtr, pathPtr);
+  instance = MMKV::mmkvWithID(config.instanceId, MMKV_SINGLE_PROCESS, encryptionKeyPtr, pathPtr);
 #else
-  instance = MMKV::mmkvWithID(instanceId, DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, cryptKeyPtr,
+  instance = MMKV::mmkvWithID(config.instanceId, DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS, encryptionKeyPtr,
                               pathPtr);
 #endif
 
   if (instance == nullptr) {
     // Check if instanceId is invalid
-    if (instanceId.empty()) {
+    if (config.instanceId.empty()) {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
     }
 
     // Check if encryptionKey is invalid
-    if (cryptKey.size() > 16) {
+    if (encryptionKey.size() > 16) {
       throw std::runtime_error(
           "Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
     }

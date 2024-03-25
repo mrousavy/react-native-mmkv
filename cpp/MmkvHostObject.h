@@ -10,13 +10,14 @@
 
 #include <MMKVCore/MMKV.h>
 #include <jsi/jsi.h>
+#include "MmkvConfig.h"
 
 using namespace facebook;
 using namespace mmkv;
 
 class MmkvHostObject : public jsi::HostObject {
 public:
-  MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey);
+  MmkvHostObject(const MmkvConfiguration& config);
 
 public:
   jsi::Value get(jsi::Runtime&, const jsi::PropNameID& name) override;

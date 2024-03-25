@@ -17,13 +17,15 @@
 #error Cannot find react-native-mmkv spec! Try cleaning your cache and re-running CodeGen!
 #endif
 
+#include "MmkvConfig.h"
+
 namespace facebook::react {
 
 class NativeMmkvModule : public NativeMmkvCxxSpec<NativeMmkvModule> {
 public:
   NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker);
   
-  jsi::Object createMMKV(jsi::Runtime& runtime, jsi::Object config);
+  jsi::Object createMMKV(jsi::Runtime& runtime, MmkvConfiguration config);
 };
 
 }

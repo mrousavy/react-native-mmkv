@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   }
   s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}"
 
-  s.dependency 'MMKVCore'
+  s.dependency "MMKVCore"
 
   install_modules_dependencies(s)
 end
