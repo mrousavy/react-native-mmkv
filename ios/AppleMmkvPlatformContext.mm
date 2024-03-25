@@ -10,11 +10,11 @@
 
 std::string MmkvPlatformContext::getDefaultBasePath() {
 #if TARGET_OS_TV
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 #else
-    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 #endif
-  NSString* documentPath = (NSString *) [paths firstObject];
+  NSString* documentPath = (NSString*)[paths firstObject];
   if ([documentPath length] > 0) {
     NSString* basePath = [documentPath stringByAppendingPathComponent:@"mmkv"];
     std::string string = [basePath UTF8String];

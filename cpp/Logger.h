@@ -12,7 +12,8 @@ private:
   Logger() = delete;
 
 private:
-  template <typename... Args> static std::string string_format(const std::string& format, Args... args) {
+  template <typename... Args>
+  static std::string string_format(const std::string& format, Args... args) {
     int size_s = std::snprintf(nullptr, 0, format.c_str(), args...) + 1; // Extra space for '\0'
     if (size_s <= 0) {
       throw std::runtime_error("Failed to format string!");
@@ -26,7 +27,8 @@ private:
 public:
   static void log(const std::string& tag, const std::string& message);
 
-  template <typename... Args> inline static void log(const std::string& tag, const std::string& formatString, Args&&... args) {
+  template <typename... Args>
+  inline static void log(const std::string& tag, const std::string& formatString, Args&&... args) {
     std::string formattedString = string_format(formatString, std::forward<Args>(args)...);
     log(tag, formattedString);
   }

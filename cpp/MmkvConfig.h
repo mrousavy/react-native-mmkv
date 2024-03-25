@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include <string>
 #include <optional>
 #include <react/bridging/Bridging.h>
+#include <string>
 
 struct MmkvConfiguration {
   std::string instanceId;
@@ -19,19 +19,19 @@ struct MmkvConfiguration {
 
 namespace facebook::react {
 
-template <>
-struct Bridging<MmkvConfiguration> {
-  static MmkvConfiguration fromJs(jsi::Runtime& rt,
-                           const jsi::Object& value,
-                           const std::shared_ptr<CallInvoker>& jsInvoker) {
+template <> struct Bridging<MmkvConfiguration> {
+  static MmkvConfiguration fromJs(jsi::Runtime& rt, const jsi::Object& value,
+                                  const std::shared_ptr<CallInvoker>& jsInvoker) {
     return MmkvConfiguration{
-      .instanceId = bridging::fromJs<std::string>(rt, value.getProperty(rt, "id"), jsInvoker),
-      .path = bridging::fromJs<std::optional<std::string>>(rt, value.getProperty(rt, "path"), jsInvoker),
-      .encryptionKey = bridging::fromJs<std::optional<std::string>>(rt, value.getProperty(rt, "encryptionKey"), jsInvoker),
+        .instanceId = bridging::fromJs<std::string>(rt, value.getProperty(rt, "id"), jsInvoker),
+        .path = bridging::fromJs<std::optional<std::string>>(rt, value.getProperty(rt, "path"),
+                                                             jsInvoker),
+        .encryptionKey = bridging::fromJs<std::optional<std::string>>(
+            rt, value.getProperty(rt, "encryptionKey"), jsInvoker),
     };
   }
-  
-  static jsi::Object toJs(jsi::Runtime &rt, const MmkvConfiguration& config) {
+
+  static jsi::Object toJs(jsi::Runtime& rt, const MmkvConfiguration& config) {
     auto result = facebook::jsi::Object(rt);
     result.setProperty(rt, "id", bridging::toJs(rt, config.instanceId));
     if (config.path.has_value()) {
@@ -44,4 +44,4 @@ struct Bridging<MmkvConfiguration> {
   }
 };
 
-}
+} // namespace facebook::react

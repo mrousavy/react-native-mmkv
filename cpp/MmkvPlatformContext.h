@@ -12,11 +12,10 @@
 class MmkvPlatformContext {
 public:
   MmkvPlatformContext() = delete;
-  
+
   /**
    Get the default path for MMKV storage files.
    This usually is the documents directory of the current context.
    */
   static std::string getDefaultBasePath();
 };
-
