@@ -5,6 +5,8 @@
 //  Created by Marc Rousavy on 25.03.24.
 //
 
+#include <string>
+
 class Logger {
 private:
   Logger() = delete;

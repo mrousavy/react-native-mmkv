@@ -16,8 +16,11 @@ using namespace facebook;
  */
 class ManagedBuffer: public jsi::MutableBuffer {
 public:
-  explicit ManagedBuffer(uint8_t* data, size_t size): _data(memcpy(_data, data, size)), _size(size) { }
-  ~ManagedBuffer {
+  explicit ManagedBuffer(uint8_t* data, size_t size) {
+    memcpy(_data, data, size);
+    _size = size;
+  }
+  ~ManagedBuffer() {
     free(_data);
   }
 
@@ -32,7 +35,7 @@ public:
 private:
   size_t _size;
   uint8_t* _data;
-}
+};
 
 
 #ifdef __APPLE__
@@ -44,7 +47,7 @@ public:
   explicit NSDataMutableBuffer(NSData* data): _data(data) { }
 
   uint8_t* data() override {
-    return _data.bytes;
+    return (uint8_t*)(_data.bytes);
   }
 
   size_t size() const override {
@@ -53,5 +56,5 @@ public:
 
 private:
   NSData* _data;
-}
+};
 #endif

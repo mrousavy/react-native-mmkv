@@ -9,6 +9,7 @@
 #include <string>
 
 #ifdef __APPLE__
+#include <Foundation/Foundation.h>
 
 void Logger::log(const std::string& tag, const std::string& message) {
 #pragma clang diagnostic push
@@ -20,6 +21,7 @@ void Logger::log(const std::string& tag, const std::string& message) {
 #else
 
 #ifdef ANDROID
+#include <android/log.h>
 
 void Logger::log(const std::string& tag, const std::string& message) {
 #pragma clang diagnostic push
