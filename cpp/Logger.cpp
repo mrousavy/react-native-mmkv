@@ -5,6 +5,8 @@
 //  Created by Marc Rousavy on 05.03.24.
 //
 
+#include "Logger.h"
+#include <string>
 
 #ifdef __APPLE__
 
