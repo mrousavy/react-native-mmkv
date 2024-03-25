@@ -13,7 +13,7 @@
 
 using namespace facebook;
 
-class JSI_EXPORT MmkvHostObject : public jsi::HostObject {
+class MmkvHostObject : public jsi::HostObject {
 public:
   MmkvHostObject(const std::string& instanceId, std::string path, std::string cryptKey);
 
