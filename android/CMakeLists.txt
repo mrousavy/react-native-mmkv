@@ -19,7 +19,10 @@ include_directories(
         ../MMKV/Core
         ../cpp
 )
-target_include_directories(react_codegen_RNMmkvSpec PUBLIC .)
+add_subdirectory(
+        # TODO: Is this path correct??? Is there a way to avoid hardcoding it..?
+        ./build/generated/source/codegen/jni
+)
 
 # Add react-native-mmkv Android sources
 add_library(reactnativemmkv  # <-- Library name
