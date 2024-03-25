@@ -169,10 +169,12 @@ export class MMKV implements MMKVInterface {
       : createMMKV(configuration);
     this.functionCache = {};
 
-    const weakSelf = new WeakRef(this);
-    AppState.addEventListener('memoryWarning', () => {
-      weakSelf.deref()?.trim();
-    });
+    if ('WeakRef' in global) {
+      const weakSelf = new WeakRef(this);
+      AppState.addEventListener('memoryWarning', () => {
+        weakSelf.deref()?.trim();
+      });
+    }
   }
 
   private get onValueChangedListeners() {
