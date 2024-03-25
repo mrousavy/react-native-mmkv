@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "MmkvConfig.h"
+#include "NativeMmkvModule.h"
 #include <MMKVCore/MMKV.h>
 #include <jsi/jsi.h>
 
@@ -17,7 +17,7 @@ using namespace mmkv;
 
 class MmkvHostObject : public jsi::HostObject {
 public:
-  MmkvHostObject(const MmkvConfiguration& config);
+  MmkvHostObject(const facebook::react::MMKVConfig& config);
   ~MmkvHostObject();
 
 public:
@@ -42,6 +42,8 @@ private:
   static mmkv_string_t getStringFromJSValue(jsi::Runtime& runtime, const jsi::Value& value);
   static mmkv_key_t getKeyFromJSValue(jsi::Runtime& runtime, const jsi::Value& value);
   static mmkv_data_t getDataFromJSValue(jsi::Runtime& runtime, const jsi::ArrayBuffer& value);
+
+  static MMKVMode getMMKVMode(const facebook::react::MMKVConfig& config);
 
 private:
   MMKV* instance;

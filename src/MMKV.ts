@@ -2,57 +2,17 @@ import { AppState } from 'react-native';
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
 import { isJest } from './PlatformChecker';
+import { Configuration } from './NativeMmkv';
+export { Configuration, Mode } from './NativeMmkv';
 
 interface Listener {
   remove: () => void;
 }
 
 /**
- * Used for configuration of a single MMKV instance.
- */
-export interface MMKVConfiguration {
-  /**
-   * The MMKV instance's ID. If you want to use multiple instances, make sure to use different IDs!
-   *
-   * @example
-   * ```ts
-   * const userStorage = new MMKV({ id: `user-${userId}-storage` })
-   * const globalStorage = new MMKV({ id: 'global-app-storage' })
-   * ```
-   *
-   * @default 'mmkv.default'
-   */
-  id: string;
-  /**
-   * The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization:
-
-   * @example
-   * ```ts
-   * const temporaryStorage = new MMKV({ path: '/tmp/' })
-   * ```
-   *
-   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions.
-   * In this case `path` property will be ignored.
-   * See more on MMKV configuration [here](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
-   */
-  path?: string;
-  /**
-   * The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV.
-   *
-   * Encryption keys can have a maximum length of 16 bytes.
-   *
-   * @example
-   * ```ts
-   * const secureStorage = new MMKV({ encryptionKey: 'my-encryption-key!' })
-   * ```
-   */
-  encryptionKey?: string;
-}
-
-/**
  * Represents a single MMKV instance.
  */
-interface MMKVInterface {
+export interface NativeMMKV {
   /**
    * Set a value for the given `key`.
    */
@@ -121,6 +81,9 @@ interface MMKVInterface {
    * Get the current total size of the storage, in bytes.
    */
   readonly size: number;
+}
+
+interface MMKVInterface extends NativeMMKV {
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
@@ -131,22 +94,6 @@ interface MMKVInterface {
     onValueChanged: (key: string) => void
   ) => Listener;
 }
-
-export type NativeMMKV = Pick<
-  MMKVInterface,
-  | 'clearAll'
-  | 'contains'
-  | 'delete'
-  | 'getAllKeys'
-  | 'getBoolean'
-  | 'getNumber'
-  | 'getString'
-  | 'getBuffer'
-  | 'set'
-  | 'recrypt'
-  | 'trim'
-  | 'size'
->;
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
@@ -162,7 +109,7 @@ export class MMKV implements MMKVInterface {
    * Creates a new MMKV instance with the given Configuration.
    * If no custom `id` is supplied, `'mmkv.default'` will be used.
    */
-  constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
+  constructor(configuration: Configuration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
     this.nativeInstance = isJest()
       ? createMockMMKV()

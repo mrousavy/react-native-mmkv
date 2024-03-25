@@ -15,26 +15,27 @@
 
 using namespace mmkv;
 
-MmkvHostObject::MmkvHostObject(const MmkvConfiguration& config) {
+MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   std::string path = config.path.has_value() ? config.path.value() : "";
   std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
   bool hasEncryptionKey = encryptionKey.size() > 0;
   Logger::log("RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
-              config.instanceId.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
+              config.id.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
 
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
+  MMKVMode mode = getMMKVMode(config);
 
 #ifdef __APPLE__
-  instance = MMKV::mmkvWithID(config.instanceId, MMKV_SINGLE_PROCESS, encryptionKeyPtr, pathPtr);
+  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
 #else
-  instance = MMKV::mmkvWithID(config.instanceId, DEFAULT_MMAP_SIZE, MMKV_SINGLE_PROCESS,
-                              encryptionKeyPtr, pathPtr);
+  instance =
+      MMKV::mmkvWithID(config.instanceId, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
 #endif
 
   if (instance == nullptr) {
     // Check if instanceId is invalid
-    if (config.instanceId.empty()) {
+    if (config.id.empty()) {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
     }
 
@@ -54,6 +55,7 @@ MmkvHostObject::~MmkvHostObject() {
 
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   std::vector<jsi::PropNameID> result;
+  result.reserve(12);
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("set")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBoolean")));
   result.push_back(jsi::PropNameID::forUtf8(rt, std::string("getBuffer")));
@@ -100,6 +102,21 @@ MmkvHostObject::getDataFromJSValue(jsi::Runtime& runtime, const jsi::ArrayBuffer
   return mmkv::MMBuffer buffer(arrayBuffer.data(runtime), arrayBuffer.size(runtime),
                                mmkv::MMBufferCopyFlag::MMBufferNoCopy);
 #endif
+}
+
+MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) {
+  if (!config.mode.has_value()) {
+    return MMKVMode::MMKV_SINGLE_PROCESS;
+  }
+  auto mode = config.mode.value();
+  switch (mode) {
+    case facebook::react::MmkvMode::SINGLE_PROCESS:
+      return MMKVMode::MMKV_SINGLE_PROCESS;
+    case facebook::react::MmkvMode::MULTI_PROCESS:
+      return MMKVMode::MMKV_MULTI_PROCESS;
+    default:
+      throw std::runtime_error("Invalid MMKV Mode value!");
+  }
 }
 
 jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& propNameId) {
@@ -374,20 +391,19 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           return jsi::Value::undefined();
         });
   }
-  
+
   if (propName == "trim") {
     // MMKV.trim()
     return jsi::Function::createFromHostFunction(
-        runtime, jsi::PropNameID::forAscii(runtime, funcName),
-        0,
+        runtime, jsi::PropNameID::forAscii(runtime, funcName), 0,
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-           instance->trim();
+          instance->trim();
 
           return jsi::Value::undefined();
         });
   }
-  
+
   if (propName == "size") {
     // MMKV.size
     size_t size = instance->actualSize();

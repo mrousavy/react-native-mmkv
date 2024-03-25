@@ -29,5 +29,9 @@ export const createMockMMKV = (): NativeMMKV => {
     recrypt: () => {
       console.warn('Encryption is not supported in mocked MMKV instances!');
     },
+    size: 0,
+    trim: () => {
+      // no-op
+    },
   };
 };

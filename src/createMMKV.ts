@@ -1,8 +1,10 @@
-import type { MMKVConfiguration, NativeMMKV } from './MMKV';
-import { MMKVTurboModule } from './NativeMmkv';
+import type { Configuration, NativeMMKV } from './MMKV';
+import { getMMKVTurboModule } from './NativeMmkv';
 
-export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
-  const instance = MMKVTurboModule.createMMKV(config);
+const module = getMMKVTurboModule();
+
+export const createMMKV = (config: Configuration): NativeMMKV => {
+  const instance = module.createMMKV(config);
   if (__DEV__) {
     if (typeof instance !== 'object' || instance == null) {
       throw new Error(

@@ -17,16 +17,20 @@
 #error Cannot find react-native-mmkv spec! Try cleaning your cache and re-running CodeGen!
 #endif
 
-#include "MmkvConfig.h"
-
 namespace facebook::react {
 
+// The MMKVConfiguration type from JS
+using MMKVConfig = MmkvConfiguration<std::string, std::optional<std::string>,
+                                     std::optional<std::string>, std::optional<MmkvMode>>;
+template <> struct Bridging<MMKVConfig> : MmkvConfigurationBridging<MMKVConfig> {};
+
+// The TurboModule itself
 class NativeMmkvModule : public NativeMmkvCxxSpec<NativeMmkvModule> {
 public:
   NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker);
 
   bool initialize(jsi::Runtime& runtime, std::optional<std::string> basePath);
-  jsi::Object createMMKV(jsi::Runtime& runtime, MmkvConfiguration config);
+  jsi::Object createMMKV(jsi::Runtime& runtime, MMKVConfig config);
 };
 
 } // namespace facebook::react

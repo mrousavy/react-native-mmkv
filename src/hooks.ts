@@ -1,16 +1,17 @@
 import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import { MMKV, MMKVConfiguration } from './MMKV';
+import { MMKV, Configuration } from './MMKV';
 
 function isConfigurationEqual(
-  left?: MMKVConfiguration,
-  right?: MMKVConfiguration
+  left?: Configuration,
+  right?: Configuration
 ): boolean {
   if (left == null || right == null) return left == null && right == null;
 
   return (
     left.encryptionKey === right.encryptionKey &&
     left.id === right.id &&
-    left.path === right.path
+    left.path === right.path &&
+    left.mode === right.mode
   );
 }
 
@@ -30,10 +31,10 @@ export function useMMKV(): MMKV;
  * Use a custom MMKV instance with the given configuration.
  * @param configuration The configuration to initialize the MMKV instance with. Does not have to be memoized.
  */
-export function useMMKV(configuration: MMKVConfiguration): MMKV;
-export function useMMKV(configuration?: MMKVConfiguration): MMKV {
+export function useMMKV(configuration: Configuration): MMKV;
+export function useMMKV(configuration?: Configuration): MMKV {
   const instance = useRef<MMKV>();
-  const lastConfiguration = useRef<MMKVConfiguration>();
+  const lastConfiguration = useRef<Configuration>();
 
   if (configuration == null) return getDefaultInstance();
 

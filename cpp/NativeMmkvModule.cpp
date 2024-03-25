@@ -7,7 +7,6 @@
 
 #include "NativeMmkvModule.h"
 #include "Logger.h"
-#include "MmkvConfig.h"
 #include "MmkvHostObject.h"
 #include "MmkvPlatformContext.h"
 
@@ -35,7 +34,7 @@ bool NativeMmkvModule::initialize(jsi::Runtime& runtime,
   return true;
 }
 
-jsi::Object NativeMmkvModule::createMMKV(jsi::Runtime& runtime, MmkvConfiguration config) {
+jsi::Object NativeMmkvModule::createMMKV(jsi::Runtime& runtime, MMKVConfig config) {
   auto instance = std::make_shared<MmkvHostObject>(config);
   return jsi::Object::createFromHostObject(runtime, instance);
 }
