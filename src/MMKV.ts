@@ -29,8 +29,8 @@ export interface MMKVConfiguration {
    * ```ts
    * const temporaryStorage = new MMKV({ path: '/tmp/' })
    * ```
-   * 
-   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions. 
+   *
+   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions.
    * In this case `path` property will be ignored.
    * See more on MMKV configuration [here](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
    */
@@ -55,7 +55,7 @@ interface MMKVInterface {
   /**
    * Set a value for the given `key`.
    */
-  set: (key: string, value: boolean | string | number | Uint8Array) => void;
+  set: (key: string, value: boolean | string | number | ArrayBuffer) => void;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
@@ -79,7 +79,7 @@ interface MMKVInterface {
    *
    * @default undefined
    */
-  getBuffer: (key: string) => Uint8Array | undefined;
+  getBuffer: (key: string) => ArrayBuffer | undefined;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
@@ -179,7 +179,7 @@ export class MMKV implements MMKVInterface {
     }
   }
 
-  set(key: string, value: boolean | string | number | Uint8Array): void {
+  set(key: string, value: boolean | string | number | ArrayBuffer): void {
     const func = this.getFunctionFromCache('set');
     func(key, value);
 
@@ -197,7 +197,7 @@ export class MMKV implements MMKVInterface {
     const func = this.getFunctionFromCache('getNumber');
     return func(key);
   }
-  getBuffer(key: string): Uint8Array | undefined {
+  getBuffer(key: string): ArrayBuffer | undefined {
     const func = this.getFunctionFromCache('getBuffer');
     return func(key);
   }

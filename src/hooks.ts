@@ -49,7 +49,7 @@ export function useMMKV(configuration?: MMKVConfiguration): MMKV {
 }
 
 function createMMKVHook<
-  T extends (boolean | number | string | Uint8Array) | undefined,
+  T extends (boolean | number | string | ArrayBuffer) | undefined,
   TSet extends T | undefined,
   TSetAction extends TSet | ((current: T) => TSet),
 >(getter: (instance: MMKV, key: string) => T) {
@@ -82,7 +82,7 @@ function createMMKVHook<
             mmkv.delete(key);
             break;
           case 'object':
-            if (newValue instanceof Uint8Array) {
+            if (newValue instanceof ArrayBuffer) {
               mmkv.set(key, newValue);
               break;
             } else {

@@ -7,11 +7,12 @@
 //
 
 #include "MmkvHostObject.h"
-#include "ManagedBuffer.h"
+#include "MMKVManagedBuffer.h"
 #include <MMKV.h>
 #include <string>
 #include <vector>
 #include "Logger.h"
+
 
 using namespace mmkv;
 
@@ -21,10 +22,10 @@ MmkvHostObject::MmkvHostObject(const MmkvConfiguration& config) {
   bool hasEncryptionKey = encryptionKey.size() > 0;
   Logger::log("RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
               config.instanceId.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
-  
+
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
-  
+
 #ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.instanceId, MMKV_SINGLE_PROCESS, encryptionKeyPtr, pathPtr);
 #else
@@ -98,7 +99,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
   auto funcName = "MMKV." + propName;
 
   if (propName == "set") {
-    // MMKV.set(key: string, value: string | number | bool | Uint8Array)
+    // MMKV.set(key: string, value: string | number | bool | ArrayBuffer)
     return jsi::Function::createFromHostFunction(
         runtime, jsi::PropNameID::forAscii(runtime, funcName),
         2, // key, value
@@ -132,7 +133,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             } else {
               // unknown object
               throw jsi::JSError(
-                  runtime, "MMKV::set: 'value' argument is an object, but not of type Uint8Array!");
+                  runtime, "MMKV::set: 'value' argument is an object, but not of type ArrayBuffer!");
             }
           } else {
             // unknown type
@@ -166,7 +167,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
         });
   }
-  
+
   if (propName == "getNumber") {
     // MMKV.getNumber(key: string)
     return jsi::Function::createFromHostFunction(
@@ -235,18 +236,16 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
            if (data == nil) {
              return jsi::Value::undefined();
            }
-           auto mutableData = std::make_shared<NSDataMutableBuffer>(data);
-           return jsi::ArrayBuffer(runtime, mutableData);
+           mmkv::MMBuffer buffer(data);
 #else
           mmkv::MMBuffer buffer;
           bool hasValue = instance->getBytes(keyName, buffer);
          if (!hasValue) {
            return jsi::Value::undefined();
          }
-         uint8_t* data = static_cast<uint8_t*>(buffer.getPtr());
-         auto mutableData = std::make_shared<ManagedBuffer>(data, buffer.length());
-         return jsi::ArrayBuffer(runtime, mutableData);
 #endif
+         auto mutableData = std::make_shared<MMKVManagedBuffer>(std::move(buffer));
+         return jsi::ArrayBuffer(runtime, mutableData);
         });
   }
 
@@ -291,7 +290,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
           auto keys = instance->allKeys();
-                 
+
 #ifdef __APPLE__
           auto array = jsi::Array(runtime, keys.count);
           for (int i = 0; i < keys.count; i++) {
@@ -308,7 +307,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
            array.setValueAtIndex(runtime, i, keys[i]);
          }
 #endif
-                 
+
           return array;
         });
   }

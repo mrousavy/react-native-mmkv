@@ -186,7 +186,13 @@ storage.recrypt(undefined)
 ### Buffers
 
 ```js
-storage.set('someToken', new Uint8Array([1, 100, 255]))
+const buffer = new ArrayBuffer(3)
+const dataWriter = new Uint8Array(buffer)
+dataWriter[0] = 1
+dataWriter[1] = 100
+dataWriter[2] = 255
+storage.set('someToken', buffer)
+
 const buffer = storage.getBuffer('someToken')
 console.log(buffer) // [1, 100, 255]
 ```
