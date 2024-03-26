@@ -84,7 +84,7 @@ let module: Spec | null = null;
 export function getMMKVTurboModule(): Spec {
   if (module == null) {
     // try to find the turbomodule
-    module = TurboModuleRegistry.get<Spec>('Mmkv');
+    module = TurboModuleRegistry.get<Spec>('MmkvCxx');
 
     if (module == null) {
       // if it still is null, something went wrong!
