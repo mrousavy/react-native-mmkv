@@ -27,19 +27,10 @@ export class MMKV implements MMKVInterface {
       : createMMKV(configuration);
     this.functionCache = {};
 
-    if ('WeakRef' in global) {
-      const weakSelf = new WeakRef(this);
-      const subscription = AppState.addEventListener('memoryWarning', () => {
-        const self = weakSelf.deref();
-        if (self) {
-          // this MMKV instance is still being used - trim it down
-          self.trim();
-        } else {
-          // remove the AppState listener since this MMKV object is dead anyways
-          subscription.remove();
-        }
-      });
-    }
+    AppState.addEventListener('memoryWarning', () => {
+      // when we have a memory warning, delete unused keys by trimming MMKV
+      this.trim();
+    });
   }
 
   private get onValueChangedListeners() {
