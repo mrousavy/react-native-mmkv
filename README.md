@@ -242,7 +242,11 @@ If a user chooses to disable LocalStorage in their browser, the library will aut
 
 ## Limitations
 
-As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
+- react-native-mmkv V3 requires react-native 0.74 or higher.
+- react-native-mmkv V3 requires [the new architecture](https://reactnative.dev/docs/the-new-architecture/landing-page)/TurboModules to be enabled.
+- Since react-native-mmkv uses JSI for synchronous native method invocations, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com) or [React DevTools](https://react.dev/learn/react-developer-tools).
+
+## Integrations
 
 ### Flipper
 
