@@ -9,6 +9,7 @@
 #include "Logger.h"
 #include "MmkvHostObject.h"
 #include "MmkvPlatformContext.h"
+#include <MMKVCore/MMKV.h>
 
 namespace facebook::react {
 
@@ -29,9 +30,15 @@ bool NativeMmkvModule::initialize(jsi::Runtime& runtime,
   }
 
   Logger::log("RNMMKV", "Initializing MMKV at %s...", basePath.c_str());
-  mmkv::MMKV::initializeMMKV(basePath);
+  
+  MMKV::initializeMMKV(basePath);
 
   return true;
+}
+
+NativeMmkvModule::~NativeMmkvModule() {
+  Logger::log("RNMMKV", "Closing all MMKV instances...");
+  MMKV::onExit();
 }
 
 jsi::Object NativeMmkvModule::createMMKV(jsi::Runtime& runtime, MMKVConfig config) {

@@ -28,6 +28,7 @@ template <> struct Bridging<MMKVConfig> : MmkvCxxConfigurationBridging<MMKVConfi
 class NativeMmkvModule : public NativeMmkvCxxSpec<NativeMmkvModule> {
 public:
   NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker);
+  ~NativeMmkvModule();
 
   bool initialize(jsi::Runtime& runtime, std::optional<std::string> basePath);
   jsi::Object createMMKV(jsi::Runtime& runtime, MMKVConfig config);
