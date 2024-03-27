@@ -1,12 +1,6 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
-#import <React/CoreModulesPlugins.h>
-#import <ReactCommon/RCTTurboModuleManager.h>
-#import <NativeMmkvModule.h>
-
-@interface AppDelegate() <RCTTurboModuleManagerDelegate> {}
-@end
 
 @implementation AppDelegate
 
@@ -32,17 +26,6 @@
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
-}
-
-#pragma mark RCTTurboModuleManagerDelegate
-
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
-                                                      jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
-{
-  if (name == facebook::react::NativeMmkvModule::kModuleName) {
-    return std::make_shared<facebook::react::NativeMmkvModule>(jsInvoker);
-  }
-  return nullptr;
 }
 
 @end
