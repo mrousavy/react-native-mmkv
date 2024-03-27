@@ -22,7 +22,13 @@ bool NativeMmkvModule::initialize(jsi::Runtime& runtime, std::string basePath) {
 
   Logger::log("RNMMKV", "Initializing MMKV at %s...", basePath.c_str());
 
-  MMKV::initializeMMKV(basePath);
+#ifdef DEBUG
+  MMKVLogLevel logLevel = MMKVLogDebug;
+#else
+  MMKVLogLevel logLevel = MMKVLogWarning;
+#endif
+  
+  MMKV::initializeMMKV(basePath, logLevel);
 
   return true;
 }
