@@ -100,7 +100,7 @@ export const storage = new MMKV()
 
 This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
 
-#### App Groups
+#### App Groups or Extensions
 
 If you want to share MMKV data between your app and other apps or app extensions in the same group, open `Info.plist` and create an `AppGroup` key with your app group's value. MMKV will then automatically store data inside the app group which can be read and written to from other apps or app extensions in the same group by making use of MMKV's multi processing mode.
 See [Configuring App Groups](https://developer.apple.com/documentation/xcode/configuring-app-groups).
@@ -113,7 +113,8 @@ import { MMKV } from 'react-native-mmkv'
 export const storage = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
-  encryptionKey: 'hunter2'
+  encryptionKey: 'hunter2',
+  mode: Mode.MULTI_PROCESS
 })
 ```
 
@@ -124,6 +125,7 @@ The following values can be configured:
 * `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
+* `mode`: The MMKV's process behaviour - when set to `MULTI_PROCESS`, the MMKV instance will assume data can be changed from the outside (e.g. App Clips, Extensions or App Groups).
 
 ### Set
 
@@ -139,6 +141,14 @@ storage.set('is-mmkv-fast-asf', true)
 const username = storage.getString('user.name') // 'Marc'
 const age = storage.getNumber('user.age') // 21
 const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
+```
+
+### Hooks
+
+```js
+const [username, setUsername] = useMMKVString('user.name')
+const [age, setAge] = useMMKVNumber('user.age')
+const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
 ```
 
 ### Keys
@@ -195,6 +205,17 @@ storage.set('someToken', buffer)
 
 const buffer = storage.getBuffer('someToken')
 console.log(buffer) // [1, 100, 255]
+```
+
+### Size
+
+```js
+// get size of MMKV storage in bytes
+const size = storage.size
+if (size >= 4096) {
+  // clean unused keys and clear memory cache
+  storage.trim()
+}
 ```
 
 ## Testing with Jest
