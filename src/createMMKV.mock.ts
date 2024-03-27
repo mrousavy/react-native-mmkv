@@ -1,4 +1,4 @@
-import type { NativeMMKV } from './MMKV';
+import type { NativeMMKV } from './Types';
 
 /* Mock MMKV instance for use in tests */
 export const createMockMMKV = (): NativeMMKV => {

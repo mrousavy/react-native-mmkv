@@ -1,5 +1,6 @@
 /* global localStorage */
-import type { Configuration, NativeMMKV } from './MMKV';
+import type { Configuration } from './MMKV';
+import type { NativeMMKV } from './Types';
 import { createTextEncoder } from './createTextEncoder';
 
 const canUseDOM =

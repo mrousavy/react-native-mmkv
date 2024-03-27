@@ -1,4 +1,5 @@
-import type { Configuration, NativeMMKV } from './MMKV';
+import type { Configuration } from './MMKV';
+import type { NativeMMKV } from './Types';
 import { getMMKVTurboModule } from './NativeMmkv';
 
 const module = getMMKVTurboModule();
