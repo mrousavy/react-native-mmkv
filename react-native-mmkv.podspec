@@ -17,6 +17,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
     "OTHER_CPLUSPLUSFLAGS" => "-x objective-c++",
+    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX"
   }
   s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}"
 
