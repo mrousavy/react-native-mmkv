@@ -12,8 +12,7 @@ module.exports = {
        */
       android: {
         cxxModuleCMakeListsModuleName: 'react-native-mmkv',
-        cxxModuleCMakeListsPath:
-          '/Users/mrousavy/Projects/react-native-mmkv/android/CMakeLists.txt',
+        cxxModuleCMakeListsPath: `${__dirname}/android/CMakeLists.txt`,
         cxxModuleHeaderName: 'NativeMmkvModule',
       },
     },
