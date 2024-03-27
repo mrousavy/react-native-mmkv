@@ -4,10 +4,6 @@ project(ReactNativeMmkv)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
 
-# Add headers search paths
-target_include_directories(react-native-mmkv PUBLIC ../MMKV/Core)
-target_include_directories(react-native-mmkv PUBLIC ../cpp)
-
 # Compile sources
 add_library(
         react-native-mmkv
@@ -18,6 +14,10 @@ add_library(
         ../cpp/MmkvHostObject.cpp
         ../cpp/NativeMmkvModule.cpp
 )
+
+# Add headers search paths
+target_include_directories(react-native-mmkv PUBLIC ../MMKV/Core)
+target_include_directories(react-native-mmkv PUBLIC ../cpp)
 
 # Add MMKV core dependency
 add_subdirectory(../MMKV/Core core)

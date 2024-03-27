@@ -54,18 +54,6 @@ android {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
     buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-
-    externalNativeBuild {
-      cmake {
-        cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
-      }
-    }
-  }
-
-  externalNativeBuild {
-    cmake {
-      path "CMakeLists.txt"
-    }
   }
 
   buildFeatures {
