@@ -15,7 +15,6 @@
     "android/gradle.properties",
     "cpp",
     "MMKV/Core",
-    "MMKV/MMKVCore.podspec",
     "lib/commonjs",
     "lib/module",
     "lib/typescript",
