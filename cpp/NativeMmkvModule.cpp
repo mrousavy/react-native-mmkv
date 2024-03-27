@@ -27,7 +27,7 @@ bool NativeMmkvModule::initialize(jsi::Runtime& runtime, std::string basePath) {
 #else
   MMKVLogLevel logLevel = MMKVLogWarning;
 #endif
-  
+
   MMKV::initializeMMKV(basePath, logLevel);
 
   return true;
