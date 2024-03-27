@@ -1394,7 +1394,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 29548fd6ba558ab2441f89c87a5b2820da6ef276
   React-logger: 4092c2c3bc5feb8ccce0fbabda8f77d03dfba47a
   React-Mapbuffer: 14b88e15d38a2c448ab94ad4ec3d00583b7722cd
-  react-native-mmkv: b58c81977459eb559e0e4a5a8440ac850439b64f
+  react-native-mmkv: d259daef87054a7bea4cd5c852d822989434f92f
   React-nativeconfig: 83f91b53a8d6a6ecf16a8acd845c99570db7a548
   React-NativeModulesApple: 59ed2248373b3d36badb153f34bb48a6b9ee4865
   React-perflogger: 12c33674b7ad945eee0a2bdb982383a1bb81c75e
