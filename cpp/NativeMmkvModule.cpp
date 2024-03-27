@@ -9,7 +9,12 @@
 #include "Logger.h"
 #include "MmkvHostObject.h"
 #include "MmkvPlatformContext.h"
+
+#if __has_include("MMKV.h")
+#include "MMKV.h"
+#else
 #include <MMKVCore/MMKV.h>
+#endif
 
 namespace facebook::react {
 

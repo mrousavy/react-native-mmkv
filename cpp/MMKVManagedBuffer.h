@@ -7,8 +7,13 @@
 
 #pragma once
 
-#include <MMKVCore/MMBuffer.h>
 #include <jsi/jsi.h>
+
+#if __has_include("MMKVManagedBuffer.h")
+#include "MMKVManagedBuffer.h"
+#else
+#include <MMKVCore/MMKVManagedBuffer.h>
+#endif
 
 using namespace facebook;
 

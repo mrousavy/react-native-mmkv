@@ -16,12 +16,36 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
-    "OTHER_CPLUSPLUSFLAGS" => "-x objective-c++",
-    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX"
+    "CLANG_CXX_LIBRARY" => "libc++",
+    "CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF" => "NO",
+    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX",
   }
-  s.source_files = "ios/**/*.{h,m,mm}", "cpp/**/*.{hpp,cpp,c,h}"
+  s.compiler_flags = '-x objective-c++'
+  s.framework    = "CoreFoundation"
+  s.libraries    = "z", "c++"
 
-  s.dependency "MMKVCore"
+  s.source_files = [
+    # react-native-mmkv
+    "ios/**/*.{h,m,mm}",
+    "cpp/**/*.{hpp,cpp,c,h}",
+    # MMKV/Core
+    "MMKV/Core/**/*.{h,cpp,hpp,S}",
+  ]
+  s.compiler_flags = '-x objective-c++'
+
+  s.requires_arc = [
+    'MMKV/Core/MemoryFile.cpp',
+    'MMKV/Core/ThreadLock.cpp',
+    'MMKV/Core/InterProcessLock.cpp',
+    'MMKV/Core/MMKVLog.cpp',
+    'MMKV/Core/PBUtility.cpp',
+    'MMKV/Core/MemoryFile_OSX.cpp',
+    'MMKV/Core/aes/openssl/openssl_cfb128.cpp',
+    'MMKV/Core/aes/openssl/openssl_aes_core.cpp',
+    'MMKV/Core/aes/openssl/openssl_md5_one.cpp',
+    'MMKV/Core/aes/openssl/openssl_md5_dgst.cpp',
+    'MMKV/Core/aes/AESCrypt.cpp'
+  ]
 
   install_modules_dependencies(s)
 end
