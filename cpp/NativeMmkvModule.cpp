@@ -8,7 +8,6 @@
 #include "NativeMmkvModule.h"
 #include "Logger.h"
 #include "MmkvHostObject.h"
-#include "MmkvPlatformContext.h"
 
 #if __has_include("MMKV.h")
 #include "MMKV.h"
@@ -22,14 +21,7 @@ NativeMmkvModule::NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker)
     : NativeMmkvCxxSpec(jsInvoker) {}
 
 bool NativeMmkvModule::initialize(jsi::Runtime& runtime,
-                                  std::optional<std::string> customBasePath) {
-  std::string basePath = MmkvPlatformContext::getDefaultBasePath();
-  if (customBasePath.has_value()) {
-    Logger::log("RNMMKV", "Default path is %s, but user specified a custom path: %s",
-                basePath.c_str(), customBasePath.value().c_str());
-    basePath = customBasePath.value();
-  }
-
+                                  std::string basePath) {
   if (basePath.size() < 1) {
     throw jsi::JSError(runtime, "Path cannot be empty!");
   }

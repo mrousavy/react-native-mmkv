@@ -9,7 +9,6 @@ add_library(
         react-native-mmkv
         SHARED
         src/main/cpp/AndroidLogger.cpp
-        src/main/cpp/AndroidMmkvPlatformContext.cpp
         src/main/cpp/cpp-adapter.cpp
         ../cpp/MmkvHostObject.cpp
         ../cpp/NativeMmkvModule.cpp

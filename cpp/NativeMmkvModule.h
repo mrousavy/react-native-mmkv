@@ -30,7 +30,7 @@ public:
   NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker);
   ~NativeMmkvModule();
 
-  bool initialize(jsi::Runtime& runtime, std::optional<std::string> basePath);
+  bool initialize(jsi::Runtime& runtime, std::string basePath);
   jsi::Object createMMKV(jsi::Runtime& runtime, MMKVConfig config);
 };
 

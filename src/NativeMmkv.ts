@@ -1,6 +1,7 @@
 import { NativeModules, Platform, TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import { UnsafeObject } from 'react-native/Libraries/Types/CodegenTypes';
+import { PlatformContext } from './NativeMmkvPlatformContext';
 
 /**
  * Configures the mode of the MMKV instance.
@@ -71,11 +72,12 @@ export interface Configuration {
 }
 
 export interface Spec extends TurboModule {
-  initialize(basePath: string | undefined): boolean;
+  initialize(basePath: string): boolean;
   createMMKV(configuration: Configuration): UnsafeObject;
 }
 
 let module: Spec | null = null;
+let basePath: string | null = null;
 
 /**
  * Get the MMKV TurboModule, and initialize it if this is the first time calling.
@@ -117,9 +119,13 @@ export function getMMKVTurboModule(): Spec {
       throw new Error(message);
     }
 
+    if (basePath == null) {
+      // Get base path from platform specific context
+      basePath = PlatformContext.getBaseDirectory();
+    }
+
     // Initialize MMKV
-    const BASE_PATH: string | undefined = undefined;
-    module.initialize(BASE_PATH);
+    module.initialize(basePath);
   }
 
   return module;
