@@ -29,8 +29,7 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
 #ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
 #else
-  instance =
-      MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
+  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
 #endif
 
   if (instance == nullptr) {

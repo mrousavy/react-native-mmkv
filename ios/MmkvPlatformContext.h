@@ -7,12 +7,12 @@
 
 #pragma once
 
-#import <RNMmkvSpec/RNMmkvSpec.h>
 #import <Foundation/Foundation.h>
+#import <RNMmkvSpec/RNMmkvSpec.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MmkvPlatformContext : NSObject<NativeMmkvPlatformContextSpec>
+@interface MmkvPlatformContext : NSObject <NativeMmkvPlatformContextSpec>
 
 @end
 

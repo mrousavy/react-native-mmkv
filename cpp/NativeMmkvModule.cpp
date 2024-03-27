@@ -7,22 +7,21 @@
 
 #include "NativeMmkvModule.h"
 #include "Logger.h"
-#include "MmkvHostObject.h"
 #include "MMKV.h"
+#include "MmkvHostObject.h"
 
 namespace facebook::react {
 
 NativeMmkvModule::NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker)
     : NativeMmkvCxxSpec(jsInvoker) {}
 
-bool NativeMmkvModule::initialize(jsi::Runtime& runtime,
-                                  std::string basePath) {
+bool NativeMmkvModule::initialize(jsi::Runtime& runtime, std::string basePath) {
   if (basePath.size() < 1) {
     throw jsi::JSError(runtime, "Path cannot be empty!");
   }
 
   Logger::log("RNMMKV", "Initializing MMKV at %s...", basePath.c_str());
-  
+
   MMKV::initializeMMKV(basePath);
 
   return true;

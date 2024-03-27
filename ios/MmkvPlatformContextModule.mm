@@ -12,11 +12,12 @@
 
 RCT_EXPORT_MODULE()
 
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params { 
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams&)params {
   return std::make_shared<facebook::react::NativeMmkvPlatformContextSpecJSI>(params);
 }
 
-- (NSString *)getBaseDirectory { 
+- (NSString*)getBaseDirectory {
 #if TARGET_OS_TV
   NSArray* paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
 #else
@@ -27,7 +28,9 @@ RCT_EXPORT_MODULE()
     NSString* basePath = [documentPath stringByAppendingPathComponent:@"mmkv"];
     return basePath;
   } else {
-    @throw [NSException exceptionWithName:@"BasePathNotFound" reason:@"Cannot find base-path to store MMKV files!" userInfo:nil];
+    @throw [NSException exceptionWithName:@"BasePathNotFound"
+                                   reason:@"Cannot find base-path to store MMKV files!"
+                                 userInfo:nil];
   }
 }
 
