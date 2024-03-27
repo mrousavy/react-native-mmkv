@@ -13,6 +13,7 @@ const mmkv = new MMKV();
 
 beforeEach(() => {
   mmkv.clearAll();
+  mmkv.trim();
 });
 
 test('hooks update when the value is changed directly through the instance', () => {
