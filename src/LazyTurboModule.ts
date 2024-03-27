@@ -4,16 +4,19 @@ import { NativeModules, Platform, TurboModule } from 'react-native';
  * Lazily get a TurboModule by wrapping it in a Proxy.
  */
 export function getLazyTurboModule<T extends TurboModule>(
-  initializeTurboModule: () => T | undefined
+  initializeTurboModule: () => T | null
 ): T {
-  const proxy = new Proxy<T>(undefined, {
+  const proxy = new Proxy<T>(null as unknown as T, {
     get: (target, property) => {
       if (target == null) {
         // Target is null, let's initialize it!
-        target = initializeTurboModule();
+        const newTarget = initializeTurboModule();
 
-        if (target == null) {
-          // if it still is null, something went wrong!
+        if (newTarget != null) {
+          // successfully initialized TurboModule!
+          target = newTarget;
+        } else {
+          // TurboModule not found, something went wrong!
           let message =
             'Failed to create a new MMKV instance: The native MMKV Module could not be found.';
           message +=
@@ -46,6 +49,7 @@ export function getLazyTurboModule<T extends TurboModule>(
         }
       }
 
+      // @ts-expect-error property accessors are not typed.
       return target[property];
     },
   });

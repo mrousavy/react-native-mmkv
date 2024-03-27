@@ -1,4 +1,5 @@
 import { TurboModule, TurboModuleRegistry } from 'react-native';
+import { getLazyTurboModule } from './LazyTurboModule';
 
 export interface Spec extends TurboModule {
   /**
@@ -7,6 +8,6 @@ export interface Spec extends TurboModule {
   getBaseDirectory(): string;
 }
 
-export const PlatformContext = TurboModuleRegistry.getEnforcing<Spec>(
-  'MmkvPlatformContext'
+export const PlatformContext = getLazyTurboModule(() =>
+  TurboModuleRegistry.get<Spec>('MmkvPlatformContext')
 );

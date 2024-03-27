@@ -1,6 +1,7 @@
-import { NativeModules, Platform, TurboModule } from 'react-native';
+import { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import { UnsafeObject } from 'react-native/Libraries/Types/CodegenTypes';
+import { getLazyTurboModule } from './LazyTurboModule';
 import { PlatformContext } from './NativeMmkvPlatformContext';
 
 /**
@@ -72,61 +73,32 @@ export interface Configuration {
 }
 
 export interface Spec extends TurboModule {
+  /**
+   * Initialize MMKV with the given base storage directory.
+   * This should be the documents directory by default.
+   */
   initialize(basePath: string): boolean;
+  /**
+   * Create a new instance of MMKV.
+   * The returned {@linkcode UnsafeObject} is a `jsi::HostObject`.
+   */
   createMMKV(configuration: Configuration): UnsafeObject;
 }
 
-let module: Spec | null = null;
 let basePath: string | null = null;
 
-/**
- * Get the MMKV TurboModule, and initialize it if this is the first time calling.
- * This will throw an error if the module cannot be found.
- */
-export function getMMKVTurboModule(): Spec {
-  if (module == null) {
-    // try to find the turbomodule
-    module = TurboModuleRegistry.get<Spec>('MmkvCxx');
+export const MMKVTurboModule = getLazyTurboModule(() => {
+  if (basePath == null) {
+    // use default base path from the Platform (iOS/Android)
+    basePath = PlatformContext.getBaseDirectory();
+  }
 
-    if (module == null) {
-      // if it still is null, something went wrong!
-      let message =
-        'Failed to create a new MMKV instance: The native MMKV Module could not be found.';
-      message +=
-        '\n* Make sure react-native-mmkv is correctly autolinked (run `npx react-native config` to verify)';
-      if (Platform.OS === 'ios' || Platform.OS === 'macos') {
-        message += '\n* Make sure you ran `pod install` in the ios/ directory.';
-      }
-      if (Platform.OS === 'android') {
-        message += '\n* Make sure gradle is synced.';
-      }
-      // check if Expo
-      const ExpoConstants =
-        NativeModules.NativeUnimoduleProxy?.modulesConstants?.ExponentConstants;
-      if (ExpoConstants != null) {
-        if (ExpoConstants.appOwnership === 'expo') {
-          // We're running Expo Go
-          throw new Error(
-            'react-native-mmkv is not supported in Expo Go! Use EAS (`expo prebuild`) or eject to a bare workflow instead.'
-          );
-        } else {
-          // We're running Expo bare / standalone
-          message += '\n* Make sure you ran `expo prebuild`.';
-        }
-      }
+  const module = TurboModuleRegistry.get<Spec>('MmkvCxx');
 
-      message += '\n* Make sure you rebuilt the app.';
-      throw new Error(message);
-    }
-
-    if (basePath == null) {
-      // Get base path from platform specific context
-      basePath = PlatformContext.getBaseDirectory();
-    }
-
-    // Initialize MMKV
+  if (module != null) {
+    // initialize MMKV
     module.initialize(basePath);
   }
 
   return module;
-}
+});
