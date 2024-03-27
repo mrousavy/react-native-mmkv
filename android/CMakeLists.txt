@@ -1,41 +1,33 @@
-project(ReactNativeMMKV)
 cmake_minimum_required(VERSION 3.9.0)
+project(ReactNativeMmkv)
 
-set (PACKAGE_NAME "react-native-mmkv")
-set (BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
 
-# Add headers search paths
-include_directories(
-        ../MMKV/Core
-        ../cpp
-)
-
-# Add MMKV core sources
-add_subdirectory(../MMKV/Core core)
-# Add react-native-mmkv sources
-add_library(reactnativemmkv  # <-- Library name
+# Compile sources
+add_library(
+        react-native-mmkv
         SHARED
+        src/main/cpp/AndroidLogger.cpp
         src/main/cpp/cpp-adapter.cpp
-        src/main/cpp/MmkvHostObject.cpp
-        ../cpp/TypedArray.cpp
-)
-# Configure C++ 17
-set_target_properties(
-        reactnativemmkv PROPERTIES
-        CXX_STANDARD 17
-        CXX_EXTENSIONS OFF
-        POSITION_INDEPENDENT_CODE ON
+        ../cpp/MmkvHostObject.cpp
+        ../cpp/NativeMmkvModule.cpp
 )
 
-find_package(ReactAndroid REQUIRED CONFIG)
+# Add headers search paths
+target_include_directories(react-native-mmkv PUBLIC ../MMKV/Core)
+target_include_directories(react-native-mmkv PUBLIC ../cpp)
+
+# Add MMKV core dependency
+add_subdirectory(../MMKV/Core core)
+
+# Add android/log dependency
 find_library(log-lib log)
 
 target_link_libraries(
-        reactnativemmkv
-        core                # <-- MMKV core
-        ${log-lib}          # <-- Logcat logger
-        ReactAndroid::jsi   # <-- JSI
-        android             # <-- Android JNI core
+        react-native-mmkv
+        core                        # <-- MMKV core
+        ${log-lib}                  # <-- Logcat logger
+        android                     # <-- Android JNI core
+        react_codegen_RNMmkvSpec    # <-- Generated Specs from CodeGen
 )
