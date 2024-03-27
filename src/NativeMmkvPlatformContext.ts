@@ -8,6 +8,7 @@ export interface Spec extends TurboModule {
   getBaseDirectory(): string;
 }
 
-export const PlatformContext = getLazyTurboModule(() =>
-  TurboModuleRegistry.get<Spec>('MmkvPlatformContext')
-);
+function getModule(): Spec | null {
+  return TurboModuleRegistry.get<Spec>('MmkvPlatformContext');
+}
+export const PlatformContext = getLazyTurboModule(getModule);

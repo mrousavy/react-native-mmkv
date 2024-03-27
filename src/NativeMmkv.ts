@@ -87,7 +87,7 @@ export interface Spec extends TurboModule {
 
 let basePath: string | null = null;
 
-export const MMKVTurboModule = getLazyTurboModule(() => {
+function getNativeModule(): Spec | null {
   if (basePath == null) {
     // use default base path from the Platform (iOS/Android)
     basePath = PlatformContext.getBaseDirectory();
@@ -101,4 +101,5 @@ export const MMKVTurboModule = getLazyTurboModule(() => {
   }
 
   return module;
-});
+}
+export const MMKVTurboModule = getLazyTurboModule(getNativeModule);
