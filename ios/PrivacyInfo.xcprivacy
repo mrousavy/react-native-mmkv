@@ -13,5 +13,7 @@
 			<string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
 		</dict>
 	</array>
+	<key>NSPrivacyCollectedDataTypes</key>
+	<array/>
 </dict>
 </plist>
