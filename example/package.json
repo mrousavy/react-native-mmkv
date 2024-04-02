@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "react": "18.2.0",
-    "react-native": "0.74.0-rc.5"
+    "react-native": "0.74.0-rc.6"
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",
