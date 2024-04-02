@@ -33,7 +33,7 @@
     "preset": "react-native"
   },
   "resolutions": {
-    "@react-native-community/cli": "^14.0.0-alpha.1"
+    "@react-native-community/cli": "^14.0.0-alpha.2"
   },
   "engines": {
     "node": ">=18"

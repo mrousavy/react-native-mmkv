@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
-    "@react-native-community/cli-types": "^14.0.0-alpha.1",
+    "@react-native-community/cli-types": "^14.0.0-alpha.2",
     "@react-native/eslint-config": "^0.75.0-main",
     "@release-it/conventional-changelog": "^8.0.1",
     "@testing-library/react-native": "^12.4.3",
@@ -91,7 +91,7 @@
   },
   "resolutions": {
     "@types/react": "^18.2.44",
-    "@react-native-community/cli": "^14.0.0-alpha.1"
+    "@react-native-community/cli": "^14.0.0-alpha.2"
   },
   "peerDependencies": {
     "react": "*",
