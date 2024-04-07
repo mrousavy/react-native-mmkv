@@ -35,21 +35,15 @@ export const clientPersister = createSyncStoragePersister({ storage: clientStora
 3. Use created `clientPersister` in your root component (eg. `App.tsx`)
 
 ```ts
-import { QueryClientProvider } from "@tanstack/react-query";
-import { persistQueryClient } from "@tanstack/react-query-persist-client";
-
-persistQueryClient({
-  queryClient,
-  persister: clientPersister,
-});
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 
 const App = () => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider persistOptions={{ persister: clientPersister }}>
       {...}
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 };
 ```
 
-For more information check their official [docs](https://tanstack.com/query/latest/docs/framework/react/plugins/createSyncStoragePersister)
+For more information check their official [docs](https://tanstack.com/query/latest/docs/framework/react/plugins/persistQueryClient#persistqueryclientprovider)
