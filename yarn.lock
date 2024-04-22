@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
-"@actions/core@^1.10.0":
+"@actions/core@^1.10.0", "@actions/core@^1.2.0":
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/@actions/core/-/core-1.10.1.tgz#61108e7ac40acae95ee36da074fa5850ca4ced8a"
   integrity sha512-3lBR9EDAY+iYIpTnTIXmWcNbX3T2kCkAEQGIQx4NVQ0575nk2k3GRZDTPQG+vVtS2izSLmINlxXf0uLtnrTP+g==
@@ -1246,6 +1246,13 @@
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
+
+"@firmnav/eslint-github-actions-formatter@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@firmnav/eslint-github-actions-formatter/-/eslint-github-actions-formatter-1.0.1.tgz#dbedcc4d8a799faf9b709417981039819980aab0"
+  integrity sha512-KbhZwNPFuwoRWspUfoJISOeGZHGSm7tvdOC+uOUlbcY9LNmusRHHmBcq3KaorvW9WmmiOS/2EOo0nafFZ0gpEQ==
+  dependencies:
+    "@actions/core" "^1.2.0"
 
 "@hapi/hoek@^9.0.0", "@hapi/hoek@^9.3.0":
   version "9.3.0"
