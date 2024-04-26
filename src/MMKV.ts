@@ -1,5 +1,6 @@
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
+import { DELETE_SYMBOL, MemoryCache, MemoryCacheMap } from './MemoryCache';
 import { isJest } from './PlatformChecker';
 
 interface Listener {
@@ -129,7 +130,12 @@ export type NativeMMKV = Pick<
   | 'getBuffer'
   | 'set'
   | 'recrypt'
->;
+> & {
+  applyBatchedWrites: (
+    map: MemoryCacheMap,
+    deleteFlag: typeof DELETE_SYMBOL
+  ) => Promise<void>;
+};
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
@@ -235,6 +241,37 @@ export class MMKV implements MMKVInterface {
     return {
       [this.id]: this.getAllKeys(),
     };
+  }
+
+  /**
+   * Creates a proxy of the MMKV instance that writes all new operations to an
+   * in-memory `Map<K, V>` instead of writing it to the  file.
+   * The Map can later be used to apply all writes in a single batch.
+   */
+  private createInMemoryCopy(memoryCache: MemoryCache): MMKVInterface {
+    return {
+      addOnValueChangedListener: this.addOnValueChangedListener,
+      clearAll: memoryCache.clear,
+      contains: memoryCache.has,
+      delete: memoryCache.delete,
+      getAllKeys: memoryCache.getAllKeys,
+      getBoolean: memoryCache.getBoolean,
+      getBuffer: memoryCache.getBuffer,
+      getNumber: memoryCache.getNumber,
+      getString: memoryCache.getString,
+      recrypt: this.recrypt,
+      set: memoryCache.set,
+    };
+  }
+
+  batch(callback: (storage: MMKVInterface) => void): Promise<void> {
+    const memoryCache = new MemoryCache(this);
+    const copy = this.createInMemoryCopy(memoryCache);
+    callback(copy);
+    return this.nativeInstance.applyBatchedWrites(
+      memoryCache.map,
+      DELETE_SYMBOL
+    );
   }
 
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
