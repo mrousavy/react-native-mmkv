@@ -16,7 +16,7 @@ NativeMmkvModule::NativeMmkvModule(std::shared_ptr<CallInvoker> jsInvoker)
     : NativeMmkvCxxSpec(jsInvoker) {}
 
 bool NativeMmkvModule::initialize(jsi::Runtime& runtime, std::string basePath) {
-  if (basePath.size() < 1) {
+  if (basePath.empty()) {
     throw jsi::JSError(runtime, "Path cannot be empty!");
   }
 
