@@ -52,6 +52,7 @@ MmkvHostObject::~MmkvHostObject() {
   if (instance != nullptr) {
     std::string instanceId = instance->mmapID();
     Logger::log("RNMMKV", "Destroying MMKV instance \"%s\"...", instanceId.c_str());
+    instance->sync();
     instance->clearMemoryCache();
   }
   instance = nullptr;
