@@ -33,10 +33,7 @@ bool NativeMmkvModule::initialize(jsi::Runtime& runtime, std::string basePath) {
   return true;
 }
 
-NativeMmkvModule::~NativeMmkvModule() {
-  Logger::log("RNMMKV", "Closing all MMKV instances...");
-  MMKV::onExit();
-}
+NativeMmkvModule::~NativeMmkvModule() { }
 
 jsi::Object NativeMmkvModule::createMMKV(jsi::Runtime& runtime, MMKVConfig config) {
   auto instance = std::make_shared<MmkvHostObject>(config);
