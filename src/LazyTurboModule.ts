@@ -22,17 +22,28 @@ export function getLazyTurboModule<T extends TurboModule>(
 
           if (target.module == null) {
             // TurboModule not found, something went wrong!
-            let message =
+            const message =
               'Failed to create a new MMKV instance: The native MMKV Module could not be found.';
-            message +=
-              '\n* Make sure react-native-mmkv is correctly autolinked (run `npx react-native config` to verify)';
-            if (Platform.OS === 'ios' || Platform.OS === 'macos') {
-              message +=
-                '\n* Make sure you ran `pod install` in the ios/ directory.';
+            const suggestions: string[] = [];
+            suggestions.push(
+              'Make sure react-native-mmkv is correctly autolinked (run `npx react-native config` to verify)'
+            );
+            switch (Platform.OS) {
+              case 'ios':
+              case 'macos':
+                suggestions.push(
+                  'Make sure you ran `pod install` in the ios/ directory.'
+                );
+                break;
+              case 'android':
+                suggestions.push('Make sure gradle is synced.');
+                break;
+              default:
+                throw new Error(`MMKV is not supported on ${Platform.OS}!`);
             }
-            if (Platform.OS === 'android') {
-              message += '\n* Make sure gradle is synced.';
-            }
+            suggestions.push(
+              'Make sure you enabled the new architecture (CodeGen, TurboModules, Bridgeless). See https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md'
+            );
             // check if Expo
             const ExpoConstants =
               NativeModules.NativeUnimoduleProxy?.modulesConstants
@@ -45,12 +56,13 @@ export function getLazyTurboModule<T extends TurboModule>(
                 );
               } else {
                 // We're running Expo bare / standalone
-                message += '\n* Make sure you ran `expo prebuild`.';
+                suggestions.push('Make sure you ran `expo prebuild`.');
               }
             }
 
-            message += '\n* Make sure you rebuilt the app.';
-            throw new Error(message);
+            suggestions.push('Make sure you rebuilt the app.');
+            const error = message + '\n* ' + suggestions.join('\n* ');
+            throw new Error(error);
           }
         }
 
