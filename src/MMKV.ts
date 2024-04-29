@@ -131,7 +131,7 @@ export type NativeMMKV = Pick<
   | 'recrypt'
 >;
 
-const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
+const onValueChangedListeners = new Map<string, ((_key: string) => void)[]>();
 
 /**
  * A single MMKV instance.
