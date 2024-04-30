@@ -1,3 +1,0 @@
-[submodule "POSIX/Python/pybind11"]
-	path = POSIX/Python/pybind11
-	url = https://github.com/pybind/pybind11.git
