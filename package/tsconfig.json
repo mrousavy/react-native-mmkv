@@ -2,27 +2,36 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-mmkv": ["./src/index"]
+      "react-native-mmkv": [
+        "./src/index"
+      ]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["esnext", "DOM"],
+    "lib": [
+      "esnext",
+      "DOM"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
     "noStrictGenericChecks": false,
-    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    ".eslintrc.js",
+    "babel.config.js",
+    "react-native.config.js",
+  ]
 }
