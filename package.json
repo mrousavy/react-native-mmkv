@@ -150,7 +150,8 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    "lib/",
+    "MMKV"
   ],
   "prettier": {
     "quoteProps": "consistent",
