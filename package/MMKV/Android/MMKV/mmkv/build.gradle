@@ -1,0 +1,94 @@
+apply from: rootProject.file('gradle/build_library.gradle')
+
+android {
+    namespace "com.tencent.mmkv"
+    defaultPublishConfig "DefaultCppRelease"
+//    defaultPublishConfig "StaticCppRelease"
+//    defaultPublishConfig "SharedCppRelease"
+
+    defaultConfig {
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                // uncomment this line to support 32-bit ABIs (armeabi-v7a & x86)
+                // abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'arm64-v8a', 'x86_64'
+            }
+        }
+        ndkVersion = '26.2.11394342'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            externalNativeBuild {
+                cmake {
+                    cppFlags "-fvisibility=hidden", "-funwind-tables", "-fasynchronous-unwind-tables", "-O2"
+                }
+            }
+            consumerProguardFiles 'proguard-rules.pro'
+//            debuggable true
+//            jniDebuggable true
+        }
+        debug {
+            jniDebuggable true
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+            version "3.18.0+"
+        }
+    }
+    lintOptions {
+        tasks.lint.enabled = false
+    }
+
+    flavorDimensions "stl_mode"
+    productFlavors {
+        DefaultCpp {
+            dimension "stl_mode"
+            ext.artifactIdSuffix = ''
+            externalNativeBuild {
+                cmake {
+                    arguments = ["-DANDROID_STL=c++_static"]
+                    cppFlags "-DMMKV_STL_SHARED=0"
+                }
+            }
+        }
+        StaticCpp {
+            dimension "stl_mode"
+            ext.artifactIdSuffix = 'static'
+            externalNativeBuild {
+                cmake {
+                    arguments = ["-DANDROID_STL=c++_static"]
+                    cppFlags "-DMMKV_STL_SHARED=0"
+                }
+            }
+        }
+        SharedCpp {
+            dimension "stl_mode"
+            ext.artifactIdSuffix = 'shared'
+            externalNativeBuild {
+                cmake {
+                    arguments = ["-DANDROID_STL=c++_shared"]
+                    cppFlags "-DMMKV_STL_SHARED=1"
+                }
+            }
+        }
+    }
+}
+
+configurations {
+    javadocDeps
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.annotation:annotation:1.7.1'
+    javadocDeps 'androidx.annotation:annotation:1.7.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    compileOnly project(':mmkvannotation')
+}

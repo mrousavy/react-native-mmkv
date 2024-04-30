@@ -1,0 +1,39 @@
+{
+  "name": "react-native-mmkv-example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "pods": "cd ios && bundle install && RCT_NEW_ARCH_ENABLED=1 bundle exec pod install",
+    "start": "react-native start",
+    "build:android": "cd android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
+    "build:ios": "cd ios && xcodebuild -workspace MmkvExample.xcworkspace -scheme MmkvExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
+    "typescript": "tsc --noEmit",
+    "test": "jest"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-native": "^0.74.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.4",
+    "@babel/preset-env": "^7.24.4",
+    "@babel/runtime": "^7.24.4",
+    "@react-native/babel-preset": "^0.74.81",
+    "@react-native/metro-config": "^0.74.81",
+    "@react-native/typescript-config": "^0.74.81",
+    "@types/jest": "^29.2.5",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "jest": "^29.3.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "resolutions": {
+    "@react-native-community/cli": "^14.0.0-alpha.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

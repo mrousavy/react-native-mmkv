@@ -6,26 +6,29 @@ on:
       - main
     paths:
       - '.github/workflows/build-android.yml'
-      - 'android/**'
-      - 'cpp/**'
-      - 'MMKV/**'
-      - 'example/android/**'
-      - 'yarn.lock'
-      - 'example/yarn.lock'
+      - 'package/android/**'
+      - 'package/cpp/**'
+      - 'package/MMKV/**'
+      - 'package/yarn.lock'
+      - 'package/example/android/**'
+      - 'package/example/yarn.lock'
   pull_request:
     paths:
       - '.github/workflows/build-android.yml'
-      - 'android/**'
-      - 'cpp/**'
-      - 'MMKV/**'
-      - 'example/android/**'
-      - 'yarn.lock'
-      - 'example/yarn.lock'
+      - 'package/android/**'
+      - 'package/cpp/**'
+      - 'package/MMKV/**'
+      - 'package/yarn.lock'
+      - 'package/example/android/**'
+      - 'package/example/yarn.lock'
 
 jobs:
   build_example:
     name: Build Android Example App
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: package/
     steps:
       - uses: actions/checkout@v4
 

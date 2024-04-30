@@ -6,15 +6,15 @@ on:
       - main
     paths:
       - '.github/workflows/validate-cpp.yml'
-      - 'cpp/**'
-      - 'android/src/main/cpp/**'
-      - 'ios/**'
+      - 'package/cpp/**'
+      - 'package/android/src/main/cpp/**'
+      - 'package/ios/**'
   pull_request:
     paths:
       - '.github/workflows/validate-cpp.yml'
-      - 'cpp/**'
-      - 'android/src/main/cpp/**'
-      - 'ios/**'
+      - 'package/cpp/**'
+      - 'package/android/src/main/cpp/**'
+      - 'package/ios/**'
 
 jobs:
   lint:
@@ -23,9 +23,9 @@ jobs:
     strategy:
       matrix:
         path:
-          - 'cpp'
-          - 'android/src/main/cpp'
-          - 'ios'
+          - 'package/cpp'
+          - 'package/android/src/main/cpp'
+          - 'package/ios'
     steps:
       - uses: actions/checkout@v4
       - name: Run clang-format style check

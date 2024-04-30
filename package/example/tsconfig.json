@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig",
+  "include": ["src/**/*", "test/**/*"],
+  "compilerOptions": {
+    "paths": {
+      "react-native-mmkv": ["../src/index"]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

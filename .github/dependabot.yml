@@ -8,7 +8,7 @@ updates:
     labels:
       - "dependencies"
   - package-ecosystem: "gradle"
-    directory: "/android/"
+    directory: "/package/android/"
     schedule:
       interval: "weekly"
     labels:
