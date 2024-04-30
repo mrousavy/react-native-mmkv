@@ -6,7 +6,7 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Development workflow
 
-To get started with the project, run `npm i` in the root directory to install the required dependencies for each package:
+To get started with the project, run `npm i` in the `package/` directory to install the required dependencies for each package:
 
 ```sh
 yarn
@@ -20,7 +20,7 @@ If you want to use Android Studio or XCode to edit the native code, you can open
 
 To edit the Java or Kotlin files, open `example/android` in Android studio and find the source files at `react-native-mmkv` under `Android`.
 
-You can use various commands from the root directory to work with the project.
+You can use various commands from the `package/` directory to work with the project.
 
 To start the packager:
 
