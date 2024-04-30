@@ -21,7 +21,7 @@ on:
       - 'package/MMKV/**'
 
 jobs:
-  build:
+  build_example:
     name: Build iOS Example App
     runs-on: macOS-latest
     defaults:
