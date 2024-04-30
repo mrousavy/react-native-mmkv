@@ -1,0 +1,54 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.8.0'
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    minSdkVersion = 23
+    compileSdkVersion = 34
+    targetSdkVersion = compileSdkVersion
+    supportLibVersion = "25.4.0"
+    javaVersion = JavaVersion.VERSION_1_7
+
+    defaultsToPrivateOnly = true
+
+    GROUP = 'com.tencent'
+    VERSION_NAME = "${VERSION_NAME_PREFIX}${VERSION_NAME_SUFFIX}"
+
+    POM_PACKAGING = "pom"
+    POM_DESCRIPTION = "MMKV for Android"
+
+    POM_URL = "https://github.com/Tencent/MMKV"
+    POM_SCM_URL = "https://github.com/Tencent/MMKV"
+    POM_SCM_CONNECTION="scm:git:github.com/Tencent/MMKV.git"
+    POM_SCM_DEV_CONNECTION="scm:git:ssh://git@github.com/Tencent/MMKV.git"
+
+    POM_ISSUE_URL = 'https://github.com/Tencent/MMKV/issues'
+
+    POM_LICENCE_NAME = "BSD License"
+    POM_LICENCE_URL = "https://opensource.org/licenses/BSD-3-Clause"
+
+    POM_DEVELOPER_ID = "Tencent Wechat"
+    POM_DEVELOPER_NAME = "Tencent Wechat, Inc."
+}

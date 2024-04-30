@@ -1,0 +1,52 @@
+## Various settings
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+xcuserdata
+
+## Other
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
+#python
+venv
+
+## OS X
+.DS_Store
+
+## Xcode
+DerivedData
+
+## Visual Studio
+.vs
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.VC.opendb
+*.VC.db
+ipch/
+
+#cmake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Linux/Makefile
+cmake-build-debug/
+cmake-build-release/
+build/
+dist/
+*.egg-info/
+.cmake
+
+#CLion
+.idea
+
+#Android Studio
+.cxx

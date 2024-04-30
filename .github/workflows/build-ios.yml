@@ -6,19 +6,19 @@ on:
       - main
     paths:
       - '.github/workflows/build-ios.yml'
-      - 'cpp/**'
-      - 'ios/**'
-      - '*.podspec'
-      - 'example/ios/**'
-      - 'MMKV/**'
+      - 'package/cpp/**'
+      - 'package/ios/**'
+      - 'package/*.podspec'
+      - 'package/example/ios/**'
+      - 'package/MMKV/**'
   pull_request:
     paths:
       - '.github/workflows/build-ios.yml'
-      - 'cpp/**'
-      - 'ios/**'
-      - '*.podspec'
-      - 'example/ios/**'
-      - 'MMKV/**'
+      - 'package/cpp/**'
+      - 'package/ios/**'
+      - 'package/*.podspec'
+      - 'package/example/ios/**'
+      - 'package/MMKV/**'
 
 jobs:
   build:
@@ -26,7 +26,7 @@ jobs:
     runs-on: macOS-latest
     defaults:
       run:
-        working-directory: example/ios
+        working-directory: package/example/ios
     steps:
       - uses: actions/checkout@v4
 
@@ -55,13 +55,13 @@ jobs:
         with:
           ruby-version: 2.6
           bundler-cache: true
-          working-directory: example/ios
+          working-directory: package/example/ios
 
       - name: Restore Pods cache
         uses: actions/cache@v4
         with:
           path: |
-            example/ios/Pods
+            package/example/ios/Pods
             ~/Library/Caches/CocoaPods
             ~/.cocoapods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
