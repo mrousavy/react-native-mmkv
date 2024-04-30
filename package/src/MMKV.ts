@@ -2,9 +2,9 @@ import { AppState } from 'react-native';
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
 import { isTest } from './PlatformChecker';
-import { Configuration } from './NativeMmkv';
-import { Listener, MMKVInterface, NativeMMKV } from './Types';
-export { Configuration, Mode } from './NativeMmkv';
+import type { Configuration } from './NativeMmkv';
+import type { Listener, MMKVInterface, NativeMMKV } from './Types';
+export type { Configuration } from './NativeMmkv';
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 

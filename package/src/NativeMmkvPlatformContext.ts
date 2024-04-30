@@ -1,4 +1,5 @@
-import { TurboModule, TurboModuleRegistry } from 'react-native';
+import type { TurboModule } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
 import { ModuleNotFoundError } from './ModuleNotFoundError';
 
 export interface Spec extends TurboModule {
@@ -9,11 +10,16 @@ export interface Spec extends TurboModule {
 }
 
 let module: Spec | null;
-try {
-  module = TurboModuleRegistry.getEnforcing<Spec>('MmkvPlatformContext');
-} catch (e) {
-  // TurboModule could not be found!
-  throw new ModuleNotFoundError(e);
-}
 
-export const PlatformContext = module;
+export function getMMKVPlatformContextTurboModule(): Spec {
+  try {
+    if (module == null) {
+      // 1. Get the TurboModule
+      module = TurboModuleRegistry.getEnforcing<Spec>('MmkvPlatformContext');
+    }
+    return module;
+  } catch (e) {
+    // TurboModule could not be found!
+    throw new ModuleNotFoundError(e);
+  }
+}

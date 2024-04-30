@@ -1,4 +1,4 @@
 export * from './MMKV';
 export * from './hooks';
 
-export { Mode, Configuration } from './NativeMmkv';
+export type { Mode, Configuration } from './NativeMmkv';
