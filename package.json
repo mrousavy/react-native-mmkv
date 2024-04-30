@@ -73,7 +73,7 @@
   "devDependencies": {
     "@firmnav/eslint-github-actions-formatter": "^1.0.1",
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
-    "@react-native-community/cli-types": "^13.6.6",
+    "@react-native-community/cli-types": "^14.0.0-alpha.4",
     "@react-native/eslint-config": "^0.74.81",
     "@release-it/conventional-changelog": "^8.0.1",
     "@testing-library/react-native": "^12.4.3",
@@ -85,8 +85,8 @@
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
-    "react": "18.3.1",
-    "react-native": "0.74.0",
+    "react": "^18.3.1",
+    "react-native": "^0.74.0",
     "react-native-builder-bob": "^0.23.2",
     "react-test-renderer": "18.3.1",
     "release-it": "^17.2.1",
@@ -94,7 +94,7 @@
   },
   "resolutions": {
     "@types/react": "^18.2.44",
-    "@react-native-community/cli": "^14.0.0-alpha.2"
+    "@react-native-community/cli": "^14.0.0-alpha.4"
   },
   "peerDependencies": {
     "react": "*",
