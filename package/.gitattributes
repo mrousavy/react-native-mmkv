@@ -1,3 +1,5 @@
 *.pbxproj -text
 # specific for windows script files
 *.bat text eol=crlf
+# All Headers are C++
+**/*.h linguist-language=C++
