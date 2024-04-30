@@ -1,6 +1,6 @@
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
-import { isJest } from './PlatformChecker';
+import { isTest } from './PlatformChecker';
 
 interface Listener {
   remove: () => void;
@@ -131,7 +131,7 @@ export type NativeMMKV = Pick<
   | 'recrypt'
 >;
 
-const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
+const onValueChangedListeners = new Map<string, ((_key: string) => void)[]>();
 
 /**
  * A single MMKV instance.
@@ -147,7 +147,7 @@ export class MMKV implements MMKVInterface {
    */
   constructor(configuration: MMKVConfiguration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
-    this.nativeInstance = isJest()
+    this.nativeInstance = isTest()
       ? createMockMMKV()
       : createMMKV(configuration);
     this.functionCache = {};
