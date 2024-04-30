@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@react-native', 'prettier'],
+  extends: ['@react-native', 'plugin:prettier/recommended'],
   rules: {
     'prettier/prettier': ['warn'],
   },
