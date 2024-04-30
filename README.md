@@ -67,7 +67,7 @@ react-native-mmkv is sponsored by **getstream.io**. <br/>
 
 <div align="center">
   <a href="https://github.com/mrousavy/StorageBenchmark">
-    <img src="./img/benchmark_1000_get.png" />
+    <img src="./package/img/benchmark_1000_get.png" />
   </a>
   <p>
     <b>MMKV vs other storage libraries</b>: Reading a value from Storage 1000 times. <br/>
