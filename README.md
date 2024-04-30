@@ -32,20 +32,20 @@
 
 ## Features
 
-* **Get** and **set** strings, booleans and numbers
+* **Get** and **set** strings, booleans, numbers and ArrayBuffers
 * **Fully synchronous** calls, no async/await, no Promises, no Bridge.
 * **Encryption** support (secure storage)
 * **Multiple instances** support (separate user-data with global data)
 * **Customize storage location**
 * **High performance** because everything is **written in C++**
 * **~30x faster than AsyncStorage**
-* Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
+* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ TurboModules**](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/turbo-modules-xplat.md) instead of the "old" Bridge
 * **iOS**, **Android** and **Web** support
 * Easy to use **React Hooks** API
 
 ## react-native-mmkv V3
 
-> [!WARNING]
+> [!IMPORTANT]
 > react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**.
 > - If you want to use react-native-mmkv 3.x.x, you need to enable the new architecture in your app (see ["Enable the New Architecture for Apps"](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
 > - If you cannot use the new architecture yet, downgrade to react-native-mmkv 2.x.x for now.
