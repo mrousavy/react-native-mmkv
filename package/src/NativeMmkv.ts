@@ -1,7 +1,7 @@
 import { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 import { UnsafeObject } from 'react-native/Libraries/Types/CodegenTypes';
-import { getLazyTurboModule } from './LazyTurboModule';
+import { ModuleNotFoundError } from './ModuleNotFoundError';
 import { PlatformContext } from './NativeMmkvPlatformContext';
 
 /**
@@ -85,21 +85,15 @@ export interface Spec extends TurboModule {
   createMMKV(configuration: Configuration): UnsafeObject;
 }
 
-let basePath: string | null = null;
+let module: Spec | null;
+try {
+  module = TurboModuleRegistry.getEnforcing<Spec>('MmkvCxx');
 
-function getNativeModule(): Spec | null {
-  if (basePath == null) {
-    // use default base path from the Platform (iOS/Android)
-    basePath = PlatformContext.getBaseDirectory();
-  }
-
-  const module = TurboModuleRegistry.get<Spec>('MmkvCxx');
-
-  if (module != null) {
-    // initialize MMKV
-    module.initialize(basePath);
-  }
-
-  return module;
+  const basePath = PlatformContext.getBaseDirectory();
+  module.initialize(basePath);
+} catch (cause) {
+  // TurboModule could not be found!
+  throw new ModuleNotFoundError(cause);
 }
-export const MMKVTurboModule = getLazyTurboModule(getNativeModule);
+
+export const MMKVTurboModule = module;

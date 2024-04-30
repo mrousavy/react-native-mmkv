@@ -1,5 +1,5 @@
 import { TurboModule, TurboModuleRegistry } from 'react-native';
-import { getLazyTurboModule } from './LazyTurboModule';
+import { ModuleNotFoundError } from './ModuleNotFoundError';
 
 export interface Spec extends TurboModule {
   /**
@@ -8,7 +8,12 @@ export interface Spec extends TurboModule {
   getBaseDirectory(): string;
 }
 
-function getModule(): Spec | null {
-  return TurboModuleRegistry.get<Spec>('MmkvPlatformContext');
+let module: Spec | null;
+try {
+  module = TurboModuleRegistry.getEnforcing<Spec>('MmkvPlatformContext');
+} catch (e) {
+  // TurboModule could not be found!
+  throw new ModuleNotFoundError(e);
 }
-export const PlatformContext = getLazyTurboModule(getModule);
+
+export const PlatformContext = module;
