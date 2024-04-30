@@ -28,7 +28,7 @@
 
 
 * **MMKV** is an efficient, small mobile key-value storage framework developed by WeChat. See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
-* **react-native-mmkv** is a library that allows you to easily use **MMKV** inside your React Native applications. It provides fast and direct bindings to the native C++ library which are accessible through a simple JS API.
+* **react-native-mmkv** is a library that allows you to easily use **MMKV** inside your React Native app through fast and direct JS bindings to the native C++ library.
 
 ## Features
 
@@ -36,7 +36,7 @@
 * **Fully synchronous** calls, no async/await, no Promises, no Bridge.
 * **Encryption** support (secure storage)
 * **Multiple instances** support (separate user-data with global data)
-* **Customize storage location**
+* **Customizable storage location**
 * **High performance** because everything is **written in C++**
 * **~30x faster than AsyncStorage**
 * Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ TurboModules**](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/turbo-modules-xplat.md) instead of the "old" Bridge
