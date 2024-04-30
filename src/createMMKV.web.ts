@@ -1,5 +1,6 @@
 /* global localStorage */
-import type { MMKVConfiguration, NativeMMKV } from 'react-native-mmkv';
+import type { Configuration } from './MMKV';
+import type { NativeMMKV } from './Types';
 import { createTextEncoder } from './createTextEncoder';
 
 const canUseDOM =
@@ -19,7 +20,7 @@ const hasAccessToLocalStorage = () => {
 const KEY_WILDCARD = '\\';
 const inMemoryStorage = new Map<string, string>();
 
-export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
+export const createMMKV = (config: Configuration): NativeMMKV => {
   if (config.encryptionKey != null) {
     throw new Error("MMKV: 'encryptionKey' is not supported on Web!");
   }
@@ -117,6 +118,10 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
     contains: (key) => storage().getItem(prefixedKey(key)) != null,
     recrypt: () => {
       throw new Error('`recrypt(..)` is not supported on Web!');
+    },
+    size: 0,
+    trim: () => {
+      // no-op
     },
   };
 };

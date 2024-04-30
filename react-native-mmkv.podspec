@@ -1,6 +1,7 @@
 require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
+folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
 
 Pod::Spec.new do |s|
   s.name         = "react-native-mmkv"
@@ -10,27 +11,25 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "11.0", :tvos => "12.0", :osx => "10.14" }
+  s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
 
-  # All source files that should be publicly visible
-  # Note how this does not include headers, since those can nameclash.
+  s.pod_target_xcconfig = {
+    "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
+    "CLANG_CXX_LIBRARY" => "libc++",
+    "CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF" => "NO",
+    # FORCE_POSIX ensures we are using C++ types instead of Objective-C types for MMKV.
+    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX",
+  }
+  s.compiler_flags = '-x objective-c++'
+
   s.source_files = [
-    "ios/**/*.{m,mm}",
-    "ios/MmkvModule.h",
-    "cpp/**/*.{h,cpp}"
-  ]
-  # Any private headers that are not globally unique should be mentioned here.
-  # Otherwise there will be a nameclash, since CocoaPods flattens out any header directories
-  # See https://github.com/firebase/firebase-ios-sdk/issues/4035 for more details.
-  s.preserve_paths = [
-    'ios/**/*.h'
+    # react-native-mmkv
+    "ios/**/*.{h,m,mm}",
+    "cpp/**/*.{hpp,cpp,c,h}",
+    # MMKV/Core
+    "MMKV/Core/**/*.{h,cpp,hpp,S}",
   ]
 
-  s.dependency "MMKV", ">= 1.3.3"
-  if respond_to?(:install_modules_dependencies, true)
-    install_modules_dependencies(s)
-  else
-    s.dependency "React-Core"
-  end
+  install_modules_dependencies(s)
 end

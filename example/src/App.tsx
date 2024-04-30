@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
-import { MMKV, useMMKVString } from 'react-native-mmkv';
+import { MMKV, useMMKVListener, useMMKVString } from 'react-native-mmkv';
 
 const storage = new MMKV();
 
@@ -11,6 +11,10 @@ export default function App() {
   const [keys, setKeys] = React.useState<string[]>([]);
 
   const [example, setExample] = useMMKVString('yeeeet');
+
+  useMMKVListener((k) => {
+    console.log(`${k} changed! New size: ${storage.size}`);
+  });
 
   const save = React.useCallback(() => {
     if (key == null || key.length < 1) {

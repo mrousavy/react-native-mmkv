@@ -28,20 +28,27 @@
 
 
 * **MMKV** is an efficient, small mobile key-value storage framework developed by WeChat. See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
-* **react-native-mmkv** is a library that allows you to easily use **MMKV** inside your React Native applications. It provides fast and direct bindings to the native C++ library which are accessible through a simple JS API.
+* **react-native-mmkv** is a library that allows you to easily use **MMKV** inside your React Native app through fast and direct JS bindings to the native C++ library.
 
 ## Features
 
-* **Get** and **set** strings, booleans and numbers
+* **Get** and **set** strings, booleans, numbers and ArrayBuffers
 * **Fully synchronous** calls, no async/await, no Promises, no Bridge.
 * **Encryption** support (secure storage)
 * **Multiple instances** support (separate user-data with global data)
-* **Customize storage location**
+* **Customizable storage location**
 * **High performance** because everything is **written in C++**
 * **~30x faster than AsyncStorage**
-* Uses [**JSI**](https://github.com/react-native-community/discussions-and-proposals/issues/91) instead of the "old" Bridge
+* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ TurboModules**](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/turbo-modules-xplat.md) instead of the "old" Bridge
 * **iOS**, **Android** and **Web** support
 * Easy to use **React Hooks** API
+
+## react-native-mmkv V3
+
+> [!IMPORTANT]
+> react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**.
+> - If you want to use react-native-mmkv 3.x.x, you need to enable the new architecture in your app (see ["Enable the New Architecture for Apps"](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
+> - If you cannot use the new architecture yet, downgrade to react-native-mmkv 2.x.x for now.
 
 ## Sponsors
 
@@ -100,7 +107,7 @@ export const storage = new MMKV()
 
 This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
 
-#### App Groups
+#### App Groups or Extensions
 
 If you want to share MMKV data between your app and other apps or app extensions in the same group, open `Info.plist` and create an `AppGroup` key with your app group's value. MMKV will then automatically store data inside the app group which can be read and written to from other apps or app extensions in the same group by making use of MMKV's multi processing mode.
 See [Configuring App Groups](https://developer.apple.com/documentation/xcode/configuring-app-groups).
@@ -108,12 +115,13 @@ See [Configuring App Groups](https://developer.apple.com/documentation/xcode/con
 #### Customize
 
 ```js
-import { MMKV } from 'react-native-mmkv'
+import { MMKV, Mode } from 'react-native-mmkv'
 
 export const storage = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
-  encryptionKey: 'hunter2'
+  encryptionKey: 'hunter2',
+  mode: Mode.MULTI_PROCESS
 })
 ```
 
@@ -124,6 +132,7 @@ The following values can be configured:
 * `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
+* `mode`: The MMKV's process behaviour - when set to `MULTI_PROCESS`, the MMKV instance will assume data can be changed from the outside (e.g. App Clips, Extensions or App Groups).
 
 ### Set
 
@@ -139,6 +148,14 @@ storage.set('is-mmkv-fast-asf', true)
 const username = storage.getString('user.name') // 'Marc'
 const age = storage.getNumber('user.age') // 21
 const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
+```
+
+### Hooks
+
+```js
+const [username, setUsername] = useMMKVString('user.name')
+const [age, setAge] = useMMKVNumber('user.age')
+const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
 ```
 
 ### Keys
@@ -186,9 +203,26 @@ storage.recrypt(undefined)
 ### Buffers
 
 ```js
-storage.set('someToken', new Uint8Array([1, 100, 255]))
+const buffer = new ArrayBuffer(3)
+const dataWriter = new Uint8Array(buffer)
+dataWriter[0] = 1
+dataWriter[1] = 100
+dataWriter[2] = 255
+storage.set('someToken', buffer)
+
 const buffer = storage.getBuffer('someToken')
 console.log(buffer) // [1, 100, 255]
+```
+
+### Size
+
+```js
+// get size of MMKV storage in bytes
+const size = storage.size
+if (size >= 4096) {
+  // clean unused keys and clear memory cache
+  storage.trim()
+}
 ```
 
 ## Testing with Jest or Vitest
@@ -215,7 +249,11 @@ If a user chooses to disable LocalStorage in their browser, the library will aut
 
 ## Limitations
 
-As the library uses JSI for synchronous native methods access, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com).
+- react-native-mmkv V3 requires react-native 0.74 or higher.
+- react-native-mmkv V3 requires [the new architecture](https://reactnative.dev/docs/the-new-architecture/landing-page)/TurboModules to be enabled.
+- Since react-native-mmkv uses JSI for synchronous native method invocations, remote debugging (e.g. with Chrome) is no longer possible. Instead, you should use [Flipper](https://fbflipper.com) or [React DevTools](https://react.dev/learn/react-developer-tools).
+
+## Integrations
 
 ### Flipper
 

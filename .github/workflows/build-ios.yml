@@ -41,6 +41,8 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      - name: Install node_modules
+        run: yarn install --frozen-lockfile --cwd ../..
       - name: Install node_modules for example/
         run: yarn install --frozen-lockfile --cwd ..
 
@@ -66,7 +68,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pods-
       - name: Install Pods
-        run: bundle exec pod check || bundle exec pod install
+        run: yarn pods
       - name: Install xcpretty
         run: gem install xcpretty
       - name: Build App
