@@ -84,7 +84,8 @@ export function getLazyTurboModule<T extends TurboModule>(
               }
             }
 
-            const error = message + '\n* ' + suggestions.join('\n* ');
+            const error =
+              message + BULLET_POINT + suggestions.join(BULLET_POINT);
             throw new Error(error);
           }
         }
