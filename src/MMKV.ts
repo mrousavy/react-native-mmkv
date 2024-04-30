@@ -1,7 +1,7 @@
 import { AppState } from 'react-native';
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
-import { isJest } from './PlatformChecker';
+import { isTest } from './PlatformChecker';
 import { Configuration } from './NativeMmkv';
 import { Listener, MMKVInterface, NativeMMKV } from './Types';
 export { Configuration, Mode } from './NativeMmkv';
@@ -22,7 +22,7 @@ export class MMKV implements MMKVInterface {
    */
   constructor(configuration: Configuration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
-    this.nativeInstance = isJest()
+    this.nativeInstance = isTest()
       ? createMockMMKV()
       : createMMKV(configuration);
     this.functionCache = {};
