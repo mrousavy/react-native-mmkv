@@ -935,7 +935,7 @@ PODS:
   - React-Mapbuffer (0.74.0):
     - glog
     - React-debug
-  - react-native-mmkv (3.0.0-beta.2):
+  - react-native-mmkv (3.0.0-beta.4):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1394,7 +1394,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 36a2bbc272300313653d980de5ab700ec86c534a
   React-logger: 03f2f7b955cfe24593a2b8c9705c23e142d1ad24
   React-Mapbuffer: 5e05d78fe6505f4a054b86f415733d4ad02dd314
-  react-native-mmkv: d3d677eee844372c767c6144b928d785a5cf4161
+  react-native-mmkv: 34640c3ec746698e654e8212f5b809a2421e4609
   React-nativeconfig: 951ec32f632e81cbd7d40aebb3211313251c092e
   React-NativeModulesApple: 0b3a42ca90069119ef79d8b2327d01441d71abd4
   React-perflogger: 271f1111779fef70f9502d1d38da5132e5585230
