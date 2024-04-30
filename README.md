@@ -46,7 +46,7 @@
 ## react-native-mmkv V3
 
 > [!WARNING]
-> react-native-mmkv V3 is now a pure C++ TurboModule, and requires the new architecture to be enabled.
+> react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**.
 > - If you want to use react-native-mmkv 3.x.x, you need to enable the new architecture in your app (see ["Enable the New Architecture for Apps"](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
 > - If you cannot use the new architecture yet, downgrade to react-native-mmkv 2.x.x for now.
 
@@ -115,7 +115,7 @@ See [Configuring App Groups](https://developer.apple.com/documentation/xcode/con
 #### Customize
 
 ```js
-import { MMKV } from 'react-native-mmkv'
+import { MMKV, Mode } from 'react-native-mmkv'
 
 export const storage = new MMKV({
   id: `user-${userId}-storage`,
