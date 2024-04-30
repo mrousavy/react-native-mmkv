@@ -13,10 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Notice yarn.lock changes
-        uses: Simek/yarn-lock-changes@v0.12.0
+        uses: Simek/yarn-lock-changes@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          collapsibleThreshold: '25'
-          failOnDowngrade: 'false'
-          path: 'yarn.lock'
-          updateComment: 'true'
+          collapsibleThreshold: 25
+          failOnDowngrade: false
+          path: "package/yarn.lock"
+          updateComment: true
+          groupByType: false
