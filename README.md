@@ -227,7 +227,7 @@ if (size >= 4096) {
 
 ## Testing with Jest or Vitest
 
-A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [example/test/MMKV.test.ts](example/test/MMKV.test.ts) for an example using Jest.
+A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [package/example/test/MMKV.test.ts](package/example/test/MMKV.test.ts) for an example using Jest.
 
 ## Documentation
 
