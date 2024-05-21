@@ -35,6 +35,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "lint-ci": "yarn lint -f ./node_modules/@firmnav/eslint-github-actions-formatter/dist/formatter.js",
     "lint-cpp": "scripts/clang-format.sh",
+    "check-all": "yarn lint --fix && yarn lint-cpp",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",

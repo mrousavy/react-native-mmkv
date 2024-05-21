@@ -1,5 +1,5 @@
 //
-//  Logger.h
+//  MmkvLogger.h
 //  react-native-mmkv
 //
 //  Created by Marc Rousavy on 25.03.24.
@@ -7,9 +7,9 @@
 
 #include <string>
 
-class Logger {
+class MmkvLogger {
 private:
-  Logger() = delete;
+  MmkvLogger() = delete;
 
 private:
   template <typename... Args>
