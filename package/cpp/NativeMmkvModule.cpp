@@ -6,7 +6,7 @@
 //
 
 #include "NativeMmkvModule.h"
-#include "Logger.h"
+#include "MmkvLogger.h"
 #include "MMKV.h"
 #include "MmkvHostObject.h"
 
@@ -20,7 +20,7 @@ bool NativeMmkvModule::initialize(jsi::Runtime& runtime, std::string basePath) {
     throw jsi::JSError(runtime, "Path cannot be empty!");
   }
 
-  Logger::log("RNMMKV", "Initializing MMKV at %s...", basePath.c_str());
+  MmkvLogger::log("RNMMKV", "Initializing MMKV at %s...", basePath.c_str());
 
 #ifdef DEBUG
   MMKVLogLevel logLevel = MMKVLogDebug;

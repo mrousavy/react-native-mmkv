@@ -7,7 +7,7 @@
 //
 
 #include "MmkvHostObject.h"
-#include "Logger.h"
+#include "MmkvLogger.h"
 #include "MMKVManagedBuffer.h"
 #include <MMKV.h>
 #include <string>
@@ -20,8 +20,8 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   std::string path = config.path.has_value() ? config.path.value() : "";
   std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
   bool hasEncryptionKey = encryptionKey.size() > 0;
-  Logger::log("RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
-              config.id.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
+  MmkvLogger::log("RNMMKV", "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
+                  config.id.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
 
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
@@ -52,7 +52,7 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
 MmkvHostObject::~MmkvHostObject() {
   if (instance != nullptr) {
     std::string instanceId = instance->mmapID();
-    Logger::log("RNMMKV", "Destroying MMKV instance \"%s\"...", instanceId.c_str());
+    MmkvLogger::log("RNMMKV", "Destroying MMKV instance \"%s\"...", instanceId.c_str());
     instance->sync();
     instance->clearMemoryCache();
   }
