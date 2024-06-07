@@ -37,7 +37,7 @@ def supportsNamespace() {
 }
 
 logger.warn("[react-native-mmkv] Thank you for using react-native-mmkv ❤️")
-logger.warn("[react-native-mmkv] If you enjoy using react-native-mmkv, please consider sponsoring this project: http://github.com/sponsors/mrousavy")
+logger.warn("[react-native-mmkv] If you enjoy using react-native-mmkv, please consider sponsoring this project: https://github.com/sponsors/mrousavy")
 
 android {
   if (supportsNamespace()) {
