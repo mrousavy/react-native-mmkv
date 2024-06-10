@@ -2,7 +2,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./package/img/banner-dark.png" />
     <source media="(prefers-color-scheme: light)" srcset="./package/img/banner-light.png" />
-    <img alt="VisionCamera" src="./package/img/banner-light.png" />
+    <img alt="react-native-mmkv" src="./package/img/banner-light.png" />
   </picture>
 </a>
 

@@ -26,7 +26,7 @@
     "src",
     "react-native-mmkv.podspec",
     "react-native.config.js",
-    "README.md",
+    "../README.md",
     "img/banner-light.png",
     "img/banner-dark.png"
   ],
