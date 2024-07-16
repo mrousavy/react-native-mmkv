@@ -7,7 +7,20 @@ export const createMockMMKV = (): NativeMMKV => {
   return {
     clearAll: () => storage.clear(),
     delete: (key) => storage.delete(key),
-    set: (key, value) => storage.set(key, value),
+    set: (key, value, expireDuration) => {
+      if (
+        storage.get('enableAutoKeyExpire') &&
+        expireDuration &&
+        expireDuration > 0
+      ) {
+        storage.set(key, value);
+        setTimeout(() => {
+          storage.delete(key);
+        }, expireDuration * 1000);
+      } else {
+        storage.set(key, value);
+      }
+    },
     getString: (key) => {
       const result = storage.get(key);
       return typeof result === 'string' ? result : undefined;
@@ -32,6 +45,9 @@ export const createMockMMKV = (): NativeMMKV => {
     size: 0,
     trim: () => {
       // no-op
+    },
+    enableAutoKeyExpire: (number) => {
+      storage.set('enableAutoKeyExpire', number ?? true);
     },
   };
 };

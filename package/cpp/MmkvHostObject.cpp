@@ -62,7 +62,7 @@ MmkvHostObject::~MmkvHostObject() {
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   return jsi::PropNameID::names(rt, "set", "getBoolean", "getBuffer", "getString", "getNumber",
                                 "contains", "delete", "getAllKeys", "deleteAll", "recrypt", "trim",
-                                "size");
+                                "size", "enableAutoKeyExpire");
 }
 
 MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) {
@@ -90,7 +90,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         2, // key, value
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 2 || !arguments[0].isString()) {
+          if (count < 2 || !arguments[0].isString()) {
             [[unlikely]];
             throw jsi::JSError(runtime,
                                "MMKV::set: First argument ('key') has to be of type string!");
@@ -98,16 +98,33 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
 
+          uint32_t expireDuration = -1;
+          if (count >= 3 && arguments[2].isNumber()) {
+            expireDuration = static_cast<uint32_t>(arguments[2].asNumber());
+          }
+                   
           if (arguments[1].isBool()) {
             // bool
-            instance->set(arguments[1].getBool(), keyName);
+            if (expireDuration >= 0) {
+              instance->set(arguments[1].getBool(), keyName, expireDuration);
+            } else {
+              instance->set(arguments[1].getBool(), keyName);
+            }
           } else if (arguments[1].isNumber()) {
             // number
-            instance->set(arguments[1].getNumber(), keyName);
+            if (expireDuration >= 0) {
+              instance->set(arguments[1].getNumber(), keyName, expireDuration);
+            } else {
+              instance->set(arguments[1].getNumber(), keyName);
+            }
           } else if (arguments[1].isString()) {
             // string
             std::string stringValue = arguments[1].asString(runtime).utf8(runtime);
-            instance->set(stringValue, keyName);
+            if (expireDuration >= 0) {
+              instance->set(stringValue, keyName, expireDuration);
+            } else {
+              instance->set(stringValue, keyName);
+            }
           } else if (arguments[1].isObject()) {
             // object
             jsi::Object object = arguments[1].asObject(runtime);
@@ -115,7 +132,11 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
               // ArrayBuffer
               jsi::ArrayBuffer arrayBuffer = object.getArrayBuffer(runtime);
               MMBuffer data(arrayBuffer.data(runtime), arrayBuffer.size(runtime), MMBufferNoCopy);
-              instance->set(data, keyName);
+              if (expireDuration >= 0) {
+                instance->set(data, keyName, expireDuration);
+              } else {
+                instance->set(data, keyName);
+              }
             } else {
               // unknown object
               throw jsi::JSError(
@@ -331,6 +352,23 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           return jsi::Value::undefined();
         });
   }
+    
+    if (propName == "enableAutoKeyExpire") {
+      // MMKV.enableAutoKeyExpire(expireDuration: number = 0)
+      return jsi::Function::createFromHostFunction(
+          runtime, jsi::PropNameID::forAscii(runtime, propName),
+          1, // expireDuration
+          [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
+                size_t count) -> jsi::Value {
+            uint32_t expireDuration = 0;
+            if (count == 1 ) {
+              expireDuration = static_cast<uint32_t>(arguments[0].asNumber());
+            }
+            instance->enableAutoKeyExpire(expireDuration);
+            return jsi::Value::undefined();
+          });
+         
+    }
 
   if (propName == "size") {
     // MMKV.size

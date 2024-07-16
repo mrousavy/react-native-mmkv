@@ -90,8 +90,19 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
       }
     },
     delete: (key) => storage().removeItem(prefixedKey(key)),
-    set: (key, value) => {
-      storage().setItem(prefixedKey(key), value.toString());
+    set: (key, value, expireDuration) => {
+      if (
+        storage().get('enableAutoKeyExpire') &&
+        expireDuration &&
+        expireDuration > 0
+      ) {
+        storage().setItem(prefixedKey(key), value.toString());
+        setTimeout(() => {
+          storage().delete(key);
+        }, expireDuration * 1000);
+      } else {
+        storage().setItem(prefixedKey(key), value.toString());
+      }
     },
     getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
     getNumber: (key) => {
@@ -122,6 +133,9 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
     size: 0,
     trim: () => {
       // no-op
+    },
+    enableAutoKeyExpire: (number) => {
+      storage().set('enableAutoKeyExpire', number ?? true);
     },
   };
 };

@@ -87,3 +87,23 @@ test('functional updates to hooks', () => {
     '4',
   ]);
 });
+
+test('expire duration test', async () => {
+  // 1- Test => Without enableAutoKeyExpire, expect failure
+  mmkv.set('test-1', true, 0.1);
+  await new Promise((r) => setTimeout(r, 101));
+  expect(mmkv.getBoolean('test-1')).toBe(true);
+
+  // 2- Test => With enableAutoKeyExpire, expect success
+  mmkv.enableAutoKeyExpire();
+  mmkv.set('test-2', true, 0.1);
+  expect(mmkv.getBoolean('test-2')).toBe(true);
+  await new Promise((r) => setTimeout(r, 101));
+  expect(mmkv.getBoolean('test-2')).toBeUndefined();
+
+  // 3- Test => Never expire option
+  mmkv.enableAutoKeyExpire();
+  mmkv.set('test-3', true, 0);
+  await new Promise((r) => setTimeout(r, 1));
+  expect(mmkv.getBoolean('test-3')).toBe(true);
+});

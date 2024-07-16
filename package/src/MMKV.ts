@@ -62,9 +62,13 @@ export class MMKV implements MMKVInterface {
   get size(): number {
     return this.nativeInstance.size;
   }
-  set(key: string, value: boolean | string | number | ArrayBuffer): void {
+  set(
+    key: string,
+    value: boolean | string | number | ArrayBuffer,
+    expireDuration?: number | undefined
+  ): void {
     const func = this.getFunctionFromCache('set');
-    func(key, value);
+    func(key, value, expireDuration);
 
     this.onValuesChanged([key]);
   }
@@ -114,7 +118,10 @@ export class MMKV implements MMKVInterface {
     const func = this.getFunctionFromCache('trim');
     func();
   }
-
+  enableAutoKeyExpire(duration?: number | undefined): void {
+    const func = this.getFunctionFromCache('enableAutoKeyExpire');
+    func(duration);
+  }
   toString(): string {
     return `MMKV (${this.id}): [${this.getAllKeys().join(', ')}]`;
   }
