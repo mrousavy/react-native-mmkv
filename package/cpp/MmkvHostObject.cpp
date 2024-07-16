@@ -28,7 +28,21 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   MMKVMode mode = getMMKVMode(config);
 
 #ifdef __APPLE__
-  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
+#include <Foundation/Foundation.h>
+  NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+  if (appGroup) {
+    MmkvLogger::log("RNMMKV", "Path ignored, AppGroup defined plist");
+    NSString* groupDir =
+        [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup]
+            .path;
+    const char* groupDirCStr = [groupDir UTF8String];
+    std::string groupDirStr(groupDirCStr);
+
+    instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, &groupDirStr);
+
+  } else {
+    instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
+  }
 #else
   instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
 #endif
