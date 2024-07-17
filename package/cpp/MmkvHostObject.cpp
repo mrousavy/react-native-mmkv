@@ -12,6 +12,9 @@
 #include <MMKV.h>
 #include <string>
 #include <vector>
+#ifdef __APPLE__
+#include <Foundation/Foundation.h>
+#endif
 
 using namespace mmkv;
 using namespace facebook;
@@ -28,15 +31,17 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   MMKVMode mode = getMMKVMode(config);
 
 #ifdef __APPLE__
-#include <Foundation/Foundation.h>
   NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
-  if (appGroup) {
-    MmkvLogger::log("RNMMKV", "Path ignored, AppGroup defined plist");
+  if (appGroup != nil) {
+    MmkvLogger::log("RNMMKV", "Info.plist specifies a custom AppGroup - ignoring `path`...");
     NSString* groupDir =
         [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup]
             .path;
-    const char* groupDirCStr = [groupDir UTF8String];
-    std::string groupDirStr(groupDirCStr);
+    if (groupDir == nil) {
+      throw std::runtime_error(
+          "Failed to create MMKV instance! Custom App Group directory not accessible!");
+    }
+    std::string groupDirStr = groupDir.UTF8String;
 
     instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, &groupDirStr);
 
