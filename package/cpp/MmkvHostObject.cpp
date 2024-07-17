@@ -42,9 +42,7 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
           "Failed to create MMKV instance! Custom App Group directory not accessible!");
     }
     std::string groupDirStr = groupDir.UTF8String;
-
     instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, &groupDirStr);
-
   } else {
     instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
   }
