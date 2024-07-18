@@ -72,14 +72,21 @@ export interface NativeMMKV {
    */
   trim(): void;
   /**
-   * Get the current total size of the storage, in bytes.
-   * @param duration in sec
-   * default value is 0 (never expire)
-   * its effect on every variable immediately
+   * Returns autoKeyExpire status
+   *
+   * @default false
    */
-  enableAutoKeyExpire(duration?: number | undefined): void;
+  get enableAutoKeyExpire(): boolean;
   /**
-   * Enable key expiration
+   * @param expireDuration in sec
+   * Default value is 0 and means keys never expire,
+   * use -1 for disableAutoExpireDuratipn
+   * its effect on every variable immediately.
+   *
+   */
+  set enableAutoKeyExpire(expireDuration: number);
+  /**
+   *  Get the current total size of the storage, in bytes.
    */
   readonly size: number;
 }

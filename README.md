@@ -225,6 +225,20 @@ if (size >= 4096) {
 }
 ```
 
+### EnableAutoKeyExpire
+
+```js
+// Enable auto expire for keys
+/*
+ *  use `enableAutoKeyExpire` for enable auto key expire (in seconds)
+ *  -1 => Disable auto key expire
+ *  0 => Never expire (Recommended)
+ *
+ */
+storage.enableAutoKeyExpire = 0; // Keys never expire
+storage.set("user.age", 21, 10); // User.age key expire in 10 second, other keys never expire
+```
+
 ## Testing with Jest or Vitest
 
 A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [package/example/test/MMKV.test.ts](package/example/test/MMKV.test.ts) for an example using Jest.

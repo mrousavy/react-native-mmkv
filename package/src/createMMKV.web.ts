@@ -134,8 +134,15 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
     trim: () => {
       // no-op
     },
-    enableAutoKeyExpire: (number) => {
-      storage().set('enableAutoKeyExpire', number ?? true);
+    get enableAutoKeyExpire(): boolean {
+      return storage().get('enableAutoKeyExpire') ? true : false;
+    },
+    set enableAutoKeyExpire(value: number) {
+      if (value === -1) {
+        storage().set('enableAutoKeyExpire', false);
+      } else {
+        storage().set('enableAutoKeyExpire', value);
+      }
     },
   };
 };

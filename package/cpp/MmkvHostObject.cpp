@@ -97,12 +97,11 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          int expireDuration = -1;
 
-          uint32_t expireDuration = -1;
           if (count >= 3 && arguments[2].isNumber()) {
             expireDuration = static_cast<uint32_t>(arguments[2].asNumber());
           }
-                   
           if (arguments[1].isBool()) {
             // bool
             if (expireDuration >= 0) {
@@ -352,22 +351,11 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           return jsi::Value::undefined();
         });
   }
-    
-    if (propName == "enableAutoKeyExpire") {
+
+  if (propName == "enableAutoKeyExpire")
+     {
       // MMKV.enableAutoKeyExpire(expireDuration: number = 0)
-      return jsi::Function::createFromHostFunction(
-          runtime, jsi::PropNameID::forAscii(runtime, propName),
-          1, // expireDuration
-          [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
-                size_t count) -> jsi::Value {
-            uint32_t expireDuration = 0;
-            if (count == 1 ) {
-              expireDuration = static_cast<uint32_t>(arguments[0].asNumber());
-            }
-            instance->enableAutoKeyExpire(expireDuration);
-            return jsi::Value::undefined();
-          });
-         
+      return instance->isExpirationEnabled();
     }
 
   if (propName == "size") {
@@ -377,4 +365,20 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
   }
 
   return jsi::Value::undefined();
+}
+
+void MmkvHostObject::set(jsi::Runtime& runtime, const jsi::PropNameID& propNameId,
+                         const jsi::Value& value) {
+  std::string propName = propNameId.utf8(runtime);
+  if (propName == "enableAutoKeyExpire") {
+    if (!value.isNumber()) {
+      throw jsi::JSError(runtime, "enableAutoKeyExpire must be a number.");
+    }
+    if (value.asNumber() == -1) {
+      instance->disableAutoKeyExpire();
+    } else {
+      uint32_t expireDuration = static_cast<uint32_t>(value.asNumber());
+      instance->enableAutoKeyExpire(expireDuration);
+    }
+  }
 }

@@ -62,6 +62,13 @@ export class MMKV implements MMKVInterface {
   get size(): number {
     return this.nativeInstance.size;
   }
+  get enableAutoKeyExpire(): boolean {
+    return this.nativeInstance.enableAutoKeyExpire;
+  }
+  set enableAutoKeyExpire(expireDuration: number) {
+    this.nativeInstance.enableAutoKeyExpire = expireDuration;
+  }
+
   set(
     key: string,
     value: boolean | string | number | ArrayBuffer,
@@ -117,10 +124,6 @@ export class MMKV implements MMKVInterface {
   trim(): void {
     const func = this.getFunctionFromCache('trim');
     func();
-  }
-  enableAutoKeyExpire(duration?: number | undefined): void {
-    const func = this.getFunctionFromCache('enableAutoKeyExpire');
-    func(duration);
   }
   toString(): string {
     return `MMKV (${this.id}): [${this.getAllKeys().join(', ')}]`;

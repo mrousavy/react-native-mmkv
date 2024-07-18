@@ -23,6 +23,8 @@ public:
 public:
   jsi::Value get(jsi::Runtime&, const jsi::PropNameID& name) override;
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
+  void set(jsi::Runtime& runtime, const jsi::PropNameID& propNameId,
+           const jsi::Value& value) override;
 
 private:
   static MMKVMode getMMKVMode(const facebook::react::MMKVConfig& config);
