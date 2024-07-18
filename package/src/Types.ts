@@ -4,8 +4,13 @@
 export interface NativeMMKV {
   /**
    * Set a value for the given `key`.
+   * Before to use `expireDuration` enableAutoKeyExpire() should be call first.
    */
-  set: (key: string, value: boolean | string | number | ArrayBuffer) => void;
+  set: (
+    key: string,
+    value: boolean | string | number | ArrayBuffer,
+    expireDuration?: number | undefined
+  ) => void;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
@@ -67,7 +72,21 @@ export interface NativeMMKV {
    */
   trim(): void;
   /**
-   * Get the current total size of the storage, in bytes.
+   * Returns autoKeyExpire status
+   *
+   * @default false
+   */
+  get enableAutoKeyExpire(): boolean;
+  /**
+   * @param expireDuration in sec
+   * Default value is 0 and means keys never expire,
+   * use -1 for disableAutoExpireDuratipn
+   * its effect on every variable immediately.
+   *
+   */
+  set enableAutoKeyExpire(expireDuration: number);
+  /**
+   *  Get the current total size of the storage, in bytes.
    */
   readonly size: number;
 }
