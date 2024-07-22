@@ -24,7 +24,7 @@ RCT_EXPORT_MODULE()
   NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 #endif
   NSString* documentPath = (NSString*)[paths firstObject];
-  if ([documentPath length] > 0) {
+  if (documentPath.length > 0) {
     NSString* basePath = [documentPath stringByAppendingPathComponent:@"mmkv"];
     return basePath;
   } else {
