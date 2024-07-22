@@ -33,14 +33,14 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
 #endif
 
-  if (instance == nullptr) {
+  if (instance == nullptr) [[unlikely]] {
     // Check if instanceId is invalid
-    if (config.id.empty()) {
+    if (config.id.empty()) [[unlikely]] {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
     }
 
     // Check if encryptionKey is invalid
-    if (encryptionKey.size() > 16) {
+    if (encryptionKey.size() > 16) [[unlikely]] {
       throw std::runtime_error(
           "Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
     }
@@ -76,7 +76,7 @@ MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) 
     case react::MmkvCxxMode::MULTI_PROCESS:
       return MMKVMode::MMKV_MULTI_PROCESS;
     default:
-      throw std::runtime_error("Invalid MMKV Mode value!");
+      [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
   }
 }
 
@@ -90,24 +90,24 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         2, // key, value
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 2 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 2 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime,
                                "MMKV::set: First argument ('key') has to be of type string!");
           }
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
 
+          bool successful = false;
           if (arguments[1].isBool()) {
             // bool
-            instance->set(arguments[1].getBool(), keyName);
+            successful = instance->set(arguments[1].getBool(), keyName);
           } else if (arguments[1].isNumber()) {
             // number
-            instance->set(arguments[1].getNumber(), keyName);
+            successful = instance->set(arguments[1].getNumber(), keyName);
           } else if (arguments[1].isString()) {
             // string
             std::string stringValue = arguments[1].asString(runtime).utf8(runtime);
-            instance->set(stringValue, keyName);
+            successful = instance->set(stringValue, keyName);
           } else if (arguments[1].isObject()) {
             // object
             jsi::Object object = arguments[1].asObject(runtime);
@@ -115,18 +115,22 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
               // ArrayBuffer
               jsi::ArrayBuffer arrayBuffer = object.getArrayBuffer(runtime);
               MMBuffer data(arrayBuffer.data(runtime), arrayBuffer.size(runtime), MMBufferNoCopy);
-              instance->set(data, keyName);
-            } else {
+              successful = instance->set(data, keyName);
+            } else [[unlikely]] {
               // unknown object
               throw jsi::JSError(
                   runtime,
                   "MMKV::set: 'value' argument is an object, but not of type ArrayBuffer!");
             }
-          } else {
+          } else [[unlikely]] {
             // unknown type
             throw jsi::JSError(
                 runtime,
                 "MMKV::set: 'value' argument is not of type bool, number, string or buffer!");
+          }
+
+          if (!successful) [[unlikely]] {
+            throw std::runtime_error("Failed to set " + keyName + "!");
           }
 
           return jsi::Value::undefined();
@@ -140,16 +144,14 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // key
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 1 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
           bool hasValue;
           bool value = instance->getBool(keyName, false, &hasValue);
-          if (!hasValue) {
-            [[unlikely]];
+          if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
           return jsi::Value(value);
@@ -163,16 +165,14 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // key
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 1 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
           bool hasValue;
           double value = instance->getDouble(keyName, 0.0, &hasValue);
-          if (!hasValue) {
-            [[unlikely]];
+          if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
           return jsi::Value(value);
@@ -186,16 +186,14 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // key
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 1 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
           std::string result;
           bool hasValue = instance->getString(keyName, result);
-          if (!hasValue) {
-            [[unlikely]];
+          if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
           return jsi::Value(runtime, jsi::String::createFromUtf8(runtime, result));
@@ -209,16 +207,14 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // key
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 1 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
           std::string keyName = arguments[0].asString(runtime).utf8(runtime);
           mmkv::MMBuffer buffer;
           bool hasValue = instance->getBytes(keyName, buffer);
-          if (!hasValue) {
-            [[unlikely]];
+          if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
           auto mutableData = std::make_shared<MMKVManagedBuffer>(std::move(buffer));
@@ -233,8 +229,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // key
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 1 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
@@ -251,8 +246,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // key
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1 || !arguments[0].isString()) {
-            [[unlikely]];
+          if (count != 1 || !arguments[0].isString()) [[unlikely]] {
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
@@ -295,24 +289,28 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
         1, // encryptionKey
         [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
                size_t count) -> jsi::Value {
-          if (count != 1) {
-            [[unlikely]];
+          if (count != 1) [[unlikely]] {
             throw jsi::JSError(runtime, "Expected 1 argument (encryptionKey), but received " +
                                             std::to_string(count) + "!");
           }
 
+          bool successful = false;
           if (arguments[0].isUndefined()) {
             // reset encryption key to "no encryption"
-            instance->reKey(std::string());
+            successful = instance->reKey(std::string());
           } else if (arguments[0].isString()) {
             // reKey(..) with new encryption-key
             std::string encryptionKey = arguments[0].getString(runtime).utf8(runtime);
-            instance->reKey(encryptionKey);
-          } else {
+            successful = instance->reKey(encryptionKey);
+          } else [[unlikely]] {
             // Invalid argument (maybe object?)
             throw jsi::JSError(
                 runtime,
                 "First argument ('encryptionKey') has to be of type string (or undefined)!");
+          }
+
+          if (!successful) [[unlikely]] {
+            throw std::runtime_error("Failed to recrypt MMKV instance!");
           }
 
           return jsi::Value::undefined();
