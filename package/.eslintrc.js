@@ -4,6 +4,5 @@ module.exports = {
   ignorePatterns: ['scripts', 'lib'],
   rules: {
     'prettier/prettier': ['warn'],
-    '@typescript-eslint/consistent-type-imports': 'warn',
   },
 };
