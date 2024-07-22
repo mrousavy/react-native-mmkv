@@ -34,4 +34,22 @@ RCT_EXPORT_MODULE()
   }
 }
 
+- (NSString*)getAppGroupDirectory {
+  NSString* appGroup = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"];
+  if (appGroup == nil) {
+    // No AppGroup set in Info.plist.
+    return nil;
+  }
+  NSURL* groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:appGroup];
+  if (groupDir == nil) {
+    // We have an AppGroup set in Info.plist, but the path is not readable!
+    @throw [NSException exceptionWithName:@"AppGroupNotAccessible"
+                                   reason:@"An AppGroup was set in Info.plist, but it is not accessible via NSFileManager!"
+                                 userInfo:@{
+      @"appGroup": appGroup
+    }];
+  }
+  return groupDir.path;
+}
+
 @end
