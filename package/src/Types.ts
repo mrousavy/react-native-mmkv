@@ -4,6 +4,8 @@
 export interface NativeMMKV {
   /**
    * Set a value for the given `key`.
+   *
+   * @throws an Error if the value cannot be set.
    */
   set: (key: string, value: boolean | string | number | ArrayBuffer) => void;
   /**
@@ -54,6 +56,8 @@ export interface NativeMMKV {
    * To remove encryption, pass `undefined` as a key.
    *
    * Encryption keys can have a maximum length of 16 bytes.
+   *
+   * @throws an Error if the instance cannot be recrypted.
    */
   recrypt: (key: string | undefined) => void;
   /**
