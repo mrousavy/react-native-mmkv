@@ -42,9 +42,9 @@ export interface Configuration {
    * const temporaryStorage = new MMKV({ path: '/tmp/' })
    * ```
    *
-   * _Notice_: On iOS you can set the AppGroup bundle property to share the same storage between your app and its extensions.
-   * In this case `path` property will be ignored.
-   * See more on MMKV configuration [here](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
+   * @note On iOS, if an `AppGroup` is set in `Info.plist` and `path` is `undefined`, MMKV will use the `AppGroup` directory.
+   * App Groups allow you to share MMKV storage between apps, widgets and extensions within the same AppGroup bundle.
+   * For more information, see [the `Configuration` section](https://github.com/Tencent/MMKV/wiki/iOS_tutorial#configuration).
    *
    * @default undefined
    */

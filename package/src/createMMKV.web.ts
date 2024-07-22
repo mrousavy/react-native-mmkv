@@ -1,5 +1,5 @@
 /* global localStorage */
-import type { Configuration } from './MMKV';
+import type { Configuration } from './NativeMmkv';
 import type { NativeMMKV } from './Types';
 import { createTextEncoder } from './createTextEncoder';
 

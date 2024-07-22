@@ -1,5 +1,7 @@
 package com.mrousavy.mmkv;
 
+import androidx.annotation.Nullable;
+
 import com.facebook.react.bridge.ReactApplicationContext;
 
 public class MmkvPlatformContextModule extends NativeMmkvPlatformContextSpec {
@@ -13,5 +15,12 @@ public class MmkvPlatformContextModule extends NativeMmkvPlatformContextSpec {
     @Override
     public String getBaseDirectory() {
         return context.getFilesDir().getAbsolutePath() + "/mmkv";
+    }
+
+    @Nullable
+    @Override
+    public String getAppGroupDirectory() {
+        // AppGroups do not exist on Android. It's iOS only.
+        return null;
     }
 }
