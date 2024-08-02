@@ -11,8 +11,8 @@
 void MmkvLogger::log(const std::string& tag, const std::string& formatString, Args... args) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat-security"
-if (NSDebugEnabled) {
+#ifdef DEBUG
   NSLog(@"[%s]: " + formatString.c_str(), tag.c_str(), args);
-}
+#endif
 #pragma clang diagnostic pop
 }
