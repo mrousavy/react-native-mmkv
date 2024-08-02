@@ -8,9 +8,11 @@
 #import "MmkvLogger.h"
 #import <Foundation/Foundation.h>
 
-void MmkvLogger::log(const std::string& tag, const std::string& message) {
+void MmkvLogger::log(const std::string& tag, const std::string& formatString, Args... args) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wformat-security"
-  NSLog(@"[%s]: %s", tag.c_str(), message.c_str());
+if (NSDebugEnabled) {
+  NSLog(@"[%s]: " + formatString.c_str(), tag.c_str(), args);
+}
 #pragma clang diagnostic pop
 }
