@@ -17,6 +17,8 @@ public:
 
   template <typename... Args>
   inline static void log(const std::string& tag, const std::string& formatString, Args&&... args) {
+#ifdef DEBUG
     log(tag, formatString, std::forward<Args>(args)...);
+#endif
   }
 };
