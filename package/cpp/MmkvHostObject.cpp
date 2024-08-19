@@ -69,11 +69,11 @@ MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) 
   if (!config.mode.has_value()) {
     return MMKVMode::MMKV_SINGLE_PROCESS;
   }
-  react::MmkvCxxMode mode = config.mode.value();
+  react::NativeMmkvMode mode = config.mode.value();
   switch (mode) {
-    case react::MmkvCxxMode::SINGLE_PROCESS:
+    case react::NativeMmkvMode::SINGLE_PROCESS:
       return MMKVMode::MMKV_SINGLE_PROCESS;
-    case react::MmkvCxxMode::MULTI_PROCESS:
+    case react::NativeMmkvMode::MULTI_PROCESS:
       return MMKVMode::MMKV_MULTI_PROCESS;
     default:
       [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
