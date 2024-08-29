@@ -46,20 +46,9 @@
 ## react-native-mmkv V3
 
 > [!IMPORTANT]
-> react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**.
+> react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**. (react-native 0.75+)
 > - If you want to use react-native-mmkv 3.x.x, you need to enable the new architecture in your app (see ["Enable the New Architecture for Apps"](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
 > - If you cannot use the new architecture yet, downgrade to react-native-mmkv 2.x.x for now.
-
-## Sponsors
-
-<div align="right">
-  <a href="https://getstream.io/chat/react-native-chat/tutorial/?utm_source=Github&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=Github_Jan2022_ReactNative&utm_term=react-native-mmkv">
-    <img align="right" src="https://theme.zdassets.com/theme_assets/9442057/efc3820e436f9150bc8cf34267fff4df052a1f9c.png" height="40" />
-  </a>
-</div>
-
-react-native-mmkv is sponsored by **getstream.io**. <br/>
-[Try the React Native Chat tutorial 💬](https://getstream.io/chat/react-native-chat/tutorial/?utm_source=Github&utm_medium=Github_Repo_Content_Ad&utm_content=Developer&utm_campaign=Github_Jan2022_ReactNative&utm_term=react-native-mmkv)
 
 ## Benchmark
 
