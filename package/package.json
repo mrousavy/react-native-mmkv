@@ -26,9 +26,7 @@
     "src",
     "react-native-mmkv.podspec",
     "react-native.config.js",
-    "../README.md",
-    "img/banner-light.png",
-    "img/banner-dark.png"
+    "README.md"
   ],
   "scripts": {
     "typescript": "tsc --noEmit",
