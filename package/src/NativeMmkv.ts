@@ -85,23 +85,23 @@ export interface Spec extends TurboModule {
   createMMKV(configuration: Configuration): UnsafeObject;
 }
 
-let Module: Spec | null;
+let mmkvModule: Spec | null;
 
 export function getMMKVTurboModule(): Spec {
   try {
-    if (Module == null) {
+    if (mmkvModule == null) {
       // 1. Load MMKV TurboModule
-      Module = TurboModuleRegistry.getEnforcing<Spec>('MmkvCxx');
+      mmkvModule = TurboModuleRegistry.getEnforcing<Spec>('MmkvCxx');
 
       // 2. Get the PlatformContext TurboModule as well
       const platformContext = getMMKVPlatformContextTurboModule();
 
       // 3. Initialize it with the documents directory from platform-specific context
       const basePath = platformContext.getBaseDirectory();
-      Module.initialize(basePath);
+      mmkvModule.initialize(basePath);
     }
 
-    return Module;
+    return mmkvModule;
   } catch (cause) {
     // TurboModule could not be found!
     throw new ModuleNotFoundError(cause);
