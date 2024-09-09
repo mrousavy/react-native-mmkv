@@ -20,15 +20,15 @@ export interface Spec extends TurboModule {
   getAppGroupDirectory(): string | undefined;
 }
 
-let Module: Spec | null;
+let mmkvPlatformModule: Spec | null;
 
 export function getMMKVPlatformContextTurboModule(): Spec {
   try {
-    if (Module == null) {
+    if (mmkvPlatformModule == null) {
       // 1. Get the TurboModule
-      Module = TurboModuleRegistry.getEnforcing<Spec>('MmkvPlatformContext');
+      mmkvPlatformModule = TurboModuleRegistry.getEnforcing<Spec>('MmkvPlatformContext');
     }
-    return Module;
+    return mmkvPlatformModule;
   } catch (e) {
     // TurboModule could not be found!
     throw new ModuleNotFoundError(e);
