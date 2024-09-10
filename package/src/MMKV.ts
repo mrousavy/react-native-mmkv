@@ -1,9 +1,9 @@
-import { AppState } from 'react-native';
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
 import { isTest } from './PlatformChecker';
 import type { Configuration } from './NativeMmkv';
 import type { Listener, MMKVInterface, NativeMMKV } from './Types';
+import { addMemoryWarningListener } from './MemoryWarningListener';
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 
@@ -26,10 +26,7 @@ export class MMKV implements MMKVInterface {
       : createMMKV(configuration);
     this.functionCache = {};
 
-    AppState.addEventListener('memoryWarning', () => {
-      // when we have a memory warning, delete unused keys by trimming MMKV
-      this.trim();
-    });
+    addMemoryWarningListener(this);
   }
 
   private get onValueChangedListeners() {

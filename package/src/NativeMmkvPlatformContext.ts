@@ -26,7 +26,9 @@ export function getMMKVPlatformContextTurboModule(): Spec {
   try {
     if (mmkvPlatformModule == null) {
       // 1. Get the TurboModule
-      mmkvPlatformModule = TurboModuleRegistry.getEnforcing<Spec>('MmkvPlatformContext');
+      mmkvPlatformModule = TurboModuleRegistry.getEnforcing<Spec>(
+        'MmkvPlatformContext'
+      );
     }
     return mmkvPlatformModule;
   } catch (e) {
