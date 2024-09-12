@@ -48,6 +48,7 @@
 > [!IMPORTANT]
 > react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**. (react-native 0.75+)
 > - If you want to use react-native-mmkv 3.x.x, you need to enable the new architecture in your app (see ["Enable the New Architecture for Apps"](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
+> - For React-Native 0.74.x, use react-native-mmkv 3.0.1. For React-Native 0.75.x and higher, use react-native-mmkv 3.0.2 or higher.
 > - If you cannot use the new architecture yet, downgrade to react-native-mmkv 2.x.x for now.
 
 ## Benchmark
