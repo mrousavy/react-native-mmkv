@@ -255,7 +255,7 @@ Use [reactotron-react-native-mmkv](https://www.npmjs.com/package/reactotron-reac
 
 ## Community Discord
 
-[**Join the Margelo Community Discord**](https://discord.gg/6CSHz2qAvA) to chat about react-native-mmkv or other Margelo libraries.
+[**Join the Margelo Community Discord**](https://margelo.com/discord) to chat about react-native-mmkv or other Margelo libraries.
 
 ## Adopting at scale
 
