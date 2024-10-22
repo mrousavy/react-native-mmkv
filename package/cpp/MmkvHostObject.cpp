@@ -135,7 +135,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
           if (!successful) [[unlikely]] {
             if (instance->isReadOnly()) {
-              throw jsi::JSError(runtime, "Failed to set " + keyName + "! This instance is read-only!");
+              throw jsi::JSError(runtime,
+                                 "Failed to set " + keyName + "! This instance is read-only!");
             } else {
               throw jsi::JSError(runtime, "Failed to set " + keyName + "!");
             }
