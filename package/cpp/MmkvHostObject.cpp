@@ -26,9 +26,9 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
   MMKVMode mode = getMMKVMode(config);
-  if (config.isReadOnly.has_value() && config.isReadOnly.value()) {
+  if (config.readOnly.has_value() && config.readOnly.value()) {
     MmkvLogger::log("RNMMKV", "Instance is read-only!");
-    mode << MMKVMode::MMKV_READ_ONLY;
+    mode = mode | MMKVMode::MMKV_READ_ONLY;
   }
 
 #ifdef __APPLE__
