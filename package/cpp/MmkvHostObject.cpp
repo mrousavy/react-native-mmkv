@@ -134,7 +134,11 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
 
           if (!successful) [[unlikely]] {
-            throw std::runtime_error("Failed to set " + keyName + "!");
+            if (instance->isReadOnly()) {
+              throw jsi::JSError(runtime, "Failed to set " + keyName + "! This instance is read-only!");
+            } else {
+              throw jsi::JSError(runtime, "Failed to set " + keyName + "!");
+            }
           }
 
           return jsi::Value::undefined();
@@ -314,7 +318,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
 
           if (!successful) [[unlikely]] {
-            throw std::runtime_error("Failed to recrypt MMKV instance!");
+            throw jsi::JSError(runtime, "Failed to recrypt MMKV instance!");
           }
 
           return jsi::Value::undefined();
