@@ -66,7 +66,7 @@ MmkvHostObject::~MmkvHostObject() {
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   return jsi::PropNameID::names(rt, "set", "getBoolean", "getBuffer", "getString", "getNumber",
                                 "contains", "delete", "getAllKeys", "deleteAll", "recrypt", "trim",
-                                "size");
+                                "size", "isReadOnly");
 }
 
 MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) {
