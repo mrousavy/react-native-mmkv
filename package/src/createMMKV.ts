@@ -1,5 +1,5 @@
 import { Platform } from 'react-native';
-import { getMMKVTurboModule, type Configuration } from './NativeMmkv';
+import { getMMKVTurboModule, Mode, type Configuration } from './NativeMmkv';
 import type { NativeMMKV } from './Types';
 import { getMMKVPlatformContextTurboModule } from './NativeMmkvPlatformContext';
 
@@ -21,6 +21,13 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
         console.error(e);
       }
     }
+  }
+
+  if (typeof config.mode === 'number') {
+    // Code-gen expects enums to be strings. In TS, they might be numbers tho.
+    // This sucks, so we need a workaround.
+    // @ts-expect-error the native side actually expects a string.
+    config.mode = Mode[config.mode];
   }
 
   const instance = module.createMMKV(config);
