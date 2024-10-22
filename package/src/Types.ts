@@ -74,6 +74,11 @@ export interface NativeMMKV {
    * Get the current total size of the storage, in bytes.
    */
   readonly size: number;
+  /**
+   * Returns whether this instance is in read-only mode or not.
+   * If this is `true`, you can only use "get"-functions.
+   */
+  readonly isReadOnly: boolean;
 }
 
 export interface Listener {

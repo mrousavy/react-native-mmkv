@@ -26,6 +26,10 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
   MMKVMode mode = getMMKVMode(config);
+  if (config.readOnly.has_value() && config.readOnly.value()) {
+    MmkvLogger::log("RNMMKV", "Instance is read-only!");
+    mode = mode | MMKVMode::MMKV_READ_ONLY;
+  }
 
 #ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
@@ -62,7 +66,7 @@ MmkvHostObject::~MmkvHostObject() {
 std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) {
   return jsi::PropNameID::names(rt, "set", "getBoolean", "getBuffer", "getString", "getNumber",
                                 "contains", "delete", "getAllKeys", "deleteAll", "recrypt", "trim",
-                                "size");
+                                "size", "isReadOnly");
 }
 
 MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) {
@@ -130,7 +134,12 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
 
           if (!successful) [[unlikely]] {
-            throw std::runtime_error("Failed to set " + keyName + "!");
+            if (instance->isReadOnly()) {
+              throw jsi::JSError(runtime,
+                                 "Failed to set " + keyName + "! This instance is read-only!");
+            } else {
+              throw jsi::JSError(runtime, "Failed to set " + keyName + "!");
+            }
           }
 
           return jsi::Value::undefined();
@@ -310,7 +319,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
 
           if (!successful) [[unlikely]] {
-            throw std::runtime_error("Failed to recrypt MMKV instance!");
+            throw jsi::JSError(runtime, "Failed to recrypt MMKV instance!");
           }
 
           return jsi::Value::undefined();
@@ -334,6 +343,12 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
     // MMKV.size
     size_t size = instance->actualSize();
     return jsi::Value(static_cast<int>(size));
+  }
+
+  if (propName == "isReadOnly") {
+    // MMKV.isReadOnly
+    bool isReadOnly = instance->isReadOnly();
+    return jsi::Value(isReadOnly);
   }
 
   return jsi::Value::undefined();

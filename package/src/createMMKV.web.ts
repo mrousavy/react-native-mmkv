@@ -120,6 +120,7 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
       throw new Error('`recrypt(..)` is not supported on Web!');
     },
     size: 0,
+    isReadOnly: false,
     trim: () => {
       // no-op
     },

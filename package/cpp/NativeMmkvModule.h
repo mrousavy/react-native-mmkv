@@ -22,7 +22,7 @@ namespace facebook::react {
 // The MMKVConfiguration type from JS
 using MMKVConfig =
     NativeMmkvConfiguration<std::string, std::optional<std::string>, std::optional<std::string>,
-                            std::optional<NativeMmkvMode>>;
+                            std::optional<NativeMmkvMode>, std::optional<bool>>;
 template <> struct Bridging<MMKVConfig> : NativeMmkvConfigurationBridging<MMKVConfig> {};
 
 // The TurboModule itself
