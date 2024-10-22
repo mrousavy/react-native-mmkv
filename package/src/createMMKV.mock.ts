@@ -30,6 +30,7 @@ export const createMockMMKV = (): NativeMMKV => {
       console.warn('Encryption is not supported in mocked MMKV instances!');
     },
     size: 0,
+    isReadOnly: false,
     trim: () => {
       // no-op
     },

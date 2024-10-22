@@ -70,6 +70,10 @@ export interface Configuration {
    * @default SINGLE_PROCESS
    */
   mode?: Mode;
+  /**
+   * If `true`, the MMKV instance can only read from the storage, but not write to it.
+   */
+  readOnly?: boolean;
 }
 
 export interface Spec extends TurboModule {

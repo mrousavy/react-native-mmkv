@@ -26,6 +26,10 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
   MMKVMode mode = getMMKVMode(config);
+  if (config.isReadOnly.has_value() && config.isReadOnly.value()) {
+    MmkvLogger::log("RNMMKV", "Instance is read-only!");
+    mode << MMKVMode::MMKV_READ_ONLY;
+  }
 
 #ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
@@ -334,6 +338,12 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
     // MMKV.size
     size_t size = instance->actualSize();
     return jsi::Value(static_cast<int>(size));
+  }
+
+  if (propName == "isReadOnly") {
+    // MMKV.isReadOnly
+    bool isReadOnly = instance->isReadOnly();
+    return jsi::Value(isReadOnly);
   }
 
   return jsi::Value::undefined();

@@ -58,6 +58,9 @@ export class MMKV implements MMKVInterface {
   get size(): number {
     return this.nativeInstance.size;
   }
+  get isReadOnly(): boolean {
+    return this.nativeInstance.isReadOnly;
+  }
   set(key: string, value: boolean | string | number | ArrayBuffer): void {
     const func = this.getFunctionFromCache('set');
     func(key, value);
