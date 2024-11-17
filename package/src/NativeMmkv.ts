@@ -5,6 +5,11 @@ import { ModuleNotFoundError } from './ModuleNotFoundError';
 import { getMMKVPlatformContextTurboModule } from './NativeMmkvPlatformContext';
 
 /**
+ * IMPORTANT: These types are also in the Types.ts file.
+ * Due to how react-native-codegen works these are required here as the spec types can not be separated from spec.
+ * We also need the types separate to allow bypassing importing turbo module registry in web
+ */
+/**
  * Configures the mode of the MMKV instance.
  */
 export enum Mode {

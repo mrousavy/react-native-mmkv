@@ -1,6 +1,6 @@
 import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
 import { MMKV } from './MMKV';
-import type { Configuration } from './NativeMmkv';
+import type { Configuration } from './Types';
 
 function isConfigurationEqual(
   left?: Configuration,
