@@ -1,8 +1,12 @@
 import { createMMKV } from './createMMKV';
 import { createMockMMKV } from './createMMKV.mock';
 import { isTest } from './PlatformChecker';
-import type { Configuration } from './NativeMmkv';
-import type { Listener, MMKVInterface, NativeMMKV } from './Types';
+import type {
+  Configuration,
+  Listener,
+  MMKVInterface,
+  NativeMMKV,
+} from './Types';
 import { addMemoryWarningListener } from './MemoryWarningListener';
 
 const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();

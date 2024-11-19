@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
-import { getMMKVTurboModule, Mode, type Configuration } from './NativeMmkv';
-import type { NativeMMKV } from './Types';
+import { getMMKVTurboModule } from './NativeMmkv';
+import { type Configuration, Mode, type NativeMMKV } from './Types';
 import { getMMKVPlatformContextTurboModule } from './NativeMmkvPlatformContext';
 
 export const createMMKV = (config: Configuration): NativeMMKV => {
