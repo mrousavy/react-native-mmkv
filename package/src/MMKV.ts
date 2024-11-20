@@ -1,5 +1,3 @@
-import { createMMKV } from './createMMKV';
-import { createMockMMKV } from './createMMKV.mock';
 import { isTest } from './PlatformChecker';
 import type {
   Configuration,
@@ -26,8 +24,8 @@ export class MMKV implements MMKVInterface {
   constructor(configuration: Configuration = { id: 'mmkv.default' }) {
     this.id = configuration.id;
     this.nativeInstance = isTest()
-      ? createMockMMKV()
-      : createMMKV(configuration);
+      ? require('./createMMKV.mock').createMockMMKV()
+      : require('./createMMKV').createMMKV(configuration);
     this.functionCache = {};
 
     addMemoryWarningListener(this);
