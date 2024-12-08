@@ -21,7 +21,10 @@ function removeItem(key: string): void {
   storage.delete(key);
 }
 
-const subscribe = (key: string, callback: (value: string | null) => void) => {
+function subscribe(
+  key: string,
+  callback: (value: string | null) => void
+): () => void {
   const listener = (changedKey: string) => {
     if (changedKey === key) {
       callback(getItem(key))
