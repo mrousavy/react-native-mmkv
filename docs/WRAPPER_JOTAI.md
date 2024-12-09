@@ -48,6 +48,7 @@ export const atomWithMMKV = <T>(key: string, initialValue: T) =>
       removeItem,
       subscribe,
     })),
+    { getOnInit: true }
   );
 ```
 
