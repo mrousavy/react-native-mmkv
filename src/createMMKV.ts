@@ -69,11 +69,15 @@ export const createMMKV = (config: MMKVConfiguration): NativeMMKV => {
   return global.mmkvCreateNewInstance(config);
 };
 
-function isRemoteDebuggingInChrome () {
+declare global {
+  const RN$Bridgeless: boolean;
+}
+
+function isRemoteDebuggingInChrome() {
   // Remote debugging in Chrome is not supported in bridgeless
   if ('RN$Bridgeless' in global && RN$Bridgeless === true) {
-    return false
+    return false;
   }
 
-  return __DEV__ && typeof global.nativeCallSyncHook === 'undefined'
+  return __DEV__ && typeof global.nativeCallSyncHook === 'undefined';
 }
