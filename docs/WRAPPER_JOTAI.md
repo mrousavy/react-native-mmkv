@@ -21,8 +21,21 @@ function removeItem(key: string): void {
   storage.delete(key);
 }
 
-function clearAll(): void {
-  storage.clearAll();
+function subscribe(
+  key: string,
+  callback: (value: string | null) => void
+): () => void {
+  const listener = (changedKey: string) => {
+    if (changedKey === key) {
+      callback(getItem(key))
+    }
+  }
+
+  const { remove } = storage.addOnValueChangedListener(listener)
+
+  return () => {
+    remove()
+  }
 }
 
 export const atomWithMMKV = <T>(key: string, initialValue: T) =>
@@ -33,8 +46,9 @@ export const atomWithMMKV = <T>(key: string, initialValue: T) =>
       getItem,
       setItem,
       removeItem,
-      clearAll,
+      subscribe,
     })),
+    { getOnInit: true }
   );
 ```
 
