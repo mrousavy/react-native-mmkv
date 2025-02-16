@@ -30,12 +30,7 @@ FastString FastString::makeFromJsiString(jsi::Runtime& runtime, const jsi::Strin
       } else {
         // UTF16 (slow path, conversion to UTF8 happens)
         auto utf16Data = static_cast<const char16_t*>(data);
-        size_t estimatedUtf8Length = (length * 3) + 1;
-        
-        char* destination = new char[estimatedUtf8Length];
-        size_t actualLength = utf16_to_utf8(utf16Data, length, destination);
-        std::string utf8String(destination, actualLength);
-        delete[] destination;
+        std::string utf8String = utf16_to_utf8(utf16Data, length);
         
         if (isFirstRun) [[likely]] {
           result.setData(std::move(utf8String));
