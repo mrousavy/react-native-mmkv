@@ -88,27 +88,25 @@ private:
   bool _isView;
   friend Data;
   
-  void destroyData() noexcept {
-    if (_isView) VIEW_PATH {
-      _data.view.~View();
-    } else OWNED_PATH {
-      _data.owned.~Owned();
-    }
-  }
-  
 private:
   void setData(const char* data, size_t length) {
-    destroyData();
+    if (!_isView) {
+      _data.owned.~Owned();
+    }
     _data.view = Data::View(data, length);
     _isView = true;
   }
   void setData(std::string&& string) {
-    destroyData();
+    if (_isView) {
+      _data.view.~View();
+    }
     _data.owned = Data::Owned(std::move(string));
     _isView = false;
   }
   void setData(const std::string& string) {
-    destroyData();
+    if (_isView) {
+      _data.view.~View();
+    }
     _data.owned = Data::Owned(string);
     _isView = false;
   }
@@ -117,7 +115,11 @@ public:
   // Default constructor creates empty string view
   FastString() : _data(Data(nullptr, 0)), _isView(true) {}
   ~FastString() {
-    destroyData();
+    if (_isView) VIEW_PATH {
+      _data.view.~View();
+    } else OWNED_PATH {
+      _data.owned.~Owned();
+    }
   }
   
   FastString(const FastString& other): _data(Data::copyFrom(other)), _isView(other._isView) { }

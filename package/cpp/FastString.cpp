@@ -15,7 +15,7 @@ FastString FastString::makeFromJsiString(jsi::Runtime& runtime, const jsi::Strin
   
   bool isFirstRun = true;
 
-  auto callback = [&](bool isAscii, const void* data, size_t length) {
+  auto callback = [&result, &isFirstRun](bool isAscii, const void* data, size_t length) {
       if (isAscii) [[likely]] {
         // UTF8 (fast path, no conversion)
         auto utf8Data = static_cast<const char*>(data);
@@ -29,15 +29,17 @@ FastString FastString::makeFromJsiString(jsi::Runtime& runtime, const jsi::Strin
         }
       } else {
         // UTF16 (slow path, conversion to UTF8 happens)
-        auto utf16Data = static_cast<const utf16_t*>(data);
-        size_t utf8Length = utf16_to_utf8(utf16Data, length, nullptr, 0);
-        std::string utf8String;
-        utf8String.reserve(utf8Length);
+        auto utf16Data = static_cast<const char16_t*>(data);
+        size_t estimatedUtf8Length = (length * 3) + 1;
         
-        utf16_to_utf8(utf16Data, length, reinterpret_cast<utf8_t*>(utf8String.data()), utf8Length);
+        char* destination = new char[estimatedUtf8Length];
+        size_t actualLength = utf16_to_utf8(utf16Data, length, destination);
+        std::string utf8String(destination, actualLength);
+        delete[] destination;
         
         if (isFirstRun) [[likely]] {
           result.setData(std::move(utf8String));
+          isFirstRun = false;
         } else {
           result.string().append(std::move(utf8String));
         }
