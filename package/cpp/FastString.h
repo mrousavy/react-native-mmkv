@@ -5,6 +5,8 @@
 //  Created by Marc Rousavy on 16.02.25.
 //
 
+#pragma once
+
 #include <jsi/jsi.h>
 #include <memory>
 #include <string>
@@ -82,7 +84,7 @@ private:
     ~Data() { /* caller is responsible for cleaning up View/Owned */ }
   };
 
-  Data _data;
+  mutable Data _data;
   bool _isView;
   friend Data;
   
@@ -154,7 +156,7 @@ public:
     }
   }
 
-  const std::string& string() const& {
+  std::string& string() const& {
     if (_isView) VIEW_PATH {
       // Copy view data into an owned string now and change it's type to owned.
       const_cast<FastString*>(this)->setData(_data.view.copyToString());
