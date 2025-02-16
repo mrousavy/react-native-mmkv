@@ -67,15 +67,8 @@ inline std::string utf16_to_utf8(const char16_t* data, size_t length) {
 }
 } // namespace utf
 
-FastString FastString::from_jsi_string(jsi::Runtime& runtime, const jsi::String& str) {
+FastString FastString::makeFromJsiString(jsi::Runtime& runtime, const jsi::String& str) {
   FastString result;
-
-  // Use a small vector optimization for parts
-  // Most strings will be single-part, so avoid heap allocation
-  static constexpr size_t INLINE_PARTS = 4;
-  std::array<std::string, INLINE_PARTS> inline_parts;
-  std::vector<std::string> heap_parts;
-  size_t part_count = 0;
 
   bool first_callback = true;
   const char* first_data = nullptr;
@@ -89,77 +82,15 @@ FastString FastString::from_jsi_string(jsi::Runtime& runtime, const jsi::String&
       first_callback = false;
       return;
     }
-
-    // Need to store this part
-    if (part_count < INLINE_PARTS) {
-      if (ascii) {
-        inline_parts[part_count].assign(static_cast<const char*>(data), num);
-      } else {
-        // Convert UTF16 to UTF8
-        const char16_t* utf16_data = static_cast<const char16_t*>(data);
-        inline_parts[part_count] = utf::utf16_to_utf8(utf16_data, num);
-      }
-    } else {
-      // Switch to heap storage if we exceed inline capacity
-      if (part_count == INLINE_PARTS) {
-        heap_parts.reserve(8); // Reasonable guess for max parts
-        heap_parts.insert(heap_parts.end(), std::make_move_iterator(inline_parts.begin()),
-                          std::make_move_iterator(inline_parts.end()));
-      }
-
-      if (ascii) {
-        heap_parts.emplace_back(static_cast<const char*>(data), num);
-      } else {
-        const char16_t* utf16_data = static_cast<const char16_t*>(data);
-        heap_parts.push_back(utf::utf16_to_utf8(utf16_data, num));
-      }
-    }
-    part_count++;
-    first_callback = false;
   };
 
   str.getStringData(runtime, callback);
 
-  if (first_data != nullptr && part_count == 0) {
+  if (first_data != nullptr) [[likely]] {
     // Zero-copy case - single ASCII part
-    result.data.reset(new Data(first_data, first_length), Deleter(true));
-    result.is_view = true;
+    result.setData(first_data, first_length);
   } else {
-    // Need to concatenate
-    std::string concatenated;
-    size_t total_size = 0;
-
-    // Calculate total size
-    if (first_data)
-      total_size += first_length;
-    if (part_count <= INLINE_PARTS) {
-      for (size_t i = 0; i < part_count; i++) {
-        total_size += inline_parts[i].size();
-      }
-    } else {
-      for (const auto& part : heap_parts) {
-        total_size += part.size();
-      }
-    }
-
-    concatenated.reserve(total_size);
-
-    // Build final string
-    if (first_data) {
-      concatenated.append(first_data, first_length);
-    }
-    if (part_count <= INLINE_PARTS) {
-      for (size_t i = 0; i < part_count; i++) {
-        concatenated += inline_parts[i];
-      }
-    } else {
-      for (const auto& part : heap_parts) {
-        concatenated += part;
-      }
-    }
-
-    result.data.reset(new Data(std::move(concatenated)), Deleter(false));
-    result.is_view = false;
+    throw "not imp";
   }
 
   return result;
