@@ -7,6 +7,7 @@
 //
 
 #include "MmkvHostObject.h"
+#include "FastString.h"
 #include "MMKVManagedBuffer.h"
 #include "MmkvLogger.h"
 #include <MMKV.h>
@@ -110,6 +111,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             successful = instance->set(arguments[1].getNumber(), keyName);
           } else if (arguments[1].isString()) {
             // string
+            auto view = FastString::from_jsi_string(runtime, arguments[1].getString(runtime));
+            std::cout << "STRING DATA: " << view.view() << std::endl;
             std::string stringValue = arguments[1].getString(runtime).utf8(runtime);
             successful = instance->set(stringValue, keyName);
           } else if (arguments[1].isObject()) {
