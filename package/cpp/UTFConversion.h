@@ -2,112 +2,146 @@
 #include <cstdint>
 #include <string>
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-  #include <arm_neon.h>
+#include <arm_neon.h>
 #endif
 
-// Convert a UTF–16 string (given as a pointer and length in char16_t units)
-// into a UTF–8 std::string. This implementation is tuned for ARM/mobile:
-// it uses NEON intrinsics to process blocks when the next 8 code–units are
-// in the BMP and all require three UTF–8 bytes (which is common for non–Latin scripts).
-// When any surrogates or code–points needing 1 or 2 UTF–8 bytes appear, we fall back
-// to a scalar conversion that also handles surrogate pairs.
+// A super-optimized UTF16-to-UTF8 converter for ARM/mobile.
+// It converts UTF16 input (given as a const char16_t* and length)
+// into a std::string in UTF8. Two NEON fast-paths are used:
+//
+//   • If a block of 8 UTF16 code units are all in the range [0x0800,0xFFFF]
+//     (and not surrogates), each produces exactly 3 UTF8 bytes.
+//     We compute the three bytes in parallel and use vst3_u8 to store 24 bytes.
+//
+//   • If a block of 8 code units are all in the range [0x80,0x07FF] (i.e. none
+//     are ASCII, so all are 2-byte UTF8), we use a similar approach with vst2_u8.
+//
+// In any other case (including surrogate pairs or mixed ranges) we fall back
+// to a scalar loop that handles surrogate pairs and variable-length conversion.
 std::string utf16_to_utf8(const char16_t* input, size_t len) {
-    // Worst–case expansion: every char16_t might become up to 3 bytes.
-    std::string out;
-    out.resize(len * 3);
-    char* dest = &out[0];
-    const char16_t* src = input;
-    const char16_t* end = input + len;
+  // Preallocate worst-case output: every code unit might be 3 bytes.
+  std::string out;
+  out.resize(len * 3);
+  char* dest = &out[0];
+  const char16_t* src = input;
+  const char16_t* end = input + len;
 
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-    // Process in blocks of 8 char16_t values (16 bytes) using NEON.
-    while (src + 8 <= end) {
-        // Load 8 UTF–16 code–units.
-        uint16x8_t vec = vld1q_u16(reinterpret_cast<const uint16_t*>(src));
+  // Preload frequently used constants into NEON registers.
+  const uint16x8_t v_d800 = vdupq_n_u16(0xD800);
+  const uint16x8_t v_dfff = vdupq_n_u16(0xDFFF);
+  const uint16x8_t v_thr = vdupq_n_u16(0x0800);
+  const uint16x8_t v_mask3F = vdupq_n_u16(0x3F);
+  const uint16x8_t v_constE0 = vdupq_n_u16(0xE0); // for 3-byte header: 0xE0
+  const uint16x8_t v_constC0 = vdupq_n_u16(0xC0); // for 2-byte header: 0xC0
+  const uint16x8_t v_const80 = vdupq_n_u16(0x80); // for continuation bytes
 
-        // Check for any surrogates (i.e. values in [0xD800, 0xDFFF]).
-        uint16x8_t low_bound  = vdupq_n_u16(0xD800);
-        uint16x8_t high_bound = vdupq_n_u16(0xDFFF);
-        uint16x8_t ge_d800 = vcgeq_u16(vec, low_bound);
-        uint16x8_t le_dfff = vcleq_u16(vec, high_bound);
-        uint16x8_t surrogate_mask = vandq_u16(ge_d800, le_dfff);
-        // vmaxvq_u16 returns the maximum element in the vector.
-        if (vmaxvq_u16(surrogate_mask) != 0) {
-            break; // fall back to scalar conversion for mixed data.
-        }
+  while (src + 8 <= end) {
+    // Load 8 UTF16 code units.
+    uint16x8_t vec = vld1q_u16(reinterpret_cast<const uint16_t*>(src));
 
-        // For each BMP non–surrogate code–unit the UTF–8 length is:
-        //   1 byte if < 0x80, 2 bytes if < 0x0800, 3 bytes otherwise.
-        // We want to vectorize only if every value in the block is >= 0x0800,
-        // so that each produces exactly 3 bytes.
-        uint16x8_t thr = vdupq_n_u16(0x0800);
-        uint16x8_t is_lt = vcltq_u16(vec, thr);
-        // Check if any element is less than 0x0800.
-        uint16_t tmp[8];
-        vst1q_u16(tmp, is_lt);
-        bool all_three = true;
-        for (int i = 0; i < 8; i++) {
-            if (tmp[i] != 0) { // i.e. vec[i] < 0x0800
-                all_three = false;
-                break;
-            }
-        }
-        if (!all_three)
-            break; // fall back to scalar conversion.
-
-        // All 8 code–units are in [0x0800, 0xFFFF] (and are not surrogates)
-        // so each produces exactly 3 UTF–8 bytes.
-        // Process them in a tight loop.
-        for (int i = 0; i < 8; i++) {
-            uint16_t ch = src[i];
-            // Produce 3 bytes:
-            //   byte0 = 0xE0 | (ch >> 12)
-            //   byte1 = 0x80 | ((ch >> 6) & 0x3F)
-            //   byte2 = 0x80 | (ch & 0x3F)
-            dest[0] = static_cast<char>(0xE0 | (ch >> 12));
-            dest[1] = static_cast<char>(0x80 | ((ch >> 6) & 0x3F));
-            dest[2] = static_cast<char>(0x80 | (ch & 0x3F));
-            dest += 3;
-        }
-        src += 8;
+    // Check for any surrogates (i.e. values in [0xD800, 0xDFFF]).
+    uint16x8_t ge_d800 = vcgeq_u16(vec, v_d800);
+    uint16x8_t le_dfff = vcleq_u16(vec, v_dfff);
+    uint16x8_t surrogate = vandq_u16(ge_d800, le_dfff);
+    if (vmaxvq_u16(surrogate) != 0) {
+      // At least one code unit is in the surrogate range.
+      break; // Fallback to scalar conversion (which handles surrogate pairs).
     }
+
+    // Compute the minimum and maximum values in the vector.
+    const uint16_t min_val = vminvq_u16(vec);
+    const uint16_t max_val = vmaxvq_u16(vec);
+
+    if (min_val >= 0x0800) {
+      // All 8 code units are >= 0x0800, so each produces exactly 3 UTF8 bytes.
+      // Byte 0: 0xE0 | (ch >> 12)
+      uint16x8_t ch_shr12 = vshrq_n_u16(vec, 12);
+      uint16x8_t v0_16 = vorrq_u16(ch_shr12, v_constE0);
+      uint8x8_t v0 = vmovn_u16(v0_16);
+
+      // Byte 1: 0x80 | ((ch >> 6) & 0x3F)
+      uint16x8_t ch_shr6 = vshrq_n_u16(vec, 6);
+      uint16x8_t v1_16 = vandq_u16(ch_shr6, v_mask3F);
+      v1_16 = vorrq_u16(v1_16, v_const80);
+      uint8x8_t v1 = vmovn_u16(v1_16);
+
+      // Byte 2: 0x80 | (ch & 0x3F)
+      uint16x8_t v2_16 = vandq_u16(vec, v_mask3F);
+      v2_16 = vorrq_u16(v2_16, v_const80);
+      uint8x8_t v2 = vmovn_u16(v2_16);
+
+      // Use NEON’s interleaved store to output 24 bytes at once.
+      uint8x8x3_t out3;
+      out3.val[0] = v0;
+      out3.val[1] = v1;
+      out3.val[2] = v2;
+      vst3_u8(reinterpret_cast<uint8_t*>(dest), out3);
+
+      src += 8;
+      dest += 24;
+      continue;
+    } else if (max_val < 0x0800 && min_val >= 0x80) {
+      // All 8 code units are in [0x80, 0x07FF]. (Note: if any were <0x80,
+      // that would be ASCII—but we assume non-ASCII data, so we get a uniform block.)
+      // Each produces exactly 2 UTF8 bytes.
+      // Byte 0: 0xC0 | (ch >> 6)
+      uint16x8_t ch_shr6 = vshrq_n_u16(vec, 6);
+      uint16x8_t v0_16 = vorrq_u16(ch_shr6, v_constC0);
+      uint8x8_t v0 = vmovn_u16(v0_16);
+
+      // Byte 1: 0x80 | (ch & 0x3F)
+      uint16x8_t v1_16 = vandq_u16(vec, v_mask3F);
+      v1_16 = vorrq_u16(v1_16, v_const80);
+      uint8x8_t v1 = vmovn_u16(v1_16);
+
+      // Interleave and store 16 bytes at once.
+      uint8x8x2_t out2;
+      out2.val[0] = v0;
+      out2.val[1] = v1;
+      vst2_u8(reinterpret_cast<uint8_t*>(dest), out2);
+
+      src += 8;
+      dest += 16;
+      continue;
+    }
+    // If the block mixes 1-, 2-, or 3-byte cases, fall back to the scalar loop.
+    break;
+  }
 #endif
 
-    // Fallback scalar loop for the remaining code–units (and any blocks that weren’t fully 3–byte).
-    while (src < end) {
-        uint32_t cp; // code point
-        uint16_t x = *src++;
-        // Check for surrogate pair.
-        if (x >= 0xD800 && x <= 0xDBFF && src < end) {
-            uint16_t y = *src;
-            if (y >= 0xDC00 && y <= 0xDFFF) {
-                cp = ((x - 0xD800) << 10) + (y - 0xDC00) + 0x10000;
-                src++;
-            } else {
-                cp = 0xFFFD; // invalid surrogate – replace with U+FFFD
-            }
-        } else {
-            cp = x;
-        }
-
-        // Now emit cp as UTF–8.
-        if (cp < 0x80) {
-            *dest++ = static_cast<char>(cp);
-        } else if (cp < 0x800) {
-            *dest++ = static_cast<char>(0xC0 | (cp >> 6));
-            *dest++ = static_cast<char>(0x80 | (cp & 0x3F));
-        } else if (cp < 0x10000) {
-            *dest++ = static_cast<char>(0xE0 | (cp >> 12));
-            *dest++ = static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
-            *dest++ = static_cast<char>(0x80 | (cp & 0x3F));
-        } else {
-            *dest++ = static_cast<char>(0xF0 | (cp >> 18));
-            *dest++ = static_cast<char>(0x80 | ((cp >> 12) & 0x3F));
-            *dest++ = static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
-            *dest++ = static_cast<char>(0x80 | (cp & 0x3F));
-        }
+  // Fallback scalar conversion for any remaining or mixed data.
+  while (src < end) {
+    uint32_t cp; // decoded Unicode code point
+    uint16_t x = *src++;
+    if (x >= 0xD800 && x <= 0xDBFF && src < end) {
+      uint16_t y = *src;
+      if (y >= 0xDC00 && y <= 0xDFFF) {
+        cp = ((x - 0xD800) << 10) + (y - 0xDC00) + 0x10000;
+        src++;
+      } else {
+        cp = 0xFFFD; // Invalid surrogate pair.
+      }
+    } else {
+      cp = x;
     }
-    // Shrink the output string to the actual size.
-    out.resize(dest - &out[0]);
-    return out;
+
+    if (cp < 0x80) {
+      *dest++ = static_cast<char>(cp);
+    } else if (cp < 0x800) {
+      *dest++ = static_cast<char>(0xC0 | (cp >> 6));
+      *dest++ = static_cast<char>(0x80 | (cp & 0x3F));
+    } else if (cp < 0x10000) {
+      *dest++ = static_cast<char>(0xE0 | (cp >> 12));
+      *dest++ = static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
+      *dest++ = static_cast<char>(0x80 | (cp & 0x3F));
+    } else {
+      *dest++ = static_cast<char>(0xF0 | (cp >> 18));
+      *dest++ = static_cast<char>(0x80 | ((cp >> 12) & 0x3F));
+      *dest++ = static_cast<char>(0x80 | ((cp >> 6) & 0x3F));
+      *dest++ = static_cast<char>(0x80 | (cp & 0x3F));
+    }
+  }
+  out.resize(dest - &out[0]);
+  return out;
 }
