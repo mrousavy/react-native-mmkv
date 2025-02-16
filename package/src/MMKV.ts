@@ -83,7 +83,7 @@ export class MMKV implements MMKVInterface {
     const func = this.getFunctionFromCache('getNumber');
     return func(key);
   }
-  getBuffer(key: string): ArrayBuffer | undefined {
+  getBuffer(key: string): ArrayBufferLike | undefined {
     const func = this.getFunctionFromCache('getBuffer');
     return func(key);
   }

@@ -51,7 +51,7 @@ export function useMMKV(configuration?: Configuration): MMKV {
 }
 
 function createMMKVHook<
-  T extends (boolean | number | string | ArrayBuffer) | undefined,
+  T extends (boolean | number | string | ArrayBufferLike) | undefined,
   TSet extends T | undefined,
   TSetAction extends TSet | ((current: T) => TSet),
 >(getter: (instance: MMKV, key: string) => T) {

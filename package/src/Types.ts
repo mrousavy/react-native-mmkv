@@ -111,7 +111,7 @@ export interface NativeMMKV {
    *
    * @default undefined
    */
-  getBuffer: (key: string) => ArrayBuffer | undefined;
+  getBuffer: (key: string) => ArrayBufferLike | undefined;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
