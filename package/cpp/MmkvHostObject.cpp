@@ -12,6 +12,7 @@
 #include "MmkvLogger.h"
 #include <MMKV.h>
 #include <string>
+#include <string_view>
 #include <vector>
 
 using namespace mmkv;
@@ -100,21 +101,19 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                "MMKV::set: First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
+          FastString keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
 
           bool successful = false;
           if (arguments[1].isBool()) {
             // bool
-            successful = instance->set(arguments[1].getBool(), keyName);
+            successful = instance->set(arguments[1].getBool(), keyName.view());
           } else if (arguments[1].isNumber()) {
             // number
-            successful = instance->set(arguments[1].getNumber(), keyName);
+            successful = instance->set(arguments[1].getNumber(), keyName.view());
           } else if (arguments[1].isString()) {
             // string
-            auto view = FastString::from_jsi_string(runtime, arguments[1].getString(runtime));
-            std::cout << "STRING DATA: " << view.view() << std::endl;
-            std::string stringValue = arguments[1].getString(runtime).utf8(runtime);
-            successful = instance->set(stringValue, keyName);
+            FastString stringValue = FastString::makeFromJsiString(runtime, arguments[1].getString(runtime));
+            successful = instance->set(stringValue.view(), keyName.view());
           } else if (arguments[1].isObject()) {
             // object
             jsi::Object object = arguments[1].getObject(runtime);
@@ -122,7 +121,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
               // ArrayBuffer
               jsi::ArrayBuffer arrayBuffer = object.getArrayBuffer(runtime);
               MMBuffer data(arrayBuffer.data(runtime), arrayBuffer.size(runtime), MMBufferNoCopy);
-              successful = instance->set(data, keyName);
+              successful = instance->set(data, keyName.view());
             } else [[unlikely]] {
               // unknown object
               throw jsi::JSError(
@@ -139,9 +138,9 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           if (!successful) [[unlikely]] {
             if (instance->isReadOnly()) {
               throw jsi::JSError(runtime,
-                                 "Failed to set " + keyName + "! This instance is read-only!");
+                                 "Failed to set " + keyName.string() + "! This instance is read-only!");
             } else {
-              throw jsi::JSError(runtime, "Failed to set " + keyName + "!");
+              throw jsi::JSError(runtime, "Failed to set " + keyName.string() + "!");
             }
           }
 
@@ -160,9 +159,9 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
+          auto keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
           bool hasValue;
-          bool value = instance->getBool(keyName, false, &hasValue);
+          bool value = instance->getBool(keyName.view(), false, &hasValue);
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
@@ -181,9 +180,9 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
+          auto keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
           bool hasValue;
-          double value = instance->getDouble(keyName, 0.0, &hasValue);
+          double value = instance->getDouble(keyName.view(), 0.0, &hasValue);
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
@@ -202,9 +201,9 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
+          auto keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
           std::string result;
-          bool hasValue = instance->getString(keyName, result);
+          bool hasValue = instance->getString(keyName.view(), result);
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
@@ -223,9 +222,9 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
+          auto keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
           mmkv::MMBuffer buffer;
-          bool hasValue = instance->getBytes(keyName, buffer);
+          bool hasValue = instance->getBytes(keyName.view(), buffer);
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
@@ -245,8 +244,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
-          bool containsKey = instance->containsKey(keyName);
+          auto keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
+          bool containsKey = instance->containsKey(keyName.view());
           return jsi::Value(containsKey);
         });
   }
@@ -262,8 +261,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
-          instance->removeValueForKey(keyName);
+          auto keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
+          instance->removeValueForKey(keyName.view());
           return jsi::Value::undefined();
         });
   }
