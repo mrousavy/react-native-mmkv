@@ -106,7 +106,7 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
     getBuffer: (key) => {
       const value = storage().getItem(prefixedKey(key));
       if (value == null) return undefined;
-      return textEncoder.encode(value);
+      return textEncoder.encode(value).buffer;
     },
     getAllKeys: () => {
       const keys = Object.keys(storage());
