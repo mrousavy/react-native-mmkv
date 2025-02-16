@@ -70,6 +70,12 @@ export interface Configuration {
    * @default SINGLE_PROCESS
    */
   mode?: Mode;
+  /**
+   * If `true`, the MMKV instance can only read from the storage, but not write to it.
+   * This is more efficient if you do not need to write to it.
+   * @default false
+   */
+  readOnly?: boolean;
 }
 
 /**
