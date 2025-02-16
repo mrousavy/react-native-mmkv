@@ -99,7 +99,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                "MMKV::set: First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
 
           bool successful = false;
           if (arguments[1].isBool()) {
@@ -110,11 +110,11 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             successful = instance->set(arguments[1].getNumber(), keyName);
           } else if (arguments[1].isString()) {
             // string
-            std::string stringValue = arguments[1].asString(runtime).utf8(runtime);
+            std::string stringValue = arguments[1].getString(runtime).utf8(runtime);
             successful = instance->set(stringValue, keyName);
           } else if (arguments[1].isObject()) {
             // object
-            jsi::Object object = arguments[1].asObject(runtime);
+            jsi::Object object = arguments[1].getObject(runtime);
             if (object.isArrayBuffer(runtime)) {
               // ArrayBuffer
               jsi::ArrayBuffer arrayBuffer = object.getArrayBuffer(runtime);
@@ -157,7 +157,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           bool hasValue;
           bool value = instance->getBool(keyName, false, &hasValue);
           if (!hasValue) [[unlikely]] {
@@ -178,7 +178,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           bool hasValue;
           double value = instance->getDouble(keyName, 0.0, &hasValue);
           if (!hasValue) [[unlikely]] {
@@ -199,7 +199,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           std::string result;
           bool hasValue = instance->getString(keyName, result);
           if (!hasValue) [[unlikely]] {
@@ -220,7 +220,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           mmkv::MMBuffer buffer;
           bool hasValue = instance->getBytes(keyName, buffer);
           if (!hasValue) [[unlikely]] {
@@ -242,7 +242,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           bool containsKey = instance->containsKey(keyName);
           return jsi::Value(containsKey);
         });
@@ -259,7 +259,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             throw jsi::JSError(runtime, "First argument ('key') has to be of type string!");
           }
 
-          std::string keyName = arguments[0].asString(runtime).utf8(runtime);
+          std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           instance->removeValueForKey(keyName);
           return jsi::Value::undefined();
         });
