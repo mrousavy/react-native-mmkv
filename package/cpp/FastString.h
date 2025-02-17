@@ -173,11 +173,12 @@ public:
    *   is a zero-copy pointer to the same buffer.
    *   In this case `isView()` is `true`, and the `FastString` can only safely be used as long as
    *   no other operations on the `jsi::Runtime` have been made.
-   * - If `isView()` is `false`, the returned `FastString` is actually the owner of the string and can
-   *   safely be accessed from any Thread, as long as the value exists.
+   * - If `isView()` is `false`, the returned `FastString` is actually the owner of the string and
+   * can safely be accessed from any Thread, as long as the value exists.
    *
    * Calling `.view()` on a `FastString` allows read-only access.
-   * Calling `.string()` on a `FastString` converts it to an owned string if necessary (`isView() == false`).
+   * Calling `.string()` on a `FastString` converts it to an owned string if necessary (`isView() ==
+   * false`).
    */
   static FastString makeFromJsiString(jsi::Runtime& runtime, const jsi::String& str);
 
@@ -188,8 +189,9 @@ public:
 
   /**
    * Returns a read-only `std::string_view` that points to this `FastString`'s data.
-   * If this `FastString` is a zero-copy string (`isView() == true`), this points to that `char*` buffer.
-   * If this `FastString` is an owned string (`isView() == false`), this points to the `std::string`
+   * If this `FastString` is a zero-copy string (`isView() == true`), this points to that `char*`
+   * buffer. If this `FastString` is an owned string (`isView() == false`), this points to the
+   * `std::string`
    */
   std::string_view view() const {
     if (_isView)
@@ -204,8 +206,9 @@ public:
 
   /**
    * Returns an `std::string` for this `FastString`.
-   * If this `FastString` is a zero-copy string (`isView() == true`), a copy will be made to convert it to an owned string.
-   * If this `FastString` already is an owned string (`isView() == false`), this points to that `std::string`.
+   * If this `FastString` is a zero-copy string (`isView() == true`), a copy will be made to convert
+   * it to an owned string. If this `FastString` already is an owned string (`isView() == false`),
+   * this points to that `std::string`.
    */
   std::string& string() const& {
     if (_isView)

@@ -101,7 +101,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
                                "MMKV::set: First argument ('key') has to be of type string!");
           }
 
-          FastString keyName = FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
+          FastString keyName =
+              FastString::makeFromJsiString(runtime, arguments[0].getString(runtime));
 
           bool successful = false;
           if (arguments[1].isBool()) {
@@ -112,7 +113,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
             successful = instance->set(arguments[1].getNumber(), keyName.view());
           } else if (arguments[1].isString()) {
             // string
-            FastString stringValue = FastString::makeFromJsiString(runtime, arguments[1].getString(runtime));
+            FastString stringValue =
+                FastString::makeFromJsiString(runtime, arguments[1].getString(runtime));
             successful = instance->set(stringValue.view(), keyName.view());
           } else if (arguments[1].isObject()) {
             // object
@@ -137,8 +139,8 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
           if (!successful) [[unlikely]] {
             if (instance->isReadOnly()) {
-              throw jsi::JSError(runtime,
-                                 "Failed to set " + keyName.string() + "! This instance is read-only!");
+              throw jsi::JSError(runtime, "Failed to set " + keyName.string() +
+                                              "! This instance is read-only!");
             } else {
               throw jsi::JSError(runtime, "Failed to set " + keyName.string() + "!");
             }
