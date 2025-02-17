@@ -9,8 +9,10 @@ add_library(
         react-native-mmkv
         SHARED
         src/main/cpp/AndroidLogger.cpp
+        ../cpp/FastString.cpp
         ../cpp/MmkvHostObject.cpp
         ../cpp/NativeMmkvModule.cpp
+        ../cpp/UTFConversion.cpp
 )
 
 # Add headers search paths
