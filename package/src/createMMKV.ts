@@ -14,7 +14,8 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
           getMMKVPlatformContextTurboModule().getAppGroupDirectory();
         if (appGroupDirectory != null) {
           // If we have an `AppGroup` in Info.plist, use that as a path.
-          config.path = appGroupDirectory;
+          // We append mmkv to the path to conform to the default behavior of the MMKV library.
+          config.path = appGroupDirectory + '/mmkv';
         }
       } catch (e) {
         // We cannot throw errors here because it is a sync C++ TurboModule func. idk why.
