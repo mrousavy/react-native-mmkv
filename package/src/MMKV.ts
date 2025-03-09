@@ -127,6 +127,11 @@ export class MMKV implements MMKVInterface {
     };
   }
 
+  enableAutoKeyExpire(seconds:number):void {
+    const func = this.getFunctionFromCache('enableAutoKeyExpire');
+    func(seconds);
+  }
+
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
     this.onValueChangedListeners.push(onValueChanged);
 

@@ -159,6 +159,10 @@ export interface NativeMMKV {
    * If this is `true`, you can only use "get"-functions.
    */
   readonly isReadOnly: boolean;
+  /**
+   * Sets value to automatically expires keys after a specifcied duration
+   */
+   enableAutoKeyExpire:(seconds:number) => void
 }
 
 export interface Listener {
