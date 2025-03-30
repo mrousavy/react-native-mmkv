@@ -87,49 +87,49 @@ export interface NativeMMKV {
    *
    * @throws an Error if the value cannot be set.
    */
-  set: (key: string, value: boolean | string | number | ArrayBuffer) => void;
+  set: (key: string, value: boolean | string | number | ArrayBuffer) => Promise<void>;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getBoolean: (key: string) => boolean | undefined;
+  getBoolean: (key: string) => Promise<boolean | undefined>;
   /**
    * Get the string value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getString: (key: string) => string | undefined;
+  getString: (key: string) => Promise<string | undefined>;
   /**
    * Get the number value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getNumber: (key: string) => number | undefined;
+  getNumber: (key: string) => Promise<number | undefined>;
   /**
    * Get a raw buffer of unsigned 8-bit (0-255) data.
    *
    * @default undefined
    */
-  getBuffer: (key: string) => ArrayBufferLike | undefined;
+  getBuffer: (key: string) => Promise<ArrayBufferLike | undefined>;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
-  contains: (key: string) => boolean;
+  contains: (key: string) => Promise<boolean>;
   /**
    * Delete the given `key`.
    */
-  delete: (key: string) => void;
+  delete: (key: string) => Promise<void>;
   /**
    * Get all keys.
    *
    * @default []
    */
-  getAllKeys: () => string[];
+  getAllKeys: () => Promise<string[]>;
   /**
    * Delete all keys.
    */
-  clearAll: () => void;
+  clearAll: () => Promise<void>;
   /**
    * Sets (or updates) the encryption-key to encrypt all data in this MMKV instance with.
    *
@@ -139,7 +139,7 @@ export interface NativeMMKV {
    *
    * @throws an Error if the instance cannot be recrypted.
    */
-  recrypt: (key: string | undefined) => void;
+  recrypt: (key: string | undefined) => Promise<void>;
   /**
    * Trims the storage space and clears memory cache.
    *
@@ -149,11 +149,11 @@ export interface NativeMMKV {
    *
    * In most applications, this is not needed at all.
    */
-  trim(): void;
+  trim(): Promise<void>;
   /**
    * Get the current total size of the storage, in bytes.
    */
-  readonly size: number;
+  readonly size: Promise<number>;
   /**
    * Returns whether this instance is in read-only mode or not.
    * If this is `true`, you can only use "get"-functions.
