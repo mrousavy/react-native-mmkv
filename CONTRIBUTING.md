@@ -6,7 +6,7 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Development workflow
 
-To get started with the project, run `npm i` in the `package/` directory to install the required dependencies for each package:
+To get started with the project, run `yarn` in the `package/` directory to install the required dependencies for each package:
 
 ```sh
 yarn
