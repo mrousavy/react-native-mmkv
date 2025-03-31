@@ -79,53 +79,102 @@ export interface Configuration {
 }
 
 /**
+ * Represents the data types that can be stored in MMKV.
+ * This includes primitive types (boolean, string, number) and binary data (ArrayBuffer, ArrayBufferLike).
+ *
+ * @example
+ * ```ts
+ * // These types can be directly stored in MMKV
+ * mmkv.set('isEnabled', true); // boolean
+ * mmkv.set('username', 'user123'); // string
+ * mmkv.set('age', 25); // number
+ * mmkv.set('data', new ArrayBuffer(8)); // binary data
+ * ```
+ */
+export type SupportedTypes =
+  | boolean
+  | string
+  | number
+  | ArrayBuffer
+  | ArrayBufferLike;
+
+/**
+ * Represents the default storage type for MMKV.
+ * This is a record with string keys and values of any type.
+ *
+ * @example
+ * ```ts
+ * const mmkv = new MMKV();
+ * mmkv.set('key', 'value'); // string
+ * const value = mmkv.getString('key'); // string
+ * ```
+ */
+export type DefaultStorage = Record<string, any>;
+
+/**
+ * Represents the type of keys that can be used to access values in the MMKV storage.
+ * This is a mapped type that extracts keys from a given type `T` where the values are of a specific type `ValueType`.
+ */
+export type KeysOfType<T, ValueType> = {
+  [P in keyof T]: T[P] extends ValueType ? P : never;
+}[keyof T];
+
+/**
  * Represents a single MMKV instance.
  */
-export interface NativeMMKV {
+export interface NativeMMKV<TStorage extends DefaultStorage = DefaultStorage> {
   /**
    * Set a value for the given `key`.
    *
    * @throws an Error if the value cannot be set.
    */
-  set: (key: string, value: boolean | string | number | ArrayBuffer) => void;
+  set: <TKey extends keyof TStorage>(key: TKey, value: TStorage[TKey]) => void;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getBoolean: (key: string) => boolean | undefined;
+  getBoolean: <K extends KeysOfType<TStorage, boolean>>(
+    key: K
+  ) => boolean | undefined;
   /**
    * Get the string value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getString: (key: string) => string | undefined;
+  getString: <K extends KeysOfType<TStorage, string>>(
+    key: K
+  ) => string | undefined;
   /**
    * Get the number value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getNumber: (key: string) => number | undefined;
+  getNumber: <K extends KeysOfType<TStorage, number>>(
+    key: K
+  ) => number | undefined;
   /**
    * Get a raw buffer of unsigned 8-bit (0-255) data.
    *
    * @default undefined
    */
-  getBuffer: (key: string) => ArrayBufferLike | undefined;
+  getBuffer: <K extends KeysOfType<TStorage, ArrayBufferLike>>(
+    key: K
+  ) => ArrayBufferLike | undefined;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
-  contains: (key: string) => boolean;
+  contains: (key: keyof TStorage) => boolean;
   /**
    * Delete the given `key`.
    */
-  delete: (key: string) => void;
+  delete: (key: keyof TStorage) => void;
   /**
    * Get all keys.
    *
    * @default []
    */
-  getAllKeys: () => string[];
+  getAllKeys: () => (keyof TStorage)[];
   /**
    * Delete all keys.
    */
@@ -165,7 +214,8 @@ export interface Listener {
   remove: () => void;
 }
 
-export interface MMKVInterface extends NativeMMKV {
+export interface MMKVInterface<TStorage extends DefaultStorage = DefaultStorage>
+  extends NativeMMKV<TStorage> {
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).

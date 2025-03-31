@@ -3,6 +3,8 @@ import { createMockMMKV } from './createMMKV.mock';
 import { isTest } from './PlatformChecker';
 import type {
   Configuration,
+  DefaultStorage,
+  KeysOfType,
   Listener,
   MMKVInterface,
   NativeMMKV,
@@ -14,7 +16,9 @@ const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 /**
  * A single MMKV instance.
  */
-export class MMKV implements MMKVInterface {
+export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
+  implements MMKVInterface<TStorage>
+{
   private nativeInstance: NativeMMKV;
   private functionCache: Partial<NativeMMKV>;
   private id: string;
@@ -40,21 +44,21 @@ export class MMKV implements MMKVInterface {
     return onValueChangedListeners.get(this.id)!;
   }
 
-  private getFunctionFromCache<T extends keyof NativeMMKV>(
+  private getFunctionFromCache<T extends keyof NativeMMKV<TStorage>>(
     functionName: T
-  ): NativeMMKV[T] {
+  ): NativeMMKV<TStorage>[T] {
     if (this.functionCache[functionName] == null) {
       this.functionCache[functionName] = this.nativeInstance[functionName];
     }
-    return this.functionCache[functionName] as NativeMMKV[T];
+    return this.functionCache[functionName] as NativeMMKV<TStorage>[T];
   }
 
-  private onValuesChanged(keys: string[]) {
+  private onValuesChanged(keys: (keyof TStorage)[]) {
     if (this.onValueChangedListeners.length === 0) return;
 
     for (const key of keys) {
       for (const listener of this.onValueChangedListeners) {
-        listener(key);
+        listener(key as string);
       }
     }
   }
@@ -65,39 +69,44 @@ export class MMKV implements MMKVInterface {
   get isReadOnly(): boolean {
     return this.nativeInstance.isReadOnly;
   }
-  set(key: string, value: boolean | string | number | ArrayBuffer): void {
+  set<TKey extends keyof TStorage, TValue extends TStorage[TKey]>(
+    key: TKey,
+    value: TValue
+  ): void {
     const func = this.getFunctionFromCache('set');
     func(key, value);
 
     this.onValuesChanged([key]);
   }
-  getBoolean(key: string): boolean | undefined {
+  getBoolean(key: KeysOfType<TStorage, boolean>): boolean | undefined {
     const func = this.getFunctionFromCache('getBoolean');
     return func(key);
   }
-  getString(key: string): string | undefined {
+  getString(key: KeysOfType<TStorage, string>): string | undefined {
     const func = this.getFunctionFromCache('getString');
     return func(key);
   }
-  getNumber(key: string): number | undefined {
+  getNumber(key: KeysOfType<TStorage, number>): number | undefined {
     const func = this.getFunctionFromCache('getNumber');
     return func(key);
   }
-  getBuffer(key: string): ArrayBufferLike | undefined {
+  getBuffer(
+    key: KeysOfType<TStorage, ArrayBufferLike>
+  ): ArrayBufferLike | undefined {
     const func = this.getFunctionFromCache('getBuffer');
     return func(key);
   }
-  contains(key: string): boolean {
+  contains(key: keyof TStorage): boolean {
     const func = this.getFunctionFromCache('contains');
     return func(key);
   }
-  delete(key: string): void {
+  delete(key: keyof TStorage): void {
     const func = this.getFunctionFromCache('delete');
     func(key);
 
     this.onValuesChanged([key]);
   }
-  getAllKeys(): string[] {
+  getAllKeys(): (keyof TStorage)[] {
     const func = this.getFunctionFromCache('getAllKeys');
     return func();
   }
