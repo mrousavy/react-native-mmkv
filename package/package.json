@@ -35,6 +35,7 @@
     "lint-cpp": "scripts/clang-format.sh",
     "check-all": "yarn lint --fix && yarn lint-cpp",
     "test": "jest",
+    "test:types": "tsd",
     "typecheck": "tsc --noEmit",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "git submodule update --init --recursive && bob build",
@@ -89,6 +90,7 @@
     "react-native-builder-bob": "^0.37.0",
     "react-test-renderer": "18.3.1",
     "release-it": "^17.10.0",
+    "tsd": "^0.31.2",
     "typescript": "^5.5.4"
   },
   "peerDependencies": {
@@ -101,6 +103,9 @@
       "<rootDir>/example/node_modules",
       "<rootDir>/lib/"
     ]
+  },
+  "tsd": {
+    "directory": "src/__tests__"
   },
   "release-it": {
     "git": {
