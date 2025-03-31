@@ -91,8 +91,8 @@ export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
     return func(key);
   }
   getBuffer(
-    key: KeysOfType<TStorage, ArrayBufferLike>
-  ): ArrayBufferLike | undefined {
+    key: KeysOfType<TStorage, ArrayBufferLike | ArrayBuffer>
+  ): ArrayBufferLike | ArrayBuffer | undefined {
     const func = this.getFunctionFromCache('getBuffer');
     return func(key);
   }
@@ -136,7 +136,9 @@ export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
     };
   }
 
-  addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
+  addOnValueChangedListener(
+    onValueChanged: (key: keyof TStorage) => void
+  ): Listener {
     this.onValueChangedListeners.push(onValueChanged);
 
     return {

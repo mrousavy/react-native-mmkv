@@ -223,6 +223,6 @@ export interface MMKVInterface<TStorage extends DefaultStorage = DefaultStorage>
    * To unsubscribe from value changes, call `remove()` on the Listener.
    */
   addOnValueChangedListener: (
-    onValueChanged: (key: string) => void
+    onValueChanged: (key: keyof TStorage) => void
   ) => Listener;
 }
