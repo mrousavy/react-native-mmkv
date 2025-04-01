@@ -35,6 +35,6 @@
     "react-native.config.js",
   ],
   "exclude": [
-    "src/__tests__/mmkv.test-d.ts"
+    "src/__types_tests__/mmkv.test-d.ts"
   ]
 }

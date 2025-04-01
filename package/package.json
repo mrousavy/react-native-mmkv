@@ -105,7 +105,7 @@
     ]
   },
   "tsd": {
-    "directory": "src/__tests__"
+    "directory": "src/__types_tests__"
   },
   "release-it": {
     "git": {
