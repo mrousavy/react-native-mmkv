@@ -13,19 +13,15 @@ add_library(
         ../cpp/NativeMmkvModule.cpp
 )
 
-# Add headers search paths
-target_include_directories(react-native-mmkv PUBLIC ../MMKV/Core)
-target_include_directories(react-native-mmkv PUBLIC ../cpp)
-
-# Add MMKV core dependency
-add_subdirectory(../MMKV/Core core)
+# Find MMKV core dependency (prefab)
+find_package(mmkv REQUIRED CONFIG)
 
 # Add android/log dependency
 find_library(log-lib log)
 
 target_link_libraries(
         react-native-mmkv
-        core                        # <-- MMKV core
+        mmkv::mmkv                  # <-- MMKV core
         ${log-lib}                  # <-- Logcat logger
         android                     # <-- Android JNI core
         react_codegen_RNMmkvSpec    # <-- Generated Specs from CodeGen
