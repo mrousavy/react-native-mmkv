@@ -37,9 +37,8 @@
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "git submodule update --init --recursive && bob build",
+    "prepare": "bob build",
     "prepack": "bob build",
-    "update-submodule": "git submodule update --remote --merge",
     "pods": "cd example && yarn pods",
     "release": "release-it",
     "codegen": "npx react-native codegen"
