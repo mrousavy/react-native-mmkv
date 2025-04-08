@@ -87,7 +87,7 @@ dependencies {
   implementation "com.facebook.react:react-native:+"
 
   // Use the MMKV shared lib - includes C++ prefabs
-  implementation "com.tencent.mmkv-shared:2.1.0"
+  implementation "com.tencent:mmkv-shared:2.1.0"
 }
 
 if (isNewArchitectureEnabled()) {
