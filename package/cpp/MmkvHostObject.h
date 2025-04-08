@@ -8,12 +8,11 @@
 
 #pragma once
 
-#include "MMKV.h"
 #include "NativeMmkvModule.h"
+#include <MMKVCore/MMKV.h>
 #include <jsi/jsi.h>
 
 using namespace facebook;
-using namespace mmkv;
 
 class MmkvHostObject : public jsi::HostObject {
 public:
@@ -25,8 +24,8 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
 
 private:
-  static MMKVMode getMMKVMode(const facebook::react::MMKVConfig& config);
+  static mmkv::MMKVMode getMMKVMode(const facebook::react::MMKVConfig& config);
 
 private:
-  MMKV* instance;
+  mmkv::MMKV* instance;
 };

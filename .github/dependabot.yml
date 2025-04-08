@@ -13,9 +13,3 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
-  - package-ecosystem: "gitsubmodule"
-    directory: "/package"
-    schedule:
-      interval: "weekly"
-    labels:
-      - "dependencies"
