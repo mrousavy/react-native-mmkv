@@ -84,6 +84,8 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+
+  implementation "com.tencent:mmkv:2.1.0"
 }
 
 if (isNewArchitectureEnabled()) {
