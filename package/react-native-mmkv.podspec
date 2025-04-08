@@ -1,7 +1,6 @@
 require "json"
 
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
-folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
 
 Pod::UI.puts "[react-native-mmkv] Thank you for using react-native-mmkv ❤️"
 Pod::UI.puts "[react-native-mmkv] If you enjoy using react-native-mmkv, please consider sponsoring this project: https://github.com/sponsors/mrousavy"
@@ -19,19 +18,13 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
-    "CLANG_CXX_LIBRARY" => "libc++",
-    "CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF" => "NO",
-    # FORCE_POSIX ensures we are using C++ types instead of Objective-C types for MMKV.
-    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX",
   }
   s.compiler_flags = '-x objective-c++'
   s.libraries    = "z", "c++"
   s.source_files = [
     # react-native-mmkv
     "ios/**/*.{h,m,mm}",
-    "cpp/**/*.{hpp,cpp,c,h}",
-    # MMKV/Core
-    "MMKV/Core/**/*.{h,cpp,hpp,S}",
+    "cpp/**/*.{hpp,cpp,c,h}"
   ]
 
   s.dependency 'MMKVCore'
