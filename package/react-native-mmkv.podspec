@@ -34,6 +34,6 @@ Pod::Spec.new do |s|
     "MMKV/Core/**/*.{h,cpp,hpp,S}",
   ]
 
-  s.dependency 'MMKV'
+  s.dependency 'MMKVCore'
   install_modules_dependencies(s)
 end

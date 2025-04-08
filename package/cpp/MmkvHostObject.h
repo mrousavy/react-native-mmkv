@@ -8,12 +8,11 @@
 
 #pragma once
 
-#include "MMKV.h"
+#include <MMKVCore/MMKV.h>
 #include "NativeMmkvModule.h"
 #include <jsi/jsi.h>
 
 using namespace facebook;
-using namespace mmkv;
 
 class MmkvHostObject : public jsi::HostObject {
 public:

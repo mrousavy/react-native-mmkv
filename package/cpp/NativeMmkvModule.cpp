@@ -6,9 +6,9 @@
 //
 
 #include "NativeMmkvModule.h"
-#include "MMKV.h"
 #include "MmkvHostObject.h"
 #include "MmkvLogger.h"
+#include <MMKVCore/MMKV.h>
 
 namespace facebook::react {
 
