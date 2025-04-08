@@ -17,12 +17,12 @@ add_library(
 find_package(mmkv REQUIRED CONFIG)
 
 # Add android/log dependency
-find_library(log-lib log)
+find_library(android_log log)
 
 target_link_libraries(
         react-native-mmkv
         mmkv::mmkv                  # <-- MMKV core
-        ${log-lib}                  # <-- Logcat logger
+        android_log                 # <-- Logcat logger
         android                     # <-- Android JNI core
         react_codegen_RNMmkvSpec    # <-- Generated Specs from CodeGen
 )
