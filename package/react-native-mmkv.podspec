@@ -24,7 +24,6 @@ Pod::Spec.new do |s|
     # FORCE_POSIX ensures we are using C++ types instead of Objective-C types for MMKV.
     "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX",
   }
-  s.compiler_flags = '-x objective-c++'
 
   s.source_files = [
     # react-native-mmkv
@@ -34,6 +33,6 @@ Pod::Spec.new do |s|
     "MMKV/Core/**/*.{h,cpp,hpp,S}",
   ]
 
-  s.dependency 'MMKV'
+  s.dependency 'MMKVCore'
   install_modules_dependencies(s)
 end

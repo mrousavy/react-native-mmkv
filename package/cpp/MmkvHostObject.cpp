@@ -7,9 +7,9 @@
 //
 
 #include "MmkvHostObject.h"
-#include "MMKVManagedBuffer.h"
 #include "MmkvLogger.h"
-#include <MMKV.h>
+#include <MMKVCore/MMKV.h>
+#include "ManagedMMBuffer.h"
 #include <string>
 #include <vector>
 
@@ -226,7 +226,7 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
-          auto mutableData = std::make_shared<MMKVManagedBuffer>(std::move(buffer));
+          auto mutableData = std::make_shared<ManagedMMBuffer>(std::move(buffer));
           return jsi::ArrayBuffer(runtime, mutableData);
         });
   }
