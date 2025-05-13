@@ -21,7 +21,7 @@
   </a>
   <br />
   <a href="https://github.com/sponsors/mrousavy">
-    <img align="right" width="160" alt="This library helped you? Consider sponsoring!" src=".github/funding-octocat.svg">
+    <img align="right" width="160" alt="This library helped you? Consider sponsoring!" src="https://github.com/mrousavy/react-native-mmkv/blob/main/.github/funding-octocat.svg">
   </a>
 </div>
 <br/>
