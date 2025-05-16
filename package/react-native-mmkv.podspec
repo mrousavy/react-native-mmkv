@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
     "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FORCE_POSIX",
   }
   s.compiler_flags = '-x objective-c++'
-
+  s.libraries    = "z", "c++"
   s.source_files = [
     # react-native-mmkv
     "ios/**/*.{h,m,mm}",
