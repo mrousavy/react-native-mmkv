@@ -1,6 +1,18 @@
-import { useRef, useState, useMemo, useCallback, useEffect } from 'react';
+import {
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  useEffect,
+  SetStateAction,
+} from 'react';
 import { MMKV } from './MMKV';
-import type { Configuration } from './Types';
+import type {
+  Configuration,
+  DefaultStorage,
+  KeysOfType,
+  SupportedTypes,
+} from './Types';
 
 function isConfigurationEqual(
   left?: Configuration,
@@ -27,17 +39,23 @@ function getDefaultInstance(): MMKV {
 /**
  * Use the default, shared MMKV instance.
  */
-export function useMMKV(): MMKV;
+export function useMMKV<
+  TStorage extends DefaultStorage = DefaultStorage,
+>(): MMKV<TStorage>;
 /**
  * Use a custom MMKV instance with the given configuration.
  * @param configuration The configuration to initialize the MMKV instance with. Does not have to be memoized.
  */
-export function useMMKV(configuration: Configuration): MMKV;
-export function useMMKV(configuration?: Configuration): MMKV {
-  const instance = useRef<MMKV>();
+export function useMMKV<TStorage extends DefaultStorage = DefaultStorage>(
+  configuration: Configuration
+): MMKV<TStorage>;
+export function useMMKV<TStorage extends DefaultStorage = DefaultStorage>(
+  configuration?: Configuration
+): MMKV<TStorage> {
+  const instance = useRef<MMKV<TStorage>>();
   const lastConfiguration = useRef<Configuration>();
 
-  if (configuration == null) return getDefaultInstance();
+  if (configuration == null) return getDefaultInstance() as MMKV<TStorage>;
 
   if (
     instance.current == null ||
@@ -51,14 +69,13 @@ export function useMMKV(configuration?: Configuration): MMKV {
 }
 
 function createMMKVHook<
-  T extends (boolean | number | string | ArrayBufferLike) | undefined,
-  TSet extends T | undefined,
-  TSetAction extends TSet | ((current: T) => TSet),
->(getter: (instance: MMKV, key: string) => T) {
-  return (
-    key: string,
-    instance?: MMKV
-  ): [value: T, setValue: (value: TSetAction) => void] => {
+  T extends SupportedTypes,
+  TSet extends T | undefined = T | undefined,
+>(getter: (instance: MMKV<Record<string, T>>, key: string) => TSet) {
+  return <TStorage extends DefaultStorage | undefined = undefined>(
+    key: TStorage extends DefaultStorage ? KeysOfType<TStorage, TSet> : string,
+    instance?: TStorage extends DefaultStorage ? MMKV<TStorage> : MMKV
+  ): [value: TSet, setValue: (value: SetStateAction<TSet>) => void] => {
     const mmkv = instance ?? getDefaultInstance();
 
     const [bump, setBump] = useState(0);
@@ -72,7 +89,7 @@ function createMMKVHook<
 
     // update value by user set
     const set = useCallback(
-      (v: TSetAction) => {
+      (v: SetStateAction<TSet>) => {
         const newValue = typeof v === 'function' ? v(getter(mmkv, key)) : v;
         switch (typeof newValue) {
           case 'number':
@@ -123,7 +140,7 @@ function createMMKVHook<
  * const [username, setUsername] = useMMKVString("user.name")
  * ```
  */
-export const useMMKVString = createMMKVHook((instance, key) =>
+export const useMMKVString = createMMKVHook<string>((instance, key) =>
   instance.getString(key)
 );
 
@@ -137,7 +154,7 @@ export const useMMKVString = createMMKVHook((instance, key) =>
  * const [age, setAge] = useMMKVNumber("user.age")
  * ```
  */
-export const useMMKVNumber = createMMKVHook((instance, key) =>
+export const useMMKVNumber = createMMKVHook<number>((instance, key) =>
   instance.getNumber(key)
 );
 /**
@@ -150,7 +167,7 @@ export const useMMKVNumber = createMMKVHook((instance, key) =>
  * const [isPremiumAccount, setIsPremiumAccount] = useMMKVBoolean("user.isPremium")
  * ```
  */
-export const useMMKVBoolean = createMMKVHook((instance, key) =>
+export const useMMKVBoolean = createMMKVHook<boolean>((instance, key) =>
   instance.getBoolean(key)
 );
 /**
@@ -163,8 +180,8 @@ export const useMMKVBoolean = createMMKVHook((instance, key) =>
  * const [privateKey, setPrivateKey] = useMMKVBuffer("user.privateKey")
  * ```
  */
-export const useMMKVBuffer = createMMKVHook((instance, key) =>
-  instance.getBuffer(key)
+export const useMMKVBuffer = createMMKVHook<ArrayBuffer | ArrayBufferLike>(
+  (instance, key) => instance.getBuffer(key)
 );
 /**
  * Use an object value of the given `key` from the given MMKV storage instance.
@@ -178,14 +195,12 @@ export const useMMKVBuffer = createMMKVHook((instance, key) =>
  * const [user, setUser] = useMMKVObject<User>("user")
  * ```
  */
-export function useMMKVObject<T>(
-  key: string,
-  instance?: MMKV
+export function useMMKVObject<T, TStorage extends DefaultStorage | undefined>(
+  key: TStorage extends DefaultStorage ? keyof TStorage : string,
+  instance?: TStorage extends DefaultStorage ? MMKV<TStorage> : MMKV
 ): [
   value: T | undefined,
-  setValue: (
-    value: T | undefined | ((prevValue: T | undefined) => T | undefined)
-  ) => void,
+  setValue: (value: SetStateAction<T | undefined>) => void,
 ] {
   const [json, setJson] = useMMKVString(key, instance);
 
@@ -195,7 +210,7 @@ export function useMMKVObject<T>(
   }, [json]);
 
   const setValue = useCallback(
-    (v: (T | undefined) | ((prev: T | undefined) => T | undefined)) => {
+    (v: SetStateAction<T | undefined>) => {
       if (v instanceof Function) {
         setJson((currentJson) => {
           const currentValue =
