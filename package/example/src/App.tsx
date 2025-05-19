@@ -4,6 +4,10 @@ import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
 import { MMKV, useMMKVListener, useMMKVString } from 'react-native-mmkv';
 
 const storage = new MMKV();
+const storage2 = new MMKV({ id: "AutoExpireInstance" })
+storage2.enableAutoKeyExpire(10) //10seconds
+
+
 
 export default function App() {
   const [text, setText] = React.useState<string>('');
@@ -68,6 +72,19 @@ export default function App() {
       clearInterval(interval);
     };
   }, [example, setExample]);
+
+
+  React.useEffect(()=>{
+    storage2.set("SomeKey","I will disappear in 10 Seconds");
+    
+    const interval = setInterval(() => {
+      console.log(`Value of autoExpiry Instance`,storage2.getString("SomeKey"));
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+
+  },[])
 
   return (
     <View style={styles.container}>

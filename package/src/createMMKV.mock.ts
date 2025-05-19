@@ -26,6 +26,9 @@ export const createMockMMKV = (): NativeMMKV => {
     },
     getAllKeys: () => Array.from(storage.keys()),
     contains: (key) => storage.has(key),
+    enableAutoKeyExpire: () => {
+       console.warn('Auto Expire is not supported in mocked MMKV instances!');
+    },
     recrypt: () => {
       console.warn('Encryption is not supported in mocked MMKV instances!');
     },
