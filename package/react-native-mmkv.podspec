@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.pod_target_xcconfig = {
     "CLANG_CXX_LANGUAGE_STANDARD" => "c++17",
   }
-
+  
   s.source_files = [
     # react-native-mmkv
     "ios/**/*.{h,m,mm}",
