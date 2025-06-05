@@ -53,6 +53,9 @@ expectType<boolean>(typedStorage.contains('someString'));
 typedStorage.addOnValueChangedListener((key) => {
   expectType<keyof TestStorageValues>(key);
 });
+nonTypedStorage.addOnValueChangedListener((key) => {
+  expectType<string>(key);
+});
 
 // Invalid type usages (should cause TypeScript errors)
 
