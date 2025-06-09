@@ -6,7 +6,7 @@ We want this community to be friendly and respectful to each other. Please follo
 
 ## Development workflow
 
-To get started with the project, run `npm i` in the `package/` directory to install the required dependencies for each package:
+To get started with the project, run `yarn` in the `package/` directory to install the required dependencies for each package:
 
 ```sh
 yarn
@@ -106,6 +106,7 @@ The `package.json` file contains various scripts for common tasks:
 - `yarn typecheck`: type-check files with TypeScript.
 - `yarn lint`: lint files with ESLint.
 - `yarn test`: run unit tests with Jest.
+- `yarn test:types`: run types tests with tsd.
 - `yarn example start`: start the Metro server for the example app.
 - `yarn example android`: run the example app on Android.
 - `yarn example ios`: run the example app on iOS.

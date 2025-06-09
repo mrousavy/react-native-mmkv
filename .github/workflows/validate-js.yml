@@ -134,3 +134,6 @@ jobs:
 
     - name: Run Jest
       run: yarn test
+
+    - name: Run TypeScript tests
+      run: yarn test:types
