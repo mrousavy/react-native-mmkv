@@ -345,6 +345,27 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
     return jsi::Value(static_cast<int>(size));
   }
 
+  if (propName == "enableAutoKeyExpire") {
+    // MMKV.enableAutoKeyExpire(seconds)
+    return jsi::Function::createFromHostFunction(
+        runtime, jsi::PropNameID::forAscii(runtime, propName),
+        1, //seconds
+        [this](jsi::Runtime& runtime, const jsi::Value& thisValue, const jsi::Value* arguments,
+               size_t count) -> jsi::Value {
+          if (count != 1 || !arguments[0].isNumber()) [[unlikely]] {
+            throw jsi::JSError(runtime, "First argument ('seconds') has to be of type number!");
+          }
+
+          int time = arguments[0].getNumber();
+          if(time<0){
+            throw jsi::JSError(runtime, "First argument ('seconds') can't be less than 0");
+          }
+
+          instance->enableAutoKeyExpire(time);
+          return jsi::Value::undefined();
+        });
+  }
+
   if (propName == "isReadOnly") {
     // MMKV.isReadOnly
     bool isReadOnly = instance->isReadOnly();

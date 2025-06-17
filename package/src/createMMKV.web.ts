@@ -108,6 +108,9 @@ export const createMMKV = (config: Configuration): NativeMMKV => {
       if (value == null) return undefined;
       return textEncoder.encode(value).buffer;
     },
+    enableAutoKeyExpire:() => {
+        throw new Error('`enableAutoKeyExpire(...)` is not supported on Web!');
+    },
     getAllKeys: () => {
       const keys = Object.keys(storage());
       return keys
