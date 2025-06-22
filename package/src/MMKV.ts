@@ -16,7 +16,7 @@ const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 /**
  * A single MMKV instance.
  */
-export class MMKV<TStorage = DefaultStorage>
+export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
   implements MMKVInterface<TStorage> {
   private nativeInstance: NativeMMKV;
   private functionCache: Partial<NativeMMKV>;

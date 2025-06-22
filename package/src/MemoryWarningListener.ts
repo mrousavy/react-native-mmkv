@@ -3,7 +3,7 @@ import type { NativeEventSubscription } from 'react-native';
 import { DefaultStorage, MMKVInterface } from './Types';
 
 export function addMemoryWarningListener<
-  TStorage = DefaultStorage,
+  TStorage extends DefaultStorage = DefaultStorage,
 >(mmkv: MMKVInterface<TStorage>): void {
   if (global.WeakRef != null && global.FinalizationRegistry != null) {
     // 1. Weakify MMKV so we can safely use it inside the memoryWarning event listener

@@ -29,7 +29,7 @@ function isConfigurationEqual(
 }
 
 let defaultInstance: MMKV | null = null;
-function getDefaultInstance<TStorage = DefaultStorage>(): MMKV<TStorage> {
+function getDefaultInstance<TStorage extends DefaultStorage = DefaultStorage>(): MMKV<TStorage> {
   if (defaultInstance == null) {
     defaultInstance = new MMKV();
   }

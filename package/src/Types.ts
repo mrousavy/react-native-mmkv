@@ -122,7 +122,7 @@ export type KeysOfType<T, ValueType> = string extends keyof T
 /**
  * Represents a single MMKV instance.
  */
-export interface NativeMMKV<TStorage = DefaultStorage> {
+export interface NativeMMKV<TStorage extends DefaultStorage = DefaultStorage> {
   /**
    * Set a value for the given `key`.
    *
@@ -214,7 +214,7 @@ export interface Listener {
   remove: () => void;
 }
 
-export interface MMKVInterface<TStorage = DefaultStorage>
+export interface MMKVInterface<TStorage extends DefaultStorage = DefaultStorage>
   extends NativeMMKV<TStorage> {
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
