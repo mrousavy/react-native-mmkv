@@ -16,9 +16,8 @@ const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
 /**
  * A single MMKV instance.
  */
-export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
-  implements MMKVInterface<TStorage>
-{
+export class MMKV<TStorage = DefaultStorage>
+  implements MMKVInterface<TStorage> {
   private nativeInstance: NativeMMKV;
   private functionCache: Partial<NativeMMKV>;
   private id: string;
@@ -50,7 +49,7 @@ export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
     if (this.functionCache[functionName] == null) {
       this.functionCache[functionName] = this.nativeInstance[functionName];
     }
-    return this.functionCache[functionName] as NativeMMKV<TStorage>[T];
+    return this.functionCache[functionName] as unknown as NativeMMKV<TStorage>[T];
   }
 
   private onValuesChanged(keys: (keyof TStorage)[]) {
@@ -139,11 +138,11 @@ export class MMKV<TStorage extends DefaultStorage = DefaultStorage>
   addOnValueChangedListener(
     onValueChanged: (key: keyof TStorage) => void
   ): Listener {
-    this.onValueChangedListeners.push(onValueChanged);
+    this.onValueChangedListeners.push(onValueChanged as (key: string) => void);
 
     return {
       remove: () => {
-        const index = this.onValueChangedListeners.indexOf(onValueChanged);
+        const index = this.onValueChangedListeners.indexOf(onValueChanged as (key: string) => void);
         if (index !== -1) {
           this.onValueChangedListeners.splice(index, 1);
         }

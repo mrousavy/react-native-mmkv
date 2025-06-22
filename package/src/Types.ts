@@ -109,20 +109,20 @@ export type SupportedTypes =
  * const value = mmkv.getString('key'); // string
  * ```
  */
-export type DefaultStorage = Record<string, any>;
+export type DefaultStorage = Record<string, SupportedTypes>;
 
 /**
  * Represents the type of keys that can be used to access values in the MMKV storage.
  * This is a mapped type that extracts keys from a given type `T` where the values are of a specific type `ValueType`.
  */
-export type KeysOfType<T, ValueType> = {
-  [P in keyof T]: T[P] extends ValueType ? P : never;
-}[keyof T];
+export type KeysOfType<T, ValueType> = string extends keyof T
+  ? string
+  : { [P in keyof T]: T[P] extends ValueType ? P : never }[keyof T];
 
 /**
  * Represents a single MMKV instance.
  */
-export interface NativeMMKV<TStorage extends DefaultStorage = DefaultStorage> {
+export interface NativeMMKV<TStorage = DefaultStorage> {
   /**
    * Set a value for the given `key`.
    *
@@ -214,7 +214,7 @@ export interface Listener {
   remove: () => void;
 }
 
-export interface MMKVInterface<TStorage extends DefaultStorage = DefaultStorage>
+export interface MMKVInterface<TStorage = DefaultStorage>
   extends NativeMMKV<TStorage> {
   /**
    * Adds a value changed listener. The Listener will be called whenever any value

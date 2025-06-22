@@ -29,11 +29,11 @@ function isConfigurationEqual(
 }
 
 let defaultInstance: MMKV | null = null;
-function getDefaultInstance(): MMKV {
+function getDefaultInstance<TStorage = DefaultStorage>(): MMKV<TStorage> {
   if (defaultInstance == null) {
     defaultInstance = new MMKV();
   }
-  return defaultInstance;
+  return defaultInstance as unknown as MMKV<TStorage>;
 }
 
 /**
@@ -55,7 +55,7 @@ export function useMMKV<TStorage extends DefaultStorage = DefaultStorage>(
   const instance = useRef<MMKV<TStorage>>();
   const lastConfiguration = useRef<Configuration>();
 
-  if (configuration == null) return getDefaultInstance() as MMKV<TStorage>;
+  if (configuration == null) return getDefaultInstance();
 
   if (
     instance.current == null ||
@@ -76,7 +76,7 @@ function createMMKVHook<
     key: TStorage extends DefaultStorage ? KeysOfType<TStorage, TSet> : string,
     instance?: TStorage extends DefaultStorage ? MMKV<TStorage> : MMKV
   ): [value: TSet, setValue: (value: SetStateAction<TSet>) => void] => {
-    const mmkv = instance ?? getDefaultInstance();
+    const mmkv = (instance ?? getDefaultInstance()) as MMKV<Record<string, T>>;
 
     const [bump, setBump] = useState(0);
     const value = useMemo(() => {
@@ -196,12 +196,14 @@ export const useMMKVBuffer = createMMKVHook<ArrayBuffer | ArrayBufferLike>(
  * ```
  */
 export function useMMKVObject<T, TStorage extends DefaultStorage | undefined>(
-  key: TStorage extends DefaultStorage ? keyof TStorage : string,
+  key: TStorage extends DefaultStorage
+    ? KeysOfType<TStorage, string | undefined>
+    : string,
   instance?: TStorage extends DefaultStorage ? MMKV<TStorage> : MMKV
 ): [
-  value: T | undefined,
-  setValue: (value: SetStateAction<T | undefined>) => void,
-] {
+    value: T | undefined,
+    setValue: (value: SetStateAction<T | undefined>) => void,
+  ] {
   const [json, setJson] = useMMKVString(key, instance);
 
   const value = useMemo(() => {
