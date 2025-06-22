@@ -24,6 +24,14 @@ export type TestStorageValues = {
 const nonTypedStorage = new MMKV();
 expectType<void>(nonTypedStorage.set('someRandomKey', 'some-token'));
 expectType<string | undefined>(nonTypedStorage.getString('someOtherKey'));
+expectType<boolean | undefined>(nonTypedStorage.getBoolean('someOtherKey'));
+expectType<number | undefined>(nonTypedStorage.getNumber('someOtherKey'));
+expectType<ArrayBufferLike | undefined>(nonTypedStorage.getBuffer('someOtherKey'));
+nonTypedStorage.addOnValueChangedListener((key) => {
+  expectType<string>(key);
+});
+// Objects are not supported
+expectError(nonTypedStorage.set('someRandomKey', {}));
 
 // Typed storage tests
 const typedStorage = new MMKV<TestStorageValues>();
@@ -52,9 +60,6 @@ expectType<(keyof TestStorageValues)[]>(typedStorage.getAllKeys());
 expectType<boolean>(typedStorage.contains('someString'));
 typedStorage.addOnValueChangedListener((key) => {
   expectType<keyof TestStorageValues>(key);
-});
-nonTypedStorage.addOnValueChangedListener((key) => {
-  expectType<string>(key);
 });
 
 // Invalid type usages (should cause TypeScript errors)
