@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.9.0)
 project(ReactNativeMmkv)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Compile sources
 add_library(
