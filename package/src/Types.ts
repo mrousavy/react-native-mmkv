@@ -81,45 +81,45 @@ export interface Configuration {
 /**
  * Represents a single MMKV instance.
  */
-export interface NativeMMKV {
+export interface NativeMMKV<K extends string = string> {
   /**
    * Set a value for the given `key`.
    *
    * @throws an Error if the value cannot be set.
    */
-  set: (key: string, value: boolean | string | number | ArrayBuffer) => void;
+  set: (key: K, value: boolean | string | number | ArrayBuffer) => void;
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getBoolean: (key: string) => boolean | undefined;
+  getBoolean: (key: K) => boolean | undefined;
   /**
    * Get the string value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getString: (key: string) => string | undefined;
+  getString: (key: K) => string | undefined;
   /**
    * Get the number value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getNumber: (key: string) => number | undefined;
+  getNumber: (key: K) => number | undefined;
   /**
    * Get a raw buffer of unsigned 8-bit (0-255) data.
    *
    * @default undefined
    */
-  getBuffer: (key: string) => ArrayBufferLike | undefined;
+  getBuffer: (key: K) => ArrayBufferLike | undefined;
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
-  contains: (key: string) => boolean;
+  contains: (key: K) => boolean;
   /**
    * Delete the given `key`.
    */
-  delete: (key: string) => void;
+  delete: (key: K) => void;
   /**
    * Get all keys.
    *
@@ -139,7 +139,7 @@ export interface NativeMMKV {
    *
    * @throws an Error if the instance cannot be recrypted.
    */
-  recrypt: (key: string | undefined) => void;
+  recrypt: (key: K | undefined) => void;
   /**
    * Trims the storage space and clears memory cache.
    *
@@ -165,14 +165,12 @@ export interface Listener {
   remove: () => void;
 }
 
-export interface MMKVInterface extends NativeMMKV {
+export interface MMKVInterface<K extends string = string> extends NativeMMKV<K> {
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
    *
    * To unsubscribe from value changes, call `remove()` on the Listener.
    */
-  addOnValueChangedListener: (
-    onValueChanged: (key: string) => void
-  ) => Listener;
+  addOnValueChangedListener: (onValueChanged: (key: K) => void) => Listener;
 }
