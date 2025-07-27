@@ -233,6 +233,7 @@ A mocked MMKV instance is automatically used when testing with Jest or Vitest, s
 * [Using MMKV with zustand persist-middleware](./docs/WRAPPER_ZUSTAND_PERSIST_MIDDLEWARE.md)
 * [Using MMKV with jotai](./docs/WRAPPER_JOTAI.md)
 * [Using MMKV with react-query](./docs/WRAPPER_REACT_QUERY.md)
+* [Using MMKV with Tinybase](./docs/WRAPPER_TINYBASE.md)
 * [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
 
 ## LocalStorage and In-Memory Storage (Web)
