@@ -11,7 +11,7 @@ const storage = new MMKV()
 configurePersistable({
   storage: {
     setItem: (key, data) => storage.set(key, data),
-    getItem: (key) => storage.getString(key),
+    getItem: (key) => storage.getString(key) || null,
     removeItem: (key) => storage.delete(key),
   },
 })
