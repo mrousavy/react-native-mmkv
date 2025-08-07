@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 # Compile sources
 add_library(
-        react-native-mmkv
+        ReactNativeMmkv
         SHARED
         src/main/cpp/AndroidLogger.cpp
         ../cpp/MmkvHostObject.cpp
@@ -20,7 +20,7 @@ find_package(mmkv REQUIRED CONFIG)
 find_library(android_log log)
 
 target_link_libraries(
-        react-native-mmkv
+        ReactNativeMmkv
         mmkv::mmkv                  # <-- MMKV core
         android_log                 # <-- Logcat logger
         android                     # <-- Android JNI core

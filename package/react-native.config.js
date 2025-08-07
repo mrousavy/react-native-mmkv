@@ -6,7 +6,10 @@ module.exports = {
       /**
        * @type {import('@react-native-community/cli-types').IOSDependencyParams}
        */
-      ios: {},
+      ios: {
+        // iOS-specific configuration for codegen
+        cxxModuleHeaderName: 'NativeMmkvModule',
+      },
       /**
        * @type {import('@react-native-community/cli-types').AndroidDependencyParams}
        */
@@ -15,6 +18,15 @@ module.exports = {
         cxxModuleCMakeListsPath: 'CMakeLists.txt',
         cxxModuleHeaderName: 'NativeMmkvModule',
       },
+    },
+  },
+  // Codegen configuration for TurboModules
+  codegenConfig: {
+    name: 'RNMmkvSpec',
+    type: 'modules',
+    jsSrcsDir: 'src',
+    android: {
+      javaPackageName: 'com.mrousavy.mmkv',
     },
   },
 };
