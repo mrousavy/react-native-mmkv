@@ -8,7 +8,6 @@ module.exports = {
        */
       ios: {
         // iOS-specific configuration for codegen
-        cxxModuleHeaderName: 'NativeMmkvModule',
       },
       /**
        * @type {import('@react-native-community/cli-types').AndroidDependencyParams}

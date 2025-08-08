@@ -222,7 +222,13 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
 
           std::string keyName = arguments[0].getString(runtime).utf8(runtime);
           mmkv::MMBuffer buffer;
+#ifdef __OBJC__
+          // iOS: Convert std::string to NSString* for MMKVCore pod compatibility
+          bool hasValue = instance->getBytes(@(keyName.c_str()), buffer);
+#else
+          // Android/other platforms: Use std::string directly (converts to std::string_view)
           bool hasValue = instance->getBytes(keyName, buffer);
+#endif
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
