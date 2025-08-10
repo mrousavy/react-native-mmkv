@@ -93,6 +93,16 @@ android {
             keyPassword 'android'
         }
     }
+    splits {
+        abi {
+            reset()
+            enable true
+            // Only include architectures supported by MMKV prefab
+            include "arm64-v8a", "x86_64"
+            universalApk false
+        }
+    }
+    
     buildTypes {
         debug {
             signingConfig signingConfigs.debug

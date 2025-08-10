@@ -9,7 +9,7 @@
 #pragma once
 
 #include "NativeMmkvModule.h"
-#include <MMKVCore/MMKV.h>
+#include "MmkvTypes.h"
 #include <jsi/jsi.h>
 
 using namespace facebook;
@@ -24,8 +24,8 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
 
 private:
-  static mmkv::MMKVMode getMMKVMode(const facebook::react::MMKVConfig& config);
+  static MMKVModeType getMMKVMode(const facebook::react::MMKVConfig& config);
 
 private:
-  mmkv::MMKV* instance;
+  MMKVType* instance;
 };

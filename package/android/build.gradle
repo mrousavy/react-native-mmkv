@@ -75,8 +75,8 @@ android {
 }
 
 repositories {
-  mavenCentral()
   google()
+  mavenCentral()
 }
 
 
@@ -86,8 +86,8 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
 
-  // Use the MMKV shared lib - includes C++ prefabs
-  implementation "com.tencent:mmkv-shared:2.1.0"
+  // Use the MMKV shared lib - includes C++ prefabs (shared STL for React Native compatibility)
+  implementation "com.tencent:mmkv-shared:2.2.2"
 }
 
 if (isNewArchitectureEnabled()) {
