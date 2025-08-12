@@ -97,3 +97,6 @@ if (isNewArchitectureEnabled()) {
     codegenJavaPackageName = "com.mrousavy.mmkv"
   }
 }
+
+// for IDE headers only
+apply from: 'prefab.gradle'

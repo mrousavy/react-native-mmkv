@@ -35,16 +35,33 @@ else
     exit 1
 fi
 
-# Step 2: Set up dependency headers using separate scripts
-echo "Setting up dependency headers..."
+# Step 2: Set up dependency headers using Gradle
+echo "Setting up dependency headers using Gradle..."
 
-# Step 2.1: Set up folly headers (required for react/bridging/Dynamic.h)
-echo "Setting up folly headers..."
-"$SCRIPT_DIR/folly_headers.sh" "$BUILD_DIR"
+# Run the Gradle prefabs task to extract headers from AARs
+echo "Running Gradle prefabs task..."
+cd "$PKG_DIR/android"
 
-# Step 2.2: Set up MMKV headers (for IDE support)
-echo "Setting up MMKV headers..."
-"$SCRIPT_DIR/mmkv_headers.sh" "$BUILD_DIR"
+# Use the local gradlew
+GRADLEW_CMD="./gradlew"
+
+# Run the prefabs task
+if $GRADLEW_CMD prefabs; then
+    echo "✓ Successfully extracted headers using Gradle"
+else
+    echo "✗ Failed to extract headers using Gradle"
+    exit 1
+fi
+
+cd - > /dev/null
+
+# Check if folly-config.h exists in the extracted headers, if not generate it
+if [ ! -f "$BUILD_DIR/includes/reactnative/folly/folly-config.h" ]; then
+    echo "  Generating folly-config.h (not found in prefab)..."
+    "$SCRIPT_DIR/folly_config.sh" "$BUILD_DIR"
+else
+    echo "  ✓ Using folly-config.h from prefab"
+fi
 
 # Step 3: Create a comprehensive CMakeLists.txt for IDE support
 echo "Creating CMakeLists.txt with comprehensive header paths..."
@@ -81,22 +98,12 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/build/generated/ios/RNMmkvSpec"
 )
 
-# Folly headers (downloaded/created for React Native bridging)
+# All downloaded headers (unified includes directory)
 include_directories(
-    "${CMAKE_CURRENT_SOURCE_DIR}/build/folly"
+    "${CMAKE_CURRENT_SOURCE_DIR}/build/includes"
+    "${CMAKE_CURRENT_SOURCE_DIR}/build/includes/mmkv"
+    "${CMAKE_CURRENT_SOURCE_DIR}/build/includes/reactnative"
 )
-
-# React Native third-party dependencies (for boost, etc.)
-include_directories(
-    "${CMAKE_CURRENT_SOURCE_DIR}/node_modules/react-native/third-party-podspecs/boost"
-    "${CMAKE_CURRENT_SOURCE_DIR}/node_modules/react-native/third-party-podspecs/DoubleConversion"
-    "${CMAKE_CURRENT_SOURCE_DIR}/node_modules/react-native/third-party-podspecs/glog"
-)
-
-# MMKV headers (self-contained)
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/mmkv")
-    include_directories("${CMAKE_CURRENT_SOURCE_DIR}/build/mmkv")
-endif()
 
 # Compile sources
 add_library(

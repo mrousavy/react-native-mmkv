@@ -9,7 +9,7 @@
 #pragma once
 
 #include "NativeMmkvModule.h"
-#include "MmkvTypes.h"
+#include "MmkvTypes.h" // IWYU pragma: keep
 #include <jsi/jsi.h>
 
 using namespace facebook;
@@ -24,8 +24,8 @@ public:
   std::vector<jsi::PropNameID> getPropertyNames(jsi::Runtime& rt) override;
 
 private:
-  static MMKVModeType getMMKVMode(const facebook::react::MMKVConfig& config);
+  static MMKVMode getMMKVMode(const facebook::react::MMKVConfig& config);
 
 private:
-  MMKVType* instance;
+  MMKV* instance;
 };

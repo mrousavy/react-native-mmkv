@@ -1,0 +1,216 @@
+// Task to extract headers from React Native and MMKV AARs in Gradle cache
+task prefabs {
+  group 'react-native-mmkv'
+  description 'Extract prefab headers from React Native and MMKV AARs'
+  
+  doLast {
+    def buildDir = file('../build')
+    def downloadsDir = file('../build/downloads')
+    def includesDir = file('../build/includes')
+    def tempDir = file('../build/temp')
+    
+    println "🚀 Extracting prefab headers from Gradle cache AARs..."
+    
+    // Clean and create directories
+    delete includesDir
+    delete tempDir
+    downloadsDir.mkdirs()
+    includesDir.mkdirs()
+    tempDir.mkdirs()
+    
+    def totalHeaders = 0
+    
+    // Get React Native version from package.json
+    def packageJsonFile = file('../package.json')
+    def packageJson = new groovy.json.JsonSlurper().parseText(packageJsonFile.text)
+    def rnVersion = packageJson.devDependencies?.'react-native'?.replaceAll('[^0-9.]', '') ?: '0.77.1'
+    
+    // Find and copy React Native AAR from Gradle cache
+    println "📦 Processing React Native ${rnVersion} AAR..."
+    def gradleCacheDir = file("${System.getProperty('user.home')}/.gradle/caches/modules-2/files-2.1")
+    def reactAarPattern = "com.facebook.react/react-android/${rnVersion}/**/react-android-${rnVersion}-release.aar"
+    
+    def reactAarFiles = fileTree(gradleCacheDir).matching {
+      include reactAarPattern
+    }
+    
+    if (reactAarFiles.isEmpty()) {
+      println "  ⚠️ React Native AAR not found in Gradle cache. Downloading..."
+      // Force download by resolving configuration
+      def reactConfig = configurations.create('reactNativeDownload')
+      dependencies.add('reactNativeDownload', "com.facebook.react:react-android:${rnVersion}@aar")
+      reactConfig.resolve()
+      
+      // Try to find it again
+      reactAarFiles = fileTree(gradleCacheDir).matching {
+        include reactAarPattern
+      }
+    }
+    
+    reactAarFiles.each { aarFile ->
+      def targetAar = file("${downloadsDir}/react-android-${rnVersion}-release.aar")
+      copy {
+        from aarFile
+        into downloadsDir
+        rename { targetAar.name }
+      }
+      println "  ✓ Copied React Native AAR to ${targetAar}"
+      
+      // Extract AAR
+      def extractDir = file("${tempDir}/react")
+      copy {
+        from zipTree(targetAar)
+        into extractDir
+      }
+      
+      // Look for prefab modules
+      def prefabDir = file("${extractDir}/prefab/modules")
+      if (prefabDir.exists()) {
+        prefabDir.eachDir { moduleDir ->
+          def includeDir = file("${moduleDir}/include")
+          if (includeDir.exists()) {
+            def moduleName = moduleDir.name
+            def targetDir = file("${includesDir}/${moduleName}")
+            
+            copy {
+              from includeDir
+              into targetDir
+              include '**/*.h', '**/*.hpp', '**/*.hh'
+            }
+            
+            def headerCount = 0
+            targetDir.eachFileRecurse { file ->
+              if (file.name.endsWith('.h') || file.name.endsWith('.hpp') || file.name.endsWith('.hh')) {
+                headerCount++
+              }
+            }
+            totalHeaders += headerCount
+            println "  ✓ ${moduleName}: ${headerCount} headers"
+          }
+        }
+      } else {
+        println "  ⚠️ No prefab modules found in React Native AAR"
+      }
+    }
+    
+    // Find and copy MMKV AAR from Gradle cache
+    println "📦 Processing MMKV AAR..."
+    def mmkvAarPattern = "com.tencent/mmkv-shared/2.2.2/**/mmkv-shared-2.2.2.aar"
+    
+    def mmkvAarFiles = fileTree(gradleCacheDir).matching {
+      include mmkvAarPattern
+    }
+    
+    if (mmkvAarFiles.isEmpty()) {
+      println "  ⚠️ MMKV AAR not found in Gradle cache. Downloading..."
+      // Force download by resolving configuration
+      def mmkvConfig = configurations.create('mmkvDownload')
+      dependencies.add('mmkvDownload', "com.tencent:mmkv-shared:2.2.2@aar")
+      mmkvConfig.resolve()
+      
+      // Try to find it again
+      mmkvAarFiles = fileTree(gradleCacheDir).matching {
+        include mmkvAarPattern
+      }
+    }
+    
+    mmkvAarFiles.each { aarFile ->
+      def targetAar = file("${downloadsDir}/mmkv-shared-2.2.2.aar")
+      copy {
+        from aarFile
+        into downloadsDir
+        rename { targetAar.name }
+      }
+      println "  ✓ Copied MMKV AAR to ${targetAar}"
+      
+      // Extract AAR
+      def extractDir = file("${tempDir}/mmkv")
+      copy {
+        from zipTree(targetAar)
+        into extractDir
+      }
+      
+      // Look for prefab modules
+      def prefabDir = file("${extractDir}/prefab/modules")
+      if (prefabDir.exists()) {
+        prefabDir.eachDir { moduleDir ->
+          def includeDir = file("${moduleDir}/include")
+          if (includeDir.exists()) {
+            def moduleName = moduleDir.name
+            def targetDir = file("${includesDir}/${moduleName}")
+            
+            copy {
+              from includeDir
+              into targetDir
+              include '**/*.h', '**/*.hpp', '**/*.hh'
+            }
+            
+            def headerCount = 0
+            targetDir.eachFileRecurse { file ->
+              if (file.name.endsWith('.h') || file.name.endsWith('.hpp') || file.name.endsWith('.hh')) {
+                headerCount++
+              }
+            }
+            totalHeaders += headerCount
+            println "  ✓ ${moduleName}: ${headerCount} headers"
+          }
+        }
+      } else {
+        println "  ⚠️ No prefab modules found in MMKV AAR"
+      }
+    }
+    
+    // Create MMKVCore symlink to MMKV for compatibility
+    def mmkvDir = file("${includesDir}/mmkv")
+    def mmkvCoreDir = file("${includesDir}/mmkv/MMKVCore")
+    if (mmkvDir.exists() && !mmkvCoreDir.exists()) {
+      println "🔗 Creating MMKVCore symlink to MMKV directory..."
+      try {
+        // Create symlink using Java NIO (works on Unix-like systems)
+        java.nio.file.Files.createSymbolicLink(
+          mmkvCoreDir.toPath(),
+          file("${includesDir}/mmkv/MMKV").toPath()
+        )
+        println "  ✓ Created symlink: MMKVCore -> MMKV"
+      } catch (Exception e) {
+        // Fallback: copy the directory if symlink creation fails
+        println "  ⚠️ Symlink creation failed, copying directory instead: ${e.message}"
+        copy {
+          from file("${includesDir}/mmkv/MMKV")
+          into mmkvCoreDir
+        }
+        println "  ✓ Copied MMKV headers to MMKVCore directory"
+      }
+    }
+    
+    // Clean up temp directory
+    delete tempDir
+    
+    // Show summary
+    println ""
+    println "=" * 60
+    println "✅ Header extraction complete!"
+    println "=" * 60
+    println "📁 Headers extracted to: ${includesDir}"
+    println "📊 Total headers: ${totalHeaders}"
+    println ""
+    
+    if (includesDir.exists()) {
+      println "📂 Directory structure:"
+      includesDir.eachDir { dir ->
+        def headerCount = 0
+        dir.eachFileRecurse { file ->
+          if (file.name.endsWith('.h') || file.name.endsWith('.hpp')) {
+            headerCount++
+          }
+        }
+        println "   ${dir.name}/ (${headerCount} headers)"
+      }
+    }
+    
+    println ""
+    println "💡 Usage: Include in your CMakeLists.txt:"
+    println "   include_directories(\"\${CMAKE_CURRENT_SOURCE_DIR}/build/includes\")"
+    println ""
+  }
+}

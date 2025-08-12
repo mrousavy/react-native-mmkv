@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "MmkvTypes.h"
+
+#include "MmkvTypes.h" // IWYU pragma: keep
 #include <jsi/jsi.h>
 
 using namespace facebook;
@@ -17,7 +18,7 @@ using namespace facebook;
  */
 class ManagedMMBuffer : public jsi::MutableBuffer {
 public:
-  explicit ManagedMMBuffer(MMBufferType&& buffer) : _buffer(std::move(buffer)) {}
+  explicit ManagedMMBuffer(MMBuffer&& buffer) : _buffer(std::move(buffer)) {}
 
   uint8_t* data() override {
     return static_cast<uint8_t*>(_buffer.getPtr());
@@ -28,5 +29,5 @@ public:
   }
 
 private:
-  MMBufferType _buffer;
+  MMBuffer _buffer;
 };

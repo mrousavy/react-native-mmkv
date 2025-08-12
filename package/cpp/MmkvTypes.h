@@ -11,53 +11,39 @@
 // Platform-specific MMKV includes
 #ifdef __ANDROID__
 #include <MMKV/MMKV.h>
+
+// On Android, bring global namespace types into mmkv namespace for consistency
+namespace mmkv {
+    using MMKV = ::MMKV;
+    using MMKVMode = ::MMKVMode;
+    using MMKVLogLevel = ::MMKVLogLevel;
+    
+    // Constants - bring into mmkv namespace
+    constexpr auto MMKVLogDebug = ::MMKVLogDebug;
+    constexpr auto MMKVLogInfo = ::MMKVLogInfo;
+    constexpr auto MMKVLogWarning = ::MMKVLogWarning;
+    constexpr auto MMKVLogError = ::MMKVLogError;
+    constexpr auto MMKVLogNone = ::MMKVLogNone;
+    
+    constexpr auto MMKV_SINGLE_PROCESS = ::MMKV_SINGLE_PROCESS;
+    constexpr auto MMKV_MULTI_PROCESS = ::MMKV_MULTI_PROCESS;
+}
+
 #else
 #include <MMKVCore/MMKV.h>
+// iOS already has everything in mmkv:: namespace
 #endif
 
 /**
- * Unified MMKV type declarations for cross-platform compatibility.
+ * Unified MMKV namespace usage for cross-platform compatibility.
  * 
- * This header centralizes all platform-specific type differences:
- * - Android prefab: MMKV, MMKVMode, MMKVLogLevel are in global namespace
- * - iOS: All types are in mmkv:: namespace
- * - MMBuffer is in mmkv:: namespace on both platforms
+ * After including this header, use:
+ * - mmkv::MMKV for the main class
+ * - mmkv::MMKVMode for mode enum
+ * - mmkv::MMKVLogLevel for log level enum
+ * - mmkv::MMBuffer for buffer type
+ * - mmkv::MMKV_SINGLE_PROCESS / mmkv::MMKV_MULTI_PROCESS for modes
+ * - mmkv::MMKVLogDebug, etc. for log levels
  */
 
-#ifdef __ANDROID__
-// Android prefab: most types are in global namespace
-using MMKVType = ::MMKV;
-using MMKVModeType = ::MMKVMode;
-using MMKVLogLevelType = ::MMKVLogLevel;
-using MMBufferType = ::mmkv::MMBuffer;  // MMBuffer is still in mmkv:: namespace on Android
-
-// Log level constants
-constexpr auto MMKVLogDebugValue = ::MMKVLogDebug;
-constexpr auto MMKVLogInfoValue = ::MMKVLogInfo;
-constexpr auto MMKVLogWarningValue = ::MMKVLogWarning;
-constexpr auto MMKVLogErrorValue = ::MMKVLogError;
-constexpr auto MMKVLogNoneValue = ::MMKVLogNone;
-
-// Mode constants
-constexpr auto MMKVSingleProcessValue = ::MMKV_SINGLE_PROCESS;
-constexpr auto MMKVMultiProcessValue = ::MMKV_MULTI_PROCESS;
-
-#else
-// iOS: all types are in mmkv:: namespace
-using MMKVType = ::mmkv::MMKV;
-using MMKVModeType = ::mmkv::MMKVMode;
-using MMKVLogLevelType = ::mmkv::MMKVLogLevel;
-using MMBufferType = ::mmkv::MMBuffer;
-
-// Log level constants
-constexpr auto MMKVLogDebugValue = ::mmkv::MMKVLogDebug;
-constexpr auto MMKVLogInfoValue = ::mmkv::MMKVLogInfo;
-constexpr auto MMKVLogWarningValue = ::mmkv::MMKVLogWarning;
-constexpr auto MMKVLogErrorValue = ::mmkv::MMKVLogError;
-constexpr auto MMKVLogNoneValue = ::mmkv::MMKVLogNone;
-
-// Mode constants
-constexpr auto MMKVSingleProcessValue = ::mmkv::MMKV_SINGLE_PROCESS;
-constexpr auto MMKVMultiProcessValue = ::mmkv::MMKV_MULTI_PROCESS;
-
-#endif
+using namespace mmkv;

@@ -8,16 +8,7 @@
 #pragma once
 
 #include <string>
-
-#if __has_include(<RNMmkvSpecJSI.h>)
-// CocoaPods include (iOS)
 #include <RNMmkvSpecJSI.h>
-#elif __has_include(<RNMmkvSpecJSI.h>)
-// CMake include on Android
-#include <RNMmkvSpecJSI.h>
-#else
-#error Cannot find react-native-mmkv spec! Try cleaning your cache and re-running CodeGen!
-#endif
 
 namespace facebook::react {
 
