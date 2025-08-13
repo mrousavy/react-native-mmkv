@@ -17,4 +17,13 @@ module.exports = {
       },
     },
   },
+  // Codegen configuration for TurboModules
+  codegenConfig: {
+    name: 'RNMmkvSpec',
+    type: 'modules',
+    jsSrcsDir: 'src',
+    android: {
+      javaPackageName: 'com.mrousavy.mmkv',
+    },
+  },
 };

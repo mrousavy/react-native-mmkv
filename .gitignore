@@ -10,3 +10,11 @@
 /ios
 /android
 /lib
+
+.xcode.env.local
+.vscode
+
+# build
+.cache
+build
+compile_commands.json

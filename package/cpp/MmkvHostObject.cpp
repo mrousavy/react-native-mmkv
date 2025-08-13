@@ -7,9 +7,8 @@
 //
 
 #include "MmkvHostObject.h"
-#include "MMKVManagedBuffer.h"
+#include "ManagedMMBuffer.h"
 #include "MmkvLogger.h"
-#include <MMKV.h>
 #include <string>
 #include <vector>
 
@@ -28,7 +27,7 @@ MmkvHostObject::MmkvHostObject(const facebook::react::MMKVConfig& config) {
   MMKVMode mode = getMMKVMode(config);
   if (config.readOnly.has_value() && config.readOnly.value()) {
     MmkvLogger::log("RNMMKV", "Instance is read-only!");
-    mode = mode | MMKVMode::MMKV_READ_ONLY;
+    mode = mode | mmkv::MMKV_READ_ONLY;
   }
 
 #ifdef __APPLE__
@@ -71,14 +70,14 @@ std::vector<jsi::PropNameID> MmkvHostObject::getPropertyNames(jsi::Runtime& rt) 
 
 MMKVMode MmkvHostObject::getMMKVMode(const facebook::react::MMKVConfig& config) {
   if (!config.mode.has_value()) {
-    return MMKVMode::MMKV_SINGLE_PROCESS;
+    return mmkv::MMKV_SINGLE_PROCESS;
   }
   react::NativeMmkvMode mode = config.mode.value();
   switch (mode) {
     case react::NativeMmkvMode::SINGLE_PROCESS:
-      return MMKVMode::MMKV_SINGLE_PROCESS;
+      return mmkv::MMKV_SINGLE_PROCESS;
     case react::NativeMmkvMode::MULTI_PROCESS:
-      return MMKVMode::MMKV_MULTI_PROCESS;
+      return mmkv::MMKV_MULTI_PROCESS;
     default:
       [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
   }
@@ -221,12 +220,18 @@ jsi::Value MmkvHostObject::get(jsi::Runtime& runtime, const jsi::PropNameID& pro
           }
 
           std::string keyName = arguments[0].getString(runtime).utf8(runtime);
-          mmkv::MMBuffer buffer;
+          MMBuffer buffer;
+#ifdef __OBJC__
+          // iOS: Convert std::string to NSString* for MMKVCore pod compatibility
+          bool hasValue = instance->getBytes(@(keyName.c_str()), buffer);
+#else
+          // Android/other platforms: Use std::string directly (converts to std::string_view)
           bool hasValue = instance->getBytes(keyName, buffer);
+#endif
           if (!hasValue) [[unlikely]] {
             return jsi::Value::undefined();
           }
-          auto mutableData = std::make_shared<MMKVManagedBuffer>(std::move(buffer));
+          auto mutableData = std::make_shared<ManagedMMBuffer>(std::move(buffer));
           return jsi::ArrayBuffer(runtime, mutableData);
         });
   }

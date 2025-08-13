@@ -11,7 +11,6 @@ jsconfig.json
 
 # Xcode
 #
-build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -49,7 +48,6 @@ example/vendor/
 
 # node.js
 #
-node_modules/
 npm-debug.log
 
 # BUCK
