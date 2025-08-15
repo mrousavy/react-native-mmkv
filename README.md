@@ -65,6 +65,48 @@
   </p>
 </div>
 
+## What to Store in MMKV
+
+MMKV is designed for storing **non-sensitive application data** that needs to be persisted across app sessions. Here are the recommended use cases:
+
+### ✅ Recommended for Storage
+
+* **User preferences and settings**
+  * App theme (light/dark mode)
+  * Language preferences
+  * Notification settings
+  * UI layout preferences
+  * Feature flags and toggles
+
+* **Application state**
+  * User onboarding completion status
+  * App usage statistics
+  * Cached data (with expiration)
+  * Form data drafts
+  * Navigation state
+
+* **User-generated content**
+  * User profile information (non-sensitive)
+  * App-specific user data
+  * User preferences and customizations
+  * Offline content cache
+
+### ❌ NOT Recommended for Storage
+
+* **Authentication tokens and secrets**
+  * Access tokens
+  * Refresh tokens
+  * API keys
+  * Private keys
+  * Passwords
+  * Session tokens
+
+* **Large data sets**
+  * Large images or media files
+  * Extensive document collections
+  * Large datasets that should be in a database
+
+
 ## Installation
 
 ### React Native
