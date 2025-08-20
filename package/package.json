@@ -72,6 +72,7 @@
     "@jamesacarr/eslint-formatter-github-actions": "0.2.0",
     "@react-native-community/cli": "19.1.1",
     "@react-native-community/cli-types": "18.0.0",
+    "@react-native/babel-preset": "^0.81.0",
     "@react-native/eslint-config": "0.81.0",
     "@release-it/conventional-changelog": "9.0.1",
     "@testing-library/react-native": "13.0.1",
