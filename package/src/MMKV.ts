@@ -9,12 +9,13 @@ import type {
 } from './Types';
 import { addMemoryWarningListener } from './MemoryWarningListener';
 
-const onValueChangedListeners = new Map<string, ((key: string) => void)[]>();
+type ListenerType = (key: string) => void;
+const onValueChangedListeners = new Map<string, ListenerType[]>();
 
 /**
  * A single MMKV instance.
  */
-export class MMKV implements MMKVInterface {
+export class MMKV<K extends string> implements MMKVInterface<K> {
   private nativeInstance: NativeMMKV;
   private functionCache: Partial<NativeMMKV>;
   private id: string;
@@ -65,33 +66,33 @@ export class MMKV implements MMKVInterface {
   get isReadOnly(): boolean {
     return this.nativeInstance.isReadOnly;
   }
-  set(key: string, value: boolean | string | number | ArrayBuffer): void {
+  set(key: K, value: boolean | string | number | ArrayBuffer): void {
     const func = this.getFunctionFromCache('set');
     func(key, value);
 
     this.onValuesChanged([key]);
   }
-  getBoolean(key: string): boolean | undefined {
+  getBoolean(key: K): boolean | undefined {
     const func = this.getFunctionFromCache('getBoolean');
     return func(key);
   }
-  getString(key: string): string | undefined {
+  getString(key: K): string | undefined {
     const func = this.getFunctionFromCache('getString');
     return func(key);
   }
-  getNumber(key: string): number | undefined {
+  getNumber(key: K): number | undefined {
     const func = this.getFunctionFromCache('getNumber');
     return func(key);
   }
-  getBuffer(key: string): ArrayBufferLike | undefined {
+  getBuffer(key: K): ArrayBufferLike | undefined {
     const func = this.getFunctionFromCache('getBuffer');
     return func(key);
   }
-  contains(key: string): boolean {
+  contains(key: K): boolean {
     const func = this.getFunctionFromCache('contains');
     return func(key);
   }
-  delete(key: string): void {
+  delete(key: K): void {
     const func = this.getFunctionFromCache('delete');
     func(key);
 
@@ -127,12 +128,12 @@ export class MMKV implements MMKVInterface {
     };
   }
 
-  addOnValueChangedListener(onValueChanged: (key: string) => void): Listener {
-    this.onValueChangedListeners.push(onValueChanged);
+  addOnValueChangedListener(onValueChanged: (key: K) => void): Listener {
+    this.onValueChangedListeners.push(onValueChanged as ListenerType);
 
     return {
       remove: () => {
-        const index = this.onValueChangedListeners.indexOf(onValueChanged);
+        const index = this.onValueChangedListeners.indexOf(onValueChanged as ListenerType);
         if (index !== -1) {
           this.onValueChangedListeners.splice(index, 1);
         }
