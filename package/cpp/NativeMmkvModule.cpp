@@ -5,8 +5,8 @@
 //  Created by Marc Rousavy on 25.03.2024.
 //
 
+#include <MMKV/MMKV.h>
 #include "NativeMmkvModule.h"
-#include "MMKV.h"
 #include "MmkvHostObject.h"
 #include "MmkvLogger.h"
 

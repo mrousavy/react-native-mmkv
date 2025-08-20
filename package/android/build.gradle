@@ -44,6 +44,7 @@ android {
 
   buildFeatures {
     buildConfig true
+    prefab true
   }
 
   buildTypes {
@@ -84,6 +85,8 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+
+  implementation "com.tencent.mmkv-shared:2.2.3"
 }
 
 if (isNewArchitectureEnabled()) {

@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "MMKV.h"
-#include "NativeMmkvModule.h"
+#include <MMKV/MMKV.h>
 #include <jsi/jsi.h>
+#include "NativeMmkvModule.h"
 
 using namespace facebook;
 using namespace mmkv;

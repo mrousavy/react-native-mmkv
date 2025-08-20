@@ -5,6 +5,8 @@
 //  Created by Marc Rousavy on 25.03.24.
 //
 
+#pragma once
+
 #include <string>
 
 class MmkvLogger {
