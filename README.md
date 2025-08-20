@@ -47,11 +47,13 @@
 
 > [!IMPORTANT]
 > - react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**. (react-native 0.75+).
-> - react-native-mmkv V4 is 64-bit only.
->     In your `gradle.properties` file, set the `reactNativeArchitectures` to only use 64-bit architectures;
->     ```goovy
->     reactNativeArchitectures=arm64-v8a,x86_64
->     ```
+> - react-native-mmkv V4 is **64-bit only**.
+>
+>    In your `gradle.properties` file, set the `reactNativeArchitectures` flag to this:
+>    ```goovy
+>    reactNativeArchitectures=arm64-v8a,x86_64
+>    ```
+>    See [**Android: Prerequisites**](https://github.com/Tencent/MMKV/wiki/android_setup#prerequisites) for more information.
 
 ## Benchmark
 
