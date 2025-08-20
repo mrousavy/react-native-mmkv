@@ -78,11 +78,7 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.mrousavy.mmkvexample"
-    
-    buildFeatures {
-        prefab true
-    }
-    
+
     defaultConfig {
         applicationId "com.mrousavy.mmkvexample"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -107,7 +103,7 @@ android {
             universalApk false
         }
     }
-    
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
