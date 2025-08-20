@@ -28,7 +28,7 @@ jobs:
       run:
         working-directory: package/example/ios
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
