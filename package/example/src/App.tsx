@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Alert,
+  Button,
+  Text,
+  useColorScheme,
+} from 'react-native';
 import { MMKV, useMMKVListener, useMMKVString } from 'react-native-mmkv';
 
 const storage = new MMKV();
@@ -9,6 +17,7 @@ export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
   const [keys, setKeys] = React.useState<string[]>([]);
+  const colorScheme = useColorScheme();
 
   const [example, setExample] = useMMKVString('yeeeet');
 
@@ -69,23 +78,30 @@ export default function App() {
     };
   }, [example, setExample]);
 
+  const isDark = colorScheme === 'dark';
+  const dynamicStyles = createDynamicStyles(isDark);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.keys}>Available Keys: {keys.join(', ')}</Text>
+    <View style={[styles.container, dynamicStyles.container]}>
+      <Text style={[styles.keys, dynamicStyles.keys]}>
+        Available Keys: {keys.join(', ')}
+      </Text>
       <View style={styles.row}>
-        <Text style={styles.title}>Key:</Text>
+        <Text style={[styles.title, dynamicStyles.title]}>Key:</Text>
         <TextInput
           placeholder="Key"
-          style={styles.textInput}
+          placeholderTextColor={isDark ? '#999' : '#666'}
+          style={[styles.textInput, dynamicStyles.textInput]}
           value={key}
           onChangeText={setKey}
         />
       </View>
       <View style={styles.row}>
-        <Text style={styles.title}>Value:</Text>
+        <Text style={[styles.title, dynamicStyles.title]}>Value:</Text>
         <TextInput
           placeholder="Value"
-          style={styles.textInput}
+          placeholderTextColor={isDark ? '#999' : '#666'}
+          style={[styles.textInput, dynamicStyles.textInput]}
           value={text}
           onChangeText={setText}
         />
@@ -96,6 +112,24 @@ export default function App() {
   );
 }
 
+const createDynamicStyles = (isDark: boolean) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: isDark ? '#000' : '#fff',
+    },
+    keys: {
+      color: isDark ? '#ccc' : '#666',
+    },
+    title: {
+      color: isDark ? '#fff' : '#000',
+    },
+    textInput: {
+      color: isDark ? '#fff' : '#000',
+      borderColor: isDark ? '#555' : '#000',
+      backgroundColor: isDark ? '#222' : '#fff',
+    },
+  });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -105,11 +139,9 @@ const styles = StyleSheet.create({
   },
   keys: {
     fontSize: 14,
-    color: 'grey',
   },
   title: {
     fontSize: 16,
-    color: 'black',
     marginRight: 10,
   },
   row: {
@@ -120,7 +152,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 20,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: 'black',
     borderRadius: 5,
     padding: 10,
   },
