@@ -49,7 +49,7 @@ jobs:
             ${{ runner.os }}-pods-
       - name: Install Pods
         working-directory: package/example
-        run: bun pods
+        run: yarn pods
 
       - name: Build App (Release, Simulator)
         working-directory: package/example/ios
