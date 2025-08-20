@@ -1,0 +1,82 @@
+name: Build iOS (Release)
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    paths:
+      - '.github/workflows/build-ios-release.yml'
+
+jobs:
+  build_release:
+    name: Build iOS Example App (release, new architecture)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Restore node_modules from cache
+        uses: actions/cache@v4
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install node_modules
+        run: yarn install --frozen-lockfile --cwd package
+      - name: Install node_modules for example/
+        run: yarn install --frozen-lockfile --cwd package/example
+
+      - name: Setup Ruby (bundle)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+          bundler-cache: true
+          working-directory: package/example
+
+      - name: Select Xcode 16.4
+        run: sudo xcode-select -s "/Applications/Xcode_16.4.app/Contents/Developer"
+
+      - name: Restore Pods cache
+        uses: actions/cache@v4
+        with:
+          path: example/ios/Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock', '**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Install Pods
+        working-directory: package/example
+        run: yarn pods
+
+      - name: Build App (Release, Simulator)
+        working-directory: package/example/ios
+        run: |
+          set -o pipefail
+          xcodebuild \
+            CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ \
+            -derivedDataPath build -UseModernBuildSystem=YES \
+            -workspace MmkvExample.xcworkspace \
+            -scheme MmkvExample \
+            -sdk iphonesimulator \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            build \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Package .app for Simulator
+        run: |
+          cd package/example/ios/build/Build/Products/Release-iphonesimulator
+          zip -r ../../../../../../../MmkvExample-Release-Simulator.zip MMKVExample.app
+
+      - name: Upload .app to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: MMKVExample-Release-Simulator.zip
+          asset_name: "MMKVExample-Simulator-${{ github.event.release.tag_name }}.app.zip"
+          asset_content_type: application/zip
