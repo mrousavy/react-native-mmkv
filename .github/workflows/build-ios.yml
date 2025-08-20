@@ -56,7 +56,6 @@ jobs:
           ruby-version: 2.6
           bundler-cache: true
           working-directory: package/example/ios
-          working-directory: example
 
       - name: Select Xcode 16.4
         run: sudo xcode-select -s "/Applications/Xcode_16.4.app/Contents/Developer"
