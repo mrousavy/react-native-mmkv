@@ -78,6 +78,7 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.mrousavy.mmkvexample"
+
     defaultConfig {
         applicationId "com.mrousavy.mmkvexample"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -93,6 +94,16 @@ android {
             keyPassword 'android'
         }
     }
+    splits {
+        abi {
+            reset()
+            enable true
+            // Only include architectures supported by MMKV prefab
+            include "arm64-v8a", "x86_64"
+            universalApk false
+        }
+    }
+
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
@@ -110,6 +121,9 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
+
+    // Add MMKV dependency directly to make prefab available
+    implementation("com.tencent:mmkv-shared:2.2.2")
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

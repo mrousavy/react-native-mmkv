@@ -5,7 +5,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "com.android.tools.build:gradle:7.2.2"
   }
 }
 
@@ -44,6 +44,7 @@ android {
 
   buildFeatures {
     buildConfig true
+    prefab true
   }
 
   buildTypes {
@@ -74,8 +75,8 @@ android {
 }
 
 repositories {
-  mavenCentral()
   google()
+  mavenCentral()
 }
 
 
@@ -84,6 +85,9 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+
+  // Use the MMKV shared lib - includes C++ prefabs (shared STL for React Native compatibility)
+  implementation "com.tencent:mmkv-shared:2.2.2"
 }
 
 if (isNewArchitectureEnabled()) {
