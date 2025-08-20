@@ -1211,7 +1211,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-mmkv (3.3.0):
+  - react-native-mmkv (4.0.0-beta.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1776,7 +1776,7 @@ SPEC CHECKSUMS:
   React-logger: 1935d6e6461e9c8be4c87af56c56a4876021171e
   React-Mapbuffer: 212171f037e3b22e6c2df839aa826806da480b85
   React-microtasksnativemodule: 72564d5469003687d39bfc4efad281df8efc0684
-  react-native-mmkv: 50699a098fe59079e743348496f0c6878b37a81c
+  react-native-mmkv: 7d0564c65b0c46a09bf0216715aeefe78bcdbc62
   React-nativeconfig: cb207ebba7cafce30657c7ad9f1587a8f32e4564
   React-NativeModulesApple: 82a8bee52df9f5b378195a500f22be3a6ef0f890
   React-perflogger: 8152bab3f0eb4b8751f282f9af7caed2c823a9ea
