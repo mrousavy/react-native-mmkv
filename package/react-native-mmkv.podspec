@@ -27,6 +27,6 @@ Pod::Spec.new do |s|
     "cpp/**/*.{hpp,cpp,c,h}"
   ]
 
-  s.dependency 'MMKVCore'
+  s.dependency 'MMKVCore', '>= 2.2.3'
   install_modules_dependencies(s)
 end
