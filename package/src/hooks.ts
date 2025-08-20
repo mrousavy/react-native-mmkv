@@ -34,8 +34,8 @@ export function useMMKV(): MMKV;
  */
 export function useMMKV(configuration: Configuration): MMKV;
 export function useMMKV(configuration?: Configuration): MMKV {
-  const instance = useRef<MMKV>();
-  const lastConfiguration = useRef<Configuration>();
+  const instance = useRef<MMKV>(undefined);
+  const lastConfiguration = useRef<Configuration>(undefined);
 
   if (configuration == null) return getDefaultInstance();
 
