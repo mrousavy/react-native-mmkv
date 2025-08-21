@@ -44,12 +44,12 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Properties
-      virtual std::string getBaseDirectory() = 0;
-      virtual std::string getAppGroupDirectory() = 0;
+      
 
     public:
       // Methods
-      
+      virtual std::string getBaseDirectory() = 0;
+      virtual std::string getAppGroupDirectory() = 0;
 
     protected:
       // Hybrid Setup

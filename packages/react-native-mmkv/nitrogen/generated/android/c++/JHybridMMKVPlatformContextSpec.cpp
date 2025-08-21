@@ -34,6 +34,9 @@ namespace margelo::nitro::mmkv {
   }
 
   // Properties
+  
+
+  // Methods
   std::string JHybridMMKVPlatformContextSpec::getBaseDirectory() {
     static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getBaseDirectory");
     auto __result = method(_javaPart);
@@ -44,8 +47,5 @@ namespace margelo::nitro::mmkv {
     auto __result = method(_javaPart);
     return __result->toStdString();
   }
-
-  // Methods
-  
 
 } // namespace margelo::nitro::mmkv

@@ -5,10 +5,10 @@ export interface MMKVPlatformContext
   /**
    * Get the MMKV base directory
    */
-  readonly baseDirectory: string
+  getBaseDirectory(): string
   /**
    * Get the MMKV AppGroup's directory.
    * @platform iOS
    */
-  readonly appGroupDirectory: string
+  getAppGroupDirectory(): string
 }

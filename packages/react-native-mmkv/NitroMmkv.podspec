@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => min_ios_version_supported, :visionos => 1.0 }
-  s.source       = { :git => "https://github.com/mrousavy/nitro.git", :tag => "#{s.version}" }
+  s.platforms    = { :ios => min_ios_version_supported, :visionos => 1.0, :tvos => "12.0", :osx => "10.14" }
+  s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
 
   s.source_files = [
     # Implementation (Swift)
@@ -21,6 +21,11 @@ Pod::Spec.new do |s|
     # Implementation (C++ objects)
     "cpp/**/*.{hpp,cpp}",
   ]
+
+  # Add MMKV Core dependency
+  s.compiler_flags = '-x objective-c++'
+  s.libraries    = 'z', 'c++'
+  s.dependency 'MMKVCore', '>= 2.2.3'
 
   load 'nitrogen/generated/ios/NitroMmkv+autolinking.rb'
   add_nitrogen_files(s)

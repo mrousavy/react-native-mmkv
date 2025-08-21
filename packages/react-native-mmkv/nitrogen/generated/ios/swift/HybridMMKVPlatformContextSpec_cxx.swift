@@ -106,20 +106,30 @@ open class HybridMMKVPlatformContextSpec_cxx {
   }
 
   // Properties
-  public final var baseDirectory: std.string {
-    @inline(__always)
-    get {
-      return std.string(self.__implementation.baseDirectory)
-    }
-  }
   
-  public final var appGroupDirectory: std.string {
-    @inline(__always)
-    get {
-      return std.string(self.__implementation.appGroupDirectory)
-    }
-  }
 
   // Methods
+  @inline(__always)
+  public final func getBaseDirectory() -> bridge.Result_std__string_ {
+    do {
+      let __result = try self.__implementation.getBaseDirectory()
+      let __resultCpp = std.string(__result)
+      return bridge.create_Result_std__string_(__resultCpp)
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_std__string_(__exceptionPtr)
+    }
+  }
   
+  @inline(__always)
+  public final func getAppGroupDirectory() -> bridge.Result_std__string_ {
+    do {
+      let __result = try self.__implementation.getAppGroupDirectory()
+      let __resultCpp = std.string(__result)
+      return bridge.create_Result_std__string_(__resultCpp)
+    } catch (let __error) {
+      let __exceptionPtr = __error.toCpp()
+      return bridge.create_Result_std__string_(__exceptionPtr)
+    }
+  }
 }

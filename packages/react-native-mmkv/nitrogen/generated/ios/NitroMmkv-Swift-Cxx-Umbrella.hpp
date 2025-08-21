@@ -13,6 +13,8 @@ namespace margelo::nitro::mmkv { class HybridMMKVPlatformContextSpec; }
 
 // Include C++ defined types
 #include "HybridMMKVPlatformContextSpec.hpp"
+#include <NitroModules/Result.hpp>
+#include <exception>
 #include <memory>
 #include <string>
 

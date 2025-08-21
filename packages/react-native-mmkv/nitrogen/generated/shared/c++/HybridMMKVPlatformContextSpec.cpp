@@ -14,8 +14,8 @@ namespace margelo::nitro::mmkv {
     HybridObject::loadHybridMethods();
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
-      prototype.registerHybridGetter("baseDirectory", &HybridMMKVPlatformContextSpec::getBaseDirectory);
-      prototype.registerHybridGetter("appGroupDirectory", &HybridMMKVPlatformContextSpec::getAppGroupDirectory);
+      prototype.registerHybridMethod("getBaseDirectory", &HybridMMKVPlatformContextSpec::getBaseDirectory);
+      prototype.registerHybridMethod("getAppGroupDirectory", &HybridMMKVPlatformContextSpec::getAppGroupDirectory);
     });
   }
 

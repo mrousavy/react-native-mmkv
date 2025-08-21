@@ -9,6 +9,7 @@
 
 #include "HybridMMKVSpec.hpp"
 #include "Configuration.hpp"
+#include "MMKVTypes.hpp"
 
 namespace margelo::nitro::mmkv {
 
@@ -34,6 +35,8 @@ namespace margelo::nitro::mmkv {
     void recrypt(const std::optional<std::string>& key) override;
     void trim() override;
 
+   private:
+    MMKV* instance;
   };
 
 }

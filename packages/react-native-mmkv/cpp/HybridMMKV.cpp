@@ -6,11 +6,46 @@
 //
 
 #include "HybridMMKV.hpp"
+#include <NitroModules/Logger.hpp>
+#include <MMKV/MMKV.h>
 
 namespace margelo::nitro::mmkv {
 
-HybridMMKV::HybridMMKV(const Configuration& configuration) {
+HybridMMKV::HybridMMKV(const Configuration& config) {
+  std::string path = config.path.has_value() ? config.path.value() : "";
+  std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
+  bool hasEncryptionKey = encryptionKey.size() > 0;
+  Logger::log(LogLevel::Info, TAG, "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
+                  config.id.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
 
+  std::string* pathPtr = path.size() > 0 ? &path : nullptr;
+  std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
+  MMKVMode mode = getMMKVMode(config);
+  if (config.readOnly.has_value() && config.readOnly.value()) {
+    MmkvLogger::log("RNMMKV", "Instance is read-only!");
+    mode = mode | ::mmkv::MMKV_READ_ONLY;
+  }
+
+#ifdef __APPLE__
+  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
+#else
+  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
+#endif
+
+  if (instance == nullptr) [[unlikely]] {
+    // Check if instanceId is invalid
+    if (config.id.empty()) [[unlikely]] {
+      throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
+    }
+
+    // Check if encryptionKey is invalid
+    if (encryptionKey.size() > 16) [[unlikely]] {
+      throw std::runtime_error(
+          "Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
+    }
+
+    throw std::runtime_error("Failed to create MMKV instance!");
+  }
 }
 
 double HybridMMKV::getSize() {

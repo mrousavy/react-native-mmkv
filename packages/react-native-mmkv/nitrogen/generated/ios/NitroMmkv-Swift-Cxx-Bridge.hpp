@@ -17,7 +17,10 @@ namespace NitroMmkv { class HybridMMKVPlatformContextSpec_cxx; }
 
 // Include C++ defined types
 #include "HybridMMKVPlatformContextSpec.hpp"
+#include <NitroModules/Result.hpp>
+#include <exception>
 #include <memory>
+#include <string>
 
 /**
  * Contains specialized versions of C++ templated types so they can be accessed from Swift,
@@ -36,5 +39,14 @@ namespace margelo::nitro::mmkv::bridge::swift {
   // pragma MARK: std::weak_ptr<HybridMMKVPlatformContextSpec>
   using std__weak_ptr_HybridMMKVPlatformContextSpec_ = std::weak_ptr<HybridMMKVPlatformContextSpec>;
   inline std__weak_ptr_HybridMMKVPlatformContextSpec_ weakify_std__shared_ptr_HybridMMKVPlatformContextSpec_(const std::shared_ptr<HybridMMKVPlatformContextSpec>& strong) noexcept { return strong; }
+  
+  // pragma MARK: Result<std::string>
+  using Result_std__string_ = Result<std::string>;
+  inline Result_std__string_ create_Result_std__string_(const std::string& value) noexcept {
+    return Result<std::string>::withValue(value);
+  }
+  inline Result_std__string_ create_Result_std__string_(const std::exception_ptr& error) noexcept {
+    return Result<std::string>::withError(error);
+  }
 
 } // namespace margelo::nitro::mmkv::bridge::swift

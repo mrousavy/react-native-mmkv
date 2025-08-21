@@ -37,16 +37,16 @@ abstract class HybridMMKVPlatformContextSpec: HybridObject() {
   }
 
   // Properties
-  @get:DoNotStrip
-  @get:Keep
-  abstract val baseDirectory: String
   
-  @get:DoNotStrip
-  @get:Keep
-  abstract val appGroupDirectory: String
 
   // Methods
+  @DoNotStrip
+  @Keep
+  abstract fun getBaseDirectory(): String
   
+  @DoNotStrip
+  @Keep
+  abstract fun getAppGroupDirectory(): String
 
   private external fun initHybrid(): HybridData
 

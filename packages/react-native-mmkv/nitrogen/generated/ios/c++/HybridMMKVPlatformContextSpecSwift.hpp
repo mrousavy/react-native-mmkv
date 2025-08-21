@@ -53,18 +53,26 @@ namespace margelo::nitro::mmkv {
 
   public:
     // Properties
-    inline std::string getBaseDirectory() noexcept override {
-      auto __result = _swiftPart.getBaseDirectory();
-      return __result;
-    }
-    inline std::string getAppGroupDirectory() noexcept override {
-      auto __result = _swiftPart.getAppGroupDirectory();
-      return __result;
-    }
+    
 
   public:
     // Methods
-    
+    inline std::string getBaseDirectory() override {
+      auto __result = _swiftPart.getBaseDirectory();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
+    inline std::string getAppGroupDirectory() override {
+      auto __result = _swiftPart.getAppGroupDirectory();
+      if (__result.hasError()) [[unlikely]] {
+        std::rethrow_exception(__result.error());
+      }
+      auto __value = std::move(__result.value());
+      return __value;
+    }
 
   private:
     NitroMmkv::HybridMMKVPlatformContextSpec_cxx _swiftPart;

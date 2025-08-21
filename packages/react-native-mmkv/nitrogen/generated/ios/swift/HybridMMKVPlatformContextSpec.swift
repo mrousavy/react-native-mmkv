@@ -11,11 +11,11 @@ import NitroModules
 /// See ``HybridMMKVPlatformContextSpec``
 public protocol HybridMMKVPlatformContextSpec_protocol: HybridObject {
   // Properties
-  var baseDirectory: String { get }
-  var appGroupDirectory: String { get }
+  
 
   // Methods
-  
+  func getBaseDirectory() throws -> String
+  func getAppGroupDirectory() throws -> String
 }
 
 /// See ``HybridMMKVPlatformContextSpec``
