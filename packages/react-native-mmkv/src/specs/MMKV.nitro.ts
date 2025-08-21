@@ -6,49 +6,49 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    *
    * @throws an Error if the value cannot be set.
    */
-  set: (key: string, value: boolean | string | number | ArrayBuffer) => void
+  set(key: string, value: boolean | string | number | ArrayBuffer): void
   /**
    * Get the boolean value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getBoolean: (key: string) => boolean | undefined
+  getBoolean(key: string): boolean | undefined
   /**
    * Get the string value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getString: (key: string) => string | undefined
+  getString(key: string): string | undefined
   /**
    * Get the number value for the given `key`, or `undefined` if it does not exist.
    *
    * @default undefined
    */
-  getNumber: (key: string) => number | undefined
+  getNumber(key: string): number | undefined
   /**
    * Get a raw buffer of unsigned 8-bit (0-255) data.
    *
    * @default undefined
    */
-  getBuffer: (key: string) => ArrayBuffer | undefined
+  getBuffer(key: string): ArrayBuffer | undefined
   /**
    * Checks whether the given `key` is being stored in this MMKV instance.
    */
-  contains: (key: string) => boolean
+  contains(key: string): boolean
   /**
-   * Delete the given `key`.
+   * Removes the given `key`.
    */
-  delete: (key: string) => void
+  remove(key: string): void
   /**
    * Get all keys.
    *
    * @default []
    */
-  getAllKeys: () => string[]
+  getAllKeys(): string[]
   /**
-   * Delete all keys.
+   * Clears all keys/values.
    */
-  clearAll: () => void
+  clearAll(): void
   /**
    * Sets (or updates) the encryption-key to encrypt all data in this MMKV instance with.
    *
@@ -58,7 +58,7 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    *
    * @throws an Error if the instance cannot be recrypted.
    */
-  recrypt: (key: string | undefined) => void
+  recrypt(key: string | undefined): void
   /**
    * Trims the storage space and clears memory cache.
    *

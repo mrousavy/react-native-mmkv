@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "HybridMMKVFactorySpec.hpp"
+
 namespace margelo::nitro::mmkv {
 
   class HybridMMKVFactory: HybridMMKVFactorySpec {

@@ -19,9 +19,7 @@ namespace NitroModules { class ArrayBuffer; }
 #include <string>
 #include <NitroModules/ArrayBuffer.hpp>
 #include <variant>
-#include <functional>
 #include <optional>
-#include <NitroModules/Promise.hpp>
 #include <vector>
 
 namespace margelo::nitro::mmkv {
@@ -51,31 +49,21 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Properties
-      virtual std::function<void(const std::string& /* key */, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& /* value */)> getSet() = 0;
-      virtual void setSet(const std::function<void(const std::string& /* key */, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& /* value */)>& set) = 0;
-      virtual std::function<std::shared_ptr<Promise<std::optional<bool>>>(const std::string& /* key */)> getGetBoolean() = 0;
-      virtual void setGetBoolean(const std::function<std::shared_ptr<Promise<std::optional<bool>>>(const std::string& /* key */)>& getBoolean) = 0;
-      virtual std::function<std::shared_ptr<Promise<std::optional<std::string>>>(const std::string& /* key */)> getGetString() = 0;
-      virtual void setGetString(const std::function<std::shared_ptr<Promise<std::optional<std::string>>>(const std::string& /* key */)>& getString) = 0;
-      virtual std::function<std::shared_ptr<Promise<std::optional<double>>>(const std::string& /* key */)> getGetNumber() = 0;
-      virtual void setGetNumber(const std::function<std::shared_ptr<Promise<std::optional<double>>>(const std::string& /* key */)>& getNumber) = 0;
-      virtual std::function<std::shared_ptr<Promise<std::optional<std::shared_ptr<ArrayBuffer>>>>(const std::string& /* key */)> getGetBuffer() = 0;
-      virtual void setGetBuffer(const std::function<std::shared_ptr<Promise<std::optional<std::shared_ptr<ArrayBuffer>>>>(const std::string& /* key */)>& getBuffer) = 0;
-      virtual std::function<std::shared_ptr<Promise<bool>>(const std::string& /* key */)> getContains() = 0;
-      virtual void setContains(const std::function<std::shared_ptr<Promise<bool>>(const std::string& /* key */)>& contains) = 0;
-      virtual std::function<void(const std::string& /* key */)> getDelete() = 0;
-      virtual void setDelete(const std::function<void(const std::string& /* key */)>& delete) = 0;
-      virtual std::function<std::shared_ptr<Promise<std::vector<std::string>>>()> getGetAllKeys() = 0;
-      virtual void setGetAllKeys(const std::function<std::shared_ptr<Promise<std::vector<std::string>>>()>& getAllKeys) = 0;
-      virtual std::function<void()> getClearAll() = 0;
-      virtual void setClearAll(const std::function<void()>& clearAll) = 0;
-      virtual std::function<void(const std::optional<std::string>& /* key */)> getRecrypt() = 0;
-      virtual void setRecrypt(const std::function<void(const std::optional<std::string>& /* key */)>& recrypt) = 0;
       virtual double getSize() = 0;
       virtual bool getIsReadOnly() = 0;
 
     public:
       // Methods
+      virtual void set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) = 0;
+      virtual std::optional<bool> getBoolean(const std::string& key) = 0;
+      virtual std::optional<std::string> getString(const std::string& key) = 0;
+      virtual std::optional<double> getNumber(const std::string& key) = 0;
+      virtual std::optional<std::shared_ptr<ArrayBuffer>> getBuffer(const std::string& key) = 0;
+      virtual bool contains(const std::string& key) = 0;
+      virtual void remove(const std::string& key) = 0;
+      virtual std::vector<std::string> getAllKeys() = 0;
+      virtual void clearAll() = 0;
+      virtual void recrypt(const std::optional<std::string>& key) = 0;
       virtual void trim() = 0;
 
     protected:

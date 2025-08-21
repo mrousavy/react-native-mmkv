@@ -14,28 +14,18 @@ namespace margelo::nitro::mmkv {
     HybridObject::loadHybridMethods();
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
-      prototype.registerHybridGetter("set", &HybridMMKVSpec::getSet);
-      prototype.registerHybridSetter("set", &HybridMMKVSpec::setSet);
-      prototype.registerHybridGetter("getBoolean", &HybridMMKVSpec::getGetBoolean);
-      prototype.registerHybridSetter("getBoolean", &HybridMMKVSpec::setGetBoolean);
-      prototype.registerHybridGetter("getString", &HybridMMKVSpec::getGetString);
-      prototype.registerHybridSetter("getString", &HybridMMKVSpec::setGetString);
-      prototype.registerHybridGetter("getNumber", &HybridMMKVSpec::getGetNumber);
-      prototype.registerHybridSetter("getNumber", &HybridMMKVSpec::setGetNumber);
-      prototype.registerHybridGetter("getBuffer", &HybridMMKVSpec::getGetBuffer);
-      prototype.registerHybridSetter("getBuffer", &HybridMMKVSpec::setGetBuffer);
-      prototype.registerHybridGetter("contains", &HybridMMKVSpec::getContains);
-      prototype.registerHybridSetter("contains", &HybridMMKVSpec::setContains);
-      prototype.registerHybridGetter("delete", &HybridMMKVSpec::getDelete);
-      prototype.registerHybridSetter("delete", &HybridMMKVSpec::setDelete);
-      prototype.registerHybridGetter("getAllKeys", &HybridMMKVSpec::getGetAllKeys);
-      prototype.registerHybridSetter("getAllKeys", &HybridMMKVSpec::setGetAllKeys);
-      prototype.registerHybridGetter("clearAll", &HybridMMKVSpec::getClearAll);
-      prototype.registerHybridSetter("clearAll", &HybridMMKVSpec::setClearAll);
-      prototype.registerHybridGetter("recrypt", &HybridMMKVSpec::getRecrypt);
-      prototype.registerHybridSetter("recrypt", &HybridMMKVSpec::setRecrypt);
       prototype.registerHybridGetter("size", &HybridMMKVSpec::getSize);
       prototype.registerHybridGetter("isReadOnly", &HybridMMKVSpec::getIsReadOnly);
+      prototype.registerHybridMethod("set", &HybridMMKVSpec::set);
+      prototype.registerHybridMethod("getBoolean", &HybridMMKVSpec::getBoolean);
+      prototype.registerHybridMethod("getString", &HybridMMKVSpec::getString);
+      prototype.registerHybridMethod("getNumber", &HybridMMKVSpec::getNumber);
+      prototype.registerHybridMethod("getBuffer", &HybridMMKVSpec::getBuffer);
+      prototype.registerHybridMethod("contains", &HybridMMKVSpec::contains);
+      prototype.registerHybridMethod("remove", &HybridMMKVSpec::remove);
+      prototype.registerHybridMethod("getAllKeys", &HybridMMKVSpec::getAllKeys);
+      prototype.registerHybridMethod("clearAll", &HybridMMKVSpec::clearAll);
+      prototype.registerHybridMethod("recrypt", &HybridMMKVSpec::recrypt);
       prototype.registerHybridMethod("trim", &HybridMMKVSpec::trim);
     });
   }
