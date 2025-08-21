@@ -5,9 +5,9 @@
 //  Created by Marc Rousavy on 21.08.2025.
 //
 
+#include "MMKVTypes.hpp"
 #include <atomic>
 #include <unordered_map>
-#include "MMKVTypes.hpp"
 
 namespace margelo::nitro::mmkv {
 
@@ -20,7 +20,8 @@ struct ListenerSubscription {
 };
 
 /**
- * Listeners are tracked across instances - so we need an extra static class for the registry.
+ * Listeners are tracked across instances - so we need an extra static class for
+ * the registry.
  */
 class MMKVValueChangedListenerRegistry final {
 public:
@@ -30,6 +31,7 @@ public:
 public:
   static ListenerID addListener(const std::string& mmkvID, const std::function<void(const std::string& /* key */)>& callback);
   static void removeListener(const std::string& mmkvID, ListenerID id);
+
 public:
   static void notifyOnValueChanged(const std::string& mmkvID, const std::string& key);
 
@@ -38,4 +40,4 @@ private:
   static std::unordered_map<MMKVID, std::vector<ListenerSubscription>> _listeners;
 };
 
-} // margelo::nitro::mkv
+} // namespace margelo::nitro::mmkv

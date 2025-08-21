@@ -15,14 +15,12 @@ std::string HybridMMKVFactory::getDefaultMMKVInstanceId() {
   return DEFAULT_MMAP_ID;
 }
 
-std::shared_ptr<HybridMMKVSpec>
-HybridMMKVFactory::createMMKV(const Configuration &configuration) {
+std::shared_ptr<HybridMMKVSpec> HybridMMKVFactory::createMMKV(const Configuration& configuration) {
   return std::make_shared<HybridMMKV>(configuration);
 }
 
-void HybridMMKVFactory::initializeMMKV(const std::string &rootPath) {
-  Logger::log(LogLevel::Info, TAG, "Initializing MMKV with rootPath=%s",
-              rootPath.c_str());
+void HybridMMKVFactory::initializeMMKV(const std::string& rootPath) {
+  Logger::log(LogLevel::Info, TAG, "Initializing MMKV with rootPath=%s", rootPath.c_str());
 
 #ifdef NITRO_DEBUG
   MMKVLogLevel logLevel = MMKVLogDebug;
