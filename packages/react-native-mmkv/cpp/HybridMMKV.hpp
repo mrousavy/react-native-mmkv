@@ -16,6 +16,8 @@ namespace margelo::nitro::mmkv {
   class HybridMMKV final: public HybridMMKVSpec {
     public:
       explicit HybridMMKV(const Configuration& configuration);
+    
+    
    public:
     // Properties
     double getSize() override;
@@ -34,6 +36,9 @@ namespace margelo::nitro::mmkv {
     void clearAll() override;
     void recrypt(const std::optional<std::string>& key) override;
     void trim() override;
+    
+  private:
+    static MMKVMode getMMKVMode(const Configuration& config);
 
    private:
     MMKV* instance;

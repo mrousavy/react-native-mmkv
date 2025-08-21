@@ -8,25 +8,33 @@
 #pragma once
 
 #include "MMKVTypes.hpp"
-#include <jsi/jsi.h>
+#include <NitroModules/ArrayBuffer.hpp>
 
-using namespace facebook;
+namespace margelo::nitro::mmkv {
 
 /**
- A jsi::MutableBuffer that manages MMBuffer memory (by ownership).
+ An ArrayBuffer subclass that manages MMBuffer memory (by ownership).
  */
-class ManagedMMBuffer : public jsi::MutableBuffer {
+class ManagedMMBuffer : public ArrayBuffer {
 public:
   explicit ManagedMMBuffer(MMBuffer&& buffer) : _buffer(std::move(buffer)) {}
-
+  
+public:
+  bool isOwner() const noexcept override {
+    return true;
+  }
+  
+public:
   uint8_t* data() override {
     return static_cast<uint8_t*>(_buffer.getPtr());
   }
-
+  
   size_t size() const override {
     return _buffer.length();
   }
-
+  
 private:
   MMBuffer _buffer;
 };
+
+} // margelo::nitro::mmkv
