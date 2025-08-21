@@ -12,7 +12,15 @@
     ],
     "androidCxxLibName": "NitroMmkv"
   },
-  "autolinking": {},
+  "autolinking": {
+    "MMKVFactory": {
+      "cpp": "HybridMMKVFactory"
+    },
+    "MMKVPlatformContext": {
+      "swift": "HybridMMKVPlatformContext",
+      "kotlin": "HybridMMKVPlatformContext"
+    }
+  },
   "ignorePaths": [
     "**/node_modules"
   ]
