@@ -12,7 +12,7 @@
 
 namespace margelo::nitro::mmkv {
 
-HybridMMKV::HybridMMKV(const Configuration& config) {
+HybridMMKV::HybridMMKV(const Configuration& config): HybridObject(TAG) {
   std::string path = config.path.has_value() ? config.path.value() : "";
   std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
   bool hasEncryptionKey = encryptionKey.size() > 0;
