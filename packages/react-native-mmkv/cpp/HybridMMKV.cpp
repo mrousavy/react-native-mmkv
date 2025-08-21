@@ -44,6 +44,11 @@ HybridMMKV::HybridMMKV(const Configuration& config): HybridObject(TAG) {
       throw std::runtime_error(
           "Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
     }
+    
+    // Check if path is maybe invalid
+    if (path.empty()) [[unlikely]] {
+      throw std::runtime_error("Failed to create MMKV instance! `path` cannot be empty!");
+    }
 
     throw std::runtime_error("Failed to create MMKV instance!");
   }
