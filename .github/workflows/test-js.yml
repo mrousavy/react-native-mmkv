@@ -24,4 +24,4 @@ jobs:
       run: bun install
 
     - name: Run Jest
-      run: bun run test
+      run: bun mmkv test
