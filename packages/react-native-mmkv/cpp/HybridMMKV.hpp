@@ -12,7 +12,7 @@
 
 namespace margelo::nitro::mmkv {
 
-  class HybridMMKV final: HybridMMKVSpec {
+  class HybridMMKV final: public HybridMMKVSpec {
     public:
       explicit HybridMMKV(const Configuration& configuration);
    public:
