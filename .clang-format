@@ -2,7 +2,7 @@
 
 # Standard
 BasedOnStyle: llvm
-Standard: c++14
+Standard: c++20
 
 # Indentation
 IndentWidth: 2
