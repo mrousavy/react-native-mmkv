@@ -19,6 +19,9 @@ add_library(${PACKAGE_NAME} SHARED
             ${android_files}
 )
 
+# Find MMKV prefab package (from mmkv-shared gradle dependency)
+find_package(mmkv REQUIRED CONFIG)
+
 # Add Nitrogen specs :)
 include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/NitroMmkv+autolinking.cmake)
 
@@ -34,5 +37,6 @@ find_library(LOG_LIB log)
 target_link_libraries(
         ${PACKAGE_NAME}
         ${LOG_LIB}
-        android                                   # <-- Android core
+        mmkv::mmkv                  # <-- MMKV core
+        android                     # <-- Android core
 )
