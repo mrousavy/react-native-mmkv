@@ -81,6 +81,7 @@ void HybridMMKV::set(const std::string& key, const std::variant<std::string, dou
              value);
 
   // Notify on changed
+  MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
 }
 std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
   bool hasValue;
