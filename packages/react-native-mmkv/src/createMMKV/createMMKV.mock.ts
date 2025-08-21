@@ -1,7 +1,9 @@
 import type { MMKV } from '../specs/MMKV.nitro'
 
-/* Mock MMKV instance for use in tests */
-export const createMockMMKV = (): MMKV => {
+/**
+ * Mock MMKV instance when used in a Jest/Test environment.
+ */
+export function createMockMMKV(): MMKV {
   const storage = new Map<string, string | boolean | number | ArrayBuffer>()
 
   return {
@@ -29,7 +31,9 @@ export const createMockMMKV = (): MMKV => {
     recrypt: () => {
       console.warn('Encryption is not supported in mocked MMKV instances!')
     },
-    size: 0,
+    get size(): number {
+      return storage.size
+    },
     isReadOnly: false,
     trim: () => {
       // no-op

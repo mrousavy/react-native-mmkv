@@ -4,11 +4,18 @@ import type { Configuration, MMKVFactory } from '../specs/MMKVFactory.nitro'
 import type { MMKVPlatformContext } from '../specs/MMKVPlatformContext.nitro'
 import { Platform } from 'react-native'
 import { addMemoryWarningListener } from '../addMemoryWarningListener/addMemoryWarningListener'
+import { isTest } from '../isTest'
+import { createMockMMKV } from './createMMKV.mock'
 
 let factory: MMKVFactory | undefined
 let platformContext: MMKVPlatformContext | undefined
 
 export function createMMKV(configuration?: Configuration): MMKV {
+  if (isTest()) {
+    // In a test environment, we mock the MMKV instance.
+    return createMockMMKV()
+  }
+
   if (platformContext == null) {
     // Lazy-init the platform-context HybridObject
     platformContext = NitroModules.createHybridObject<MMKVPlatformContext>(
