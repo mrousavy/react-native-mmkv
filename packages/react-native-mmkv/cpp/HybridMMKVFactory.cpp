@@ -23,9 +23,9 @@ void HybridMMKVFactory::initializeMMKV(const std::string& rootPath) {
   Logger::log(LogLevel::Info, TAG, "Initializing MMKV with rootPath=%s", rootPath.c_str());
 
 #ifdef NITRO_DEBUG
-  MMKVLogLevel logLevel = MMKVLogDebug;
+  MMKVLogLevel logLevel = ::mmkv::MMKVLogDebug;
 #else
-  MMKVLogLevel logLevel = MMKVLogWarning;
+  MMKVLogLevel logLevel = ::mmkv::MMKVLogWarning;
 #endif
   MMKV::initializeMMKV(rootPath, logLevel);
 }

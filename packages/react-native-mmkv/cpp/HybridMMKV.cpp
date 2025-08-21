@@ -168,13 +168,13 @@ Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const st
 
 MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
   if (!config.mode.has_value()) {
-    return MMKV_SINGLE_PROCESS;
+    return ::mmkv::MMKV_SINGLE_PROCESS;
   }
   switch (config.mode.value()) {
     case Mode::SINGLE_PROCESS:
-      return MMKV_SINGLE_PROCESS;
+      return ::mmkv::MMKV_SINGLE_PROCESS;
     case Mode::MULTI_PROCESS:
-      return MMKV_MULTI_PROCESS;
+      return ::mmkv::MMKV_MULTI_PROCESS;
     default:
       [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
   }
