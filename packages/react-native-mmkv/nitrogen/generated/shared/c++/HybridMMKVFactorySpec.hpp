@@ -18,6 +18,7 @@ namespace margelo::nitro::mmkv { class HybridMMKVSpec; }
 // Forward declaration of `Configuration` to properly resolve imports.
 namespace margelo::nitro::mmkv { struct Configuration; }
 
+#include <string>
 #include <memory>
 #include "HybridMMKVSpec.hpp"
 #include "Configuration.hpp"
@@ -49,7 +50,7 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Properties
-      
+      virtual std::string getDefaultMMKVInstanceId() = 0;
 
     public:
       // Methods

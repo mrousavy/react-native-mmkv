@@ -16,6 +16,7 @@ public:
   HybridMMKVFactory(): HybridObject(TAG) { }
   
 public:
+  std::string getDefaultMMKVInstanceId() override;
   std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) override;
 };
 

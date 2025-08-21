@@ -72,4 +72,10 @@ export interface MMKVFactory
    * Create a new {@linkcode MMKV} instance with the given {@linkcode Configuration}
    */
   createMMKV(configuration: Configuration): MMKV
+
+  /**
+   * Get the default MMKV instance's ID.
+   * @default 'mmkv.default'
+   */
+  readonly defaultMMKVInstanceId: string
 }
