@@ -65,9 +65,27 @@ HybridMMKV::HybridMMKV(const Configuration &config) : HybridObject(TAG) {
 double HybridMMKV::getSize() { return instance->actualSize(); }
 bool HybridMMKV::getIsReadOnly() { return instance->isReadOnly(); }
 
+// helper: overload pattern matching for lambdas
+template <class... Ts> struct overloaded : Ts... {
+  using Ts::operator()...;
+};
+template <class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
 void HybridMMKV::set(const std::string &key,
                      const std::variant<std::string, double, bool,
-                                        std::shared_ptr<ArrayBuffer>> &value) {}
+                                        std::shared_ptr<ArrayBuffer>> &value) {
+  // Pattern-match each potential value in std::variant
+  std::visit(
+      overloaded{[&](const std::string &string) { instance->set(string, key); },
+                 [&](double number) { instance->set(number, key); },
+                 [&](bool b) { instance->set(b, key); },
+                 [&](const std::shared_ptr<ArrayBuffer> &buf) {
+                   MMBuffer buffer(buf->data(), buf->size(),
+                                   MMBufferCopyFlag::MMBufferNoCopy);
+                   instance->set(std::move(buffer), key);
+                 }},
+      value);
+}
 std::optional<bool> HybridMMKV::getBoolean(const std::string &key) {
   bool hasValue;
   bool result = instance->getBool(key, /* defaultValue */ false, &hasValue);
