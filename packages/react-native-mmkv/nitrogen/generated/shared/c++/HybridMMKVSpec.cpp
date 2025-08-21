@@ -27,6 +27,7 @@ namespace margelo::nitro::mmkv {
       prototype.registerHybridMethod("clearAll", &HybridMMKVSpec::clearAll);
       prototype.registerHybridMethod("recrypt", &HybridMMKVSpec::recrypt);
       prototype.registerHybridMethod("trim", &HybridMMKVSpec::trim);
+      prototype.registerHybridMethod("addOnValueChangedListener", &HybridMMKVSpec::addOnValueChangedListener);
     });
   }
 

@@ -5,6 +5,7 @@ import type { MMKV } from '../specs/MMKV.nitro'
  */
 export function createMockMMKV(): MMKV {
   const storage = new Map<string, string | boolean | number | ArrayBuffer>()
+  const listeners = new Set<(key: string) => void>()
 
   return {
     clearAll: () => storage.clear(),
@@ -42,6 +43,14 @@ export function createMockMMKV(): MMKV {
     dispose: () => {},
     equals: () => {
       return false
+    },
+    addOnValueChangedListener: (listener) => {
+      listeners.add(listener)
+      return {
+        remove: () => {
+          listeners.delete(listener)
+        },
+      }
     },
   }
 }

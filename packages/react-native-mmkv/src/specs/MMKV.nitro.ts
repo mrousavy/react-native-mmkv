@@ -1,5 +1,9 @@
 import type { HybridObject } from 'react-native-nitro-modules'
 
+export interface Listener {
+  remove: () => void
+}
+
 export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   /**
    * Set a value for the given `key`.
@@ -78,4 +82,11 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    * If this is `true`, you can only use "get"-functions.
    */
   readonly isReadOnly: boolean
+  /**
+   * Adds a value changed listener. The Listener will be called whenever any value
+   * in this storage instance changes (set or delete).
+   *
+   * To unsubscribe from value changes, call `remove()` on the Listener.
+   */
+  addOnValueChangedListener(onValueChanged: (key: string) => void): Listener
 }

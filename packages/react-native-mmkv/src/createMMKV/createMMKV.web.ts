@@ -62,6 +62,7 @@ export function createMMKV(config: Configuration): MMKV {
   }
 
   const textEncoder = createTextEncoder()
+  const listeners = new Set<(key: string) => void>()
 
   if (config.id.includes(KEY_WILDCARD)) {
     throw new Error('MMKV: `id` cannot contain the backslash character (`\\`)!')
@@ -124,5 +125,13 @@ export function createMMKV(config: Configuration): MMKV {
     dispose: () => {},
     equals: () => false,
     name: 'MMKV',
+    addOnValueChangedListener: (listener) => {
+      listeners.add(listener)
+      return {
+        remove: () => {
+          listeners.delete(listener)
+        },
+      }
+    },
   }
 }

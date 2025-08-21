@@ -15,12 +15,16 @@
 
 // Forward declaration of `ArrayBuffer` to properly resolve imports.
 namespace NitroModules { class ArrayBuffer; }
+// Forward declaration of `Listener` to properly resolve imports.
+namespace margelo::nitro::mmkv { struct Listener; }
 
 #include <string>
 #include <NitroModules/ArrayBuffer.hpp>
 #include <variant>
 #include <optional>
 #include <vector>
+#include "Listener.hpp"
+#include <functional>
 
 namespace margelo::nitro::mmkv {
 
@@ -65,6 +69,7 @@ namespace margelo::nitro::mmkv {
       virtual void clearAll() = 0;
       virtual void recrypt(const std::optional<std::string>& key) = 0;
       virtual void trim() = 0;
+      virtual Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) = 0;
 
     protected:
       // Hybrid Setup

@@ -9,6 +9,7 @@
 #include "MMKVTypes.hpp"
 #include "ManagedMMBuffer.hpp"
 #include <NitroModules/NitroLogger.hpp>
+#include "MMKVValueChangedListenerRegistry.hpp"
 
 namespace margelo::nitro::mmkv {
 
@@ -85,6 +86,8 @@ void HybridMMKV::set(const std::string &key,
                    instance->set(std::move(buffer), key);
                  }},
       value);
+  
+  // Notify on changed
 }
 std::optional<bool> HybridMMKV::getBoolean(const std::string &key) {
   bool hasValue;
@@ -155,6 +158,17 @@ void HybridMMKV::recrypt(const std::optional<std::string> &key) {
   }
 }
 void HybridMMKV::trim() { instance->trim(); }
+
+Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
+  // Add listener
+  auto mmkvID = instance->mmapID();
+  auto listenerID = MMKVValueChangedListenerRegistry::addListener(instance->mmapID(), onValueChanged);
+  
+  return Listener([=]() {
+    // remove()
+    MMKVValueChangedListenerRegistry::removeListener(mmkvID, listenerID);
+  });
+}
 
 MMKVMode HybridMMKV::getMMKVMode(const Configuration &config) {
   if (!config.mode.has_value()) {
