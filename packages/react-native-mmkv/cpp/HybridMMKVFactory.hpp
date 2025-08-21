@@ -18,6 +18,7 @@ public:
 public:
   std::string getDefaultMMKVInstanceId() override;
   std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) override;
+  void initializeMMKV(const std::string& rootPath) override;
 };
 
 }

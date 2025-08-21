@@ -16,6 +16,7 @@ namespace margelo::nitro::mmkv {
     registerHybrids(this, [](Prototype& prototype) {
       prototype.registerHybridGetter("defaultMMKVInstanceId", &HybridMMKVFactorySpec::getDefaultMMKVInstanceId);
       prototype.registerHybridMethod("createMMKV", &HybridMMKVFactorySpec::createMMKV);
+      prototype.registerHybridMethod("initializeMMKV", &HybridMMKVFactorySpec::initializeMMKV);
     });
   }
 

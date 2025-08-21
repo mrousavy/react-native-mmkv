@@ -2,36 +2,41 @@ import { NitroModules } from 'react-native-nitro-modules'
 import { type MMKVFactory, type Configuration } from './specs/MMKVFactory.nitro'
 import type { MMKV } from './specs/MMKV.nitro'
 import type { MMKVPlatformContext } from './specs/MMKVPlatformContext.nitro'
+import { Platform } from 'react-native'
 
 let factory: MMKVFactory | undefined
 let platformContext: MMKVPlatformContext | undefined
-let defaultId: string | undefined
 
 export { type MMKV, type Configuration }
 
 export function createMMKV(): MMKV
 export function createMMKV(configuration: Configuration): MMKV
 export function createMMKV(configuration?: Configuration): MMKV {
-  if (factory == null) {
-    // Load the factory HybridObject
-    factory = NitroModules.createHybridObject<MMKVFactory>('MMKVFactory')
+  if (platformContext == null) {
+    // Lazy-init the platform-context HybridObject
+    platformContext = NitroModules.createHybridObject<MMKVPlatformContext>(
+      'MMKVPlatformContext'
+    )
   }
-  if (defaultId == null) {
-    // Get the default MMKV instance ID - typically 'mmkv.default'
-    defaultId = factory.defaultMMKVInstanceId
+  if (factory == null) {
+    // Lazy-init the factory HybridObject
+    factory = NitroModules.createHybridObject<MMKVFactory>('MMKVFactory')
+    const baseDirectory = platformContext.getBaseDirectory()
+    factory.initializeMMKV(baseDirectory)
   }
 
   // Pre-parse the config
-  let config = configuration ?? { id: defaultId }
-  if (config.path == null) {
-    // `path` is not overridden by the user, so we choose the default documents directory.
-    if (platformContext == null) {
-      platformContext = NitroModules.createHybridObject<MMKVPlatformContext>(
-        'MMKVPlatformContext'
-      )
+  let config = configuration ?? { id: factory.defaultMMKVInstanceId }
+
+  if (Platform.OS === 'ios') {
+    if (config.path == null) {
+      // If the user set an App Group directory in Info.plist, let's use
+      // the App Group as a MMKV path:
+      const appGroupDirectory = platformContext.getAppGroupDirectory()
+      if (appGroupDirectory != null) {
+        config.path = appGroupDirectory
+      }
     }
-    // Gets the documents/cache directory on the underlying platform.
-    config.path = platformContext.getBaseDirectory()
   }
 
   // Creates the C++ MMKV HybridObject

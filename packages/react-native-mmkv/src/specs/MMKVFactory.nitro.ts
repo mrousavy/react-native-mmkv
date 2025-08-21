@@ -74,6 +74,12 @@ export interface MMKVFactory
   createMMKV(configuration: Configuration): MMKV
 
   /**
+   * Initialize the MMKV library with the given root path.
+   * This has to be called once, before using {@linkcode createMMKV}.
+   */
+  initializeMMKV(rootPath: string): void
+
+  /**
    * Get the default MMKV instance's ID.
    * @default 'mmkv.default'
    */
