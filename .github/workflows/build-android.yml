@@ -6,31 +6,44 @@ on:
       - main
     paths:
       - '.github/workflows/build-android.yml'
-      - 'package/android/**'
-      - 'package/cpp/**'
-      - 'package/MMKV/**'
-      - 'package/yarn.lock'
-      - 'package/example/android/**'
-      - 'package/example/yarn.lock'
+      - 'example/android/**'
+      - '**/nitrogen/generated/shared/**'
+      - '**/nitrogen/generated/android/**'
+      - 'packages/react-native-nitro-test/cpp/**'
+      - 'packages/react-native-nitro-test/android/**'
+      - 'packages/react-native-nitro-test-external/cpp/**'
+      - 'packages/react-native-nitro-test-external/android/**'
+      - 'packages/react-native-nitro-modules/cpp/**'
+      - 'packages/react-native-nitro-modules/android/**'
+      - '**/bun.lock'
+      - '**/react-native.config.js'
+      - '**/nitro.json'
   pull_request:
     paths:
       - '.github/workflows/build-android.yml'
-      - 'package/android/**'
-      - 'package/cpp/**'
-      - 'package/MMKV/**'
-      - 'package/yarn.lock'
-      - 'package/example/android/**'
-      - 'package/example/yarn.lock'
+      - 'example/android/**'
+      - '**/nitrogen/generated/shared/**'
+      - '**/nitrogen/generated/android/**'
+      - 'packages/react-native-nitro-test/cpp/**'
+      - 'packages/react-native-nitro-test/android/**'
+      - 'packages/react-native-nitro-test-external/cpp/**'
+      - 'packages/react-native-nitro-test-external/android/**'
+      - 'packages/react-native-nitro-modules/cpp/**'
+      - 'packages/react-native-nitro-modules/android/**'
+      - '**/bun.lock'
+      - '**/react-native.config.js'
+      - '**/nitro.json'
 
 jobs:
-  build_example:
-    name: Build Android Example App
+  build_new:
+    name: Build Android Example App (new architecture)
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: package/
     steps:
       - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install npm dependencies (bun)
+        run: bun install
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4
@@ -39,30 +52,57 @@ jobs:
           java-version: 17
           java-package: jdk
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: Restore node_modules from cache
+      - name: Restore Gradle cache
         uses: actions/cache@v4
-        id: yarn-cache
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install node_modules
-        run: yarn install --frozen-lockfile
-      - name: Install node_modules for example/
-        run: yarn install --frozen-lockfile --cwd example
+            ${{ runner.os }}-gradle-
+      - name: Run Gradle Build for example/android/
+        working-directory: example/android
+        run: ./gradlew assembleDebug --no-daemon --build-cache
+
+      # Gradle cache doesn't like daemons
+      - name: Stop Gradle Daemon
+        working-directory: example/android
+        run: ./gradlew --stop
+
+  build_old:
+    name: Build Android Example App (old architecture)
+    needs: build_new
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Disable new architecture in gradle.properties
+        run: sed -i "s/newArchEnabled=true/newArchEnabled=false/g" example/android/gradle.properties
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: 17
+          java-package: jdk
 
       - name: Restore Gradle cache
         uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
-            ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Run Gradle Build for example/android/
-        run: cd example/android && ./gradlew assembleDebug --build-cache && cd ../..
+        working-directory: example/android
+        run: ./gradlew assembleDebug --no-daemon --build-cache
+
+      # Gradle cache doesn't like daemons
+      - name: Stop Gradle Daemon
+        working-directory: example/android
+        run: ./gradlew --stop

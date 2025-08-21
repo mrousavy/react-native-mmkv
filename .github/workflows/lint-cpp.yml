@@ -1,0 +1,50 @@
+name: Validate C++
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/lint-cpp.yml'
+      - '**/*.h'
+      - '**/*.hpp'
+      - '**/*.cpp'
+      - '**/*.c'
+      - '**/*.mm'
+  pull_request:
+    paths:
+      - '.github/workflows/lint-cpp.yml'
+      - '**/*.h'
+      - '**/*.hpp'
+      - '**/*.cpp'
+      - '**/*.c'
+      - '**/*.mm'
+
+jobs:
+  lint:
+    name: Check clang-format
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        path:
+        - 'packages/react-native-nitro-modules/android/src/main/cpp'
+        - 'packages/react-native-nitro-modules/cpp'
+        - 'packages/react-native-nitro-modules/ios'
+        - 'packages/react-native-nitro-test/android/src/main/cpp'
+        - 'packages/react-native-nitro-test/cpp'
+        - 'packages/react-native-nitro-test/ios'
+        - 'packages/react-native-nitro-test-external/android/src/main/cpp'
+        - 'packages/react-native-nitro-test-external/ios'
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Run clang-format style check
+        uses: jidicula/clang-format-action@v4.15.0
+        with:
+          clang-format-version: '18'
+          check-path: ${{ matrix.path }}
+

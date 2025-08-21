@@ -1,0 +1,78 @@
+name: Lint TypeScript
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: read
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/lint-typescript.yml'
+      - 'config'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.json'
+      - '**/*.lockb'
+      - '**/package.json'
+  pull_request:
+    paths:
+      - '.github/workflows/lint-typescript.yml'
+      - 'config'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.json'
+      - '**/*.lockb'
+      - '**/package.json'
+
+jobs:
+  tsc:
+    name: Compile TypeScript (tsc)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - uses: reviewdog/action-setup@v1
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Run TypeScript (tsc)
+        run: |
+          bun typecheck | reviewdog -name="tsc" -efm="%f(%l,%c): error TS%n: %m" -reporter="github-pr-review" -filter-mode="nofilter" -fail-on-error -tee
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  lint:
+    name: Lint JS (eslint, prettier)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+      - uses: reviewdog/action-setup@v1
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Run ESLint CI in example/
+        working-directory: example
+        run: bun lint-ci
+      - name: Run ESLint CI in packages/react-native-mmkv
+        working-directory: packages/react-native-mmkv
+        run: bun lint-ci
+
+      - name: Run ESLint with auto-fix in example/
+        working-directory: example
+        run: bun lint
+      - name: Run ESLint with auto-fix in packages/react-native-mmkv
+        working-directory: packages/react-native-mmkv
+        run: bun lint
+
+      - name: Verify no files have changed after auto-fix
+        run: git diff --exit-code HEAD -- . ':(exclude)bun.lock'
