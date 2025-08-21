@@ -6,21 +6,25 @@
 //
 
 #include "HybridMMKV.hpp"
-#include <NitroModules/NitroLogger.hpp>
 #include "MMKVTypes.hpp"
 #include "ManagedMMBuffer.hpp"
+#include <NitroModules/NitroLogger.hpp>
 
 namespace margelo::nitro::mmkv {
 
-HybridMMKV::HybridMMKV(const Configuration& config): HybridObject(TAG) {
+HybridMMKV::HybridMMKV(const Configuration &config) : HybridObject(TAG) {
   std::string path = config.path.has_value() ? config.path.value() : "";
-  std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
+  std::string encryptionKey =
+      config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
   bool hasEncryptionKey = encryptionKey.size() > 0;
-  Logger::log(LogLevel::Info, TAG, "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
-                  config.id.c_str(), path.c_str(), hasEncryptionKey ? "true" : "false");
+  Logger::log(LogLevel::Info, TAG,
+              "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)",
+              config.id.c_str(), path.c_str(),
+              hasEncryptionKey ? "true" : "false");
 
-  std::string* pathPtr = path.size() > 0 ? &path : nullptr;
-  std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
+  std::string *pathPtr = path.size() > 0 ? &path : nullptr;
+  std::string *encryptionKeyPtr =
+      encryptionKey.size() > 0 ? &encryptionKey : nullptr;
   MMKVMode mode = getMMKVMode(config);
   if (config.readOnly.has_value() && config.readOnly.value()) {
     Logger::log(LogLevel::Info, TAG, "Instance is read-only!");
@@ -30,42 +34,41 @@ HybridMMKV::HybridMMKV(const Configuration& config): HybridObject(TAG) {
 #ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
 #else
-  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
+  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode,
+                              encryptionKeyPtr, pathPtr);
 #endif
 
   if (instance == nullptr) [[unlikely]] {
     // Check if instanceId is invalid
     if (config.id.empty()) [[unlikely]] {
-      throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
+      throw std::runtime_error(
+          "Failed to create MMKV instance! `id` cannot be empty!");
     }
 
     // Check if encryptionKey is invalid
     if (encryptionKey.size() > 16) [[unlikely]] {
       throw std::runtime_error(
-          "Failed to create MMKV instance! `encryptionKey` cannot be longer than 16 bytes!");
+          "Failed to create MMKV instance! `encryptionKey` cannot be longer "
+          "than 16 bytes!");
     }
-    
+
     // Check if path is maybe invalid
     if (path.empty()) [[unlikely]] {
-      throw std::runtime_error("Failed to create MMKV instance! `path` cannot be empty!");
+      throw std::runtime_error(
+          "Failed to create MMKV instance! `path` cannot be empty!");
     }
 
     throw std::runtime_error("Failed to create MMKV instance!");
   }
 }
 
+double HybridMMKV::getSize() { return instance->actualSize(); }
+bool HybridMMKV::getIsReadOnly() { return instance->isReadOnly(); }
 
-double HybridMMKV::getSize() {
-  return instance->actualSize();
-}
-bool HybridMMKV::getIsReadOnly() {
-  return instance->isReadOnly();
-}
-
-void HybridMMKV::set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) {
-
-}
-std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
+void HybridMMKV::set(const std::string &key,
+                     const std::variant<std::string, double, bool,
+                                        std::shared_ptr<ArrayBuffer>> &value) {}
+std::optional<bool> HybridMMKV::getBoolean(const std::string &key) {
   bool hasValue;
   bool result = instance->getBool(key, /* defaultValue */ false, &hasValue);
   if (hasValue) {
@@ -74,16 +77,17 @@ std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
     return std::nullopt;
   }
 }
-std::optional<std::string> HybridMMKV::getString(const std::string& key) {
+std::optional<std::string> HybridMMKV::getString(const std::string &key) {
   std::string result;
-  bool hasValue = instance->getString(key, result, /* inplaceModification */ true);
+  bool hasValue =
+      instance->getString(key, result, /* inplaceModification */ true);
   if (hasValue) {
     return result;
   } else {
     return std::nullopt;
   }
 }
-std::optional<double> HybridMMKV::getNumber(const std::string& key) {
+std::optional<double> HybridMMKV::getNumber(const std::string &key) {
   bool hasValue;
   double result = instance->getDouble(key, /* defaultValue */ 0.0, &hasValue);
   if (hasValue) {
@@ -92,13 +96,15 @@ std::optional<double> HybridMMKV::getNumber(const std::string& key) {
     return std::nullopt;
   }
 }
-std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::string& key) {
+std::optional<std::shared_ptr<ArrayBuffer>>
+HybridMMKV::getBuffer(const std::string &key) {
   MMBuffer result;
 #ifdef __APPLE__
   // iOS: Convert std::string to NSString* for MMKVCore pod compatibility
   bool hasValue = instance->getBytes(@(key.c_str()), result);
 #else
-  // Android/other platforms: Use std::string directly (converts to std::string_view)
+  // Android/other platforms: Use std::string directly (converts to
+  // std::string_view)
   bool hasValue = instance->getBytes(key, result);
 #endif
   if (hasValue) {
@@ -107,19 +113,17 @@ std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::str
     return std::nullopt;
   }
 }
-bool HybridMMKV::contains(const std::string& key) {
+bool HybridMMKV::contains(const std::string &key) {
   return instance->containsKey(key);
 }
-void HybridMMKV::remove(const std::string& key) {
+void HybridMMKV::remove(const std::string &key) {
   instance->removeValueForKey(key);
 }
 std::vector<std::string> HybridMMKV::getAllKeys() {
   return instance->allKeys();
 }
-void HybridMMKV::clearAll() {
-  instance->clearAll();
-}
-void HybridMMKV::recrypt(const std::optional<std::string>& key) {
+void HybridMMKV::clearAll() { instance->clearAll(); }
+void HybridMMKV::recrypt(const std::optional<std::string> &key) {
   bool successful = false;
   if (key.has_value()) {
     // Encrypt with the given key
@@ -132,22 +136,20 @@ void HybridMMKV::recrypt(const std::optional<std::string>& key) {
     throw std::runtime_error("Failed to recrypt MMKV instance!");
   }
 }
-void HybridMMKV::trim() {
-  instance->trim();
-}
+void HybridMMKV::trim() { instance->trim(); }
 
-MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
+MMKVMode HybridMMKV::getMMKVMode(const Configuration &config) {
   if (!config.mode.has_value()) {
     return MMKV_SINGLE_PROCESS;
   }
   switch (config.mode.value()) {
-    case Mode::SINGLE_PROCESS:
-      return MMKV_SINGLE_PROCESS;
-    case Mode::MULTI_PROCESS:
-      return MMKV_MULTI_PROCESS;
-    default:
-      [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
+  case Mode::SINGLE_PROCESS:
+    return MMKV_SINGLE_PROCESS;
+  case Mode::MULTI_PROCESS:
+    return MMKV_MULTI_PROCESS;
+  default:
+    [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
   }
 }
 
-}
+} // namespace margelo::nitro::mmkv
