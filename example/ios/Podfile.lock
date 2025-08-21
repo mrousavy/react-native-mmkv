@@ -8,6 +8,7 @@ PODS:
   - hermes-engine (0.81.0):
     - hermes-engine/Pre-built (= 0.81.0)
   - hermes-engine/Pre-built (0.81.0)
+  - MMKVCore (2.2.3)
   - NitroMmkv (4.0.0-beta.1):
     - boost
     - DoubleConversion
@@ -15,6 +16,7 @@ PODS:
     - fmt
     - glog
     - hermes-engine
+    - MMKVCore (>= 2.2.3)
     - NitroModules
     - RCT-Folly
     - RCT-Folly/Fabric
@@ -2452,6 +2454,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - MMKVCore
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -2613,7 +2616,8 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: e7491a2038f2618c8cd444ed411a6deb350a3742
-  NitroMmkv: 324438d9de6d2a51792d9ec26c36053dea02d29e
+  MMKVCore: 6d5cc1bacce539f4c974985dfe646fb65a5d27d2
+  NitroMmkv: bfb0dc4ddb39399bf603e1cd3c11d760fbe765db
   NitroModules: 58f33f6f7137aa5461298a0495b3e7a3a6fdea9d
   RCT-Folly: 846fda9475e61ec7bcbf8a3fe81edfcaeb090669
   RCTDeprecation: 0735ab4f6b3ec93a7f98187b5da74d7916e2cf4c
@@ -2682,6 +2686,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: b01392348aeea02064c21a2762a42893d82b60a7
 
-PODFILE CHECKSUM: ac6e3a3935879b4d187353a98679212e0e3604ce
+PODFILE CHECKSUM: 2ca4ea208e8044de0bb2e0c277cc47256496ae7b
 
 COCOAPODS: 1.15.2
