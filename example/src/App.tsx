@@ -9,7 +9,7 @@ import {
   Text,
   useColorScheme,
 } from 'react-native';
-import { createMMKV,  } from 'react-native-mmkv';
+import { createMMKV, useMMKVListener, useMMKVString } from 'react-native-mmkv';
 
 const storage = createMMKV();
 
@@ -19,6 +19,11 @@ export default function App() {
   const [keys, setKeys] = React.useState<string[]>([]);
   const colorScheme = useColorScheme();
 
+  const [example, setExample] = useMMKVString('nitrooooo');
+
+  useMMKVListener((k) => {
+    console.log(`${k} changed! New size: ${storage.size}`);
+  });
 
   const save = React.useCallback(() => {
     if (key == null || key.length < 1) {
@@ -60,6 +65,18 @@ export default function App() {
       console.error('Error:', e);
     }
   }, []);
+
+  React.useEffect(() => {
+    console.log(`Value of useMMKVString: ${example}`);
+    const interval = setInterval(() => {
+      setExample((val) => {
+        return val === 'nitrooooo' ? undefined : 'nitrooooo';
+      });
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [example, setExample]);
 
   const isDark = colorScheme === 'dark';
   const dynamicStyles = createDynamicStyles(isDark);
