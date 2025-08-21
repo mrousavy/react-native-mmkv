@@ -1,0 +1,19 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": [
+    "mmkv"
+  ],
+  "ios": {
+    "iosModuleName": "NitroMmkv"
+  },
+  "android": {
+    "androidNamespace": [
+      "mmkv"
+    ],
+    "androidCxxLibName": "NitroMmkv"
+  },
+  "autolinking": {},
+  "ignorePaths": [
+    "**/node_modules"
+  ]
+}
