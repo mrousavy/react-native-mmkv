@@ -11,8 +11,9 @@
 
 namespace margelo::nitro::mmkv {
 
-  class HybridMMKVFactory: HybridMMKVFactorySpec {
-
+  class HybridMMKVFactory final: HybridMMKVFactorySpec {
+    public:
+      std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) override;
   };
 
 }
