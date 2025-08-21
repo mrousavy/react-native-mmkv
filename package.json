@@ -17,5 +17,8 @@
     "specs": "bun mmkv specs",
     "mmkv": "bun --cwd packages/react-native-mmkv",
     "example": "bun --cwd example"
+  },
+  "devDependencies": {
+    "@jamesacarr/eslint-formatter-github-actions": "^0.2.0"
   }
 }
