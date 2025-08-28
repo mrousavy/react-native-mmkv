@@ -153,6 +153,7 @@ void HybridMMKV::recrypt(const std::optional<std::string>& key) {
 }
 void HybridMMKV::trim() {
   instance->trim();
+  instance->clearMemoryCache();
 }
 
 Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
