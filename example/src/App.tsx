@@ -9,14 +9,14 @@ import {
   Text,
   useColorScheme,
 } from 'react-native';
-import { createMMKV, useMMKVListener, useMMKVString } from 'react-native-mmkv';
+import { createMMKV, useMMKVListener, useMMKVString, useMMKVKeys } from 'react-native-mmkv';
 
 const storage = createMMKV();
 
 export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
-  const [keys, setKeys] = React.useState<string[]>([]);
+  const keys = useMMKVKeys(storage)
   const colorScheme = useColorScheme();
 
   const [example, setExample] = useMMKVString('nitrooooo');
