@@ -13,31 +13,24 @@ import { useMMKVListener } from './useMMKVListener'
  * useMMKVKeys(instance)
  * ```
  */
-export function useMMKVKeys(
-  instance?: MMKV
-): string[] {
+export function useMMKVKeys(instance?: MMKV): string[] {
   const mmkv = instance ?? getDefaultMMKVInstance()
-  const [keys, setKeys] = useState<string[]>(() => mmkv.getAllKeys())
+  const [allKeys, setKeys] = useState<string[]>(() => mmkv.getAllKeys())
 
   useMMKVListener((key) => {
     // a key changed
     setKeys((keys) => {
-      const contains = mmkv.contains(key)
-      const currentlyContains = keys.includes(key)
-      if (contains === currentlyContains) {
-      }
-      if (contains && !currentlyContains) {
-        // the key got added - add it to our state
-        return [...keys, key]
-      } else if (!contains && currentlyContains) {
-        // the key got removed - remove it from our state
-        return keys.filter((k) => k !== key)
+      const currentlyHasKey = keys.includes(key)
+      const hasKey = mmkv.contains(key)
+      if (hasKey !== currentlyHasKey) {
+        // Re-fetch the keys from native
+        return mmkv.getAllKeys()
       } else {
-        // we dont need to change anything
+        // We are up-to-date.
         return keys
       }
     })
   }, mmkv)
 
-  return keys
+  return allKeys
 }

@@ -56,17 +56,6 @@ export default function App() {
   }, [key]);
 
   React.useEffect(() => {
-    try {
-      console.log('getting all keys...');
-      const _keys = storage.getAllKeys();
-      setKeys(_keys);
-      console.log('MMKV keys:', _keys);
-    } catch (e) {
-      console.error('Error:', e);
-    }
-  }, []);
-
-  React.useEffect(() => {
     console.log(`Value of useMMKVString: ${example}`);
     const interval = setInterval(() => {
       setExample((val) => {
