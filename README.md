@@ -1,8 +1,8 @@
 <a href="https://margelo.io">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./package/img/banner-dark.png" />
-    <source media="(prefers-color-scheme: light)" srcset="./package/img/banner-light.png" />
-    <img alt="react-native-mmkv" src="./package/img/banner-light.png" />
+    <source media="(prefers-color-scheme: dark)" srcset="./docs/img/banner-dark.png" />
+    <source media="(prefers-color-scheme: light)" srcset="./docs/img/banner-light.png" />
+    <img alt="react-native-mmkv" src="./docs/img/banner-light.png" />
   </picture>
 </a>
 
@@ -59,7 +59,7 @@
 
 <div align="center">
   <a href="https://github.com/mrousavy/StorageBenchmark">
-    <img src="./package/img/benchmark_1000_get.png" />
+    <img src="./docs/img/benchmark_1000_get.png" />
   </a>
   <p>
     <b>MMKV vs other storage libraries</b>: Reading a value from Storage 1000 times. <br/>
