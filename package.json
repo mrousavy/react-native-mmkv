@@ -20,10 +20,10 @@
   },
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
-    "@release-it-plugins/workspaces": "^4.2.1",
-    "@release-it/bumper": "^6.0.1",
-    "@release-it/conventional-changelog": "^8.0.2",
-    "release-it": "^17.11.0"
+    "@release-it-plugins/workspaces": "^5.0.3",
+    "@release-it/bumper": "^7.0.5",
+    "@release-it/conventional-changelog": "^10.0.1",
+    "release-it": "^19.0.4"
   },
 
   "release-it": {
