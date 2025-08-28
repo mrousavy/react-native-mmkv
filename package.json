@@ -38,8 +38,8 @@
       "release": true
     },
     "hooks": {
-      "before:release": "bun i && bun mmkv build && bun example bundle-install && bun example pods && git add example/ios/Podfile.lock",
-      "after:release": "bun i"
+      "before:release": "bun i && bun mmkv build",
+      "before:git": "bun i && bun example bundle-install && bun example pods && git add example/ios/Podfile.lock"
     },
     "plugins": {
       "@release-it/bumper": {
