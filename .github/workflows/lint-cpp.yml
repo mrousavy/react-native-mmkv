@@ -27,14 +27,9 @@ jobs:
     strategy:
       matrix:
         path:
-        - 'packages/react-native-nitro-modules/android/src/main/cpp'
-        - 'packages/react-native-nitro-modules/cpp'
-        - 'packages/react-native-nitro-modules/ios'
-        - 'packages/react-native-nitro-test/android/src/main/cpp'
-        - 'packages/react-native-nitro-test/cpp'
-        - 'packages/react-native-nitro-test/ios'
-        - 'packages/react-native-nitro-test-external/android/src/main/cpp'
-        - 'packages/react-native-nitro-test-external/ios'
+        - 'packages/react-native-mmkv/android/src/main/cpp'
+        - 'packages/react-native-mmkv/cpp'
+        - 'packages/react-native-mmkv/ios'
     steps:
       - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v2
