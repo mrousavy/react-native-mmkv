@@ -19,7 +19,7 @@ add_library(${PACKAGE_NAME} SHARED
             ${android_files}
 )
 
-# Find MMKV prefab package (from mmkv-shared gradle dependency)
+# Find MMKV prefab package (from mmkv-static gradle dependency)
 find_package(mmkv REQUIRED CONFIG)
 
 # Add Nitrogen specs :)
