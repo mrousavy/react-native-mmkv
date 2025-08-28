@@ -14,10 +14,10 @@
       "name": "MmkvExample",
       "version": "4.0.0-beta.1",
       "dependencies": {
-        "react-native-mmkv": "../packages/react-native-mmkv",
         "@react-native/new-app-screen": "0.81.0",
         "react": "19.1.0",
         "react-native": "0.81.0",
+        "react-native-mmkv": "*",
         "react-native-nitro-modules": "^0.28.1",
         "react-native-safe-area-context": "^5.5.2",
       },
@@ -44,7 +44,7 @@
     },
     "packages/react-native-mmkv": {
       "name": "react-native-mmkv",
-      "version": "4.0.0-beta.2",
+      "version": "4.0.0-beta.1",
       "devDependencies": {
         "@react-native/eslint-config": "0.81.0",
         "@testing-library/react-native": "^13.3.1",
