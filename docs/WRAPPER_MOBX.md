@@ -12,7 +12,7 @@ configurePersistable({
   storage: {
     setItem: (key, data) => storage.set(key, data),
     getItem: (key) => storage.getString(key),
-    removeItem: (key) => storage.delete(key),
+    removeItem: (key) => storage.remove(key),
   },
 })
 ```

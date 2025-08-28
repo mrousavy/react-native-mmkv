@@ -9,7 +9,7 @@ export function createMockMMKV(): MMKV {
 
   return {
     clearAll: () => storage.clear(),
-    remove: (key) => storage.delete(key),
+    remove: (key) => storage.remove(key),
     set: (key, value) => storage.set(key, value),
     getString: (key) => {
       const result = storage.get(key)

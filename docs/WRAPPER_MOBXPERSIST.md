@@ -22,7 +22,7 @@ const mmkvStorage = {
     return Promise.resolve(value)
   },
   removeItem: (key) => {
-    storage.delete(key)
+    storage.remove(key)
     return Promise.resolve()
   },
 }

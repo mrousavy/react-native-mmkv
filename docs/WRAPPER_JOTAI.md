@@ -18,7 +18,7 @@ function setItem(key: string, value: string): void {
 }
 
 function removeItem(key: string): void {
-  storage.delete(key);
+  storage.remove(key);
 }
 
 function subscribe(
@@ -52,7 +52,7 @@ export const atomWithMMKV = <T>(key: string, initialValue: T) =>
   );
 ```
 
-Then simply use `atomWithMMKV(..)` instead of `atom(..)` when creating an atom you'd like to persist accross app starts. 
+Then simply use `atomWithMMKV(..)` instead of `atom(..)` when creating an atom you'd like to persist accross app starts.
 
 ```ts
 const myAtom = atomWithMMKV('my-atom-key', 'value');

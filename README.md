@@ -113,7 +113,7 @@ export const storage = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
   encryptionKey: 'hunter2',
-  mode: Mode.MULTI_PROCESS,
+  mode: 'multi-process',
   readOnly: false
 })
 ```
@@ -125,7 +125,7 @@ The following values can be configured:
 * `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
-* `mode`: The MMKV's process behaviour - when set to `MULTI_PROCESS`, the MMKV instance will assume data can be changed from the outside (e.g. App Clips, Extensions or App Groups).
+* `mode`: The MMKV's process behaviour - when set to `multi-process`, the MMKV instance will assume data can be changed from the outside (e.g. App Clips, Extensions or App Groups).
 * `readOnly`: Whether this MMKV instance should be in read-only mode. This is typically more efficient and avoids unwanted writes to the data if not needed. Any call to `set(..)` will throw.
 
 ### Set
@@ -162,7 +162,7 @@ const hasUsername = storage.contains('user.name')
 const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
 
 // delete a specific key + value
-storage.delete('user.name')
+storage.remove('user.name')
 
 // delete all keys
 storage.clearAll()
