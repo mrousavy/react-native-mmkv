@@ -36,7 +36,7 @@
     "typescript": "tsc",
     "specs": "tsc && nitro-codegen --logLevel=\"debug\"",
     "build": "tsc --noEmit false",
-    "release": "./scripts/release.sh",
+    "release": "release-it",
     "test": "jest"
   },
   "keywords": [
