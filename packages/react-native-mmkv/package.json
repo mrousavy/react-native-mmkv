@@ -25,7 +25,8 @@
     "app.plugin.js",
     "nitro.json",
     "*.podspec",
-    "README.md"
+    "README.md",
+    "cpp"
   ],
   "scripts": {
     "postinstall": "tsc || exit 0;",
