@@ -9,6 +9,7 @@
     "lint-ci": "eslint \"**/*.{js,ts,tsx}\" -f @jamesacarr/github-actions",
     "start": "react-native start",
     "test": "jest",
+    "bundle-install": "bundle install",
     "pods": "bundle install && cd ios && bundle exec pod install",
     "build:android-release": "cd android && ./gradlew assembleRelease --no-daemon"
   },

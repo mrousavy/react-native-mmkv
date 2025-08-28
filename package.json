@@ -21,8 +21,53 @@
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
     "@release-it-plugins/workspaces": "^4.2.1",
-    "@release-it/bumper": "^6.0.1",
     "@release-it/conventional-changelog": "^8.0.2",
     "release-it": "^19.0.4"
+  },
+
+  "release-it": {
+    "npm": {
+      "publish": false
+    },
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}",
+      "requireCleanWorkingDir": false
+    },
+    "github": {
+      "release": true
+    },
+    "hooks": {
+      "before:release": "bun i && bun mmkv build && bun nitro-test build && bun example bundle-install && bun example pods && git add example/ios/Podfile.lock"
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "conventionalcommits",
+          "types": [
+            {
+              "type": "feat",
+              "section": "✨ Features"
+            },
+            {
+              "type": "perf",
+              "section": "💨 Performance Improvements"
+            },
+            {
+              "type": "fix",
+              "section": "🐛 Bug Fixes"
+            },
+            {
+              "type": "chore(deps)",
+              "section": "🛠️ Dependency Upgrades"
+            },
+            {
+              "type": "docs",
+              "section": "📚 Documentation"
+            }
+          ]
+        }
+      }
+    }
   }
 }
