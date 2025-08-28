@@ -9,14 +9,14 @@ import {
   Text,
   useColorScheme,
 } from 'react-native';
-import { createMMKV, useMMKVListener, useMMKVString } from 'react-native-mmkv';
+import { createMMKV, useMMKVListener, useMMKVString, useMMKVKeys } from 'react-native-mmkv';
 
 const storage = createMMKV();
 
 export default function App() {
   const [text, setText] = React.useState<string>('');
   const [key, setKey] = React.useState<string>('');
-  const [keys, setKeys] = React.useState<string[]>([]);
+  const keys = useMMKVKeys(storage)
   const colorScheme = useColorScheme();
 
   const [example, setExample] = useMMKVString('nitrooooo');
@@ -54,17 +54,6 @@ export default function App() {
       Alert.alert('Failed to get value for key "test"!', JSON.stringify(e));
     }
   }, [key]);
-
-  React.useEffect(() => {
-    try {
-      console.log('getting all keys...');
-      const _keys = storage.getAllKeys();
-      setKeys(_keys);
-      console.log('MMKV keys:', _keys);
-    } catch (e) {
-      console.error('Error:', e);
-    }
-  }, []);
 
   React.useEffect(() => {
     console.log(`Value of useMMKVString: ${example}`);

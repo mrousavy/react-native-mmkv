@@ -43,11 +43,9 @@
 * **iOS**, **Android** and **Web** support
 * Easy to use **React Hooks** API
 
-## react-native-mmkv V4
-
 > [!IMPORTANT]
-> - react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**. (react-native 0.75+).
-> - react-native-mmkv V4 is **64-bit only**.
+> - react-native-mmkv **V3** is now a pure C++ TurboModule, and **requires the new architecture to be enabled**. (react-native 0.75+).
+> - react-native-mmkv **V4** is **64-bit only**.
 >
 >    In your `gradle.properties` file, set the `reactNativeArchitectures` flag to this:
 >    ```goovy
@@ -74,14 +72,14 @@
 ### React Native
 
 ```sh
-yarn add react-native-mmkv
+npm install react-native-mmkv react-native-nitro-modules
 cd ios && pod install
 ```
 
 ### Expo
 
 ```sh
-npx expo install react-native-mmkv
+npx expo install react-native-mmkv react-native-nitro-modules
 npx expo prebuild
 ```
 
