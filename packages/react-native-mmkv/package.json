@@ -1,6 +1,6 @@
 {
   "name": "react-native-mmkv",
-  "version": "4.0.0-beta.3",
+  "version": "4.0.0-beta.4",
   "description": "react-native-mmkv",
   "main": "lib/index",
   "module": "lib/index",
