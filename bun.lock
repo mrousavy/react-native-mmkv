@@ -6,7 +6,6 @@
       "devDependencies": {
         "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
         "@release-it-plugins/workspaces": "^4.2.1",
-        "@release-it/bumper": "^6.0.1",
         "@release-it/conventional-changelog": "^8.0.2",
         "release-it": "^19.0.4",
       },
@@ -15,10 +14,10 @@
       "name": "MmkvExample",
       "version": "4.0.0-beta.1",
       "dependencies": {
+        "react-native-mmkv": "../packages/react-native-mmkv",
         "@react-native/new-app-screen": "0.81.0",
         "react": "19.1.0",
         "react-native": "0.81.0",
-        "react-native-mmkv": "workspace:*",
         "react-native-nitro-modules": "^0.28.1",
         "react-native-safe-area-context": "^5.5.2",
       },
@@ -45,7 +44,7 @@
     },
     "packages/react-native-mmkv": {
       "name": "react-native-mmkv",
-      "version": "4.0.0-beta.1",
+      "version": "4.0.0-beta.2",
       "devDependencies": {
         "@react-native/eslint-config": "0.81.0",
         "@testing-library/react-native": "^13.3.1",
@@ -350,8 +349,6 @@
 
     "@hutson/parse-repository-url": ["@hutson/parse-repository-url@5.0.0", "", {}, "sha512-e5+YUKENATs1JgYHMzTr2MW/NDcXGfYFAuOQU8gJgF/kEh4EqKgfGrfLI67bMD4tbhZVlkigz/9YYwWcbOFthg=="],
 
-    "@iarna/toml": ["@iarna/toml@2.2.5", "", {}, "sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg=="],
-
     "@inquirer/checkbox": ["@inquirer/checkbox@4.2.2", "", { "dependencies": { "@inquirer/core": "^10.2.0", "@inquirer/figures": "^1.0.13", "@inquirer/type": "^3.0.8", "ansi-escapes": "^4.3.2", "yoctocolors-cjs": "^2.1.2" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-E+KExNurKcUJJdxmjglTl141EwxWyAHplvsYJQgSwXf8qiNWkTxTuCCqmhFEmbIXd4zLaGMfQFJ6WrZ7fSeV3g=="],
 
     "@inquirer/confirm": ["@inquirer/confirm@5.1.16", "", { "dependencies": { "@inquirer/core": "^10.2.0", "@inquirer/type": "^3.0.8" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-j1a5VstaK5KQy8Mu8cHmuQvN1Zc62TbLhjJxwHvKPPKEoowSF6h/0UdOpA9DNdWZ+9Inq73+puRq1df6OJ8Sag=="],
@@ -541,8 +538,6 @@
     "@react-native/virtualized-lists": ["@react-native/virtualized-lists@0.81.0", "", { "dependencies": { "invariant": "^2.2.4", "nullthrows": "^1.1.1" }, "peerDependencies": { "@types/react": "^19.1.0", "react": "*", "react-native": "*" }, "optionalPeers": ["@types/react"] }, "sha512-p14QC5INHkbMZ96158sUxkSwN6zp138W11G+CRGoLJY4Q9WRJBCe7wHR5Owyy3XczQXrIih/vxAXwgYeZ2XByg=="],
 
     "@release-it-plugins/workspaces": ["@release-it-plugins/workspaces@4.2.1", "", { "dependencies": { "detect-indent": "^6.0.0", "detect-newline": "^3.1.0", "semver": "^7.1.3", "url-join": "^4.0.1", "validate-peer-dependencies": "^1.0.0", "walk-sync": "^2.0.2", "yaml": "^2.1.1" }, "peerDependencies": { "release-it": "^14.0.0 || ^15.2.0 || ^16.0.0 || ^17.0.0" } }, "sha512-lZEARr5tqsFskTPHBLjmYxqfC/DJkWRc0Q/wjOODHW8rtYPhL1w2zv7fwvgSjhFmMp0OdsJOXzkcSkUDvc9NnA=="],
-
-    "@release-it/bumper": ["@release-it/bumper@6.0.1", "", { "dependencies": { "@iarna/toml": "^2.2.5", "detect-indent": "7.0.1", "fast-glob": "^3.3.2", "ini": "^4.1.1", "js-yaml": "^4.1.0", "lodash-es": "^4.17.21", "semver": "^7.3.7" }, "peerDependencies": { "release-it": "^17.0.0" } }, "sha512-yeQsbGNMzzN0c/5JV1awXP6UHX/kJamXCKR6/daS0YQfj98SZXAcLn3JEq+qfK/Jq/cnATnlz5r6UY0cfBkm1A=="],
 
     "@release-it/conventional-changelog": ["@release-it/conventional-changelog@8.0.2", "", { "dependencies": { "concat-stream": "^2.0.0", "conventional-changelog": "^5.1.0", "conventional-recommended-bump": "^9.0.0", "git-semver-tags": "^8.0.0", "semver": "^7.6.3" }, "peerDependencies": { "release-it": "^17.0.0" } }, "sha512-WpnWWRr7O0JeLoiejLrPEWnnwFhCscBn1wBTAXeitiz2/Ifaol0s+t8otf/HYq/OiQOri2iH8d0CnVb72tBdIQ=="],
 
@@ -1212,8 +1207,6 @@
 
     "inherits": ["inherits@2.0.4", "", {}, "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ=="],
 
-    "ini": ["ini@4.1.3", "", {}, "sha512-X7rqawQBvfdjS10YU1y1YVreA3SsLrW9dX2CewP2EbBJM4ypVNLDkO5y04gejPwKIY9lR+7r9gn3rFPt/kmWFg=="],
-
     "inquirer": ["inquirer@12.7.0", "", { "dependencies": { "@inquirer/core": "^10.1.14", "@inquirer/prompts": "^7.6.0", "@inquirer/type": "^3.0.7", "ansi-escapes": "^4.3.2", "mute-stream": "^2.0.0", "run-async": "^4.0.4", "rxjs": "^7.8.2" }, "peerDependencies": { "@types/node": ">=18" }, "optionalPeers": ["@types/node"] }, "sha512-KKFRc++IONSyE2UYw9CJ1V0IWx5yQKomwB+pp3cWomWs+v2+ZsG11G2OVfAjFS6WWCppKw+RfKmpqGfSzD5QBQ=="],
 
     "internal-slot": ["internal-slot@1.1.0", "", { "dependencies": { "es-errors": "^1.3.0", "hasown": "^2.0.2", "side-channel": "^1.1.0" } }, "sha512-4gd7VpWNQNB4UKKCFFVcp1AVv+FMOgs9NKzjHKusc8jTMhd5eL1NqQqOpE0KzMds804/yHlglp3uxgluOqAPLw=="],
@@ -1421,8 +1414,6 @@
     "locate-path": ["locate-path@6.0.0", "", { "dependencies": { "p-locate": "^5.0.0" } }, "sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw=="],
 
     "lodash": ["lodash@4.17.21", "", {}, "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="],
-
-    "lodash-es": ["lodash-es@4.17.21", "", {}, "sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw=="],
 
     "lodash.capitalize": ["lodash.capitalize@4.2.1", "", {}, "sha512-kZzYOKspf8XVX5AvmQF94gQW0lejFVgb80G85bU4ZWzoJ6C03PQg3coYAUpSTpQWelrZELd3XWgHzw4Ck5kaIw=="],
 
@@ -2101,8 +2092,6 @@
     "@react-native/dev-middleware/open": ["open@7.4.2", "", { "dependencies": { "is-docker": "^2.0.0", "is-wsl": "^2.1.1" } }, "sha512-MVHddDVweXZF3awtlAS+6pgKLlm/JgxZ90+/NBurBoQctVOOB/zDdVjcyPzQ+0laDGbsWgrRkflI65sQeOgT9Q=="],
 
     "@react-native/eslint-config/eslint-config-prettier": ["eslint-config-prettier@8.10.2", "", { "peerDependencies": { "eslint": ">=7.0.0" }, "bin": { "eslint-config-prettier": "bin/cli.js" } }, "sha512-/IGJ6+Dka158JnP5n5YFMOszjDWrXggGz1LaK/guZq9vZTmniaKlHcsscvkAhn9y4U+BU3JuUdYvtAMcv30y4A=="],
-
-    "@release-it/bumper/detect-indent": ["detect-indent@7.0.1", "", {}, "sha512-Mc7QhQ8s+cLrnUfU/Ji94vG/r8M26m8f++vyres4ZoojaRDpZ1eSIh/EpzLNwlWuvzSZ3UbDFspjFvTDXe6e/g=="],
 
     "@testing-library/react-native/pretty-format": ["pretty-format@30.0.5", "", { "dependencies": { "@jest/schemas": "30.0.5", "ansi-styles": "^5.2.0", "react-is": "^18.3.1" } }, "sha512-D1tKtYvByrBkFLe2wHJl2bwMJIiT8rW+XA+TiataH79/FszLQMrpGEvzUVkzPau7OCO0Qnrhpe87PqtOAIB8Yw=="],
 
