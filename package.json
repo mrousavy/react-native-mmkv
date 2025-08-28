@@ -1,7 +1,7 @@
 {
   "name": "react-native-mmkv-monorepo",
   "private": true,
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "repository": "https://github.com/mrousavy/react-native-mmkv.git",
   "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
   "workspaces": [
@@ -21,6 +21,7 @@
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
     "@release-it-plugins/workspaces": "^4.2.1",
+    "@release-it/bumper": "^6.0.1",
     "@release-it/conventional-changelog": "^8.0.2",
     "release-it": "^17.11.0"
   },
@@ -41,6 +42,14 @@
       "before:release": "bun i && bun mmkv build && bun nitro-test build && bun example bundle-install && bun example pods && git add example/ios/Podfile.lock"
     },
     "plugins": {
+      "@release-it/bumper": {
+        "out": [
+          {
+            "file": "example/package.json",
+            "path": "version"
+          }
+        ]
+      },
       "@release-it/conventional-changelog": {
         "preset": {
           "name": "conventionalcommits",
