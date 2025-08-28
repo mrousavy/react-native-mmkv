@@ -19,6 +19,10 @@
     "example": "bun --cwd example"
   },
   "devDependencies": {
-    "@jamesacarr/eslint-formatter-github-actions": "^0.2.0"
+    "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
+    "@release-it-plugins/workspaces": "^4.2.1",
+    "@release-it/bumper": "^6.0.1",
+    "@release-it/conventional-changelog": "^8.0.2",
+    "release-it": "^19.0.4"
   }
 }

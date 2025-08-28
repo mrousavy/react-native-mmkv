@@ -103,6 +103,19 @@
     "node_modules/",
     "lib/"
   ],
+  "release-it": {
+    "npm": {
+      "publish": true
+    },
+    "git": false,
+    "github": {
+      "release": false
+    },
+    "hooks": {
+      "before:init": "bun typecheck",
+      "after:bump": "bun run build"
+    }
+  },
   "prettier": {
     "quoteProps": "consistent",
     "singleQuote": true,
