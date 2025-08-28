@@ -1,6 +1,6 @@
 {
   "name": "MmkvExample",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.5",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -17,7 +17,7 @@
     "@react-native/new-app-screen": "0.81.0",
     "react": "19.1.0",
     "react-native": "0.81.0",
-    "react-native-mmkv": "workspace:*",
+    "react-native-mmkv": "*",
     "react-native-nitro-modules": "^0.28.1",
     "react-native-safe-area-context": "^5.5.2"
   },

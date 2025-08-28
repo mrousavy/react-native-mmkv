@@ -1,7 +1,7 @@
 {
   "name": "react-native-mmkv-monorepo",
   "private": true,
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.5",
   "repository": "https://github.com/mrousavy/react-native-mmkv.git",
   "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
   "workspaces": [
@@ -13,18 +13,18 @@
     "bootstrap": "bun i && bun run build && cd example && bundle install && bun pods",
     "typecheck": "bun --filter=\"**\" typecheck",
     "lint-cpp": "./scripts/clang-format.sh",
-    "release": "bun mmkv release",
+    "release": "./scripts/release.sh",
     "specs": "bun mmkv specs",
     "mmkv": "bun --cwd packages/react-native-mmkv",
     "example": "bun --cwd example"
   },
   "devDependencies": {
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
-    "@release-it-plugins/workspaces": "^4.2.1",
-    "@release-it/conventional-changelog": "^8.0.2",
+    "@release-it-plugins/workspaces": "^5.0.3",
+    "@release-it/bumper": "^7.0.5",
+    "@release-it/conventional-changelog": "^10.0.1",
     "release-it": "^19.0.4"
   },
-
   "release-it": {
     "npm": {
       "publish": false
@@ -38,9 +38,18 @@
       "release": true
     },
     "hooks": {
-      "before:release": "bun i && bun mmkv build && bun nitro-test build && bun example bundle-install && bun example pods && git add example/ios/Podfile.lock"
+      "before:release": "bun i && bun mmkv build && bun example bundle-install && bun example pods && git add example/ios/Podfile.lock",
+      "after:release": "bun i"
     },
     "plugins": {
+      "@release-it/bumper": {
+        "out": [
+          {
+            "file": "example/package.json",
+            "path": "version"
+          }
+        ]
+      },
       "@release-it/conventional-changelog": {
         "preset": {
           "name": "conventionalcommits",
