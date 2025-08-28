@@ -1,0 +1,27 @@
+name: Test JS
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/test-js.yml'
+      - 'packages/react-native-mmkv/**'
+  pull_request:
+    paths:
+      - '.github/workflows/test-js.yml'
+      - 'packages/react-native-mmkv/**'
+
+jobs:
+  test:
+    name: Test JS
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+    - uses: oven-sh/setup-bun@v2
+
+    - name: Install npm dependencies (bun)
+      run: bun install
+
+    - name: Run Jest
+      run: bun mmkv test

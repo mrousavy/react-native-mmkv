@@ -1,0 +1,24 @@
+{
+  "name": "react-native-mmkv-monorepo",
+  "private": true,
+  "version": "4.0.0-beta.1",
+  "repository": "https://github.com/mrousavy/react-native-mmkv.git",
+  "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
+  "workspaces": [
+    "packages/react-native-mmkv",
+    "example"
+  ],
+  "scripts": {
+    "build": "bun mmkv build",
+    "bootstrap": "bun i && bun run build && cd example && bundle install && bun pods",
+    "typecheck": "bun --filter=\"**\" typecheck",
+    "lint-cpp": "./scripts/clang-format.sh",
+    "release": "bun mmkv release",
+    "specs": "bun mmkv specs",
+    "mmkv": "bun --cwd packages/react-native-mmkv",
+    "example": "bun --cwd example"
+  },
+  "devDependencies": {
+    "@jamesacarr/eslint-formatter-github-actions": "^0.2.0"
+  }
+}

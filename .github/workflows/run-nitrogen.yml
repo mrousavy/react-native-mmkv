@@ -1,0 +1,48 @@
+name: Run Nitrogen
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/run-nitrogen.yml'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.json'
+      - '**/*.lockb'
+      - '**/nitro.json'
+      - '**/package.json'
+  pull_request:
+    paths:
+      - '.github/workflows/run-nitrogen.yml'
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.json'
+      - '**/*.lockb'
+      - '**/nitro.json'
+      - '**/package.json'
+
+jobs:
+  lint:
+    name: Run Nitrogen for react-native-mmkv
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Build all packages
+        run: bun run build
+
+      - name: Run nitro-codegen in packages/react-native-mmkv
+        working-directory: packages/react-native-mmkv
+        run: bun i && bun specs
+
+      - name: Verify no files have changed after nitrogen
+        run: git diff --exit-code HEAD -- . ':(exclude)bun.lock'
