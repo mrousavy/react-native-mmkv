@@ -7,10 +7,29 @@ export function createMockMMKV(): MMKV {
   const storage = new Map<string, string | boolean | number | ArrayBuffer>()
   const listeners = new Set<(key: string) => void>()
 
+  const notifyListeners = (key: string) => {
+    listeners.forEach((listener) => {
+      listener(key)
+    })
+  }
+
   return {
-    clearAll: () => storage.clear(),
-    remove: (key) => storage.delete(key),
-    set: (key, value) => storage.set(key, value),
+    clearAll: () => {
+      const keysBefore = storage.keys()
+      storage.clear()
+      // Notify all listeners for all keys that were cleared
+      keysBefore.map((k) => notifyListeners(k))
+    },
+    remove: (key) => {
+      const deleted = storage.delete(key)
+      if (deleted) {
+        notifyListeners(key)
+      }
+    },
+    set: (key, value) => {
+      storage.set(key, value)
+      notifyListeners(key)
+    },
     getString: (key) => {
       const result = storage.get(key)
       return typeof result === 'string' ? result : undefined

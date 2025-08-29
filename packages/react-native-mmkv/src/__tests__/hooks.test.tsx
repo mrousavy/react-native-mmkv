@@ -6,6 +6,7 @@ import {
   render,
   renderHook,
   screen,
+  cleanup,
 } from '@testing-library/react-native'
 import { createMMKV, useMMKVNumber, useMMKVString } from '..'
 
@@ -14,6 +15,10 @@ const mmkv = createMMKV()
 beforeEach(() => {
   mmkv.clearAll()
   mmkv.trim()
+})
+
+afterEach(() => {
+  cleanup()
 })
 
 test('hooks update when the value is changed directly through the instance', () => {
