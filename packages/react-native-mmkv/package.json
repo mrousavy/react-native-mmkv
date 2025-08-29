@@ -23,7 +23,7 @@
     "ios/**/*.cpp",
     "ios/**/*.swift",
     "cpp/**/*.h",
-    "cpp/**/*.cpp",
+    "cpp/**/*.hpp",
     "cpp/**/*.cpp",
     "app.plugin.js",
     "nitro.json",
