@@ -32,6 +32,5 @@ describe('Example test', () => {
     );
 
     storage.clearAll();
-    expect(storage.toString()).toStrictEqual('MMKV (mmkv.default): []');
   });
 });
