@@ -15,11 +15,10 @@ export function createMockMMKV(): MMKV {
 
   return {
     clearAll: () => {
+      const keysBefore = storage.keys()
       storage.clear()
       // Notify all listeners for all keys that were cleared
-      listeners.forEach((listener) => {
-        listener('')
-      })
+      keysBefore.map((k) => notifyListeners(k))
     },
     remove: (key) => {
       const deleted = storage.delete(key)
