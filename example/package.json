@@ -1,5 +1,5 @@
 {
-  "name": "MmkvExample",
+  "name": "mmkv-example",
   "version": "4.0.0-beta.5",
   "private": true,
   "scripts": {

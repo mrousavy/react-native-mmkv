@@ -12,17 +12,24 @@
     "build": "bun mmkv build",
     "bootstrap": "bun i && bun run build && cd example && bundle install && bun pods",
     "typecheck": "bun --filter=\"**\" typecheck",
+    "lint": "bun --filter=\"**\" lint",
+    "lint-ci": "bun --filter=\"**\" lint-ci",
     "lint-cpp": "./scripts/clang-format.sh",
     "release": "./scripts/release.sh",
     "specs": "bun mmkv specs",
     "mmkv": "bun --cwd packages/react-native-mmkv",
-    "example": "bun --cwd example"
+    "example": "bun --cwd example",
+    "test": "jest"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@jamesacarr/eslint-formatter-github-actions": "^0.2.0",
     "@release-it-plugins/workspaces": "^5.0.3",
     "@release-it/bumper": "^7.0.5",
     "@release-it/conventional-changelog": "^10.0.1",
+    "@types/bun": "latest",
     "release-it": "^19.0.4"
   },
   "release-it": {
