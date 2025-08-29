@@ -25,7 +25,7 @@ const clientStorage = {
     return value === undefined ? null : value;
   },
   removeItem: (key) => {
-    storage.delete(key);
+    storage.remove(key);
   },
 };
 

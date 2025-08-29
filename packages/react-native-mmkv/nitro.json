@@ -23,5 +23,6 @@
   },
   "ignorePaths": [
     "**/node_modules"
-  ]
+  ],
+  "gitAttributesGeneratedFlag": false
 }

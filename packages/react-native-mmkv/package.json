@@ -1,6 +1,6 @@
 {
   "name": "react-native-mmkv",
-  "version": "4.0.0-beta.4",
+  "version": "4.0.0-beta.6",
   "description": "react-native-mmkv",
   "main": "lib/index",
   "module": "lib/index",
@@ -22,6 +22,9 @@
     "ios/**/*.mm",
     "ios/**/*.cpp",
     "ios/**/*.swift",
+    "cpp/**/*.h",
+    "cpp/**/*.hpp",
+    "cpp/**/*.cpp",
     "app.plugin.js",
     "nitro.json",
     "*.podspec",
