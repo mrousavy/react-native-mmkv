@@ -4,12 +4,11 @@ import type { HybridObject } from 'react-native-nitro-modules'
 import { createMMKV } from './createMMKV/createMMKV'
 
 export class MMKV implements MMKVType {
-  private nativeInstance: MMKVType;
+  private nativeInstance: MMKVType
 
   constructor(config?: Configuration) {
     this.nativeInstance = createMMKV(config)
   }
-  
 
   toString(): string {
     return this.nativeInstance.toString()
