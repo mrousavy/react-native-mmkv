@@ -1,5 +1,5 @@
 // All types
-export type { MMKV } from './specs/MMKV.nitro'
+export type { MMKV as MMKVInterface } from './specs/MMKV.nitro'
 export type { Configuration, Mode } from './specs/MMKVFactory.nitro'
 
 // The create function
@@ -14,3 +14,5 @@ export { useMMKVObject } from './hooks/useMMKVObject'
 export { useMMKVString } from './hooks/useMMKVString'
 export { useMMKVListener } from './hooks/useMMKVListener'
 export { useMMKVKeys } from './hooks/useMMKVKeys'
+
+export * from './MMKV'
