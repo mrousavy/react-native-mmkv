@@ -23,6 +23,7 @@
     "ios/**/*.cpp",
     "ios/**/*.swift",
     "cpp/**/*.h",
+    "cpp/**/*.hpp",
     "cpp/**/*.cpp",
     "cpp/**/*.cpp",
     "app.plugin.js",
