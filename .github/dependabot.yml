@@ -8,7 +8,7 @@ updates:
     labels:
       - "dependencies"
   - package-ecosystem: "gradle"
-    directory: "/package/android/"
+    directory: "/packages/react-native-mmkv/android/"
     schedule:
       interval: "weekly"
     labels:
