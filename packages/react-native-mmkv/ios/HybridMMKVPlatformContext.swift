@@ -18,15 +18,15 @@ class HybridMMKVPlatformContext: HybridMMKVPlatformContextSpec {
   }
   
   func getBaseDirectory() throws -> String {
-    // Get user documents path
+    // Get user documents directory
     let paths = FileManager.default.urls(for: Self.directory, in: .userDomainMask)
-    if let documentPath = paths.first {
-      // append /mmkv to it
-      let basePath = documentPath.appendingPathComponent("mmkv", conformingTo: .directory)
-      return basePath.path
-    } else {
+    guard let documentsPath = paths.first else {
       throw RuntimeError.error(withMessage: "Cannot find base-path to store MMKV files!")
     }
+    
+    // append /mmkv to it
+    let basePath = documentsPath.appendingPathComponent("mmkv", conformingTo: .directory)
+    return basePath.path
   }
   
   func getAppGroupDirectory() throws -> String? {

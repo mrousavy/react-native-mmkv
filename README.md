@@ -101,7 +101,7 @@ This creates a new storage instance using the default MMKV storage ID (`mmkv.def
 
 #### App Groups or Extensions
 
-If you want to share MMKV data between your app and other apps or app extensions in the same group, open `Info.plist` and create an `AppGroup` key with your app group's value. MMKV will then automatically store data inside the app group which can be read and written to from other apps or app extensions in the same group by making use of MMKV's multi processing mode.
+If you want to share MMKV data between your app and other apps or app extensions in the same group, open `Info.plist` and create an `AppGroupIdentifier` key with your app group's value. MMKV will then automatically store data inside the app group which can be read and written to from other apps or app extensions in the same group by making use of MMKV's multi processing mode.
 See [Configuring App Groups](https://developer.apple.com/documentation/xcode/configuring-app-groups).
 
 #### Customize
