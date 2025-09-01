@@ -23,7 +23,7 @@ class HybridMMKVPlatformContext: HybridMMKVPlatformContextSpec {
     if let documentPath = paths.first {
       // append /mmkv to it
       let basePath = documentPath.appendingPathComponent("mmkv", conformingTo: .directory)
-      return basePath.absoluteString
+      return basePath.path
     } else {
       throw RuntimeError.error(withMessage: "Cannot find base-path to store MMKV files!")
     }
