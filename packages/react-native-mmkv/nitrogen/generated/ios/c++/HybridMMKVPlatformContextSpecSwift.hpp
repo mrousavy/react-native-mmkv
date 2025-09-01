@@ -15,6 +15,7 @@ namespace NitroMmkv { class HybridMMKVPlatformContextSpec_cxx; }
 
 
 #include <string>
+#include <optional>
 
 #include "NitroMmkv-Swift-Cxx-Umbrella.hpp"
 
@@ -65,7 +66,7 @@ namespace margelo::nitro::mmkv {
       auto __value = std::move(__result.value());
       return __value;
     }
-    inline std::string getAppGroupDirectory() override {
+    inline std::optional<std::string> getAppGroupDirectory() override {
       auto __result = _swiftPart.getAppGroupDirectory();
       if (__result.hasError()) [[unlikely]] {
         std::rethrow_exception(__result.error());

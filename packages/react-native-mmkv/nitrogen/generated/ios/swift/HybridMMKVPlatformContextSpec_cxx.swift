@@ -122,14 +122,20 @@ open class HybridMMKVPlatformContextSpec_cxx {
   }
   
   @inline(__always)
-  public final func getAppGroupDirectory() -> bridge.Result_std__string_ {
+  public final func getAppGroupDirectory() -> bridge.Result_std__optional_std__string__ {
     do {
       let __result = try self.__implementation.getAppGroupDirectory()
-      let __resultCpp = std.string(__result)
-      return bridge.create_Result_std__string_(__resultCpp)
+      let __resultCpp = { () -> bridge.std__optional_std__string_ in
+        if let __unwrappedValue = __result {
+          return bridge.create_std__optional_std__string_(std.string(__unwrappedValue))
+        } else {
+          return .init()
+        }
+      }()
+      return bridge.create_Result_std__optional_std__string__(__resultCpp)
     } catch (let __error) {
       let __exceptionPtr = __error.toCpp()
-      return bridge.create_Result_std__string_(__exceptionPtr)
+      return bridge.create_Result_std__optional_std__string__(__exceptionPtr)
     }
   }
 }

@@ -15,7 +15,7 @@ public protocol HybridMMKVPlatformContextSpec_protocol: HybridObject {
 
   // Methods
   func getBaseDirectory() throws -> String
-  func getAppGroupDirectory() throws -> String
+  func getAppGroupDirectory() throws -> String?
 }
 
 /// See ``HybridMMKVPlatformContextSpec``

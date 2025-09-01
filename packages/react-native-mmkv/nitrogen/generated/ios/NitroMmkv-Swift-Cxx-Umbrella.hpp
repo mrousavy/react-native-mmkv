@@ -16,6 +16,7 @@ namespace margelo::nitro::mmkv { class HybridMMKVPlatformContextSpec; }
 #include <NitroModules/Result.hpp>
 #include <exception>
 #include <memory>
+#include <optional>
 #include <string>
 
 // C++ helpers for Swift

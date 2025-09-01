@@ -16,6 +16,7 @@
 
 
 #include <string>
+#include <optional>
 
 namespace margelo::nitro::mmkv {
 
@@ -49,7 +50,7 @@ namespace margelo::nitro::mmkv {
     public:
       // Methods
       virtual std::string getBaseDirectory() = 0;
-      virtual std::string getAppGroupDirectory() = 0;
+      virtual std::optional<std::string> getAppGroupDirectory() = 0;
 
     protected:
       // Hybrid Setup

@@ -54,7 +54,7 @@ namespace margelo::nitro::mmkv {
   public:
     // Methods
     std::string getBaseDirectory() override;
-    std::string getAppGroupDirectory() override;
+    std::optional<std::string> getAppGroupDirectory() override;
 
   private:
     friend HybridBase;
