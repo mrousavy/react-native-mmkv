@@ -12,7 +12,7 @@ class HybridMMKVPlatformContext: HybridMMKVPlatformContextSpec() {
         return context.filesDir.absolutePath + "/mmkv";
     }
 
-    override fun getAppGroupDirectory(): String {
+    override fun getAppGroupDirectory(): String? {
         // AppGroups do not exist on Android. It's iOS only.
         throw Error("getAppGroupDirectory() is not supported on Android! It's iOS only.")
     }

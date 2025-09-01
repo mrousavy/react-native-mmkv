@@ -5,6 +5,7 @@
 //  Created by Marc Rousavy on 25.03.24.
 //
 
+import Foundation
 import NitroModules
 
 class HybridMMKVPlatformContext: HybridMMKVPlatformContextSpec {
@@ -17,16 +18,26 @@ class HybridMMKVPlatformContext: HybridMMKVPlatformContextSpec {
   }
   
   func getBaseDirectory() throws -> String {
-    let paths = NSSearchPathForDirectoriesInDomains(Self.directory, .userDomainMask, true)
-    if let documentPath = paths.first {
-      let basePath = documentPath + "/mmkv"
-      return basePath
-    } else {
+    // Get user documents directory
+    let paths = FileManager.default.urls(for: Self.directory, in: .userDomainMask)
+    guard let documentsPath = paths.first else {
       throw RuntimeError.error(withMessage: "Cannot find base-path to store MMKV files!")
     }
+    
+    // append /mmkv to it
+    let basePath = documentsPath.appendingPathComponent("mmkv", conformingTo: .directory)
+    return basePath.path
   }
   
-  func getAppGroupDirectory() -> String {
-    return ""
+  func getAppGroupDirectory() throws -> String? {
+    // Read `AppGroupIdentifier` from `Info.plist`
+    guard let appGroupID = Bundle.main.object(forInfoDictionaryKey: "AppGroupIdentifier") as? String else {
+      return nil
+    }
+    // Get the URL for the AppGroup
+    guard let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) else {
+      throw RuntimeError.error(withMessage: "Container for AppGroup \"\(appGroupID)\" not accessible")
+    }
+    return url.path
   }
 }

@@ -10,6 +10,7 @@
 
 
 #include <string>
+#include <optional>
 
 namespace margelo::nitro::mmkv {
 
@@ -42,10 +43,10 @@ namespace margelo::nitro::mmkv {
     auto __result = method(_javaPart);
     return __result->toStdString();
   }
-  std::string JHybridMMKVPlatformContextSpec::getAppGroupDirectory() {
+  std::optional<std::string> JHybridMMKVPlatformContextSpec::getAppGroupDirectory() {
     static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getAppGroupDirectory");
     auto __result = method(_javaPart);
-    return __result->toStdString();
+    return __result != nullptr ? std::make_optional(__result->toStdString()) : std::nullopt;
   }
 
 } // namespace margelo::nitro::mmkv

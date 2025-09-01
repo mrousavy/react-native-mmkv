@@ -46,7 +46,7 @@ abstract class HybridMMKVPlatformContextSpec: HybridObject() {
   
   @DoNotStrip
   @Keep
-  abstract fun getAppGroupDirectory(): String
+  abstract fun getAppGroupDirectory(): String?
 
   private external fun initHybrid(): HybridData
 

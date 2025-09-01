@@ -8,7 +8,10 @@ export interface MMKVPlatformContext
   getBaseDirectory(): string
   /**
    * Get the MMKV AppGroup's directory.
+   * The AppGroup can be set in your App's `Info.plist`, and will enable
+   * data sharing between main app, companions (e.g. watch app) and extensions.
    * @platform iOS
+   * @default undefined
    */
-  getAppGroupDirectory(): string
+  getAppGroupDirectory(): string | undefined
 }
