@@ -6,7 +6,7 @@ If you want to use MMKV with [zustand persist-middleware](https://github.com/pmn
 import { StateStorage } from 'zustand/middleware'
 import { MMKV } from 'react-native-mmkv'
 
-const storage = new MMKV()
+const storage = createMMKV()
 
 const zustandStorage: StateStorage = {
   setItem: (name, value) => {

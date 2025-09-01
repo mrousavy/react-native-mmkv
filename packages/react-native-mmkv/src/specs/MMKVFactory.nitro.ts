@@ -17,8 +17,8 @@ export interface Configuration {
    *
    * @example
    * ```ts
-   * const userStorage = new MMKV({ id: `user-${userId}-storage` })
-   * const globalStorage = new MMKV({ id: 'global-app-storage' })
+   * const userStorage = createMMKV({ id: `user-${userId}-storage` })
+   * const globalStorage = createMMKV({ id: 'global-app-storage' })
    * ```
    *
    * @default 'mmkv.default'
@@ -29,7 +29,7 @@ export interface Configuration {
 
    * @example
    * ```ts
-   * const temporaryStorage = new MMKV({ path: '/tmp/' })
+   * const temporaryStorage = createMMKV({ path: '/tmp/' })
    * ```
    *
    * @note On iOS, if an `AppGroup` is set in `Info.plist` and `path` is `undefined`, MMKV will use the `AppGroup` directory.
@@ -46,7 +46,7 @@ export interface Configuration {
    *
    * @example
    * ```ts
-   * const secureStorage = new MMKV({ encryptionKey: 'my-encryption-key!' })
+   * const secureStorage = createMMKV({ encryptionKey: 'my-encryption-key!' })
    * ```
    *
    * @default undefined

@@ -5,7 +5,7 @@ MMKV instances also contain an observer/listener registry.
 ### Add a listener when a `key`'s `value` changes.
 
 ```ts
-const storage = new MMKV()
+const storage = createMMKV()
 
 const listener = storage.addOnValueChangedListener((changedKey) => {
   const newValue = storage.getString(changedKey)

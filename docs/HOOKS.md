@@ -83,3 +83,12 @@ function App() {
   }, storage)
 }
 ```
+
+## Listen to all keys in an instance
+
+```tsx
+function App() {
+  const storage = useMMKV()
+  const keys = useMMKVKeys(storage)
+}
+```

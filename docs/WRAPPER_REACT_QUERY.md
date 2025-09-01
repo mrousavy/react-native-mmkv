@@ -14,7 +14,7 @@ yarn add @tanstack/query-sync-storage-persister @tanstack/react-query-persist-cl
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { MMKV } from "react-native-mmkv"
 
-const storage = new MMKV();
+const storage = createMMKV();
 
 const clientStorage = {
   setItem: (key, value) => {

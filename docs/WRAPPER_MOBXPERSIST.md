@@ -6,7 +6,7 @@ If you want to use MMKV with [mobx-persist](https://github.com/pinqy520/mobx-per
 import { create } from "mobx-persist"
 import { MMKV } from "react-native-mmkv"
 
-const storage = new MMKV()
+const storage = createMMKV()
 
 const mmkvStorage = {
   clear: () => {

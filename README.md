@@ -87,7 +87,7 @@ To create a new instance of the MMKV storage, use the `MMKV` constructor. It is 
 ```js
 import { MMKV } from 'react-native-mmkv'
 
-export const storage = new MMKV()
+export const storage = createMMKV()
 ```
 
 This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
@@ -102,7 +102,7 @@ See [Configuring App Groups](https://developer.apple.com/documentation/xcode/con
 ```js
 import { MMKV, Mode } from 'react-native-mmkv'
 
-export const storage = new MMKV({
+export const storage = createMMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
   encryptionKey: 'hunter2',
@@ -214,7 +214,7 @@ if (size >= 4096) {
 
 ## Testing with Jest or Vitest
 
-A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [example/__tests__/MMKV.test.ts](example/__tests__/MMKV.test.ts) for an example using Jest.
+A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `createMMKV()` as per normal in your tests. Refer to [example/__tests__/MMKV.test.ts](example/__tests__/MMKV.test.ts) for an example using Jest.
 
 ## Documentation
 

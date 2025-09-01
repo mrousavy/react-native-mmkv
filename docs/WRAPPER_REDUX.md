@@ -6,7 +6,7 @@ If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-pers
 import { Storage } from 'redux-persist'
 import { MMKV } from "react-native-mmkv"
 
-const storage = new MMKV()
+const storage = createMMKV()
 
 export const reduxStorage: Storage = {
   setItem: (key, value) => {
