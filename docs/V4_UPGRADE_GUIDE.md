@@ -1,11 +1,11 @@
 # V4 Upgrade Guide
 
-react-native-mmkv v4 has been fully rewritten to [nitro](https://nitro.margelo.com), which greatly shrunk the codebase, optimized native calls, and simplified the implementation.
+react-native-mmkv v4 has been fully rewritten to [nitro](https://nitro.margelo.com), which greatly simplifies the codebase, optimized native calls, and optimized the implementation.
 Ideally, this means;
 
-- **Backwards compatible for old architecture** again thanks to Nitro
-- Easier to maintain, allows for PRs from people without JSI experience
-- Lightweight & fast native calls thanks to Nitro
+- **Backwards compatible for old architecture** again thanks to Nitro 🥳
+- Easier to maintain, allows for PRs from people without JSI experience 🫂
+- Lightweight & fast native calls thanks to Nitro 🔥
 
 Also, the core MMKV library is now consumed from the official distribution channels - that is **CocoaPods** on iOS, and **Gradle Prefabs** on Android.
 This means you can use MMKV Core from _your native code_ again by just adding it to your `Podfile`/`build.gradle` dependencies!
@@ -22,7 +22,7 @@ Since react-native-mmkv is now a Nitro Module, you need to install the [react-na
 npm install react-native-nitro-modules
 ```
 
-> Nitro requires react-native 0.75.0 or higher. See [the Troubleshooting guide](https://nitro.margelo.com/docs/troubleshooting) if you run into any issues.
+> Nitro requires **react-native 0.75.0** or higher. See [the Troubleshooting guide](https://nitro.margelo.com/docs/troubleshooting) if you run into any issues.
 
 ### MMKV Core drops support for 32-bit architectures
 
@@ -98,5 +98,5 @@ The Swift pod `NitroMmkv` depends upon `MMKVCore`, which does not define modules
 ..you need to upgrade `MMKVCore` to a version that includes [this PR](https://github.com/Tencent/MMKV/pull/1579) (v2.2.4 or higher), or add this to your `Podfile`:
 
 ```rb
-  pod 'MMKVCore', :modular_headers => true
+pod 'MMKVCore', :modular_headers => true
 ```
