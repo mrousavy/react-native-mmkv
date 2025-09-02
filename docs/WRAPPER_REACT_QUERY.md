@@ -12,7 +12,7 @@ yarn add @tanstack/query-sync-storage-persister @tanstack/react-query-persist-cl
 
 ```ts
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
-import { MMKV } from "react-native-mmkv"
+import { createMMKV } from "react-native-mmkv"
 
 const storage = createMMKV();
 

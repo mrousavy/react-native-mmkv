@@ -4,7 +4,7 @@ If you want to use MMKV with [redux-persist](https://github.com/rt2zz/redux-pers
 
 ```ts
 import { Storage } from 'redux-persist'
-import { MMKV } from "react-native-mmkv"
+import { createMMKV } from "react-native-mmkv"
 
 const storage = createMMKV()
 

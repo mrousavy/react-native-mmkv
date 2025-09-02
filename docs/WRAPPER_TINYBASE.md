@@ -3,7 +3,7 @@
 If you want to use MMKV with [Tinybase](https://github.com/pmndrs/zustand#persist-middleware), follow these steps:
 
 ```ts
-import { MMKV } from 'react-native-mmkv'
+import { createMMKV } from 'react-native-mmkv'
 import { createStore } from 'tinybase';
 import { createReactNativeMmkvPersister } from 'tinybase/persisters/persister-react-native-mmkv';
 

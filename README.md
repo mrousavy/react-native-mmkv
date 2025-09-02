@@ -85,7 +85,7 @@ To create a new instance of the MMKV storage, use the `MMKV` constructor. It is 
 #### Default
 
 ```js
-import { MMKV } from 'react-native-mmkv'
+import { createMMKV } from 'react-native-mmkv'
 
 export const storage = createMMKV()
 ```
@@ -100,7 +100,7 @@ See [Configuring App Groups](https://developer.apple.com/documentation/xcode/con
 #### Customize
 
 ```js
-import { MMKV, Mode } from 'react-native-mmkv'
+import { createMMKV } from 'react-native-mmkv'
 
 export const storage = createMMKV({
   id: `user-${userId}-storage`,

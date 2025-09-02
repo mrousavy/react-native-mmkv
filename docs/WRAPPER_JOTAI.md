@@ -4,7 +4,7 @@ If you want to use MMKV with [Jotai](https://github.com/pmndrs/jotai), create th
 
 ```ts
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { MMKV } from 'react-native-mmkv';
+import { createMMKV } from 'react-native-mmkv';
 
 const storage = createMMKV();
 
