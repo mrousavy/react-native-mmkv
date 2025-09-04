@@ -49,7 +49,7 @@
     },
     "packages/react-native-mmkv": {
       "name": "react-native-mmkv",
-      "version": "4.0.0-beta.7",
+      "version": "4.0.0-beta.8",
       "devDependencies": {
         "@expo/config-plugins": "^10.1.2",
         "@react-native/eslint-config": "0.81.0",
