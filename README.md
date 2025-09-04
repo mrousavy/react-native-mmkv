@@ -44,6 +44,7 @@
 * Easy to use **React Hooks** API
 
 > [!IMPORTANT]
+> - **You're looking at MMKV V4. If you're still on V3, check out the [V3 branch here](https://github.com/mrousavy/react-native-mmkv/tree/v3)**!
 > - react-native-mmkv **V4** is now a [Nitro Module](https://nitro.margelo.com). See the [V4 Upgrade Guide](./docs/V4_UPGRADE_GUIDE.md) for more information.
 
 ## Benchmark
