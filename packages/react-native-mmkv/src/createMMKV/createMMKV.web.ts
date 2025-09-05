@@ -87,7 +87,7 @@ export function createMMKV(config: Configuration): MMKV {
         }
       }
     },
-    remove: (key) => storage().removeItem(prefixedKey(key)),
+    remove: (key) => storage().removeItem(prefixedKey(key)) ?? false,
     set: (key, value) => {
       storage().setItem(prefixedKey(key), value.toString())
     },
