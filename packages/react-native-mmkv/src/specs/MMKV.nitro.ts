@@ -42,7 +42,7 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   /**
    * Removes the given `key`.
    */
-  remove(key: string): void
+  remove(key: string): boolean
   /**
    * Get all keys.
    *

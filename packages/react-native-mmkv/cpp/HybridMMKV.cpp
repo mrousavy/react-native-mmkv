@@ -129,8 +129,8 @@ std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::str
 bool HybridMMKV::contains(const std::string& key) {
   return instance->containsKey(key);
 }
-void HybridMMKV::remove(const std::string& key) {
-  instance->removeValueForKey(key);
+bool HybridMMKV::remove(const std::string& key) {
+  return instance->removeValueForKey(key);
 }
 std::vector<std::string> HybridMMKV::getAllKeys() {
   return instance->allKeys();

@@ -64,7 +64,7 @@ namespace margelo::nitro::mmkv {
       virtual std::optional<double> getNumber(const std::string& key) = 0;
       virtual std::optional<std::shared_ptr<ArrayBuffer>> getBuffer(const std::string& key) = 0;
       virtual bool contains(const std::string& key) = 0;
-      virtual void remove(const std::string& key) = 0;
+      virtual bool remove(const std::string& key) = 0;
       virtual std::vector<std::string> getAllKeys() = 0;
       virtual void clearAll() = 0;
       virtual void recrypt(const std::optional<std::string>& key) = 0;

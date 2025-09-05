@@ -30,7 +30,7 @@ public:
   std::optional<double> getNumber(const std::string& key) override;
   std::optional<std::shared_ptr<ArrayBuffer>> getBuffer(const std::string& key) override;
   bool contains(const std::string& key) override;
-  void remove(const std::string& key) override;
+  bool remove(const std::string& key) override;
   std::vector<std::string> getAllKeys() override;
   void clearAll() override;
   void recrypt(const std::optional<std::string>& key) override;
