@@ -39,7 +39,7 @@
 * **Customizable storage location**
 * **High performance** because everything is **written in C++**
 * **~30x faster than AsyncStorage**
-* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ TurboModules**](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/turbo-modules-xplat.md) instead of the "old" Bridge
+* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ NitroModules**](https://github.com/mrousavy/nitro) instead of the "old" Bridge
 * **iOS**, **Android** and **Web** support
 * Easy to use **React Hooks** API
 
