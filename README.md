@@ -156,7 +156,7 @@ const hasUsername = storage.contains('user.name')
 const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
 
 // delete a specific key + value
-const removed = storage.remove('user.name') //true 
+const wasRemoved = storage.remove('user.name')
 
 // delete all keys
 storage.clearAll()
