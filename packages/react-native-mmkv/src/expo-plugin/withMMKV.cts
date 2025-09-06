@@ -18,10 +18,10 @@ const withMMKV: ConfigPlugin<{}> = (config) => {
       (p) => p.type === 'property' && p.key === property.key
     )
     if (index !== -1) {
+      // Overwrite it
       cfg.modResults[index] = property
-    }
-    // Else add it to the properties
-    else {
+    } else {
+      // Append it
       cfg.modResults.push(property)
     }
     return cfg
