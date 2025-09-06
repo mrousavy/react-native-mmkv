@@ -41,8 +41,9 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   contains(key: string): boolean
   /**
    * Removes the given `key`.
+   * @returns true if the key was removed, false otherwise
    */
-  remove(key: string): void
+  remove(key: string): boolean
   /**
    * Get all keys.
    *

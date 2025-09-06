@@ -27,6 +27,7 @@ export function createMockMMKV(): MMKV {
       if (deleted) {
         notifyListeners(key)
       }
+      return deleted
     },
     set: (key, value) => {
       storage.set(key, value)
