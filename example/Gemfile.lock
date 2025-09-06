@@ -5,19 +5,12 @@ GEM
       base64
       nkf
       rexml
-    activesupport (7.1.5.2)
-      base64
-      benchmark (>= 0.3)
-      bigdecimal
+    activesupport (6.1.7.10)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      connection_pool (>= 2.2.5)
-      drb
       i18n (>= 1.6, < 2)
-      logger (>= 1.4.2)
       minitest (>= 5.1)
-      mutex_m
-      securerandom (>= 0.3)
       tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     algoliasearch (1.27.5)
@@ -67,12 +60,11 @@ GEM
     cocoapods-try (1.2.0)
     colored2 (3.1.2)
     concurrent-ruby (1.3.3)
-    connection_pool (2.5.3)
-    drb (2.2.3)
     escape (0.0.4)
-    ethon (0.17.0)
+    ethon (0.15.0)
       ffi (>= 1.15.0)
-    ffi (1.17.2)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-darwin)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
     gh_inspector (1.1.3)
@@ -80,9 +72,9 @@ GEM
       mutex_m
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
-    json (2.13.2)
+    json (2.7.6)
     logger (1.7.0)
-    minitest (5.25.5)
+    minitest (5.25.4)
     molinillo (0.8.0)
     mutex_m (0.3.0)
     nanaimo (0.3.0)
@@ -92,9 +84,8 @@ GEM
     public_suffix (4.0.7)
     rexml (3.4.1)
     ruby-macho (2.5.1)
-    securerandom (0.3.2)
-    typhoeus (1.4.1)
-      ethon (>= 0.9.0)
+    typhoeus (1.5.0)
+      ethon (>= 0.9.0, < 0.16.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     xcodeproj (1.25.1)
@@ -104,9 +95,10 @@ GEM
       colored2 (~> 3.1)
       nanaimo (~> 0.3.0)
       rexml (>= 3.3.6, < 4.0)
+    zeitwerk (2.6.18)
 
 PLATFORMS
-  ruby
+  universal-darwin-24
 
 DEPENDENCIES
   activesupport (>= 6.1.7.5, != 7.1.0)
@@ -122,4 +114,4 @@ RUBY VERSION
    ruby 2.7.6p219
 
 BUNDLED WITH
-   2.1.4
+   2.3.22

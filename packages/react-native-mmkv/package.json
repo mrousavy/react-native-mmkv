@@ -68,11 +68,11 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "nitro-codegen": "*",
+    "nitro-codegen": "^0.29.3",
     "prettier": "^3.3.3",
     "react": "19.1.0",
     "react-native": "0.81.0",
-    "react-native-nitro-modules": "*",
+    "react-native-nitro-modules": "^0.29.3",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
