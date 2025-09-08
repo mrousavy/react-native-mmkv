@@ -1,4 +1,4 @@
-| **V3 Docs** | [V4 Beta Docs](./README_V4.md) |
+| [V3 Docs](./README.md) | **V4 Beta Docs** |
 |:---|:---|
 
 <a href="https://margelo.io">
@@ -42,16 +42,13 @@
 * **Customizable storage location**
 * **High performance** because everything is **written in C++**
 * **~30x faster than AsyncStorage**
-* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ TurboModules**](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/turbo-modules-xplat.md) instead of the "old" Bridge
+* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ NitroModules**](https://github.com/mrousavy/nitro) instead of the "old" Bridge
 * **iOS**, **Android** and **Web** support
 * Easy to use **React Hooks** API
 
 > [!IMPORTANT]
-> - **You're looking at MMKV V3. If you want to upgrade to the beta, check out the [V4 docs here](./README_V4.md)**!
-> react-native-mmkv V3 is now a pure C++ TurboModule, and **requires the new architecture to be enabled**. (react-native 0.75+)
-> - If you want to use react-native-mmkv 3.x.x, you need to enable the new architecture in your app (see ["Enable the New Architecture for Apps"](https://github.com/reactwg/react-native-new-architecture/blob/main/docs/enable-apps.md))
-> - For React-Native 0.74.x, use react-native-mmkv 3.0.1. For React-Native 0.75.x and higher, use react-native-mmkv 3.0.2 or higher.
-> - If you cannot use the new architecture yet, downgrade to react-native-mmkv 2.x.x for now.
+> - **You're looking at MMKV V4. If you're still on V3, check out the [V3 docs here](./README.md)**!
+> - react-native-mmkv **V4** is now a [Nitro Module](https://nitro.margelo.com). See the [V4 Upgrade Guide](./docs/V4_UPGRADE_GUIDE.md) for more information.
 
 ## Benchmark
 
@@ -72,14 +69,14 @@
 ### React Native
 
 ```sh
-yarn add react-native-mmkv
+npm install react-native-mmkv react-native-nitro-modules
 cd ios && pod install
 ```
 
 ### Expo
 
 ```sh
-npx expo install react-native-mmkv
+npx expo install react-native-mmkv react-native-nitro-modules
 npx expo prebuild
 ```
 
@@ -92,28 +89,28 @@ To create a new instance of the MMKV storage, use the `MMKV` constructor. It is 
 #### Default
 
 ```js
-import { MMKV } from 'react-native-mmkv'
+import { createMMKV } from 'react-native-mmkv'
 
-export const storage = new MMKV()
+export const storage = createMMKV()
 ```
 
 This creates a new storage instance using the default MMKV storage ID (`mmkv.default`).
 
 #### App Groups or Extensions
 
-If you want to share MMKV data between your app and other apps or app extensions in the same group, open `Info.plist` and create an `AppGroup` key with your app group's value. MMKV will then automatically store data inside the app group which can be read and written to from other apps or app extensions in the same group by making use of MMKV's multi processing mode.
+If you want to share MMKV data between your app and other apps or app extensions in the same group, open `Info.plist` and create an `AppGroupIdentifier` key with your app group's value. MMKV will then automatically store data inside the app group which can be read and written to from other apps or app extensions in the same group by making use of MMKV's multi processing mode.
 See [Configuring App Groups](https://developer.apple.com/documentation/xcode/configuring-app-groups).
 
 #### Customize
 
 ```js
-import { MMKV, Mode } from 'react-native-mmkv'
+import { createMMKV } from 'react-native-mmkv'
 
-export const storage = new MMKV({
+export const storage = createMMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
   encryptionKey: 'hunter2',
-  mode: Mode.MULTI_PROCESS,
+  mode: 'multi-process',
   readOnly: false
 })
 ```
@@ -125,7 +122,7 @@ The following values can be configured:
 * `id`: The MMKV instance's ID. If you want to use multiple instances, use different IDs. For example, you can separate the global app's storage and a logged-in user's storage. (required if `path` or `encryptionKey` fields are specified, otherwise defaults to: `'mmkv.default'`)
 * `path`: The MMKV instance's root path. By default, MMKV stores file inside `$(Documents)/mmkv/`. You can customize MMKV's root directory on MMKV initialization (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#customize-location) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#customize-location))
 * `encryptionKey`: The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's/Android's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV. (documentation: [iOS](https://github.com/Tencent/MMKV/wiki/iOS_advance#encryption) / [Android](https://github.com/Tencent/MMKV/wiki/android_advance#encryption))
-* `mode`: The MMKV's process behaviour - when set to `MULTI_PROCESS`, the MMKV instance will assume data can be changed from the outside (e.g. App Clips, Extensions or App Groups).
+* `mode`: The MMKV's process behaviour - when set to `multi-process`, the MMKV instance will assume data can be changed from the outside (e.g. App Clips, Extensions or App Groups).
 * `readOnly`: Whether this MMKV instance should be in read-only mode. This is typically more efficient and avoids unwanted writes to the data if not needed. Any call to `set(..)` will throw.
 
 ### Set
@@ -162,7 +159,7 @@ const hasUsername = storage.contains('user.name')
 const keys = storage.getAllKeys() // ['user.name', 'user.age', 'is-mmkv-fast-asf']
 
 // delete a specific key + value
-storage.delete('user.name')
+const wasRemoved = storage.remove('user.name')
 
 // delete all keys
 storage.clearAll()
@@ -221,7 +218,7 @@ if (size >= 4096) {
 
 ## Testing with Jest or Vitest
 
-A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `new MMKV()` as per normal in your tests. Refer to [package/example/test/MMKV.test.ts](package/example/test/MMKV.test.ts) for an example using Jest.
+A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `createMMKV()` as per normal in your tests. Refer to [example/__tests__/MMKV.test.ts](example/__tests__/MMKV.test.ts) for an example using Jest.
 
 ## Documentation
 
