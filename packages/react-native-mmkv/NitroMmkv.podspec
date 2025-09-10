@@ -27,6 +27,10 @@ Pod::Spec.new do |s|
   s.libraries    = 'z', 'c++'
   s.dependency 'MMKVCore', '>= 2.2.3'
 
+  s.pod_target_xcconfig = {
+    "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES" => "YES"
+  }
+
   load 'nitrogen/generated/ios/NitroMmkv+autolinking.rb'
   add_nitrogen_files(s)
 
