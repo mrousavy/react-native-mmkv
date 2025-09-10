@@ -40,7 +40,7 @@ jobs:
       - name: Build all packages
         run: bun run build
 
-      - name: Run nitro-codegen in packages/react-native-mmkv
+      - name: Run nitrogen in packages/react-native-mmkv
         working-directory: packages/react-native-mmkv
         run: bun i && bun specs
 

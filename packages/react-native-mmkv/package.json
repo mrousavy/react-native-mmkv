@@ -37,7 +37,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "lint-ci": "eslint \"**/*.{js,ts,tsx}\" -f @jamesacarr/github-actions",
     "typescript": "tsc",
-    "specs": "tsc && nitro-codegen --logLevel=\"debug\"",
+    "specs": "tsc && nitrogen --logLevel=\"debug\"",
     "build": "tsc --noEmit false",
     "release": "release-it",
     "test": "jest"
@@ -68,11 +68,11 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "nitro-codegen": "^0.29.3",
+    "nitrogen": "^0.29.4",
     "prettier": "^3.3.3",
     "react": "19.1.0",
     "react-native": "0.81.0",
-    "react-native-nitro-modules": "^0.29.3",
+    "react-native-nitro-modules": "^0.29.4",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
