@@ -5,7 +5,7 @@ import type { MMKVPlatformContext } from '../specs/MMKVPlatformContext.nitro'
 import { Platform } from 'react-native'
 import { addMemoryWarningListener } from '../addMemoryWarningListener/addMemoryWarningListener'
 import { isTest } from '../isTest'
-import { createMockMMKV } from './createMMKV.mock'
+import { createMockMMKV } from './createMockMMKV'
 
 let factory: MMKVFactory | undefined
 let platformContext: MMKVPlatformContext | undefined
