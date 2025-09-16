@@ -19,7 +19,9 @@ const hasAccessToLocalStorage = () => {
 const KEY_WILDCARD = '\\'
 const inMemoryStorage = new Map<string, string>()
 
-export function createMMKV(config: Configuration): MMKV {
+export function createMMKV(
+  config: Configuration = { id: 'mmkv.default' }
+): MMKV {
   if (config.encryptionKey != null) {
     throw new Error("MMKV: 'encryptionKey' is not supported on Web!")
   }
