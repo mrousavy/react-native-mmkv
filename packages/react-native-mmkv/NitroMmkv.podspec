@@ -27,6 +27,14 @@ Pod::Spec.new do |s|
   s.libraries    = 'z', 'c++'
   s.dependency 'MMKVCore', '>= 2.2.3'
 
+  # TODO: Remove when no one uses RN 0.79 anymore
+  # Add support for React Native 0.79 or below
+  s.pod_target_xcconfig = {
+    "HEADER_SEARCH_PATHS" => ["${PODS_ROOT}/RCT-Folly"],
+    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FOLLY_NO_CONFIG FOLLY_CFG_NO_COROUTINES",
+    "OTHER_CPLUSPLUSFLAGS" => "$(inherited) -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"
+  }
+
   load 'nitrogen/generated/ios/NitroMmkv+autolinking.rb'
   add_nitrogen_files(s)
 
