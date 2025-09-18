@@ -100,15 +100,7 @@ export function getMMKVTurboModule(): Spec {
   try {
     if (mmkvModule == null) {
       // 1. Load MMKV TurboModule
-      mmkvModule = TurboModuleRegistry.get<Spec>('MmkvCxx');
-      if (mmkvModule == null) {
-        mmkvModule = TurboModuleRegistry.get<Spec>('Mmkv');
-      }
-      if (mmkvModule == null) {
-        throw new Error(
-          `Could not find the MMKV TurboModule! (Tried "MmkvCxx" and "Mmkv")`
-        );
-      }
+      mmkvModule = TurboModuleRegistry.getEnforcing<Spec>('MmkvCxx');
 
       // 2. Get the PlatformContext TurboModule as well
       const platformContext = getMMKVPlatformContextTurboModule();
