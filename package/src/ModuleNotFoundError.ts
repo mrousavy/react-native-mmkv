@@ -3,6 +3,8 @@ import { NativeModules, Platform } from 'react-native';
 declare global {
   // A react-native internal from TurboModuleRegistry.js
   var __turboModuleProxy: unknown | undefined;
+  // A react-native internal
+  var RN$Bridgeless: unknown | undefined;
 }
 
 const BULLET_POINT = '\n* ';
@@ -33,7 +35,7 @@ function getFrameworkType(): 'react-native' | 'expo' | 'expo-go' {
 export class ModuleNotFoundError extends Error {
   constructor(cause?: unknown) {
     // TurboModule not found, something went wrong!
-    if (global.__turboModuleProxy == null) {
+    if (global.__turboModuleProxy == null && global.RN$Bridgeless == null) {
       // TurboModules are not available/new arch is not enabled.
       // react-native-mmkv 3.x.x requires new arch (react-native >0.74)
       // react-native-mmkv 2.x.x works on old arch (react-native <0.74)
