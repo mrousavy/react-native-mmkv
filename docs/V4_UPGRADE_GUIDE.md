@@ -81,7 +81,16 @@ C/C++:   provides a separate development package or SDK, be sure it has been
 C/C++:   installed.
 ```
 
+..or like this:
+
+```
+Task :react-native-mmkv:configureCMakeDebug[armeabi-v7a] FAILED
+C/C++: /Users/mrousavy/Projects/ShadowLens/node_modules/react-native-mmkv/android/CMakeLists.txt debug|armeabi-v7a : com.google.prefab.api.NoMatchingLibraryException: No compatible library found for //mmkv/mmkv. Rejected the following libraries:
+```
+
 ..make sure that you removed the 32-bit architectures from your `gradle.properties` file, clean your cache and try again. (See [MMKV Core drops support for 32-bit architectures](#mmkv-core-drops-support-for-32-bit-architectures))
+
+As long as you see `armeabi-v7a` in your build logs, you haven't properly removed the 32-bit build configuration.
 
 ### iOS build failed: `The following Swift pods cannot yet be integrated as static libraries`
 
