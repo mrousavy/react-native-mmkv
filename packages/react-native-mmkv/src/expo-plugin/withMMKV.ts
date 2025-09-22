@@ -1,12 +1,8 @@
-import type { ConfigPlugin, ExportedConfigWithProps } from '@expo/config-plugins'
-const { createRunOncePlugin, withGradleProperties } = require('@expo/config-plugins')
-import type { Properties } from '@expo/config-plugins/build/android'
-
-const pkg = require('../../package.json')
+import configPlugins, {type ConfigPlugin } from '@expo/config-plugins'
 
 const withMMKV: ConfigPlugin<{}> = (config) => {
   // remove 32-bit architectures from gradle.properties
-  return withGradleProperties(config, (cfg: ExportedConfigWithProps<Properties.PropertiesItem[]>) => {
+  return configPlugins.withGradleProperties(config, (cfg) => {
     // Define the wanted property
     const property = {
       type: 'property',
@@ -28,4 +24,4 @@ const withMMKV: ConfigPlugin<{}> = (config) => {
   })
 }
 
-export = createRunOncePlugin(withMMKV, pkg.name, pkg.version) as ConfigPlugin<{}>
+export default withMMKV

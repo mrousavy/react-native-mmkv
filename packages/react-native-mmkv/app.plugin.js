@@ -1,1 +1,1 @@
-module.exports = require('./lib/expo-plugin/withMMKV.cjs')
+module.exports = require('./lib/expo-plugin/withMMKV.js')
