@@ -14,12 +14,12 @@ file(GLOB_RECURSE android_files RELATIVE ${CMAKE_SOURCE_DIR}
 )
 
 # Define C++ library and add all sources
-add_library(${PACKAGE_NAME} SHARED
+add_library(${PACKAGE_NAME} STATIC
             ${shared_files}
             ${android_files}
 )
 
-# Find MMKV prefab package (from mmkv-shared gradle dependency)
+# Find MMKV prefab package (from mmkv-static gradle dependency)
 find_package(mmkv REQUIRED CONFIG)
 
 # Add Nitrogen specs :)

@@ -139,6 +139,6 @@ dependencies {
   implementation project(":react-native-nitro-modules")
 
   // Add a dependency on mmkv core (this ships a C++ prefab)
-  implementation "com.tencent:mmkv-shared:2.2.3"
+  implementation "com.tencent:mmkv-static:2.2.3"
 }
 
