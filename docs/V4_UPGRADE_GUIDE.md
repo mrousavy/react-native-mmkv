@@ -109,3 +109,25 @@ The Swift pod `NitroMmkv` depends upon `MMKVCore`, which does not define modules
 ```rb
 pod 'MMKVCore', :modular_headers => true
 ```
+
+### Expo
+
+if you are using Expo Continuous Native Generation, you can use the [expo-build-properties](https://docs.expo.dev/versions/latest/sdk/build-properties/) plugin
+
+```json
+"plugins": [
+  "react-native-mmkv",
+  [
+    "expo-build-properties", 
+    {
+      "android": { 
+        "buildArchs": ["arm64-v8a", "x86_64"] 
+      },
+      "ios": { 
+        "extraPods": [
+          { "name": "MMKVCore", "modular_headers": true }
+        ] 
+      }
+    }
+  ]
+```
