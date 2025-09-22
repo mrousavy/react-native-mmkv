@@ -1,6 +1,6 @@
-import configPlugins, {type ConfigPlugin } from '@expo/config-plugins'
+import configPlugins, { type ConfigPlugin } from '@expo/config-plugins'
 
-const withMMKV: ConfigPlugin<{}> = (config) => {
+export const withMMKVAndroid: ConfigPlugin = (config) => {
   // remove 32-bit architectures from gradle.properties
   return configPlugins.withGradleProperties(config, (cfg) => {
     // Define the wanted property
@@ -22,6 +22,11 @@ const withMMKV: ConfigPlugin<{}> = (config) => {
     }
     return cfg
   })
+}
+
+const withMMKV: ConfigPlugin<{}> = (config) => {
+  config = withMMKVAndroid(config)
+  return config
 }
 
 export default withMMKV
