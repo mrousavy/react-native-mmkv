@@ -225,17 +225,17 @@ A mocked MMKV instance is automatically used when testing with Jest or Vitest, s
 
 ## Documentation
 
-* [Hooks](./docs/HOOKS.md)
-* [Value-change Listeners](./docs/LISTENERS.md)
-* [Migrate from AsyncStorage](./docs/MIGRATE_FROM_ASYNC_STORAGE.md)
-* [Using MMKV with redux-persist](./docs/WRAPPER_REDUX.md)
-* [Using MMKV with recoil](./docs/WRAPPER_RECOIL.md)
-* [Using MMKV with mobx-persist-storage](./docs/WRAPPER_MOBX.md)
-* [Using MMKV with mobx-persist](./docs/WRAPPER_MOBXPERSIST.md)
-* [Using MMKV with zustand persist-middleware](./docs/WRAPPER_ZUSTAND_PERSIST_MIDDLEWARE.md)
-* [Using MMKV with jotai](./docs/WRAPPER_JOTAI.md)
-* [Using MMKV with react-query](./docs/WRAPPER_REACT_QUERY.md)
-* [Using MMKV with Tinybase](./docs/WRAPPER_TINYBASE.md)
+* [Hooks](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/HOOKS.md)
+* [Value-change Listeners](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/LISTENERS.md)
+* [Migrate from AsyncStorage](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/MIGRATE_FROM_ASYNC_STORAGE.md)
+* [Using MMKV with redux-persist](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_REDUX.md)
+* [Using MMKV with recoil](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_RECOIL.md)
+* [Using MMKV with mobx-persist-storage](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_MOBX.md)
+* [Using MMKV with mobx-persist](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_MOBXPERSIST.md)
+* [Using MMKV with zustand persist-middleware](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_ZUSTAND_PERSIST_MIDDLEWARE.md)
+* [Using MMKV with jotai](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_JOTAI.md)
+* [Using MMKV with react-query](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_REACT_QUERY.md)
+* [Using MMKV with Tinybase](https://github.com/mrousavy/react-native-mmkv/blob/v3/docs/WRAPPER_TINYBASE.md)
 * [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
 
 ## LocalStorage and In-Memory Storage (Web)
