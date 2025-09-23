@@ -24,17 +24,6 @@ npm install react-native-nitro-modules
 
 > Nitro requires **react-native 0.75.0** or higher. See [the Troubleshooting guide](https://nitro.margelo.com/docs/troubleshooting) if you run into any issues.
 
-### MMKV Core drops support for 32-bit architectures
-
-Due to security and performance concerns, MMKV Core now dropped support for 32-bit architectures on Android. In our testings, this affected ~0.1% of the users in a large production app.
-In your `gradle.properties` file, remove all 32-bit architectures from the `reactNativeArchitectures` array:
-```diff
-- reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64
-+ reactNativeArchitectures=arm64-v8a,x86_64
-```
-
-See [Android: Prerequisites](https://github.com/Tencent/MMKV/wiki/android_setup#prerequisites) for more information.
-
 ### `new MMKV(...)` -> `createMMKV(...)`
 
 The `MMKV` JS-class no longer exists - instead it is now purely native. This means, you have to change your MMKV creation code:
@@ -64,33 +53,6 @@ To better comply with Apple's naming, I changed the `AppGroup` key to `AppGroupI
 
 
 ## Troubleshooting
-
-### Android build failed: `Could not find a package configuration file provided by "mmkv" with any of the following names`
-
-If you get a build error on Android that looks something like this:
-
-```
-C/C++: CMake Error at /Users/mrousavy/example/node_modules/react-native-mmkv/android/CMakeLists.txt:24 (find_package):
-C/C++:   Could not find a package configuration file provided by "mmkv" with any of
-C/C++:   the following names:
-C/C++:     mmkvConfig.cmake
-C/C++:     mmkv-config.cmake
-C/C++:   Add the installation prefix of "mmkv" to CMAKE_PREFIX_PATH or set
-C/C++:   "mmkv_DIR" to a directory containing one of the above files.  If "mmkv"
-C/C++:   provides a separate development package or SDK, be sure it has been
-C/C++:   installed.
-```
-
-..or like this:
-
-```
-Task :react-native-mmkv:configureCMakeDebug[armeabi-v7a] FAILED
-C/C++: /Users/mrousavy/Projects/ShadowLens/node_modules/react-native-mmkv/android/CMakeLists.txt debug|armeabi-v7a : com.google.prefab.api.NoMatchingLibraryException: No compatible library found for //mmkv/mmkv. Rejected the following libraries:
-```
-
-..make sure that you removed the 32-bit architectures from your `gradle.properties` file, clean your cache and try again. (See [MMKV Core drops support for 32-bit architectures](#mmkv-core-drops-support-for-32-bit-architectures))
-
-As long as you see `armeabi-v7a` in your build logs, you haven't properly removed the 32-bit build configuration.
 
 ### iOS build failed: `The following Swift pods cannot yet be integrated as static libraries`
 

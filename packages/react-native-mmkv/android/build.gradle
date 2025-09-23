@@ -11,7 +11,7 @@ buildscript {
 
 def reactNativeArchitectures() {
   def value = rootProject.getProperties().get("reactNativeArchitectures")
-  return value ? value.split(",") : ["x86_64", "arm64-v8a"]
+  return value ? value.split(",") : ["x86", "x86_64", "armeabi-v7a", "arm64-v8a"]
 }
 
 def isNewArchitectureEnabled() {
@@ -139,6 +139,6 @@ dependencies {
   implementation project(":react-native-nitro-modules")
 
   // Add a dependency on mmkv core (this ships a C++ prefab)
-  implementation "com.tencent:mmkv-shared:2.2.3"
+  implementation "io.github.zhongwuzw:mmkv:2.2.3.1"
 }
 
