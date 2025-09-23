@@ -4,9 +4,9 @@ If you want to use MMKV with [Jotai](https://github.com/pmndrs/jotai), create th
 
 ```ts
 import { atomWithStorage, createJSONStorage } from 'jotai/utils';
-import { createMMKV } from 'react-native-mmkv';
+import { MMKV } from 'react-native-mmkv';
 
-const storage = createMMKV();
+const storage = new MMKV();
 
 function getItem(key: string): string | null {
   const value = storage.getString(key)
@@ -18,7 +18,7 @@ function setItem(key: string, value: string): void {
 }
 
 function removeItem(key: string): void {
-  storage.remove(key);
+  storage.delete(key);
 }
 
 function subscribe(
