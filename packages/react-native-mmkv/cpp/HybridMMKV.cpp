@@ -72,9 +72,20 @@ overloaded(Ts...) -> overloaded<Ts...>;
 
 void HybridMMKV::set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) {
   // Pattern-match each potential value in std::variant
-  std::visit(overloaded{[&](const std::string& string) { instance->set(string, key); }, [&](double number) { instance->set(number, key); },
-                        [&](bool b) { instance->set(b, key); },
+  std::visit(overloaded{[&](const std::string& string) {
+                          // string
+                          instance->set(string, key);
+                        },
+                        [&](double number) {
+                          // number
+                          instance->set(number, key);
+                        },
+                        [&](bool b) {
+                          // boolean
+                          instance->set(b, key);
+                        },
                         [&](const std::shared_ptr<ArrayBuffer>& buf) {
+                          // ArrayBuffer
                           MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
                           instance->set(std::move(buffer), key);
                         }},
