@@ -274,7 +274,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.mmk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.mmkv.example;
 				PRODUCT_NAME = MmkvExample;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -302,7 +302,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.mmk.example;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.mmkv.example;
 				PRODUCT_NAME = MmkvExample;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
