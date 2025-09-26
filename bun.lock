@@ -17,7 +17,7 @@
     },
     "example": {
       "name": "mmkv-example",
-      "version": "4.0.0-beta.11",
+      "version": "4.0.0-beta.12",
       "dependencies": {
         "@react-native/new-app-screen": "0.81.0",
         "react": "19.1.0",
@@ -49,7 +49,7 @@
     },
     "packages/react-native-mmkv": {
       "name": "react-native-mmkv",
-      "version": "4.0.0-beta.11",
+      "version": "4.0.0-beta.12",
       "devDependencies": {
         "@expo/config-plugins": "^10.1.2",
         "@react-native/eslint-config": "0.81.0",

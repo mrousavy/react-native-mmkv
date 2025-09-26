@@ -9,7 +9,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.81.0)
   - hermes-engine/Pre-built (0.81.0)
   - MMKVCore (2.2.4)
-  - NitroMmkv (4.0.0-beta.11):
+  - NitroMmkv (4.0.0-beta.12):
     - boost
     - DoubleConversion
     - fast_float
@@ -2617,7 +2617,7 @@ SPEC CHECKSUMS:
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: e7491a2038f2618c8cd444ed411a6deb350a3742
   MMKVCore: f2dd4c9befea04277a55e84e7812f930537993df
-  NitroMmkv: 7ddcd26aba1ac54a778edc6536abb83f5704ce0a
+  NitroMmkv: 5bf61cfe86e188d3f90d523c7044834e8af20db0
   NitroModules: df9af25a70fccb693fa5799026d8162f579007ae
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: 0735ab4f6b3ec93a7f98187b5da74d7916e2cf4c
@@ -2688,4 +2688,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ac6e3a3935879b4d187353a98679212e0e3604ce
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
