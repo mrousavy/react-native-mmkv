@@ -8,7 +8,7 @@ PODS:
   - hermes-engine (0.81.0):
     - hermes-engine/Pre-built (= 0.81.0)
   - hermes-engine/Pre-built (0.81.0)
-  - MMKVCore (2.2.3)
+  - MMKVCore (2.2.4)
   - NitroMmkv (4.0.0-beta.11):
     - boost
     - DoubleConversion
@@ -16,7 +16,7 @@ PODS:
     - fmt
     - glog
     - hermes-engine
-    - MMKVCore (>= 2.2.3)
+    - MMKVCore (= 2.2.4)
     - NitroModules
     - RCT-Folly
     - RCT-Folly/Fabric
@@ -2382,7 +2382,6 @@ DEPENDENCIES:
   - fmt (from `../../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - MMKVCore
   - NitroMmkv (from `../../node_modules/react-native-mmkv`)
   - NitroModules (from `../../node_modules/react-native-nitro-modules`)
   - RCT-Folly (from `../../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -2617,8 +2616,8 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: e7491a2038f2618c8cd444ed411a6deb350a3742
-  MMKVCore: 6d5cc1bacce539f4c974985dfe646fb65a5d27d2
-  NitroMmkv: 7ccbeac687d92f99de7a8474d922e5db05baac76
+  MMKVCore: f2dd4c9befea04277a55e84e7812f930537993df
+  NitroMmkv: 7ddcd26aba1ac54a778edc6536abb83f5704ce0a
   NitroModules: df9af25a70fccb693fa5799026d8162f579007ae
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: 0735ab4f6b3ec93a7f98187b5da74d7916e2cf4c
@@ -2687,6 +2686,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: b01392348aeea02064c21a2762a42893d82b60a7
 
-PODFILE CHECKSUM: 941570c81374ba376a082a6ecec1f5251bfbe088
+PODFILE CHECKSUM: ac6e3a3935879b4d187353a98679212e0e3604ce
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
