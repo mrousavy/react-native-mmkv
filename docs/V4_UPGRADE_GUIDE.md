@@ -66,8 +66,10 @@ Command `pod install` failed.
 The Swift pod `NitroMmkv` depends upon `MMKVCore`, which does not define modules. To opt into those targets generating module maps (which is necessary to import them from Swift when building as static libraries), you may set `use_modular_headers!` globally in your Podfile, or specify `:modular_headers => true` for particular dependencies.
 ```
 
-..you need to upgrade `MMKVCore` to a version that includes [this PR](https://github.com/Tencent/MMKV/pull/1579) (v2.2.4 or higher), or add this to your `Podfile`:
+..you are likely on an old version of `MMKVCore`. Make sure to update to a version that includes [this PR](https://github.com/Tencent/MMKV/pull/1579) (v2.2.4 or higher), or add this to your `Podfile`:
 
 ```rb
 pod 'MMKVCore', :modular_headers => true
 ```
+
+If you are on the latest react-native-mmkv V4 version, it should include a working `MMKVCore` by default - so you shouldn't see this error unless you manually added a dependency on `MMKVCore`/`MMKV` to your `Podfile`.
