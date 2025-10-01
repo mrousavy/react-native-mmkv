@@ -19,7 +19,6 @@ const config = {
   ],
   defaultRunner: 'android',
   bridgeTimeout: 120000,
-  unstable__skipAlreadyIncludedModules: true,
 };
 
 export default config;
