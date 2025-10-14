@@ -10,7 +10,7 @@
     "start": "react-native start",
     "test": "jest",
     "bundle-install": "bundle install",
-    "pods": "bundle install && cd ios && RCT_USE_RN_DEP=1 RCT_USE_PREBUILT_RNCORE=1 bundle exec pod install",
+    "pods": "bundle install && cd ios && bundle exec pod install",
     "build:android-release": "cd android && ./gradlew assembleRelease --no-daemon"
   },
   "dependencies": {
