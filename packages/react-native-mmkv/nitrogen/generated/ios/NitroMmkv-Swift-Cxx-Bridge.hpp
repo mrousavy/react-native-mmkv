@@ -49,8 +49,8 @@ namespace margelo::nitro::mmkv::bridge::swift {
    * Specialized version of `std::shared_ptr<HybridMMKVPlatformContextSpec>`.
    */
   using std__shared_ptr_HybridMMKVPlatformContextSpec_ = std::shared_ptr<HybridMMKVPlatformContextSpec>;
-  std::shared_ptr<HybridMMKVPlatformContextSpec> create_std__shared_ptr_HybridMMKVPlatformContextSpec_(void* _Nonnull swiftUnsafePointer) noexcept;
-  void* _Nonnull get_std__shared_ptr_HybridMMKVPlatformContextSpec_(std__shared_ptr_HybridMMKVPlatformContextSpec_ cppType) noexcept;
+  std::shared_ptr<HybridMMKVPlatformContextSpec> create_std__shared_ptr_HybridMMKVPlatformContextSpec_(void* NON_NULL swiftUnsafePointer) noexcept;
+  void* NON_NULL get_std__shared_ptr_HybridMMKVPlatformContextSpec_(std__shared_ptr_HybridMMKVPlatformContextSpec_ cppType);
   
   // pragma MARK: std::weak_ptr<HybridMMKVPlatformContextSpec>
   using std__weak_ptr_HybridMMKVPlatformContextSpec_ = std::weak_ptr<HybridMMKVPlatformContextSpec>;
