@@ -154,7 +154,7 @@ std::vector<std::string> HybridMMKV::getAllKeys() {
 void HybridMMKV::clearAll() {
   auto keysBefore = getAllKeys();
   instance->clearAll();
-  for (const auto& key: keysBefore) {
+  for (const auto& key : keysBefore) {
     // Notify on changed
     MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
   }
