@@ -76,24 +76,27 @@ void HybridMMKV::set(const std::string& key, const std::variant<std::string, dou
   }
 
   // Pattern-match each potential value in std::variant
-  std::visit(overloaded{[&](const std::string& string) {
-                          // string
-                          instance->set(string, key);
-                        },
-                        [&](double number) {
-                          // number
-                          instance->set(number, key);
-                        },
-                        [&](bool b) {
-                          // boolean
-                          instance->set(b, key);
-                        },
-                        [&](const std::shared_ptr<ArrayBuffer>& buf) {
-                          // ArrayBuffer
-                          MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
-                          instance->set(std::move(buffer), key);
-                        }},
-             value);
+  bool didSet = std::visit(overloaded{[&](const std::string& string) {
+                                        // string
+                                        return instance->set(string, key);
+                                      },
+                                      [&](double number) {
+                                        // number
+                                        return instance->set(number, key);
+                                      },
+                                      [&](bool b) {
+                                        // boolean
+                                        return instance->set(b, key);
+                                      },
+                                      [&](const std::shared_ptr<ArrayBuffer>& buf) {
+                                        // ArrayBuffer
+                                        MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
+                                        return instance->set(std::move(buffer), key);
+                                      }},
+                           value);
+  if (!didSet) {
+    throw std::runtime_error("Failed to set value for key \"" + key + "\"!");
+  }
 
   // Notify on changed
   MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
