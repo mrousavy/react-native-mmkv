@@ -2,3 +2,7 @@
 # Configure bun test to only run tests in specific directories
 # This prevents bun test from interfering with Jest tests
 root = "packages/react-native-mmkv/__bun_tests__"
+
+[install]
+# Opt out from isolated installs
+linker = "hoisted"

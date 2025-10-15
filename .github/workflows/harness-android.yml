@@ -1,0 +1,144 @@
+name: Harness Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      device_api_level:
+        description: "Android API level for the emulator"
+        required: false
+        default: "35"
+        type: string
+      device_arch:
+        description: "Device architecture (x86_64, arm64-v8a)"
+        required: false
+        default: "x86_64"
+        type: choice
+        options:
+          - x86_64
+          - arm64-v8a
+      device_profile:
+        description: "Device profile"
+        required: false
+        default: "pixel_7"
+        type: string
+      avd_name:
+        description: "AVD name"
+        required: false
+        default: "Pixel_8_API_35"
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/harness-android.yml"
+      - "example/android/**"
+      - "**/nitrogen/generated/shared/**"
+      - "**/nitrogen/generated/android/**"
+      - "packages/react-native-mmkv/cpp/**"
+      - "packages/react-native-mmkv/android/**"
+      - "**/bun.lock"
+      - "**/react-native.config.js"
+      - "**/nitro.json"
+      - "example/__tests__/**"
+      - "example/rn-harness.config.mjs"
+  pull_request:
+    paths:
+      - ".github/workflows/harness-android.yml"
+      - "example/android/**"
+      - "**/nitrogen/generated/shared/**"
+      - "**/nitrogen/generated/android/**"
+      - "packages/react-native-mmkv/cpp/**"
+      - "packages/react-native-mmkv/android/**"
+      - "**/bun.lock"
+      - "**/react-native.config.js"
+      - "**/nitro.json"
+      - "example/__tests__/**"
+      - "example/rn-harness.config.mjs"
+
+env:
+  # Device configuration - can be overridden by workflow_dispatch inputs
+  DEVICE_API_LEVEL: ${{ github.event.inputs.device_api_level || '35' }}
+  DEVICE_ARCH: ${{ github.event.inputs.device_arch || 'x86_64' }}
+  DEVICE_PROFILE: ${{ github.event.inputs.device_profile || 'pixel_7' }}
+  AVD_NAME: ${{ github.event.inputs.avd_name || 'Pixel_8_API_35' }}
+
+jobs:
+  harness_android_new:
+    name: Harness Android (new architecture)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: 17
+          java-package: jdk
+
+      - name: Restore Gradle cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build Android app
+        working-directory: example/android
+        run: ./gradlew assembleDebug --no-daemon --build-cache
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls /dev/kvm
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-${{ env.DEVICE_API_LEVEL }}-${{ env.DEVICE_ARCH }}
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ env.DEVICE_API_LEVEL }}
+          arch: ${{ env.DEVICE_ARCH }}
+          profile: ${{ env.DEVICE_PROFILE }}
+          disk-size: 1G
+          heap-size: 1G
+          force-avd-creation: false
+          avd-name: ${{ env.AVD_NAME }}
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Run Harness E2E tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          working-directory: example
+          api-level: ${{ env.DEVICE_API_LEVEL }}
+          arch: ${{ env.DEVICE_ARCH }}
+          force-avd-creation: false
+          avd-name: ${{ env.AVD_NAME }}
+          disable-animations: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            adb install -r "./android/app/build/outputs/apk/debug/app-debug.apk"
+            bun react-native-harness test android
+
+      # Gradle cache doesn't like daemons
+      - name: Stop Gradle Daemon
+        working-directory: example/android
+        run: ./gradlew --stop
