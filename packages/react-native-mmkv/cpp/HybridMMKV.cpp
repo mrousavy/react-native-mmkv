@@ -71,6 +71,10 @@ template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
 void HybridMMKV::set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) {
+  if (key.empty()) [[unlikely]] {
+    throw std::runtime_error("Cannot set a value for an empty key!");
+  }
+
   // Pattern-match each potential value in std::variant
   std::visit(overloaded{[&](const std::string& string) {
                           // string

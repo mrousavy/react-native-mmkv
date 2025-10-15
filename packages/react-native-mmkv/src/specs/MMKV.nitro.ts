@@ -6,9 +6,10 @@ export interface Listener {
 
 export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   /**
-   * Set a value for the given `key`.
+   * Set a {@linkcode value} for the given {@linkcode key}.
    *
-   * @throws an Error if the value cannot be set.
+   * @throws an Error if the {@linkcode key} is empty.
+   * @throws an Error if the {@linkcode value} cannot be set.
    */
   set(key: string, value: boolean | string | number | ArrayBuffer): void
   /**

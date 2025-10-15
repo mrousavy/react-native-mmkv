@@ -825,9 +825,10 @@ describe('MMKV Error Handling & Edge Cases', () => {
 
   describe('Error Scenarios', () => {
     it('should handle invalid key operations gracefully', () => {
-      // Empty string key should work
-      storage.set('', 'empty-key-value');
-      expect(storage.getString('')).toStrictEqual('empty-key-value');
+      // Empty string key should throw
+      expect(() => {
+        storage.set('', 'empty-key-value');
+      }).toThrow()
     });
 
     it('should handle concurrent operations', () => {
