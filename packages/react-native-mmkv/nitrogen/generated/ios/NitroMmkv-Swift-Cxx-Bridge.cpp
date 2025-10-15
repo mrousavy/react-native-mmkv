@@ -14,11 +14,11 @@
 namespace margelo::nitro::mmkv::bridge::swift {
 
   // pragma MARK: std::shared_ptr<HybridMMKVPlatformContextSpec>
-  std::shared_ptr<HybridMMKVPlatformContextSpec> create_std__shared_ptr_HybridMMKVPlatformContextSpec_(void* _Nonnull swiftUnsafePointer) noexcept {
+  std::shared_ptr<HybridMMKVPlatformContextSpec> create_std__shared_ptr_HybridMMKVPlatformContextSpec_(void* NON_NULL swiftUnsafePointer) noexcept {
     NitroMmkv::HybridMMKVPlatformContextSpec_cxx swiftPart = NitroMmkv::HybridMMKVPlatformContextSpec_cxx::fromUnsafe(swiftUnsafePointer);
     return std::make_shared<margelo::nitro::mmkv::HybridMMKVPlatformContextSpecSwift>(swiftPart);
   }
-  void* _Nonnull get_std__shared_ptr_HybridMMKVPlatformContextSpec_(std__shared_ptr_HybridMMKVPlatformContextSpec_ cppType) noexcept {
+  void* NON_NULL get_std__shared_ptr_HybridMMKVPlatformContextSpec_(std__shared_ptr_HybridMMKVPlatformContextSpec_ cppType) {
     std::shared_ptr<margelo::nitro::mmkv::HybridMMKVPlatformContextSpecSwift> swiftWrapper = std::dynamic_pointer_cast<margelo::nitro::mmkv::HybridMMKVPlatformContextSpecSwift>(cppType);
     #ifdef NITRO_DEBUG
     if (swiftWrapper == nullptr) [[unlikely]] {
