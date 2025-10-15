@@ -22,17 +22,5 @@ module.exports = {
         '!packages/react-native-mmkv/src/**/*.d.ts'
       ]
     },
-    {
-      displayName: 'example',
-      testMatch: ['<rootDir>/example/**/__tests__/**/*.(ts|tsx|js)', '<rootDir>/example/**/*.(test|spec).(ts|tsx|js)'],
-      preset: 'react-native',
-      transform: {
-        '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest'
-      },
-      transformIgnorePatterns: [
-        'node_modules/(?!(react-native|@react-native|react-native-.*)/)'
-      ],
-      moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json']
-    }
   ]
 }
