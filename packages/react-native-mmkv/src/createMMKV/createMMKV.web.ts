@@ -80,18 +80,28 @@ export function createMMKV(
     return `${keyPrefix}${key}`
   }
 
+  const callListeners = (key: string) => {
+    listeners.forEach((l) => l(key))
+  }
+
   return {
     clearAll: () => {
       const keys = Object.keys(storage())
       for (const key of keys) {
         if (key.startsWith(keyPrefix)) {
           storage().removeItem(key)
+          callListeners(key)
         }
       }
     },
-    remove: (key) => storage().removeItem(prefixedKey(key)) ?? false,
+    remove: (key) => {
+      const wasRemoved = storage().removeItem(prefixedKey(key)) ?? false
+      if (wasRemoved) callListeners(key)
+      return wasRemoved
+    },
     set: (key, value) => {
       storage().setItem(prefixedKey(key), value.toString())
+      callListeners(key)
     },
     getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
     getNumber: (key) => {

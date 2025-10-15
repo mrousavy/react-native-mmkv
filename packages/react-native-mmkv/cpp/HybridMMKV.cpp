@@ -141,13 +141,23 @@ bool HybridMMKV::contains(const std::string& key) {
   return instance->containsKey(key);
 }
 bool HybridMMKV::remove(const std::string& key) {
-  return instance->removeValueForKey(key);
+  bool wasRemoved = instance->removeValueForKey(key);
+  if (wasRemoved) {
+    // Notify on changed
+    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+  }
+  return wasRemoved;
 }
 std::vector<std::string> HybridMMKV::getAllKeys() {
   return instance->allKeys();
 }
 void HybridMMKV::clearAll() {
+  auto keysBefore = getAllKeys();
   instance->clearAll();
+  for (const auto& key: keysBefore) {
+    // Notify on changed
+    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+  }
 }
 void HybridMMKV::recrypt(const std::optional<std::string>& key) {
   bool successful = false;
