@@ -796,15 +796,13 @@ describe('MMKV Listeners & Observers', () => {
       // Wait for the listeners to trigger
       await waitForNextTick();
 
-      const changesBefore = changedKeys.length;
-
       storage.clearAll();
 
-      // Wait for potential listeners to trigger (but they shouldn't for clearAll)
+      // Wait for the listeners to trigger
       await waitForNextTick();
 
-      // clearAll should not trigger individual key change events
-      expect(changedKeys.length).toStrictEqual(changesBefore);
+      // We did 2x set and a clearAll (clears 2x keys)
+      expect(changedKeys.length).toStrictEqual(4);
 
       listener.remove();
     });
