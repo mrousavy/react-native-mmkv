@@ -30,6 +30,7 @@ export function createMockMMKV(): MMKV {
       return deleted
     },
     set: (key, value) => {
+      if (key === '') throw new Error('Cannot set a value for an empty key!')
       storage.set(key, value)
       notifyListeners(key)
     },

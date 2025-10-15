@@ -91,6 +91,7 @@ export function createMMKV(
     },
     remove: (key) => storage().removeItem(prefixedKey(key)) ?? false,
     set: (key, value) => {
+      if (key === '') throw new Error('Cannot set a value for an empty key!')
       storage().setItem(prefixedKey(key), value.toString())
     },
     getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
