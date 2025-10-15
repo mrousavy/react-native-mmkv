@@ -276,6 +276,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.mmkv.example;
 				PRODUCT_NAME = MmkvExample;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -304,6 +305,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mrousavy.mmkv.example;
 				PRODUCT_NAME = MmkvExample;
+				SWIFT_ENABLE_EXPLICIT_MODULES = NO;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
