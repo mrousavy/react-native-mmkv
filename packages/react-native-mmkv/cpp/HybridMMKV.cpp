@@ -70,21 +70,13 @@ struct overloaded : Ts... {
 template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 
-void HybridMMKV::set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) {
+void HybridMMKV::set(const std::string& key, const std::variant<bool, std::shared_ptr<ArrayBuffer>, std::string, double>& value) {
   if (key.empty()) [[unlikely]] {
     throw std::runtime_error("Cannot set a value for an empty key!");
   }
 
   // Pattern-match each potential value in std::variant
-  bool didSet = std::visit(overloaded{[&](const std::string& string) {
-                                        // string
-                                        return instance->set(string, key);
-                                      },
-                                      [&](double number) {
-                                        // number
-                                        return instance->set(number, key);
-                                      },
-                                      [&](bool b) {
+  bool didSet = std::visit(overloaded{[&](bool b) {
                                         // boolean
                                         return instance->set(b, key);
                                       },
@@ -92,6 +84,14 @@ void HybridMMKV::set(const std::string& key, const std::variant<std::string, dou
                                         // ArrayBuffer
                                         MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
                                         return instance->set(std::move(buffer), key);
+                                      },
+                                      [&](const std::string& string) {
+                                        // string
+                                        return instance->set(string, key);
+                                      },
+                                      [&](double number) {
+                                        // number
+                                        return instance->set(number, key);
                                       }},
                            value);
   if (!didSet) {
