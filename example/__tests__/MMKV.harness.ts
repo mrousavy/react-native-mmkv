@@ -322,7 +322,7 @@ describe('MMKV Configuration & Multiple Instances', () => {
       createMMKV({ id: 'test-instance-1' }).clearAll();
       createMMKV({ id: 'test-instance-2' }).clearAll();
       createMMKV({ id: 'encrypted-instance' }).clearAll();
-    } catch (e) {
+    } catch {
       // Instances might not exist, that's okay
     }
   });
@@ -425,7 +425,7 @@ describe('MMKV Encryption & Security', () => {
     try {
       createMMKV({ id: 'encrypted-test' }).clearAll();
       createMMKV({ id: 'recrypt-test' }).clearAll();
-    } catch (e) {
+    } catch {
       // Instances might not exist, that's okay
     }
   });

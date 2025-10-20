@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@expo/config-plugins": "^10.1.2",
-    "@react-native/eslint-config": "0.81.0",
+    "@react-native/eslint-config": "0.82.0",
     "@testing-library/react-native": "^13.3.1",
     "@types/jest": "^29.5.12",
     "@types/react": "^19.0.6",
@@ -70,8 +70,8 @@
     "eslint-plugin-prettier": "^5.2.1",
     "nitrogen": "0.31.0",
     "prettier": "^3.3.3",
-    "react": "19.1.0",
-    "react-native": "0.81.0",
+    "react": "19.1.1",
+    "react-native": "0.82.0",
     "react-native-nitro-modules": "0.31.0",
     "typescript": "^5.8.3"
   },

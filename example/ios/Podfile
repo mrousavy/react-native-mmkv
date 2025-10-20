@@ -14,9 +14,6 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-ENV['RCT_USE_PREBUILT_RNCORE'] = '1'
-ENV['RCT_USE_RN_DEP'] = '1'
-
 target 'MmkvExample' do
   config = use_native_modules!
 

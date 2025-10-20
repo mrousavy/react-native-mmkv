@@ -32,8 +32,8 @@ env:
   USE_CCACHE: 1
 
 jobs:
-  build_new:
-    name: Build iOS Example App (new architecture)
+  build:
+    name: Build iOS Example App
     runs-on: macOS-15
     steps:
       - uses: actions/checkout@v5
@@ -65,58 +65,6 @@ jobs:
       - name: Install Pods
         working-directory: example
         run: bun pods
-
-      - name: Build App
-        working-directory: example/ios
-        run: "set -o pipefail && xcodebuild \
-          CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ \
-          -derivedDataPath build -UseModernBuildSystem=YES \
-          -workspace MmkvExample.xcworkspace \
-          -scheme MmkvExample \
-          -sdk iphonesimulator \
-          -configuration Debug \
-          -destination 'platform=iOS Simulator,name=iPhone 16' \
-          build \
-          CODE_SIGNING_ALLOWED=NO"
-
-  build_old:
-    name: Build iOS Example App (old architecture)
-    needs: build_new
-    runs-on: macOS-15
-    steps:
-      - uses: actions/checkout@v5
-      - uses: oven-sh/setup-bun@v2
-
-      - name: Install npm dependencies (bun)
-        run: bun install
-
-      - name: Disable new architecture in Podfile
-        run: sed -i "" "s/ENV\['RCT_NEW_ARCH_ENABLED'\] = '1'/ENV['RCT_NEW_ARCH_ENABLED'] = '0'/g" example/ios/Podfile
-
-      - name: Restore buildcache
-        uses: mikehardy/buildcache-action@v2
-        continue-on-error: true
-
-      - name: Setup Ruby (bundle)
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 2.7.2
-          bundler-cache: true
-          working-directory: example/ios
-
-      - name: Select Xcode 16.4
-        run: sudo xcode-select -s "/Applications/Xcode_16.4.app/Contents/Developer"
-
-      - name: Restore Pods cache
-        uses: actions/cache@v4
-        with:
-          path: example/ios/Pods
-          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock', '**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
-      - name: Install Pods
-        working-directory: example/ios
-        run: pod install
 
       - name: Build App
         working-directory: example/ios
