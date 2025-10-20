@@ -13,8 +13,6 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
-// Forward declaration of `ArrayBuffer` to properly resolve imports.
-namespace NitroModules { class ArrayBuffer; }
 // Forward declaration of `Listener` to properly resolve imports.
 namespace margelo::nitro::mmkv { struct Listener; }
 
@@ -58,7 +56,7 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Methods
-      virtual void set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) = 0;
+      virtual void set(const std::string& key, const std::variant<bool, std::shared_ptr<ArrayBuffer>, std::string, double>& value) = 0;
       virtual std::optional<bool> getBoolean(const std::string& key) = 0;
       virtual std::optional<std::string> getString(const std::string& key) = 0;
       virtual std::optional<double> getNumber(const std::string& key) = 0;

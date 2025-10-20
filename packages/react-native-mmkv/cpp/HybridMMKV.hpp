@@ -24,7 +24,7 @@ public:
 
 public:
   // Methods
-  void set(const std::string& key, const std::variant<std::string, double, bool, std::shared_ptr<ArrayBuffer>>& value) override;
+  void set(const std::string& key, const std::variant<bool, std::shared_ptr<ArrayBuffer>, std::string, double>& value) override;
   std::optional<bool> getBoolean(const std::string& key) override;
   std::optional<std::string> getString(const std::string& key) override;
   std::optional<double> getNumber(const std::string& key) override;
