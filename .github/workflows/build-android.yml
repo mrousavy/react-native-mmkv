@@ -27,8 +27,8 @@ on:
       - '**/nitro.json'
 
 jobs:
-  build_new:
-    name: Build Android Example App (new architecture)
+  build:
+    name: Build Android Example App
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -36,44 +36,6 @@ jobs:
 
       - name: Install npm dependencies (bun)
         run: bun install
-
-      - name: Setup JDK 17
-        uses: actions/setup-java@v5
-        with:
-          distribution: 'zulu'
-          java-version: 17
-          java-package: jdk
-
-      - name: Restore Gradle cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Run Gradle Build for example/android/
-        working-directory: example/android
-        run: ./gradlew assembleDebug --no-daemon --build-cache
-
-      # Gradle cache doesn't like daemons
-      - name: Stop Gradle Daemon
-        working-directory: example/android
-        run: ./gradlew --stop
-
-  build_old:
-    name: Build Android Example App (old architecture)
-    needs: build_new
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: oven-sh/setup-bun@v2
-
-      - name: Install npm dependencies (bun)
-        run: bun install
-
-      - name: Disable new architecture in gradle.properties
-        run: sed -i "s/newArchEnabled=true/newArchEnabled=false/g" example/android/gradle.properties
 
       - name: Setup JDK 17
         uses: actions/setup-java@v5
