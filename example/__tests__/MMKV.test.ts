@@ -1,6 +1,6 @@
 import { createMMKV } from 'react-native-mmkv';
 describe('Example test', () => {
-  let storage: MMKV;
+  let storage;
 
   beforeAll(() => {
     storage = createMMKV();
