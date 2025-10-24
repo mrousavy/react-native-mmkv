@@ -9,6 +9,7 @@
     "example"
   ],
   "scripts": {
+    "postinstall": "tsc || exit 0;",
     "build": "bun mmkv build",
     "bootstrap": "bun i && bun run build && cd example && bundle install && bun pods",
     "typecheck": "bun --filter=\"**\" typecheck",
