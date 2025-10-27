@@ -13,7 +13,7 @@ let platformContext: MMKVPlatformContext | undefined
 export function createMMKV(configuration?: Configuration): MMKV {
   if (isTest()) {
     // In a test environment, we mock the MMKV instance.
-    return createMockMMKV()
+    return createMockMMKV(configuration)
   }
 
   if (platformContext == null) {

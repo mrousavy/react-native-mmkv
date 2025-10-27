@@ -13,9 +13,12 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
+// Forward declaration of `Configuration` to properly resolve imports.
+namespace margelo::nitro::mmkv { struct Configuration; }
 // Forward declaration of `Listener` to properly resolve imports.
 namespace margelo::nitro::mmkv { struct Listener; }
 
+#include "Configuration.hpp"
 #include <string>
 #include <NitroModules/ArrayBuffer.hpp>
 #include <variant>
@@ -51,6 +54,7 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Properties
+      virtual Configuration getConfig() = 0;
       virtual double getSize() = 0;
       virtual bool getIsReadOnly() = 0;
 

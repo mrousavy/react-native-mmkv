@@ -85,6 +85,7 @@ export function createMMKV(
   }
 
   return {
+    config: config,
     clearAll: () => {
       const keys = Object.keys(storage())
       for (const key of keys) {

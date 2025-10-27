@@ -19,6 +19,7 @@ public:
 
 public:
   // Properties
+  Configuration getConfig() override;
   double getSize() override;
   bool getIsReadOnly() override;
 
@@ -41,7 +42,8 @@ private:
   static MMKVMode getMMKVMode(const Configuration& config);
 
 private:
-  MMKV* instance;
+  MMKV* _instance;
+  Configuration _config;
 };
 
 } // namespace margelo::nitro::mmkv
