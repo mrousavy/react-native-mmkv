@@ -247,9 +247,9 @@ If a user chooses to disable LocalStorage in their browser, the library will aut
 
 ## Integrations
 
-### Flipper
+### Rozenite
 
-Use [flipper-plugin-react-native-mmkv](https://github.com/muchobien/flipper-plugin-react-native-mmkv) to debug your MMKV storage using Flipper. You can also simply `console.log` an MMKV instance.
+Use [@rozenite/mmkv-plugin](https://www.rozenite.dev/docs/official-plugins/mmkv) to debug your MMKV storage using Rozenite.
 
 ### Reactotron
 
