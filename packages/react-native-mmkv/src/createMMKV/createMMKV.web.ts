@@ -85,6 +85,9 @@ export function createMMKV(
   }
 
   return {
+    id: config.id,
+    size: 0,
+    isReadOnly: false,
     clearAll: () => {
       const keys = Object.keys(storage())
       for (const key of keys) {
@@ -130,8 +133,6 @@ export function createMMKV(
     recrypt: () => {
       throw new Error('`recrypt(..)` is not supported on Web!')
     },
-    size: 0,
-    isReadOnly: false,
     trim: () => {
       // no-op
     },

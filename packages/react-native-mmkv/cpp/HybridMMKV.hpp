@@ -19,6 +19,7 @@ public:
 
 public:
   // Properties
+  std::string getId() override;
   double getSize() override;
   bool getIsReadOnly() override;
 
