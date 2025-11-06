@@ -1,9 +1,13 @@
 import type { MMKV } from '../specs/MMKV.nitro'
+import type { Configuration } from '../specs/MMKVFactory.nitro'
 
 /**
  * Mock MMKV instance when used in a Jest/Test environment.
  */
-export function createMockMMKV(): MMKV {
+export function createMockMMKV(
+  configuration: Configuration = { id: 'mmkv.default' }
+): MMKV {
+  const config = configuration
   const storage = new Map<string, string | boolean | number | ArrayBuffer>()
   const listeners = new Set<(key: string) => void>()
 
@@ -14,6 +18,7 @@ export function createMockMMKV(): MMKV {
   }
 
   return {
+    config: config,
     clearAll: () => {
       const keysBefore = storage.keys()
       storage.clear()

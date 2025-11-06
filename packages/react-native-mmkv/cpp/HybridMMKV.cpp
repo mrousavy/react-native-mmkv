@@ -13,7 +13,7 @@
 
 namespace margelo::nitro::mmkv {
 
-HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
+HybridMMKV::HybridMMKV(const Configuration& config) : _config(config), HybridObject(TAG) {
   std::string path = config.path.has_value() ? config.path.value() : "";
   std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
   bool hasEncryptionKey = encryptionKey.size() > 0;
@@ -29,12 +29,12 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   }
 
 #ifdef __APPLE__
-  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
+  _instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
 #else
-  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
+  _instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
 #endif
 
-  if (instance == nullptr) [[unlikely]] {
+  if (_instance == nullptr) [[unlikely]] {
     // Check if instanceId is invalid
     if (config.id.empty()) [[unlikely]] {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
@@ -55,11 +55,14 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   }
 }
 
+Configuration HybridMMKV::getConfig() {
+  return _config;
+}
 double HybridMMKV::getSize() {
-  return instance->actualSize();
+  return _instance->actualSize();
 }
 bool HybridMMKV::getIsReadOnly() {
-  return instance->isReadOnly();
+  return _instance->isReadOnly();
 }
 
 // helper: overload pattern matching for lambdas
@@ -78,20 +81,20 @@ void HybridMMKV::set(const std::string& key, const std::variant<bool, std::share
   // Pattern-match each potential value in std::variant
   bool didSet = std::visit(overloaded{[&](bool b) {
                                         // boolean
-                                        return instance->set(b, key);
+                                        return _instance->set(b, key);
                                       },
                                       [&](const std::shared_ptr<ArrayBuffer>& buf) {
                                         // ArrayBuffer
                                         MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
-                                        return instance->set(std::move(buffer), key);
+                                        return _instance->set(std::move(buffer), key);
                                       },
                                       [&](const std::string& string) {
                                         // string
-                                        return instance->set(string, key);
+                                        return _instance->set(string, key);
                                       },
                                       [&](double number) {
                                         // number
-                                        return instance->set(number, key);
+                                        return _instance->set(number, key);
                                       }},
                            value);
   if (!didSet) {
@@ -99,11 +102,11 @@ void HybridMMKV::set(const std::string& key, const std::variant<bool, std::share
   }
 
   // Notify on changed
-  MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+  MMKVValueChangedListenerRegistry::notifyOnValueChanged(_instance->mmapID(), key);
 }
 std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
   bool hasValue;
-  bool result = instance->getBool(key, /* defaultValue */ false, &hasValue);
+  bool result = _instance->getBool(key, /* defaultValue */ false, &hasValue);
   if (hasValue) {
     return result;
   } else {
@@ -112,7 +115,7 @@ std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
 }
 std::optional<std::string> HybridMMKV::getString(const std::string& key) {
   std::string result;
-  bool hasValue = instance->getString(key, result, /* inplaceModification */ true);
+  bool hasValue = _instance->getString(key, result, /* inplaceModification */ true);
   if (hasValue) {
     return result;
   } else {
@@ -121,7 +124,7 @@ std::optional<std::string> HybridMMKV::getString(const std::string& key) {
 }
 std::optional<double> HybridMMKV::getNumber(const std::string& key) {
   bool hasValue;
-  double result = instance->getDouble(key, /* defaultValue */ 0.0, &hasValue);
+  double result = _instance->getDouble(key, /* defaultValue */ 0.0, &hasValue);
   if (hasValue) {
     return result;
   } else {
@@ -132,11 +135,11 @@ std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::str
   MMBuffer result;
 #ifdef __APPLE__
   // iOS: Convert std::string to NSString* for MMKVCore pod compatibility
-  bool hasValue = instance->getBytes(@(key.c_str()), result);
+  bool hasValue = _instance->getBytes(@(key.c_str()), result);
 #else
   // Android/other platforms: Use std::string directly (converts to
   // std::string_view)
-  bool hasValue = instance->getBytes(key, result);
+  bool hasValue = _instance->getBytes(key, result);
 #endif
   if (hasValue) {
     return std::make_shared<ManagedMMBuffer>(std::move(result));
@@ -145,49 +148,49 @@ std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::str
   }
 }
 bool HybridMMKV::contains(const std::string& key) {
-  return instance->containsKey(key);
+  return _instance->containsKey(key);
 }
 bool HybridMMKV::remove(const std::string& key) {
-  bool wasRemoved = instance->removeValueForKey(key);
+  bool wasRemoved = _instance->removeValueForKey(key);
   if (wasRemoved) {
     // Notify on changed
-    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+    MMKVValueChangedListenerRegistry::notifyOnValueChanged(_instance->mmapID(), key);
   }
   return wasRemoved;
 }
 std::vector<std::string> HybridMMKV::getAllKeys() {
-  return instance->allKeys();
+  return _instance->allKeys();
 }
 void HybridMMKV::clearAll() {
   auto keysBefore = getAllKeys();
-  instance->clearAll();
+  _instance->clearAll();
   for (const auto& key : keysBefore) {
     // Notify on changed
-    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+    MMKVValueChangedListenerRegistry::notifyOnValueChanged(_instance->mmapID(), key);
   }
 }
 void HybridMMKV::recrypt(const std::optional<std::string>& key) {
   bool successful = false;
   if (key.has_value()) {
     // Encrypt with the given key
-    successful = instance->reKey(key.value());
+    successful = _instance->reKey(key.value());
   } else {
     // Remove the encryption key by setting it to a blank string
-    successful = instance->reKey(std::string());
+    successful = _instance->reKey(std::string());
   }
   if (!successful) {
     throw std::runtime_error("Failed to recrypt MMKV instance!");
   }
 }
 void HybridMMKV::trim() {
-  instance->trim();
-  instance->clearMemoryCache();
+  _instance->trim();
+  _instance->clearMemoryCache();
 }
 
 Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
   // Add listener
-  auto mmkvID = instance->mmapID();
-  auto listenerID = MMKVValueChangedListenerRegistry::addListener(instance->mmapID(), onValueChanged);
+  auto mmkvID = _instance->mmapID();
+  auto listenerID = MMKVValueChangedListenerRegistry::addListener(_instance->mmapID(), onValueChanged);
 
   return Listener([=]() {
     // remove()

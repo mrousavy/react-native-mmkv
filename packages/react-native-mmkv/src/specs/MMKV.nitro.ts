@@ -1,10 +1,25 @@
 import type { HybridObject } from 'react-native-nitro-modules'
+import type { Configuration } from './MMKVFactory.nitro'
 
 export interface Listener {
   remove: () => void
 }
 
 export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
+  /**
+   * The {@linkcode Configuration} that was used to create this {@linkcode MMKV}
+   * instance.
+   */
+  readonly config: Configuration
+  /**
+   * Get the current total size of the storage, in bytes.
+   */
+  readonly size: number
+  /**
+   * Returns whether this instance is in read-only mode or not.
+   * If this is `true`, you can only use "get"-functions.
+   */
+  readonly isReadOnly: boolean
   /**
    * Set a {@linkcode value} for the given {@linkcode key}.
    *
@@ -75,15 +90,6 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    * In most applications, this is not needed at all.
    */
   trim(): void
-  /**
-   * Get the current total size of the storage, in bytes.
-   */
-  readonly size: number
-  /**
-   * Returns whether this instance is in read-only mode or not.
-   * If this is `true`, you can only use "get"-functions.
-   */
-  readonly isReadOnly: boolean
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
