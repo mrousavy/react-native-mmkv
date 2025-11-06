@@ -30,7 +30,7 @@
 <br/>
 
 
-* **MMKV** is an efficient, small, in-memory synced with files (backed by mmap) mobile key-value storage framework developed by WeChat. See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
+* **MMKV** is an efficient, small, **in-memory** mobile key-value storage framework developed by WeChat. Data is stored using `mmap` which syncs it with files for persistence. See [Tencent/MMKV](https://github.com/Tencent/MMKV) for more information
 * **react-native-mmkv** is a library that allows you to easily use **MMKV** inside your React Native app through fast and direct JS bindings to the native C++ library.
 
 ## Features
