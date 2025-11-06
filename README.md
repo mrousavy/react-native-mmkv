@@ -247,6 +247,29 @@ If a user chooses to disable LocalStorage in their browser, the library will aut
 
 ## Integrations
 
+### React Buoy
+
+Use [@react-buoy/storage](https://www.npmjs.com/package/@react-buoy/storage) for zero-config, in-app MMKV debugging with a floating dev menu. Browse, edit, and delete MMKV data in real-time with search, filtering, bulk operations, and validation support. Works alongside AsyncStorage and SecureStore in the same interface.
+
+```bash
+npm install @react-buoy/core @react-buoy/storage
+```
+
+```tsx
+import { FloatingDevTools } from '@react-buoy/core'
+
+function App() {
+  return (
+    <>
+      {/* Your app */}
+      <FloatingDevTools environment="local" />
+    </>
+  )
+}
+```
+
+That's it! The Storage tool auto-detects MMKV and appears in your floating menu. [See the full documentation](https://www.npmjs.com/package/@react-buoy/core) for advanced features including custom validation, multiple storage types, and production-safe access controls.
+
 ### Flipper
 
 Use [flipper-plugin-react-native-mmkv](https://github.com/muchobien/flipper-plugin-react-native-mmkv) to debug your MMKV storage using Flipper. You can also simply `console.log` an MMKV instance.
