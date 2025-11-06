@@ -38,7 +38,7 @@ jobs:
         run: bun install
 
       - name: Build all packages
-        run: bun run build
+        run: bun mmkv build
 
       - name: Run nitrogen in packages/react-native-mmkv
         working-directory: packages/react-native-mmkv
