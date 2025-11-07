@@ -51,6 +51,7 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Properties
+      virtual std::string getId() = 0;
       virtual double getSize() = 0;
       virtual bool getIsReadOnly() = 0;
 

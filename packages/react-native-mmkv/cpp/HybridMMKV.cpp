@@ -55,6 +55,9 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   }
 }
 
+std::string HybridMMKV::getId() {
+  return instance->mmapID();
+}
 double HybridMMKV::getSize() {
   return instance->actualSize();
 }

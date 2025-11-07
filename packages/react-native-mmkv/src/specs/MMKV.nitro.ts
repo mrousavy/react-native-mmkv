@@ -6,6 +6,19 @@ export interface Listener {
 
 export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   /**
+   * Get the ID of this {@linkcode MMKV} instance.
+   */
+  readonly id: string
+  /**
+   * Get the current total size of the storage, in bytes.
+   */
+  readonly size: number
+  /**
+   * Returns whether this instance is in read-only mode or not.
+   * If this is `true`, you can only use "get"-functions.
+   */
+  readonly isReadOnly: boolean
+  /**
    * Set a {@linkcode value} for the given {@linkcode key}.
    *
    * @throws an Error if the {@linkcode key} is empty.
@@ -75,15 +88,6 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    * In most applications, this is not needed at all.
    */
   trim(): void
-  /**
-   * Get the current total size of the storage, in bytes.
-   */
-  readonly size: number
-  /**
-   * Returns whether this instance is in read-only mode or not.
-   * If this is `true`, you can only use "get"-functions.
-   */
-  readonly isReadOnly: boolean
   /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
