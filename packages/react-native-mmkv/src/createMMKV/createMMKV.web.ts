@@ -98,7 +98,8 @@ export function createMMKV(
       }
     },
     remove: (key) => {
-      const wasRemoved = storage().removeItem(prefixedKey(key)) ?? false
+      storage().removeItem(prefixedKey(key))
+      const wasRemoved = storage().getItem(prefixedKey(key)) === null
       if (wasRemoved) callListeners(key)
       return wasRemoved
     },
