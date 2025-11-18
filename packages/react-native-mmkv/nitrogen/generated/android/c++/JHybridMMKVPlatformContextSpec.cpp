@@ -34,6 +34,12 @@ namespace margelo::nitro::mmkv {
     method(_javaPart);
   }
 
+  std::string JHybridMMKVPlatformContextSpec::toString() {
+    static const auto method = javaClassStatic()->getMethod<jni::JString()>("toString");
+    auto javaString = method(_javaPart);
+    return javaString->toStdString();
+  }
+
   // Properties
   
 

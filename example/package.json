@@ -18,7 +18,7 @@
     "react": "19.1.1",
     "react-native": "0.82.0",
     "react-native-mmkv": "*",
-    "react-native-nitro-modules": "0.31.0",
+    "react-native-nitro-modules": "0.31.7",
     "react-native-safe-area-context": "^5.5.2"
   },
   "devDependencies": {

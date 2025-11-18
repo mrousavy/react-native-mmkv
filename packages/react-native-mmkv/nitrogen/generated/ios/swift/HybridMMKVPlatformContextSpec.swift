@@ -18,6 +18,13 @@ public protocol HybridMMKVPlatformContextSpec_protocol: HybridObject {
   func getAppGroupDirectory() throws -> String?
 }
 
+public extension HybridMMKVPlatformContextSpec_protocol {
+  /// Default implementation of ``HybridObject.toString``
+  func toString() -> String {
+    return "[HybridObject MMKVPlatformContext]"
+  }
+}
+
 /// See ``HybridMMKVPlatformContextSpec``
 open class HybridMMKVPlatformContextSpec_base {
   private weak var cxxWrapper: HybridMMKVPlatformContextSpec_cxx? = nil

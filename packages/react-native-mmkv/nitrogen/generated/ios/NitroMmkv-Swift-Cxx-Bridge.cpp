@@ -10,6 +10,7 @@
 // Include C++ implementation defined types
 #include "HybridMMKVPlatformContextSpecSwift.hpp"
 #include "NitroMmkv-Swift-Cxx-Umbrella.hpp"
+#include <NitroModules/NitroDefines.hpp>
 
 namespace margelo::nitro::mmkv::bridge::swift {
 
