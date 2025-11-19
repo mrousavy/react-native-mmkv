@@ -24,7 +24,6 @@ Pod::Spec.new do |s|
 
   # Add MMKV Core dependency
   s.compiler_flags = '-x objective-c++'
-  s.libraries    = 'z', 'c++'
   s.dependency 'MMKVCore', '2.2.4'
 
   # TODO: Remove when no one uses RN 0.79 anymore
