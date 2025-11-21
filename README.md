@@ -73,6 +73,8 @@ npm install react-native-mmkv react-native-nitro-modules
 cd ios && pod install
 ```
 
+**Note:** For `react-native` versions below `0.71`, use `react-native-mmkv` version `2.5.1`. Versions [`2.6.0`](https://github.com/mrousavy/react-native-mmkv/releases/tag/v2.6.0) and later require a minimum `react-native` version of `0.71`. 
+
 ### Expo
 
 ```sh
