@@ -5,13 +5,13 @@ If you want to use MMKV with [react-query](https://tanstack.com/query/latest/doc
 1. Install `react-query` persist packages
 
 ```sh
-yarn add @tanstack/query-sync-storage-persister @tanstack/react-query-persist-client
+yarn add @tanstack/query-async-storage-persister @tanstack/react-query-persist-client
 ```
 
 2. Add next code into your app
 
 ```ts
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import { createMMKV } from "react-native-mmkv"
 
 const storage = createMMKV();
@@ -29,7 +29,7 @@ const clientStorage = {
   },
 };
 
-export const clientPersister = createSyncStoragePersister({ storage: clientStorage });
+export const clientPersister = createAsyncStoragePersister({ storage: clientStorage });
 ```
 
 3. Use created `clientPersister` in your root component (eg. `App.tsx`)
@@ -46,4 +46,4 @@ const App = () => {
 };
 ```
 
-For more information check their official [docs](https://tanstack.com/query/latest/docs/framework/react/plugins/persistQueryClient#persistqueryclientprovider)
+For more information check their official [docs](https://tanstack.com/query/latest/docs/framework/react/plugins/createAsyncStoragePersister)
