@@ -1,6 +1,6 @@
 #  tinybase wrapper
 
-If you want to use MMKV with [Tinybase](https://github.com/pmndrs/zustand#persist-middleware), follow these steps:
+If you want to use MMKV with [Tinybase](https://tinybase.org/api/persister-react-native-mmkv), follow these steps:
 
 ```ts
 import { createMMKV } from 'react-native-mmkv'
