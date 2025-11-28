@@ -31,6 +31,7 @@ public:
 public:
   static ListenerID addListener(const std::string& mmkvID, const std::function<void(const std::string& /* key */)>& callback);
   static void removeListener(const std::string& mmkvID, ListenerID id);
+  static bool hasListeners(const std::string& mmkvID);
 
 public:
   static void notifyOnValueChanged(const std::string& mmkvID, const std::string& key);
