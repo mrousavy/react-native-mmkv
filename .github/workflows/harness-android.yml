@@ -67,7 +67,7 @@ jobs:
     name: Harness Android (new architecture)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
 
       - name: Install npm dependencies (bun)
