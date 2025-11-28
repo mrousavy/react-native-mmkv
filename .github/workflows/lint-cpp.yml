@@ -38,7 +38,7 @@ jobs:
         run: bun install
 
       - name: Run clang-format style check
-        uses: jidicula/clang-format-action@v4.15.0
+        uses: jidicula/clang-format-action@v4.16.0
         with:
           clang-format-version: '18'
           check-path: ${{ matrix.path }}
