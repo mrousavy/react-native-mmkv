@@ -249,7 +249,7 @@ const wasDeleted = deleteMMKV('my-instance')
 
 ## Testing with Jest or Vitest
 
-A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `createMMKV()` as per normal in your tests. Refer to [example/__tests__/MMKV.test.ts](example/__tests__/MMKV.test.ts) for an example using Jest.
+A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `createMMKV()` as per normal in your tests. Refer to [`example/__tests__/MMKV.harness.ts`](example/__tests__/MMKV.harness.ts) for an example using Jest.
 
 ## Documentation
 
