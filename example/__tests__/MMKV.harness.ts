@@ -812,38 +812,35 @@ describe('MMKV Listeners & Observers', () => {
 describe('Deleting instances and checking if they exist', () => {
   describe('Checking if an instance exists', () => {
     it('should exist', () => {
-      expect(() => {
-        createMMKV({ id: 'some-instance' })
-        return existsMMKV('some-instance')
-      }).toBe(true)
+      createMMKV({ id: 'some-instance' })
+      const exists = existsMMKV('some-instance')
+      expect(exists).toStrictEqual(true)
     })
 
     it('should not exist', () => {
-      expect(() => {
-        return existsMMKV('some-non-existing-instance')
-      }).toBe(false)
+      const exists = existsMMKV('some-non-existing-instance')
+      expect(exists).toStrictEqual(false)
     })
   })
 
   describe('Deleting an instance', () => {
     it('should delete properly', () => {
-      expect(() => {
-        createMMKV({ id: 'some-instance' })
-        return deleteMMKV('some-instance')
-      }).toBe(true)
+      createMMKV({ id: 'some-instance' })
+      const wasDeleted = deleteMMKV('some-instance')
+      expect(wasDeleted).toStrictEqual(true)
     })
+
     it('should delete properly and exists should be false', () => {
-      expect(() => {
-        createMMKV({ id: 'some-instance' })
-        deleteMMKV('some-instance')
-        return existsMMKV('some-instance')
-      }).toBe(true)
+      createMMKV({ id: 'some-instance' })
+      const wasDeleted = deleteMMKV('some-instance')
+      expect(wasDeleted).toStrictEqual(true)
+      const exists = existsMMKV('some-instance')
+      expect(exists).toStrictEqual(false)
     })
 
     it('should not delete', () => {
-      expect(() => {
-        return deleteMMKV('some-non-existing-instance')
-      }).toBe(false)
+      const wasDeleted = deleteMMKV('some-non-existing-instance')
+      expect(wasDeleted).toStrictEqual(false)
     })
   })
 })
