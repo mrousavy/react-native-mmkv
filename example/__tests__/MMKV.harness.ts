@@ -5,7 +5,7 @@ import {
   beforeEach,
   afterEach,
 } from 'react-native-harness';
-import { MMKV, createMMKV } from 'react-native-mmkv';
+import { MMKV, createMMKV, deleteMMKV, existsMMKV } from 'react-native-mmkv';
 
 const waitForNextTick = async () => {
   await new Promise<void>(resolve => setTimeout(resolve, 0));
@@ -808,6 +808,45 @@ describe('MMKV Listeners & Observers', () => {
     });
   });
 });
+
+describe('Deleting instances and checking if they exist', () => {
+  describe('Checking if an instance exists', () => {
+    it('should exist', () => {
+      expect(() => {
+        createMMKV({ id: 'some-instance' })
+        return existsMMKV('some-instance')
+      }).toBe(true)
+    })
+
+    it('should not exist', () => {
+      expect(() => {
+        return existsMMKV('some-non-existing-instance')
+      }).toBe(false)
+    })
+  })
+
+  describe('Deleting an instance', () => {
+    it('should delete properly', () => {
+      expect(() => {
+        createMMKV({ id: 'some-instance' })
+        return deleteMMKV('some-instance')
+      }).toBe(true)
+    })
+    it('should delete properly and exists should be false', () => {
+      expect(() => {
+        createMMKV({ id: 'some-instance' })
+        deleteMMKV('some-instance')
+        return existsMMKV('some-instance')
+      }).toBe(true)
+    })
+
+    it('should not delete', () => {
+      expect(() => {
+        return deleteMMKV('some-non-existing-instance')
+      }).toBe(false)
+    })
+  })
+})
 
 describe('MMKV Error Handling & Edge Cases', () => {
   let storage: MMKV;
