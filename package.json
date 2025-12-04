@@ -1,7 +1,7 @@
 {
   "name": "react-native-mmkv-monorepo",
   "private": true,
-  "version": "4.0.1",
+  "version": "4.1.0",
   "repository": "https://github.com/mrousavy/react-native-mmkv.git",
   "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
   "workspaces": [
