@@ -88,7 +88,7 @@ To create a new instance of the MMKV storage, use the `MMKV` constructor. It is 
 
 #### Default
 
-```js
+```ts
 import { createMMKV } from 'react-native-mmkv'
 
 export const storage = createMMKV()
@@ -103,7 +103,7 @@ See [Configuring App Groups](https://developer.apple.com/documentation/xcode/con
 
 #### Customize
 
-```js
+```ts
 import { createMMKV } from 'react-native-mmkv'
 
 export const storage = createMMKV({
@@ -127,7 +127,7 @@ The following values can be configured:
 
 ### Set
 
-```js
+```ts
 storage.set('user.name', 'Marc')
 storage.set('user.age', 21)
 storage.set('is-mmkv-fast-asf', true)
@@ -135,7 +135,7 @@ storage.set('is-mmkv-fast-asf', true)
 
 ### Get
 
-```js
+```ts
 const username = storage.getString('user.name') // 'Marc'
 const age = storage.getNumber('user.age') // 21
 const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
@@ -143,7 +143,7 @@ const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
 
 ### Hooks
 
-```js
+```ts
 const [username, setUsername] = useMMKVString('user.name')
 const [age, setAge] = useMMKVNumber('user.age')
 const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
@@ -151,7 +151,7 @@ const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
 
 ### Keys
 
-```js
+```ts
 // checking if a specific key exists
 const hasUsername = storage.contains('user.name')
 
@@ -167,7 +167,7 @@ storage.clearAll()
 
 ### Objects
 
-```js
+```ts
 const user = {
   username: 'Marc',
   age: 21
@@ -183,7 +183,7 @@ const userObject = JSON.parse(jsonUser)
 
 ### Encryption
 
-```js
+```ts
 // encrypt all data with a private key
 storage.recrypt('hunter2')
 
@@ -193,7 +193,7 @@ storage.recrypt(undefined)
 
 ### Buffers
 
-```js
+```ts
 const buffer = new ArrayBuffer(3)
 const dataWriter = new Uint8Array(buffer)
 dataWriter[0] = 1
@@ -207,13 +207,33 @@ console.log(buffer) // [1, 100, 255]
 
 ### Size
 
-```js
+```ts
 // get size of MMKV storage in bytes
 const size = storage.size
 if (size >= 4096) {
   // clean unused keys and clear memory cache
   storage.trim()
 }
+```
+
+### Check if an MMKV instance exists
+
+To check if an MMKV instance exists, use `existsMMKV(...)`:
+
+```ts
+import { existsMMKV } from 'react-native-mmkv'
+
+const exists = existsMMKV('my-instance')
+```
+
+### Delete an MMKV instance
+
+To delete an MMKV instance, use `deleteMMKV(...)`:
+
+```ts
+import { deleteMMKV } from 'react-native-mmkv'
+
+const wasDeleted = deleteMMKV('my-instance')
 ```
 
 ## Testing with Jest or Vitest

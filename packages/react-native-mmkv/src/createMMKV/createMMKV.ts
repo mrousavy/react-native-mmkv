@@ -1,14 +1,10 @@
-import { NitroModules } from 'react-native-nitro-modules'
 import type { MMKV } from '../specs/MMKV.nitro'
-import type { Configuration, MMKVFactory } from '../specs/MMKVFactory.nitro'
-import type { MMKVPlatformContext } from '../specs/MMKVPlatformContext.nitro'
+import type { Configuration } from '../specs/MMKVFactory.nitro'
 import { Platform } from 'react-native'
 import { addMemoryWarningListener } from '../addMemoryWarningListener/addMemoryWarningListener'
 import { isTest } from '../isTest'
 import { createMockMMKV } from './createMockMMKV'
-
-let factory: MMKVFactory | undefined
-let platformContext: MMKVPlatformContext | undefined
+import { getMMKVFactory, getPlatformContext } from '../getMMKVFactory'
 
 export function createMMKV(configuration?: Configuration): MMKV {
   if (isTest()) {
@@ -16,18 +12,7 @@ export function createMMKV(configuration?: Configuration): MMKV {
     return createMockMMKV(configuration)
   }
 
-  if (platformContext == null) {
-    // Lazy-init the platform-context HybridObject
-    platformContext = NitroModules.createHybridObject<MMKVPlatformContext>(
-      'MMKVPlatformContext'
-    )
-  }
-  if (factory == null) {
-    // Lazy-init the factory HybridObject
-    factory = NitroModules.createHybridObject<MMKVFactory>('MMKVFactory')
-    const baseDirectory = platformContext.getBaseDirectory()
-    factory.initializeMMKV(baseDirectory)
-  }
+  const factory = getMMKVFactory()
 
   // Pre-parse the config
   let config = configuration ?? { id: factory.defaultMMKVInstanceId }
@@ -36,6 +21,7 @@ export function createMMKV(configuration?: Configuration): MMKV {
     if (config.path == null) {
       // If the user set an App Group directory in Info.plist, let's use
       // the App Group as a MMKV path:
+      const platformContext = getPlatformContext()
       const appGroupDirectory = platformContext.getAppGroupDirectory()
       if (appGroupDirectory != null) {
         config.path = appGroupDirectory

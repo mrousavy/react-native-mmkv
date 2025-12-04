@@ -1,23 +1,10 @@
 import type { MMKV } from '../specs/MMKV.nitro'
 import type { Configuration } from '../specs/MMKVFactory.nitro'
 import { createTextEncoder } from '../web/createTextEncoder'
-
-const canUseDOM =
-  typeof window !== 'undefined' && window.document?.createElement != null
-
-const hasAccessToLocalStorage = () => {
-  try {
-    // throws ACCESS_DENIED error
-    window.localStorage
-
-    return true
-  } catch {
-    return false
-  }
-}
-
-const KEY_WILDCARD = '\\'
-const inMemoryStorage = new Map<string, string>()
+import {
+  getLocalStorage,
+  LOCAL_STORAGE_KEY_WILDCARD,
+} from '../web/getLocalStorage'
 
 export function createMMKV(
   config: Configuration = { id: 'mmkv.default' }
@@ -29,48 +16,14 @@ export function createMMKV(
     throw new Error("MMKV: 'path' is not supported on Web!")
   }
 
-  // canUseDOM check prevents spam in Node server environments, such as Next.js server side props.
-  if (!hasAccessToLocalStorage() && canUseDOM) {
-    console.warn(
-      'MMKV: LocalStorage has been disabled. Your experience will be limited to in-memory storage!'
-    )
-  }
-
-  const storage = () => {
-    if (!canUseDOM) {
-      throw new Error(
-        'Tried to access storage on the server. Did you forget to call this in useEffect?'
-      )
-    }
-
-    if (!hasAccessToLocalStorage()) {
-      return {
-        getItem: (key: string) => inMemoryStorage.get(key) ?? null,
-        setItem: (key: string, value: string) =>
-          inMemoryStorage.set(key, value),
-        removeItem: (key: string) => inMemoryStorage.delete(key),
-        clear: () => inMemoryStorage.clear(),
-        length: inMemoryStorage.size,
-        key: (index: number) => Object.keys(inMemoryStorage).at(index) ?? null,
-      } as Storage
-    }
-
-    const domStorage =
-      global?.localStorage ?? window?.localStorage ?? localStorage
-    if (domStorage == null) {
-      throw new Error(`Could not find 'localStorage' instance!`)
-    }
-    return domStorage
-  }
-
   const textEncoder = createTextEncoder()
   const listeners = new Set<(key: string) => void>()
 
-  if (config.id.includes(KEY_WILDCARD)) {
+  if (config.id.includes(LOCAL_STORAGE_KEY_WILDCARD)) {
     throw new Error('MMKV: `id` cannot contain the backslash character (`\\`)!')
   }
 
-  const keyPrefix = `${config.id}${KEY_WILDCARD}` // mmkv.default\\
+  const keyPrefix = `${config.id}${LOCAL_STORAGE_KEY_WILDCARD}` // mmkv.default\\
   const prefixedKey = (key: string) => {
     if (key.includes('\\')) {
       throw new Error(
@@ -89,48 +42,61 @@ export function createMMKV(
     size: 0,
     isReadOnly: false,
     clearAll: () => {
-      const keys = Object.keys(storage())
+      const storage = getLocalStorage()
+      const keys = Object.keys(storage)
       for (const key of keys) {
         if (key.startsWith(keyPrefix)) {
-          storage().removeItem(key)
+          storage.removeItem(key)
           callListeners(key)
         }
       }
     },
     remove: (key) => {
-      storage().removeItem(prefixedKey(key))
-      const wasRemoved = storage().getItem(prefixedKey(key)) === null
+      const storage = getLocalStorage()
+      storage.removeItem(prefixedKey(key))
+      const wasRemoved = storage.getItem(prefixedKey(key)) === null
       if (wasRemoved) callListeners(key)
       return wasRemoved
     },
     set: (key, value) => {
+      const storage = getLocalStorage()
       if (key === '') throw new Error('Cannot set a value for an empty key!')
-      storage().setItem(prefixedKey(key), value.toString())
+      storage.setItem(prefixedKey(key), value.toString())
       callListeners(key)
     },
-    getString: (key) => storage().getItem(prefixedKey(key)) ?? undefined,
+    getString: (key) => {
+      const storage = getLocalStorage()
+      return storage.getItem(prefixedKey(key)) ?? undefined
+    },
     getNumber: (key) => {
-      const value = storage().getItem(prefixedKey(key))
+      const storage = getLocalStorage()
+      const value = storage.getItem(prefixedKey(key))
       if (value == null) return undefined
       return Number(value)
     },
     getBoolean: (key) => {
-      const value = storage().getItem(prefixedKey(key))
+      const storage = getLocalStorage()
+      const value = storage.getItem(prefixedKey(key))
       if (value == null) return undefined
       return value === 'true'
     },
     getBuffer: (key) => {
-      const value = storage().getItem(prefixedKey(key))
+      const storage = getLocalStorage()
+      const value = storage.getItem(prefixedKey(key))
       if (value == null) return undefined
       return textEncoder.encode(value).buffer
     },
     getAllKeys: () => {
-      const keys = Object.keys(storage())
+      const storage = getLocalStorage()
+      const keys = Object.keys(storage)
       return keys
         .filter((key) => key.startsWith(keyPrefix))
         .map((key) => key.slice(keyPrefix.length))
     },
-    contains: (key) => storage().getItem(prefixedKey(key)) != null,
+    contains: (key) => {
+      const storage = getLocalStorage()
+      return storage.getItem(prefixedKey(key)) != null
+    },
     recrypt: () => {
       throw new Error('`recrypt(..)` is not supported on Web!')
     },
