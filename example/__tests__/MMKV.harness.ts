@@ -819,7 +819,7 @@ describe('Deleting instances and checking if they exist', () => {
 
     it('should not exist', () => {
       const exists = existsMMKV('some-non-existing-instance')
-      expect(exists).toStrictEqual(true)
+      expect(exists).toStrictEqual(false)
     })
   })
 
