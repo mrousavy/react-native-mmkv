@@ -17,8 +17,11 @@ public:
 
 public:
   std::string getDefaultMMKVInstanceId() override;
-  std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) override;
   void initializeMMKV(const std::string& rootPath) override;
+
+  std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) override;
+  bool deleteMMKV(const std::string& id) override;
+  bool existsMMKV(const std::string& id) override;
 };
 
 } // namespace margelo::nitro::mmkv
