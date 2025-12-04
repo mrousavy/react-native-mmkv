@@ -15,6 +15,8 @@
 
 // Forward declaration of `Listener` to properly resolve imports.
 namespace margelo::nitro::mmkv { struct Listener; }
+// Forward declaration of `HybridMMKVSpec` to properly resolve imports.
+namespace margelo::nitro::mmkv { class HybridMMKVSpec; }
 
 #include <string>
 #include <NitroModules/ArrayBuffer.hpp>
@@ -23,6 +25,8 @@ namespace margelo::nitro::mmkv { struct Listener; }
 #include <vector>
 #include "Listener.hpp"
 #include <functional>
+#include <memory>
+#include "HybridMMKVSpec.hpp"
 
 namespace margelo::nitro::mmkv {
 
@@ -69,6 +73,7 @@ namespace margelo::nitro::mmkv {
       virtual void recrypt(const std::optional<std::string>& key) = 0;
       virtual void trim() = 0;
       virtual Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) = 0;
+      virtual double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) = 0;
 
     protected:
       // Hybrid Setup

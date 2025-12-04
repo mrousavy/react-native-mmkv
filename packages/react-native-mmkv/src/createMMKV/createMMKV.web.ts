@@ -114,5 +114,18 @@ export function createMMKV(
         },
       }
     },
+    importAllFrom: (other) => {
+      const storage = getLocalStorage()
+      const keys = other.getAllKeys()
+      let imported = 0
+      for (const key of keys) {
+        const string = other.getString(key)
+        if (string != null) {
+          storage.set(key, string)
+          imported++
+        }
+      }
+      return imported
+    },
   }
 }
