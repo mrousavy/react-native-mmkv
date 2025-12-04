@@ -54,8 +54,10 @@ namespace margelo::nitro::mmkv {
 
     public:
       // Methods
-      virtual std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) = 0;
       virtual void initializeMMKV(const std::string& rootPath) = 0;
+      virtual std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) = 0;
+      virtual bool deleteMMKV(const std::string& id) = 0;
+      virtual bool existsMMKV(const std::string& id) = 0;
 
     protected:
       // Hybrid Setup

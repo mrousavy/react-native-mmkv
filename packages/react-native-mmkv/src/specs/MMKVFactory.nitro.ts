@@ -69,15 +69,27 @@ export interface Configuration {
 export interface MMKVFactory
   extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   /**
+   * Initialize the MMKV library with the given root path.
+   * This has to be called once, before using {@linkcode createMMKV}.
+   */
+  initializeMMKV(rootPath: string): void
+
+  /**
    * Create a new {@linkcode MMKV} instance with the given {@linkcode Configuration}
    */
   createMMKV(configuration: Configuration): MMKV
 
   /**
-   * Initialize the MMKV library with the given root path.
-   * This has to be called once, before using {@linkcode createMMKV}.
+   * Deletes the MMKV instance with the
+   * given {@linkcode id}.
    */
-  initializeMMKV(rootPath: string): void
+  deleteMMKV(id: string): boolean
+
+  /**
+   * Returns `true` if an MMKV instance with the
+   * given {@linkcode id} exists, `false` otherwise.
+   */
+  existsMMKV(id: string): boolean
 
   /**
    * Get the default MMKV instance's ID.
