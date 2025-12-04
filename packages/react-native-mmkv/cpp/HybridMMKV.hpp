@@ -37,7 +37,6 @@ public:
   void recrypt(const std::optional<std::string>& key) override;
   void trim() override;
   Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) override;
-  double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) override;
 
 private:
   static MMKVMode getMMKVMode(const Configuration& config);

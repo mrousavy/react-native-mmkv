@@ -79,17 +79,5 @@ export function createMockMMKV(
         },
       }
     },
-    importAllFrom: (other) => {
-      const keys = other.getAllKeys()
-      let imported = 0
-      for (const key of keys) {
-        const data = other.getBuffer(key)
-        if (data != null) {
-          storage.set(key, data)
-          imported++
-        }
-      }
-      return imported
-    },
   }
 }

@@ -95,11 +95,4 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    * To unsubscribe from value changes, call `remove()` on the Listener.
    */
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener
-
-  /**
-   * Imports all keys and values from the
-   * given other {@linkcode MMKV} instance.
-   * @returns the number of imported keys/values.
-   */
-  importAllFrom(other: MMKV): number
 }

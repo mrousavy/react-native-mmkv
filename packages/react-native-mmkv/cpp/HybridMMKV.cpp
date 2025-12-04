@@ -212,14 +212,4 @@ MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
   }
 }
 
-double HybridMMKV::importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) {
-  auto hybridMMKV = std::dynamic_pointer_cast<HybridMMKV>(other);
-  if (hybridMMKV == nullptr) {
-    throw std::runtime_error("The given `MMKV` instance is not of type `HybridMMKV`!");
-  }
-
-  size_t importedCount = instance->importFrom(hybridMMKV->instance);
-  return static_cast<double>(importedCount);
-}
-
 } // namespace margelo::nitro::mmkv
