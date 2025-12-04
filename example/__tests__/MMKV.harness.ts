@@ -399,6 +399,32 @@ describe('MMKV Configuration & Multiple Instances', () => {
       instances.forEach(instance => instance.clearAll());
     });
 
+    it('should import other keys properly', () => {
+      const storage1 = createMMKV({ id: 'first-storage' })
+      const storage2 = createMMKV({ id: 'second-storage' })
+      storage1.clearAll()
+      storage2.clearAll()
+
+      expect(storage1.getAllKeys()).toEqual([])
+      expect(storage2.getAllKeys()).toEqual([])
+
+      storage1.set('key1', 'value1')
+      storage1.set('key2', 42)
+      storage1.set('key3', true)
+
+      expect(storage1.getAllKeys().length).toStrictEqual(3)
+      expect(storage2.getAllKeys().length).toStrictEqual(0)
+
+      storage2.importAllFrom(storage1)
+
+      expect(storage1.getAllKeys().length).toStrictEqual(3)
+      expect(storage2.getAllKeys().length).toStrictEqual(3)
+
+      expect(storage2.getString('key1')).toStrictEqual('value1')
+      expect(storage2.getNumber('key2')).toStrictEqual(42)
+      expect(storage2.getBoolean('key3')).toStrictEqual(true)
+    })
+
     it('should handle instance properties correctly', () => {
       const storage = createMMKV({ id: 'properties-test' });
 
@@ -810,6 +836,11 @@ describe('MMKV Listeners & Observers', () => {
 });
 
 describe('Deleting instances and checking if they exist', () => {
+  beforeEach(() => {
+    deleteMMKV('some-instance')
+    deleteMMKV('some-non-existing-instance')
+  })
+
   describe('Checking if an instance exists', () => {
     it('should exist', () => {
       createMMKV({ id: 'some-instance' })

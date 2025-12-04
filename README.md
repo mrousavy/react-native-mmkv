@@ -216,6 +216,17 @@ if (size >= 4096) {
 }
 ```
 
+### Importing all data from another MMKV instance
+
+To import all keys and values from another MMKV instance, use `importAllFrom(...)`:
+
+```ts
+const storage = createMMKV(...)
+const otherStorage = createMMKV(...)
+
+const importedCount = storage.importAllFrom(otherStorage)
+```
+
 ### Check if an MMKV instance exists
 
 To check if an MMKV instance exists, use `existsMMKV(...)`:
