@@ -36,7 +36,7 @@ jobs:
     name: Compile TypeScript (tsc)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
       - uses: reviewdog/action-setup@v1
 
@@ -53,7 +53,7 @@ jobs:
     name: Lint JS (eslint, prettier)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
       - uses: reviewdog/action-setup@v1
 
