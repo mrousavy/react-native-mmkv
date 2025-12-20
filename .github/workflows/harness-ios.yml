@@ -122,4 +122,4 @@ jobs:
       - name: Run Harness E2E tests
         working-directory: example
         run: |
-          bun run test:harness
+          bun run test:harness --harnessRunner ios
