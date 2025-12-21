@@ -136,7 +136,7 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             adb install -r "./android/app/build/outputs/apk/debug/app-debug.apk"
-            bun react-native-harness test android
+            bun run test:harness --harnessRunner android
 
       # Gradle cache doesn't like daemons
       - name: Stop Gradle Daemon
