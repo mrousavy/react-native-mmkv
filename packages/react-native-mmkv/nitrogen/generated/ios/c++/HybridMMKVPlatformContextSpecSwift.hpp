@@ -48,7 +48,8 @@ namespace margelo::nitro::mmkv {
     inline size_t getExternalMemorySize() noexcept override {
       return _swiftPart.getMemorySize();
     }
-    bool equals(const std::shared_ptr<HybridObject>& other) override {
+
+    bool equals(const std::shared_ptr<HybridObject>& other) {
       if (auto otherCast = std::dynamic_pointer_cast<HybridMMKVPlatformContextSpecSwift>(other)) {
         return _swiftPart.equals(otherCast->_swiftPart);
       }
