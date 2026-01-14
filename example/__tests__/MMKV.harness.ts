@@ -527,6 +527,28 @@ describe('MMKV Encryption & Security', () => {
 
       storage.clearAll();
     });
+
+    it('should persist between MMKV instances', () => {
+      {
+        // Open storage, write value, and close storage again
+        const storage = createMMKV({
+          id: 'some-encrypted-instance',
+          encryptionKey: 'hunter2',
+        });
+
+        storage.set('test', 'value');
+        expect(storage.getString('test')).toStrictEqual('value');
+        storage.dispose()
+      }
+      {
+        // Open storage again and verify key persisted
+        const storage = createMMKV({
+          id: 'some-encrypted-instance',
+          encryptionKey: 'hunter2',
+        });
+        expect(storage.getString('test')).toStrictEqual('value');
+      }
+    });
   });
 });
 
@@ -801,7 +823,7 @@ describe('MMKV Listeners & Observers', () => {
     });
 
     it('should handle listener removal multiple times safely', () => {
-      const listener = storage.addOnValueChangedListener(() => {});
+      const listener = storage.addOnValueChangedListener(() => { });
 
       // Should not throw errors
       listener.remove();
