@@ -549,6 +549,16 @@ describe('MMKV Encryption & Security', () => {
         expect(storage.getString('test')).toStrictEqual('value');
       }
     });
+
+    it('should handle long encryption keys', () => {
+      const storage = createMMKV({
+        id: 'some-long-encrypted-instance',
+        encryptionKey: 'some LONG encryption key with emojis 😆😍',
+      });
+
+      storage.set('test', 'value');
+      expect(storage.getString('test')).toStrictEqual('value');
+    });
   });
 });
 
