@@ -31,14 +31,14 @@ open class HybridMMKVPlatformContextSpec_base {
   public init() { }
   public func getCxxWrapper() -> HybridMMKVPlatformContextSpec_cxx {
   #if DEBUG
-    guard self is HybridMMKVPlatformContextSpec else {
+    guard self is any HybridMMKVPlatformContextSpec else {
       fatalError("`self` is not a `HybridMMKVPlatformContextSpec`! Did you accidentally inherit from `HybridMMKVPlatformContextSpec_base` instead of `HybridMMKVPlatformContextSpec`?")
     }
   #endif
     if let cxxWrapper = self.cxxWrapper {
       return cxxWrapper
     } else {
-      let cxxWrapper = HybridMMKVPlatformContextSpec_cxx(self as! HybridMMKVPlatformContextSpec)
+      let cxxWrapper = HybridMMKVPlatformContextSpec_cxx(self as! any HybridMMKVPlatformContextSpec)
       self.cxxWrapper = cxxWrapper
       return cxxWrapper
     }
