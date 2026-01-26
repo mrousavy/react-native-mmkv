@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
 
   # Add MMKV Core dependency
   s.compiler_flags = '-x objective-c++'
-  s.dependency 'MMKVCore', '2.2.4'
+  s.dependency 'MMKVCore', '2.3.0'
 
   # TODO: Remove when no one uses RN 0.79 anymore
   # Add support for React Native 0.79 or below
