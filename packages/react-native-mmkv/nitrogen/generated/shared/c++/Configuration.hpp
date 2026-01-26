@@ -28,11 +28,14 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
+// Forward declaration of `EncryptionType` to properly resolve imports.
+namespace margelo::nitro::mmkv { enum class EncryptionType; }
 // Forward declaration of `Mode` to properly resolve imports.
 namespace margelo::nitro::mmkv { enum class Mode; }
 
 #include <string>
 #include <optional>
+#include "EncryptionType.hpp"
 #include "Mode.hpp"
 
 namespace margelo::nitro::mmkv {
@@ -45,12 +48,13 @@ namespace margelo::nitro::mmkv {
     std::string id     SWIFT_PRIVATE;
     std::optional<std::string> path     SWIFT_PRIVATE;
     std::optional<std::string> encryptionKey     SWIFT_PRIVATE;
+    std::optional<EncryptionType> encryptionType     SWIFT_PRIVATE;
     std::optional<Mode> mode     SWIFT_PRIVATE;
     std::optional<bool> readOnly     SWIFT_PRIVATE;
 
   public:
     Configuration() = default;
-    explicit Configuration(std::string id, std::optional<std::string> path, std::optional<std::string> encryptionKey, std::optional<Mode> mode, std::optional<bool> readOnly): id(id), path(path), encryptionKey(encryptionKey), mode(mode), readOnly(readOnly) {}
+    explicit Configuration(std::string id, std::optional<std::string> path, std::optional<std::string> encryptionKey, std::optional<EncryptionType> encryptionType, std::optional<Mode> mode, std::optional<bool> readOnly): id(id), path(path), encryptionKey(encryptionKey), encryptionType(encryptionType), mode(mode), readOnly(readOnly) {}
 
   public:
     friend bool operator==(const Configuration& lhs, const Configuration& rhs) = default;
@@ -69,6 +73,7 @@ namespace margelo::nitro {
         JSIConverter<std::string>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "id"))),
         JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "path"))),
         JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionKey"))),
+        JSIConverter<std::optional<margelo::nitro::mmkv::EncryptionType>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionType"))),
         JSIConverter<std::optional<margelo::nitro::mmkv::Mode>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "mode"))),
         JSIConverter<std::optional<bool>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "readOnly")))
       );
@@ -78,6 +83,7 @@ namespace margelo::nitro {
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "id"), JSIConverter<std::string>::toJSI(runtime, arg.id));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "path"), JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.path));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "encryptionKey"), JSIConverter<std::optional<std::string>>::toJSI(runtime, arg.encryptionKey));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "encryptionType"), JSIConverter<std::optional<margelo::nitro::mmkv::EncryptionType>>::toJSI(runtime, arg.encryptionType));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "mode"), JSIConverter<std::optional<margelo::nitro::mmkv::Mode>>::toJSI(runtime, arg.mode));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "readOnly"), JSIConverter<std::optional<bool>>::toJSI(runtime, arg.readOnly));
       return obj;
@@ -93,6 +99,7 @@ namespace margelo::nitro {
       if (!JSIConverter<std::string>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "id")))) return false;
       if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "path")))) return false;
       if (!JSIConverter<std::optional<std::string>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionKey")))) return false;
+      if (!JSIConverter<std::optional<margelo::nitro::mmkv::EncryptionType>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionType")))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::mmkv::Mode>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "mode")))) return false;
       if (!JSIConverter<std::optional<bool>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "readOnly")))) return false;
       return true;

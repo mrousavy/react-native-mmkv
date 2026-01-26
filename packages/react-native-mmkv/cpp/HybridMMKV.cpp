@@ -22,6 +22,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
 
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
+  bool useAes256Encryption = config.encryptionType.has_value() && config.encryptionType.value() == EncryptionType::AES_256;
   MMKVMode mode = getMMKVMode(config);
   if (config.readOnly.has_value() && config.readOnly.value()) {
     Logger::log(LogLevel::Info, TAG, "Instance is read-only!");
@@ -29,8 +30,12 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   }
 
 #ifdef __APPLE__
-  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr);
+  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, 0, useAes256Encryption);
 #else
+  if (useAes256Encryption) {
+    throw std::runtime_error("Failed to create MMKV instance! AES-256 encryption is only supported on iOS!");
+  }
+
   instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
 #endif
 
@@ -40,10 +45,16 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
     }
 
-    // Check if encryptionKey is invalid
-    if (encryptionKey.size() > 16) [[unlikely]] {
+    // Check if encryptionKey is invalid for AES-128 encryption
+    if (encryptionKey.size() > 16 && !useAes256Encryption) [[unlikely]] {
       throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer "
-                               "than 16 bytes!");
+                               "than 16 bytes with AES-128 encryption!");
+    }
+
+    // Check if encryptionKey is invalid for AES-256 encryption
+    if (encryptionKey.size() > 32 && useAes256Encryption) [[unlikely]] {
+      throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer "
+                               "than 32 bytes with AES-256 encryption!");
     }
 
     // Check if path is maybe invalid
