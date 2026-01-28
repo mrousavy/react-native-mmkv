@@ -74,6 +74,7 @@ android {
     excludes = [
             "META-INF",
             "META-INF/**",
+            "**/libNitroModules.so",
             "**/libc++_shared.so",
             "**/libfbjni.so",
             "**/libjsi.so",
