@@ -64,7 +64,7 @@ export interface Configuration {
    *
    * @example
    * ```ts
-   * const secureStorage = createMMKV({ 
+   * const secureStorage = createMMKV({
    *   id: 'secure-storage',
    *   encryptionKey: 'my-encryption-key!',
    *   encryptionType: 'AES-256'
