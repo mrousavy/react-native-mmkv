@@ -31,7 +31,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   }
 
 #ifdef __APPLE__
-  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, DEFAULT_MMAP_SIZE, useAes256Encryption);
+  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, defaultExpectedCapacity, useAes256Encryption);
 #else
   instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr, defaultExpectedCapacity, useAes256Encryption);
 #endif
