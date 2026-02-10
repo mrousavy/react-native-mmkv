@@ -139,6 +139,6 @@ dependencies {
   implementation project(":react-native-nitro-modules")
 
   // Add a dependency on mmkv core (this ships a C++ prefab)
-  implementation "io.github.zhongwuzw:mmkv:2.2.4"
+  implementation "io.github.zhongwuzw:mmkv:2.3.0"
 }
 
