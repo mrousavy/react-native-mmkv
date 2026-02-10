@@ -71,7 +71,6 @@ export interface Configuration {
    * })
    * ```
    *
-   * @platform iOS
    * @default 'AES-128'
    */
   encryptionType?: EncryptionType
