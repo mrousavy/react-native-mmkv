@@ -22,6 +22,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
 
   std::string* pathPtr = path.size() > 0 ? &path : nullptr;
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
+  size_t defaultExpectedCapacity = 0;
   bool useAes256Encryption = config.encryptionType.has_value() && config.encryptionType.value() == EncryptionType::AES_256;
   MMKVMode mode = getMMKVMode(config);
   if (config.readOnly.has_value() && config.readOnly.value()) {
@@ -32,11 +33,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
 #ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, DEFAULT_MMAP_SIZE, useAes256Encryption);
 #else
-  if (useAes256Encryption) {
-    throw std::runtime_error("Failed to create MMKV instance! AES-256 encryption is only supported on iOS!");
-  }
-
-  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr);
+  instance = MMKV::mmkvWithID(config.id, DEFAULT_MMAP_SIZE, mode, encryptionKeyPtr, pathPtr, defaultExpectedCapacity, useAes256Encryption);
 #endif
 
   if (instance == nullptr) [[unlikely]] {
