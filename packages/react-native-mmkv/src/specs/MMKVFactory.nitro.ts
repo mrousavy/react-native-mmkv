@@ -9,6 +9,13 @@ import type { MMKV } from './MMKV.nitro'
 export type Mode = 'single-process' | 'multi-process'
 
 /**
+ * Configures the encryption algorithm for the MMKV instance.
+ * - `AES-128`: Uses AES-128 encryption (default).
+ * - `AES-256`: Uses AES-256 encryption for enhanced security.
+ */
+export type EncryptionType = 'AES-128' | 'AES-256'
+
+/**
  * Used for configuration of a single MMKV instance.
  */
 export interface Configuration {
@@ -42,7 +49,7 @@ export interface Configuration {
   /**
    * The MMKV instance's encryption/decryption key. By default, MMKV stores all key-values in plain text on file, relying on iOS's sandbox to make sure the file is encrypted. Should you worry about information leaking, you can choose to encrypt MMKV.
    *
-   * Encryption keys can have a maximum length of 16 bytes.
+   * Encryption keys can have a maximum length of 16 bytes with AES-128 encryption and 32 bytes with AES-256 encryption.
    *
    * @example
    * ```ts
@@ -52,6 +59,21 @@ export interface Configuration {
    * @default undefined
    */
   encryptionKey?: string
+  /**
+   * The encryption algorithm to use when an encryption key is provided.
+   *
+   * @example
+   * ```ts
+   * const secureStorage = createMMKV({
+   *   id: 'secure-storage',
+   *   encryptionKey: 'my-encryption-key!',
+   *   encryptionType: 'AES-256'
+   * })
+   * ```
+   *
+   * @default 'AES-128'
+   */
+  encryptionType?: EncryptionType
   /**
    * Configure the processing mode for MMKV.
    *

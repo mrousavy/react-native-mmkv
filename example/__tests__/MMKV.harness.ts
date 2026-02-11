@@ -449,18 +449,20 @@ describe('MMKV Encryption & Security', () => {
   afterEach(() => {
     // Clean up encrypted instances
     try {
-      createMMKV({ id: 'encrypted-test' }).clearAll();
-      createMMKV({ id: 'recrypt-test' }).clearAll();
+      createMMKV({ id: 'encrypted-test-128' }).clearAll();
+      createMMKV({ id: 'recrypt-test-128' }).clearAll();
+      createMMKV({ id: 'encrypted-test-256' }).clearAll();
+      createMMKV({ id: 'recrypt-test-256' }).clearAll();
     } catch {
       // Instances might not exist, that's okay
     }
   });
 
-  describe('Encryption', () => {
+  describe('Encryption (AES-128)', () => {
     it('should create encrypted instance and store data', () => {
       const encryptionKey = 'test-key-123456';
       const storage = createMMKV({
-        id: 'encrypted-test',
+        id: 'encrypted-test-128',
         encryptionKey,
       });
 
@@ -478,7 +480,7 @@ describe('MMKV Encryption & Security', () => {
     it('should isolate encrypted and non-encrypted instances', () => {
       const plainStorage = createMMKV({ id: 'plain-test' });
       const encryptedStorage = createMMKV({
-        id: 'encrypted-isolation-test',
+        id: 'encrypted-isolation-test-128',
         encryptionKey: 'secret-key-456',
       });
 
@@ -495,7 +497,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should handle recryption', () => {
-      const storage = createMMKV({ id: 'recrypt-test' });
+      const storage = createMMKV({ id: 'recrypt-test-128' });
 
       // Set data without encryption
       storage.set('data-key', 'original-data');
@@ -520,6 +522,83 @@ describe('MMKV Encryption & Security', () => {
       const storage = createMMKV({
         id: 'key-validation-test',
         encryptionKey: maxKey,
+      });
+
+      storage.set('test', 'value');
+      expect(storage.getString('test')).toStrictEqual('value');
+
+      storage.clearAll();
+    });
+  });
+
+  describe('Encryption (AES-256)', () => {
+    it('should create encrypted instance and store data', () => {
+      const encryptionKey = 'test-key-123456-longer-than-16';
+      const storage = createMMKV({
+        id: 'encrypted-test-256',
+        encryptionKey,
+        encryptionType: 'AES-256',
+      });
+
+      storage.set('secret-data', 'confidential information');
+      storage.set('secret-number', 42);
+      storage.set('secret-boolean', true);
+
+      expect(storage.getString('secret-data')).toStrictEqual(
+        'confidential information',
+      );
+      expect(storage.getNumber('secret-number')).toStrictEqual(42);
+      expect(storage.getBoolean('secret-boolean')).toStrictEqual(true);
+    });
+
+    it('should isolate encrypted and non-encrypted instances', () => {
+      const plainStorage = createMMKV({ id: 'plain-test' });
+      const encryptedStorage = createMMKV({
+        id: 'encrypted-isolation-test-256',
+        encryptionKey: 'secret-key-456',
+        encryptionType: 'AES-256',
+      });
+
+      const key = 'shared-key';
+      plainStorage.set(key, 'plain-value');
+      encryptedStorage.set(key, 'encrypted-value');
+
+      expect(plainStorage.getString(key)).toStrictEqual('plain-value');
+      expect(encryptedStorage.getString(key)).toStrictEqual('encrypted-value');
+
+      // Clean up
+      plainStorage.clearAll();
+      encryptedStorage.clearAll();
+    });
+
+    it('should handle recryption', () => {
+      // TODO: Add encryptionType to recrypt
+      const storage = createMMKV({ id: 'recrypt-test-256' });
+
+      // Set data without encryption
+      storage.set('data-key', 'original-data');
+      expect(storage.getString('data-key')).toStrictEqual('original-data');
+
+      // Encrypt the storage
+      storage.recrypt('new-encryption-key');
+      expect(storage.getString('data-key')).toStrictEqual('original-data');
+
+      // Change encryption key
+      storage.recrypt('different-key-123');
+      expect(storage.getString('data-key')).toStrictEqual('original-data');
+
+      // Remove encryption
+      storage.recrypt(undefined);
+      expect(storage.getString('data-key')).toStrictEqual('original-data');
+    });
+
+    it('should handle encryption key validation', () => {
+      // Test maximum key length (32 bytes)
+      const maxKey = '12345678901234561234567890123456'; // exactly 32 characters
+      const storage = createMMKV({
+        id: 'key-validation-test',
+        encryptionKey: maxKey,
+        encryptionType: 'AES-256',
       });
 
       storage.set('test', 'value');
@@ -801,7 +880,7 @@ describe('MMKV Listeners & Observers', () => {
     });
 
     it('should handle listener removal multiple times safely', () => {
-      const listener = storage.addOnValueChangedListener(() => {});
+      const listener = storage.addOnValueChangedListener(() => { });
 
       // Should not throw errors
       listener.remove();
