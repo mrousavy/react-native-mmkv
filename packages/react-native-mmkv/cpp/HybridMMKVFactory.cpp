@@ -18,16 +18,7 @@ std::string HybridMMKVFactory::getDefaultMMKVInstanceId() {
 void HybridMMKVFactory::initializeMMKV(const std::string& rootPath) {
   Logger::log(LogLevel::Info, TAG, "Initializing MMKV with rootPath=%s", rootPath.c_str());
 
-#if defined(MMKV_LOG_LEVEL)
-  #if MMKV_LOG_LEVEL < 0 || MMKV_LOG_LEVEL > 4
-    #error "MMKV_LOG_LEVEL must be between 0 (Debug) and 4 (None)"
-  #endif
   MMKVLogLevel logLevel = static_cast<MMKVLogLevel>(MMKV_LOG_LEVEL);
-#elif defined(NITRO_DEBUG)
-  MMKVLogLevel logLevel = ::mmkv::MMKVLogDebug;
-#else
-  MMKVLogLevel logLevel = ::mmkv::MMKVLogWarning;
-#endif
   MMKV::initializeMMKV(rootPath, logLevel);
 }
 
