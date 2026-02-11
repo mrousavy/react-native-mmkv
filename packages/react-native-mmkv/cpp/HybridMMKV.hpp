@@ -22,6 +22,7 @@ public:
   std::string getId() override;
   double getSize() override;
   bool getIsReadOnly() override;
+  bool getIsEncrypted() override;
 
 public:
   // Methods

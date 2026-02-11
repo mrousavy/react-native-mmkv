@@ -41,6 +41,7 @@ export function createMMKV(
     id: config.id,
     size: 0,
     isReadOnly: false,
+    isEncrypted: false,
     clearAll: () => {
       const storage = getLocalStorage()
       const keys = Object.keys(storage)

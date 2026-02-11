@@ -19,6 +19,12 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    */
   readonly isReadOnly: boolean
   /**
+   * Get whether this instance is encrypted, or not.
+   * @see {@linkcode encrypt | encrypt(...)}
+   * @see {@linkcode decrypt | decrypt()}
+   */
+  readonly isEncrypted: boolean
+  /**
    * Set a {@linkcode value} for the given {@linkcode key}.
    *
    * @throws an Error if the {@linkcode key} is empty.
