@@ -42,16 +42,18 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
     }
 
-    // Check if encryptionKey is invalid for AES-128 encryption
-    if (encryptionKey.size() > 16 && !useAes256Encryption) [[unlikely]] {
-      throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer "
-                               "than 16 bytes with AES-128 encryption!");
-    }
-
-    // Check if encryptionKey is invalid for AES-256 encryption
-    if (encryptionKey.size() > 32 && useAes256Encryption) [[unlikely]] {
-      throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer "
-                               "than 32 bytes with AES-256 encryption!");
+    if (useAes256Encryption) {
+      // With AES-256, the max key length is 32 bytes.
+      if (encryptionKey.size() > 32) [[unlikely]] {
+        throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer "
+                                 "than 32 bytes with AES-256 encryption!");
+      }
+    } else {
+      // With AES-128, the max key length is 16 bytes.
+      if (encryptionKey.size() > 16) [[unlikely]] {
+        throw std::runtime_error("Failed to create MMKV instance! `encryptionKey` cannot be longer "
+                                 "than 16 bytes with AES-128 encryption!");
+      }
     }
 
     // Check if path is maybe invalid
