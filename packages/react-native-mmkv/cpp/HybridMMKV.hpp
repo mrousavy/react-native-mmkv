@@ -35,6 +35,8 @@ public:
   std::vector<std::string> getAllKeys() override;
   void clearAll() override;
   void recrypt(const std::optional<std::string>& key) override;
+  void encrypt(const std::string& key, std::optional<EncryptionType> encryptionType) override;
+  void decrypt() override;
   void trim() override;
   Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) override;
   double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) override;

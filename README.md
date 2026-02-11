@@ -184,11 +184,13 @@ const userObject = JSON.parse(jsonUser)
 ### Encryption
 
 ```ts
-// encrypt all data with a private key
-storage.recrypt('hunter2')
+// encrypt all data with a private key using AES-128
+storage.encrypt('hunter2')
+// encrypt all data with a private key using AES-256
+storage.encrypt('hunter2again', 'AES-256')
 
 // remove encryption
-storage.recrypt(undefined)
+storage.decrypt()
 ```
 
 ### Buffers

@@ -63,6 +63,12 @@ export function createMockMMKV(
     recrypt: () => {
       console.warn('Encryption is not supported in mocked MMKV instances!')
     },
+    encrypt: () => {
+      console.warn('Encryption is not supported in mocked MMKV instances!')
+    },
+    decrypt: () => {
+      console.warn('Encryption is not supported in mocked MMKV instances!')
+    },
     trim: () => {
       // no-op
     },
