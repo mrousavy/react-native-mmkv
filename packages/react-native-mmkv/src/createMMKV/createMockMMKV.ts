@@ -22,6 +22,7 @@ export function createMockMMKV(
       return storage.size
     },
     isReadOnly: false,
+    isEncrypted: false,
     clearAll: () => {
       const keysBefore = storage.keys()
       storage.clear()

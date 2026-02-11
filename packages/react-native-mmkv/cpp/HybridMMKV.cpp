@@ -75,6 +75,10 @@ bool HybridMMKV::getIsReadOnly() {
   return instance->isReadOnly();
 }
 
+bool HybridMMKV::getIsEncrypted() {
+  return instance->isEncryptionEnabled();
+}
+
 // helper: overload pattern matching for lambdas
 template <class... Ts>
 struct overloaded : Ts... {
