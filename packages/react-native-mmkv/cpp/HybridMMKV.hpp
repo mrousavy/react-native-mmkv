@@ -21,6 +21,8 @@ public:
   // Properties
   std::string getId() override;
   double getSize() override;
+  double getByteSize() override;
+  double getLength() override;
   bool getIsReadOnly() override;
   bool getIsEncrypted() override;
 

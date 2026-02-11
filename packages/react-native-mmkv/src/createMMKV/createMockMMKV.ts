@@ -18,8 +18,15 @@ export function createMockMMKV(
 
   return {
     id: config.id,
-    get size(): number {
+    get length(): number {
       return storage.size
+    },
+    get size(): number {
+      return this.byteSize
+    },
+    get byteSize(): number {
+      // esimate - assumes UTF8
+      return JSON.stringify(storage).length
     },
     isReadOnly: false,
     isEncrypted: false,

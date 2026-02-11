@@ -435,9 +435,9 @@ describe('MMKV Configuration & Multiple Instances', () => {
       storage.set('key1', 'value1');
       storage.set('key2', 42);
 
+      expect(typeof storage.length).toBe('number');
+      expect(storage.length).toStrictEqual(2);
       expect(storage.getAllKeys().length).toStrictEqual(2);
-      expect(typeof storage.size).toBe('number');
-      expect(storage.size).toBeGreaterThan(0);
 
       // Clean up
       storage.clearAll();
@@ -622,16 +622,28 @@ describe('MMKV Storage Management', () => {
   });
 
   describe('Storage Size & Management', () => {
-    it('should track storage size correctly', () => {
-      const initialSize = storage.size;
+    it('should track storage byte size correctly', () => {
+      const initialSize = storage.byteSize;
 
       storage.set('test-key', 'test-value');
-      expect(storage.size).toBeGreaterThan(initialSize);
+      expect(storage.byteSize).toBeGreaterThan(initialSize);
 
-      const sizeAfterSet = storage.size;
+      const sizeAfterSet = storage.byteSize;
 
       storage.set('another-key', 'another-value');
-      expect(storage.size).toBeGreaterThan(sizeAfterSet);
+      expect(storage.byteSize).toBeGreaterThan(sizeAfterSet);
+    });
+
+    it('should track storage key length correctly', () => {
+      const initialLength = storage.length;
+
+      storage.set('test-key', 'test-value');
+      expect(storage.length).toStrictEqual(initialLength + 1);
+
+      const lengthAfterSet = storage.length;
+
+      storage.set('another-key', 'another-value');
+      expect(storage.length).toBeGreaterThan(lengthAfterSet);
     });
 
     it('should handle trim operation', () => {
@@ -640,7 +652,7 @@ describe('MMKV Storage Management', () => {
         storage.set(`key-${i}`, `value-${i}`);
       }
 
-      const sizeBeforeTrim = storage.size;
+      const sizeBeforeTrim = storage.byteSize;
       expect(sizeBeforeTrim).toBeGreaterThan(0);
 
       // Remove half the data
@@ -665,7 +677,8 @@ describe('MMKV Storage Management', () => {
       storage.set('buffer-key', new Uint8Array([1, 2, 3]).buffer);
 
       expect(storage.getAllKeys().length).toStrictEqual(4);
-      expect(storage.size).toBeGreaterThan(0);
+      expect(storage.byteSize).toBeGreaterThan(0);
+      expect(storage.length).toBeGreaterThan(0);
 
       storage.clearAll();
 
@@ -674,6 +687,7 @@ describe('MMKV Storage Management', () => {
       expect(storage.contains('number-key')).toBe(false);
       expect(storage.contains('boolean-key')).toBe(false);
       expect(storage.contains('buffer-key')).toBe(false);
+      expect(storage.length).toBe(0)
     });
 
     it('should handle storage operations after clearAll', () => {

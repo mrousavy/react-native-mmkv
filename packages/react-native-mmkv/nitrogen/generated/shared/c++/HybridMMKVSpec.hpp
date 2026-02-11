@@ -59,7 +59,9 @@ namespace margelo::nitro::mmkv {
     public:
       // Properties
       virtual std::string getId() = 0;
+      virtual double getLength() = 0;
       virtual double getSize() = 0;
+      virtual double getByteSize() = 0;
       virtual bool getIsReadOnly() = 0;
       virtual bool getIsEncrypted() = 0;
 
