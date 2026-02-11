@@ -68,9 +68,19 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
 std::string HybridMMKV::getId() {
   return instance->mmapID();
 }
+
+double HybridMMKV::getLength() {
+  return instance->count();
+}
+
 double HybridMMKV::getSize() {
+  return getByteSize();
+}
+
+double HybridMMKV::getByteSize() {
   return instance->actualSize();
 }
+
 bool HybridMMKV::getIsReadOnly() {
   return instance->isReadOnly();
 }
@@ -118,6 +128,7 @@ void HybridMMKV::set(const std::string& key, const std::variant<bool, std::share
   // Notify on changed
   MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
 }
+
 std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
   bool hasValue;
   bool result = instance->getBool(key, /* defaultValue */ false, &hasValue);
@@ -127,6 +138,7 @@ std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
     return std::nullopt;
   }
 }
+
 std::optional<std::string> HybridMMKV::getString(const std::string& key) {
   std::string result;
   bool hasValue = instance->getString(key, result, /* inplaceModification */ true);
@@ -136,6 +148,7 @@ std::optional<std::string> HybridMMKV::getString(const std::string& key) {
     return std::nullopt;
   }
 }
+
 std::optional<double> HybridMMKV::getNumber(const std::string& key) {
   bool hasValue;
   double result = instance->getDouble(key, /* defaultValue */ 0.0, &hasValue);
@@ -145,6 +158,7 @@ std::optional<double> HybridMMKV::getNumber(const std::string& key) {
     return std::nullopt;
   }
 }
+
 std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::string& key) {
   MMBuffer result;
 #ifdef __APPLE__
@@ -161,9 +175,11 @@ std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::str
     return std::nullopt;
   }
 }
+
 bool HybridMMKV::contains(const std::string& key) {
   return instance->containsKey(key);
 }
+
 bool HybridMMKV::remove(const std::string& key) {
   bool wasRemoved = instance->removeValueForKey(key);
   if (wasRemoved) {
@@ -172,9 +188,11 @@ bool HybridMMKV::remove(const std::string& key) {
   }
   return wasRemoved;
 }
+
 std::vector<std::string> HybridMMKV::getAllKeys() {
   return instance->allKeys();
 }
+
 void HybridMMKV::clearAll() {
   auto keysBefore = getAllKeys();
   instance->clearAll();

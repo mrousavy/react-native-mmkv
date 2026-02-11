@@ -11,11 +11,21 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    */
   readonly id: string
   /**
+   * Get the current amount of key/value pairs stored in
+   * this storage.
+   */
+  readonly length: number
+  /**
    * Get the current total size of the storage, in bytes.
+   * @deprecated Use {@linkcode byteSize} instead.
    */
   readonly size: number
   /**
-   * Returns whether this instance is in read-only mode or not.
+   * Get the current total size of the storage, in bytes.
+   */
+  readonly byteSize: number
+  /**
+   * Get whether this instance is in read-only mode or not.
    * If this is `true`, you can only use "get"-functions.
    */
   readonly isReadOnly: boolean

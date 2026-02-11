@@ -15,7 +15,9 @@ namespace margelo::nitro::mmkv {
     // load custom methods/properties
     registerHybrids(this, [](Prototype& prototype) {
       prototype.registerHybridGetter("id", &HybridMMKVSpec::getId);
+      prototype.registerHybridGetter("length", &HybridMMKVSpec::getLength);
       prototype.registerHybridGetter("size", &HybridMMKVSpec::getSize);
+      prototype.registerHybridGetter("byteSize", &HybridMMKVSpec::getByteSize);
       prototype.registerHybridGetter("isReadOnly", &HybridMMKVSpec::getIsReadOnly);
       prototype.registerHybridGetter("isEncrypted", &HybridMMKVSpec::getIsEncrypted);
       prototype.registerHybridMethod("set", &HybridMMKVSpec::set);

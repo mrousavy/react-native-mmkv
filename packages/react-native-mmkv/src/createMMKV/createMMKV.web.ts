@@ -39,7 +39,16 @@ export function createMMKV(
 
   return {
     id: config.id,
-    size: 0,
+    get length(): number {
+      return getLocalStorage().length
+    },
+    get size(): number {
+      return this.byteSize
+    },
+    get byteSize(): number {
+      // esimate - assumes UTF8
+      return JSON.stringify(getLocalStorage()).length
+    },
     isReadOnly: false,
     isEncrypted: false,
     clearAll: () => {
