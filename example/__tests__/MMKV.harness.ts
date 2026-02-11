@@ -618,6 +618,38 @@ describe('MMKV Encryption & Security', () => {
 
       storage.clearAll();
     });
+
+    it('should persist between MMKV instances', () => {
+      {
+        // Open storage, write value, and close storage again
+        const storage = createMMKV({
+          id: 'some-encrypted-instance',
+          encryptionKey: 'hunter2',
+        });
+
+        storage.set('test', 'value');
+        expect(storage.getString('test')).toStrictEqual('value');
+        storage.dispose()
+      }
+      {
+        // Open storage again and verify key persisted
+        const storage = createMMKV({
+          id: 'some-encrypted-instance',
+          encryptionKey: 'hunter2',
+        });
+        expect(storage.getString('test')).toStrictEqual('value');
+      }
+    });
+
+    it('should handle long encryption keys', () => {
+      const storage = createMMKV({
+        id: 'some-long-encrypted-instance',
+        encryptionKey: 'some LONG encryption key with emojis 😆😍',
+      });
+
+      storage.set('test', 'value');
+      expect(storage.getString('test')).toStrictEqual('value');
+    });
   });
 });
 
