@@ -100,10 +100,16 @@ export function createMMKV(
     recrypt: () => {
       throw new Error('`recrypt(..)` is not supported on Web!')
     },
+    encrypt: () => {
+      throw new Error('`encrypt(..)` is not supported on Web!')
+    },
+    decrypt: () => {
+      throw new Error('`decrypt(..)` is not supported on Web!')
+    },
     trim: () => {
       // no-op
     },
-    dispose: () => {},
+    dispose: () => { },
     equals: () => false,
     name: 'MMKV',
     addOnValueChangedListener: (listener) => {
