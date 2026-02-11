@@ -51,12 +51,12 @@ using namespace mmkv;
 
 // Default MMKV log level if not configured at build time
 #ifndef MMKV_LOG_LEVEL
-  #ifdef NITRO_DEBUG
-    #define MMKV_LOG_LEVEL 0
-  #else
-    #define MMKV_LOG_LEVEL 3
-  #endif
+#ifdef NITRO_DEBUG
+#define MMKV_LOG_LEVEL 0
+#else
+#define MMKV_LOG_LEVEL 3
+#endif
 #endif
 #if MMKV_LOG_LEVEL < 0 || MMKV_LOG_LEVEL > 4
-  #error "MMKV_LOG_LEVEL must be between 0 (Debug) and 4 (None)"
+#error "MMKV_LOG_LEVEL must be between 0 (Debug) and 4 (None)"
 #endif
