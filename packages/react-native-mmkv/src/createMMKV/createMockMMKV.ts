@@ -73,7 +73,7 @@ export function createMockMMKV(
       // no-op
     },
     name: 'MMKV',
-    dispose: () => { },
+    dispose: () => {},
     equals: () => {
       return false
     },

@@ -109,7 +109,7 @@ export function createMMKV(
     trim: () => {
       // no-op
     },
-    dispose: () => { },
+    dispose: () => {},
     equals: () => false,
     name: 'MMKV',
     addOnValueChangedListener: (listener) => {

@@ -203,7 +203,6 @@ void HybridMMKV::decrypt() {
   }
 }
 
-
 void HybridMMKV::trim() {
   instance->trim();
   instance->clearMemoryCache();
