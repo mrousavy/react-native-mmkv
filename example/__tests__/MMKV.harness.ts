@@ -504,15 +504,15 @@ describe('MMKV Encryption & Security', () => {
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Encrypt the storage
-      storage.recrypt('new-encryption-key');
+      storage.encrypt('new-encryption-key');
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Change encryption key
-      storage.recrypt('different-key-123');
+      storage.encrypt('different-key-123');
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Remove encryption
-      storage.recrypt(undefined);
+      storage.decrypt();
       expect(storage.getString('data-key')).toStrictEqual('original-data');
     });
 
@@ -580,15 +580,15 @@ describe('MMKV Encryption & Security', () => {
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Encrypt the storage
-      storage.recrypt('new-encryption-key');
+      storage.encrypt('new-encryption-key', 'AES-256');
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Change encryption key
-      storage.recrypt('different-key-123');
+      storage.encrypt('different-key-123', 'AES-256');
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Remove encryption
-      storage.recrypt(undefined);
+      storage.decrypt()
       expect(storage.getString('data-key')).toStrictEqual('original-data');
     });
 
