@@ -13,6 +13,8 @@
 #error NitroModules cannot be found! Are you sure you installed NitroModules properly?
 #endif
 
+// Forward declaration of `EncryptionType` to properly resolve imports.
+namespace margelo::nitro::mmkv { enum class EncryptionType; }
 // Forward declaration of `Listener` to properly resolve imports.
 namespace margelo::nitro::mmkv { struct Listener; }
 // Forward declaration of `HybridMMKVSpec` to properly resolve imports.
@@ -23,6 +25,7 @@ namespace margelo::nitro::mmkv { class HybridMMKVSpec; }
 #include <variant>
 #include <optional>
 #include <vector>
+#include "EncryptionType.hpp"
 #include "Listener.hpp"
 #include <functional>
 #include <memory>
@@ -58,6 +61,7 @@ namespace margelo::nitro::mmkv {
       virtual std::string getId() = 0;
       virtual double getSize() = 0;
       virtual bool getIsReadOnly() = 0;
+      virtual bool getIsEncrypted() = 0;
 
     public:
       // Methods
@@ -71,6 +75,8 @@ namespace margelo::nitro::mmkv {
       virtual std::vector<std::string> getAllKeys() = 0;
       virtual void clearAll() = 0;
       virtual void recrypt(const std::optional<std::string>& key) = 0;
+      virtual void encrypt(const std::string& key, std::optional<EncryptionType> encryptionType) = 0;
+      virtual void decrypt() = 0;
       virtual void trim() = 0;
       virtual Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) = 0;
       virtual double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) = 0;

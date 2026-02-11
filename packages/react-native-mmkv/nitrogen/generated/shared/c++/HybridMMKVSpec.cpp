@@ -17,6 +17,7 @@ namespace margelo::nitro::mmkv {
       prototype.registerHybridGetter("id", &HybridMMKVSpec::getId);
       prototype.registerHybridGetter("size", &HybridMMKVSpec::getSize);
       prototype.registerHybridGetter("isReadOnly", &HybridMMKVSpec::getIsReadOnly);
+      prototype.registerHybridGetter("isEncrypted", &HybridMMKVSpec::getIsEncrypted);
       prototype.registerHybridMethod("set", &HybridMMKVSpec::set);
       prototype.registerHybridMethod("getBoolean", &HybridMMKVSpec::getBoolean);
       prototype.registerHybridMethod("getString", &HybridMMKVSpec::getString);
@@ -27,6 +28,8 @@ namespace margelo::nitro::mmkv {
       prototype.registerHybridMethod("getAllKeys", &HybridMMKVSpec::getAllKeys);
       prototype.registerHybridMethod("clearAll", &HybridMMKVSpec::clearAll);
       prototype.registerHybridMethod("recrypt", &HybridMMKVSpec::recrypt);
+      prototype.registerHybridMethod("encrypt", &HybridMMKVSpec::encrypt);
+      prototype.registerHybridMethod("decrypt", &HybridMMKVSpec::decrypt);
       prototype.registerHybridMethod("trim", &HybridMMKVSpec::trim);
       prototype.registerHybridMethod("addOnValueChangedListener", &HybridMMKVSpec::addOnValueChangedListener);
       prototype.registerHybridMethod("importAllFrom", &HybridMMKVSpec::importAllFrom);
