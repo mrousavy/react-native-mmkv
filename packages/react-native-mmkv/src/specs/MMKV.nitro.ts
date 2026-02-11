@@ -1,4 +1,5 @@
 import type { HybridObject } from 'react-native-nitro-modules'
+import type { EncryptionType } from './MMKVFactory.nitro'
 
 export interface Listener {
   remove: () => void
