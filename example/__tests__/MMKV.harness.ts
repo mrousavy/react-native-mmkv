@@ -499,20 +499,26 @@ describe('MMKV Encryption & Security', () => {
     it('should handle recryption', () => {
       const storage = createMMKV({ id: 'recrypt-test-128' });
 
+      expect(storage.isEncrypted).toStrictEqual(false)
+
       // Set data without encryption
       storage.set('data-key', 'original-data');
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Encrypt the storage
       storage.encrypt('new-encryption-key');
+      expect(storage.isEncrypted).toStrictEqual(true)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Change encryption key
       storage.encrypt('different-key-123');
+      expect(storage.isEncrypted).toStrictEqual(true)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Remove encryption
       storage.decrypt();
+      // TODO: Add this check after https://github.com/Tencent/MMKV/issues/1642 is resolved
+      // expect(storage.isEncrypted).toStrictEqual(false)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
     });
 
@@ -524,6 +530,7 @@ describe('MMKV Encryption & Security', () => {
         encryptionKey: maxKey,
       });
 
+      expect(storage.isEncrypted).toStrictEqual(true)
       storage.set('test', 'value');
       expect(storage.getString('test')).toStrictEqual('value');
 
@@ -574,6 +581,7 @@ describe('MMKV Encryption & Security', () => {
     it('should handle recryption', () => {
       // TODO: Add encryptionType to recrypt
       const storage = createMMKV({ id: 'recrypt-test-256' });
+      expect(storage.isEncrypted).toStrictEqual(false)
 
       // Set data without encryption
       storage.set('data-key', 'original-data');
@@ -581,14 +589,18 @@ describe('MMKV Encryption & Security', () => {
 
       // Encrypt the storage
       storage.encrypt('new-encryption-key', 'AES-256');
+      expect(storage.isEncrypted).toStrictEqual(true)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Change encryption key
       storage.encrypt('different-key-123', 'AES-256');
+      expect(storage.isEncrypted).toStrictEqual(true)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
 
       // Remove encryption
       storage.decrypt()
+      // TODO: Add this check after https://github.com/Tencent/MMKV/issues/1642 is resolved
+      // expect(storage.isEncrypted).toStrictEqual(false)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
     });
 
