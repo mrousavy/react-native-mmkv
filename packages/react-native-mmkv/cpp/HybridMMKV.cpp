@@ -179,19 +179,31 @@ void HybridMMKV::clearAll() {
     MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
   }
 }
+
 void HybridMMKV::recrypt(const std::optional<std::string>& key) {
-  bool successful = false;
   if (key.has_value()) {
-    // Encrypt with the given key
-    successful = instance->reKey(key.value());
+    encrypt(key.value(), std::nullopt);
   } else {
-    // Remove the encryption key by setting it to a blank string
-    successful = instance->reKey(std::string());
-  }
-  if (!successful) {
-    throw std::runtime_error("Failed to recrypt MMKV instance!");
+    decrypt();
   }
 }
+
+void HybridMMKV::encrypt(const std::string& key, std::optional<EncryptionType> encryptionType) {
+  bool isAes256Encryption = encryptionType == EncryptionType::AES_256;
+  bool successful = instance->reKey(key, isAes256Encryption);
+  if (!successful) {
+    throw std::runtime_error("Failed to encrypt MMKV instance!");
+  }
+}
+
+void HybridMMKV::decrypt() {
+  bool successful = instance->reKey("");
+  if (!successful) {
+    throw std::runtime_error("Failed to decrypt MMKV instance!");
+  }
+}
+
+
 void HybridMMKV::trim() {
   instance->trim();
   instance->clearMemoryCache();

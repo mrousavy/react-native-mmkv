@@ -76,8 +76,36 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    * Encryption keys can have a maximum length of 16 bytes.
    *
    * @throws an Error if the instance cannot be recrypted.
+   * @deprecated Use {@linkcode encrypt | encrypt(...)} or {@linkcode decrypt | decrypt()} instead.
    */
   recrypt(key: string | undefined): void
+  /**
+   * Encrypts the data in this MMKV instance with the
+   * given {@linkcode key} and {@linkcode ecnryptionType}.
+   *
+   * If this MMKV instance is already encrypted ({@linkcode isEncrypted}),
+   * it will re-encrypt the data.
+   *
+   * Future attempts to open this MMKV instance will require the same
+   * {@linkcode key} and {@linkcode encryptionType}, otherwise reads
+   * will fail.
+   *
+   * The {@linkcode key} must be 16-bytes in {@linkcode EncryptionType | 'AES-128'}
+   * encryption (the default), or 32-bytes in {@linkcode EncryptionType | 'AES-256'}
+   * encryption.
+   *
+   * @param key The encryption key to use. In AES-128 this must be 16-bytes, in AES-256 it must be 32-bytes long.
+   * @param encryptionType The encryption type to use. Default: AES-128
+   */
+  encrypt(key: string, encryptionType?: EncryptionType): void
+  /**
+   * Decrypts the data in this MMKV instance and removes
+   * the encryption key.
+   *
+   * Future attempts to open this MMKV instance must be done
+   * without an encryption key, as it is now plain-text.
+   */
+  decrypt(): void
   /**
    * Trims the storage space and clears memory cache.
    *
