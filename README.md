@@ -275,7 +275,7 @@ Set `$MMKVLogLevel` in your app's `ios/Podfile`, then run `pod install`:
 $MMKVLogLevel = 4
 ```
 
-Or use an environment variable:
+Or use an environment variable during `pod install`:
 
 ```sh
 MMKV_LOG_LEVEL=4 pod install
