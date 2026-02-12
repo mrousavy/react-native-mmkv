@@ -149,6 +149,19 @@ const [age, setAge] = useMMKVNumber('user.age')
 const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
 ```
 
+To avoid the possibility of the variable being `undefined` it can be given a default value which will be used in the case that a value is not found for the given `key`.
+
+```js
+// default to 'Marc' if 'user.name' key is not found
+const [username = 'Marc', setUsername] = useMMKVString('user.name')
+
+// default to 21 if 'user.age' is not found
+const [age = 21, setAge] = useMMKVNumber('user.age')
+
+// default to true if 'is-mmkv-fast-asf' is not found
+const [isMmkvFastAsf = true, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
+```
+
 ### Keys
 
 ```ts
