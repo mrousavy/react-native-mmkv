@@ -41,6 +41,14 @@ void MMKVValueChangedListenerRegistry::removeListener(const std::string& mmkvID,
                   listeners.end());
 }
 
+bool MMKVValueChangedListenerRegistry::hasListeners(const std::string& mmkvID) {
+  auto entry = _listeners.find(mmkvID);
+  if (entry == _listeners.end()) {
+    return false;
+  }
+  return !entry->second.empty();
+}
+
 void MMKVValueChangedListenerRegistry::notifyOnValueChanged(const std::string& mmkvID, const std::string& key) {
   // 1. Get all listeners for the specific MMKV ID
   auto entry = _listeners.find(mmkvID);
