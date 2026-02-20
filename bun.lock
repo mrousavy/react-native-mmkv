@@ -18,7 +18,7 @@
     },
     "example": {
       "name": "mmkv-example",
-      "version": "4.1.1",
+      "version": "4.1.2",
       "dependencies": {
         "@react-native/new-app-screen": "0.82.0",
         "react": "19.1.1",
@@ -54,7 +54,7 @@
     },
     "packages/react-native-mmkv": {
       "name": "react-native-mmkv",
-      "version": "4.1.1",
+      "version": "4.1.2",
       "devDependencies": {
         "@expo/config-plugins": "^10.1.2",
         "@react-native/eslint-config": "0.82.0",
@@ -74,7 +74,7 @@
       "peerDependencies": {
         "react": "*",
         "react-native": "*",
-        "react-native-nitro-modules": "*",
+        "react-native-nitro-modules": ">=0.33.0",
       },
     },
   },
