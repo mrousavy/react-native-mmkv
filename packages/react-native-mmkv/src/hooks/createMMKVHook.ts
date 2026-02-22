@@ -53,6 +53,7 @@ export function createMMKVHook<
 
     // update value if it changes somewhere else (second hook, same key)
     useEffect(() => {
+      setBump((b) => b + 1)
       const listener = mmkv.addOnValueChangedListener((changedKey) => {
         if (changedKey === key) {
           setBump((b) => b + 1)
