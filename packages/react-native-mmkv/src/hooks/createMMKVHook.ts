@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useSyncExternalStore } from 'react'
 import { getDefaultMMKVInstance } from '../createMMKV/getDefaultMMKVInstance'
 import type { MMKV } from '../specs/MMKV.nitro'
 
@@ -13,14 +13,21 @@ export function createMMKVHook<
   ): [value: T, setValue: (value: TSetAction) => void] => {
     const mmkv = instance ?? getDefaultMMKVInstance()
 
-    const [bump, setBump] = useState(0)
-    const value = useMemo(() => {
-      // bump is here as an additional outside dependency, so this useMemo
-      // re-computes the value each time bump changes, effectively acting as a hint
-      // that the outside value (storage) has changed. setting bump refreshes this value.
-      bump
-      return getter(mmkv, key)
-    }, [mmkv, key, bump])
+    const value = useSyncExternalStore(
+      useCallback(
+        (onStoreChange: () => void) => {
+          const listener = mmkv.addOnValueChangedListener((changedKey) => {
+            if (changedKey === key) {
+              onStoreChange()
+            }
+          })
+          return () => listener.remove()
+        },
+        [key, mmkv]
+      ),
+      useCallback(() => getter(mmkv, key), [key, mmkv]),
+      useCallback(() => getter(mmkv, key), [key, mmkv])
+    )
 
     // update value by user set
     const set = useCallback(
@@ -50,16 +57,6 @@ export function createMMKVHook<
       },
       [key, mmkv]
     )
-
-    // update value if it changes somewhere else (second hook, same key)
-    useEffect(() => {
-      const listener = mmkv.addOnValueChangedListener((changedKey) => {
-        if (changedKey === key) {
-          setBump((b) => b + 1)
-        }
-      })
-      return () => listener.remove()
-    }, [key, mmkv])
 
     return [value, set]
   }

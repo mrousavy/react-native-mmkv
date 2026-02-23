@@ -7,6 +7,7 @@ import {
   renderHook,
   screen,
   cleanup,
+  waitFor,
 } from '@testing-library/react-native'
 import { createMMKV, useMMKVNumber, useMMKVString } from '..'
 
@@ -91,4 +92,40 @@ test('functional updates to hooks', () => {
     'MMKV: ',
     '4',
   ])
+})
+
+test('useMMKV hook does not miss updates that happen during subscription setup', async () => {
+  const raceKey = 'race-key'
+  const raceMMKV = createMMKV()
+
+  let simulatedRaceDone = false
+  const originalSubscribe = raceMMKV.addOnValueChangedListener.bind(raceMMKV)
+  raceMMKV.addOnValueChangedListener = ((listener) => {
+    if (!simulatedRaceDone) {
+      simulatedRaceDone = true
+      raceMMKV.set(raceKey, 'updated-before-subscribe')
+    }
+    return originalSubscribe(listener)
+  }) as typeof raceMMKV.addOnValueChangedListener
+
+  const { result } = renderHook(() => useMMKVString(raceKey, raceMMKV))
+
+  await waitFor(() => {
+    expect(result.current[0]).toBe('updated-before-subscribe')
+  })
+})
+
+test('useMMKV hook stays consistent during rapid updates', async () => {
+  const raceKey = 'rapid-key'
+  const { result } = renderHook(() => useMMKVNumber(raceKey, mmkv))
+
+  act(() => {
+    for (let i = 1; i <= 100; i++) {
+      mmkv.set(raceKey, i)
+    }
+  })
+
+  await waitFor(() => {
+    expect(result.current[0]).toBe(100)
+  })
 })
