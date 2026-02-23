@@ -25,8 +25,8 @@ export function createMMKVHook<
         },
         [key, mmkv]
       ),
-      useCallback(() => getter(mmkv, key), [getter, key, mmkv]),
-      useCallback(() => getter(mmkv, key), [getter, key, mmkv])
+      useCallback(() => getter(mmkv, key), [key, mmkv]),
+      useCallback(() => getter(mmkv, key), [key, mmkv])
     )
 
     // update value by user set

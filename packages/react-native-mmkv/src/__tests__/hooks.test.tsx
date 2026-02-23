@@ -94,7 +94,6 @@ test('functional updates to hooks', () => {
   ])
 })
 
-
 test('useMMKV hook does not miss updates that happen during subscription setup', async () => {
   const raceKey = 'race-key'
   const raceMMKV = createMMKV()
