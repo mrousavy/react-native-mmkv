@@ -15,12 +15,13 @@
     "build:android-release": "cd android && ./gradlew assembleRelease --no-daemon"
   },
   "dependencies": {
-    "@react-native/new-app-screen": "0.82.0",
-    "react": "19.1.1",
-    "react-native": "0.82.0",
+    "@react-native/new-app-screen": "0.83.0",
+    "react": "19.2.0",
+    "react-native": "0.83.1",
     "react-native-mmkv": "*",
     "react-native-nitro-modules": "0.33.2",
-    "react-native-safe-area-context": "^5.5.2"
+    "react-native-safe-area-context": "^5.5.2",
+    "react-test-renderer": "19.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -29,21 +30,21 @@
     "@react-native-community/cli": "20.0.0",
     "@react-native-community/cli-platform-android": "20.0.0",
     "@react-native-community/cli-platform-ios": "20.0.0",
-    "@react-native/babel-preset": "0.82.0",
-    "@react-native/eslint-config": "0.82.0",
-    "@react-native/metro-config": "0.82.0",
-    "@react-native/typescript-config": "0.82.0",
-    "react-native-harness": "1.0.0-alpha.19",
     "@react-native-harness/jest": "1.0.0-alpha.19",
     "@react-native-harness/platform-android": "1.0.0-alpha.19",
     "@react-native-harness/platform-apple": "1.0.0-alpha.19",
+    "@react-native/babel-preset": "0.83.0",
+    "@react-native/eslint-config": "0.83.0",
+    "@react-native/metro-config": "0.83.0",
+    "@react-native/typescript-config": "0.83.0",
     "@types/jest": "^29.5.13",
-    "@types/react": "^19.1.1",
+    "@types/react": "^19.2.0",
     "@types/react-test-renderer": "19.1.0",
     "eslint": "^8.19.0",
     "jest": "^30.2.0",
     "prettier": "2.8.8",
-    "react-test-renderer": "19.1.1",
+    "react-native-harness": "1.0.0-alpha.19",
+    "react-test-renderer": "19.2.0",
     "typescript": "^5.8.3"
   },
   "engines": {
