@@ -14,37 +14,31 @@
 
 namespace margelo::nitro::mmkv {
 
-  jni::local_ref<JHybridMMKVPlatformContextSpec::jhybriddata> JHybridMMKVPlatformContextSpec::initHybrid(jni::alias_ref<jhybridobject> jThis) {
+  std::shared_ptr<JHybridMMKVPlatformContextSpec> JHybridMMKVPlatformContextSpec::JavaPart::getJHybridMMKVPlatformContextSpec() {
+    auto hybridObject = JHybridObject::JavaPart::getJHybridObject();
+    auto castHybridObject = std::dynamic_pointer_cast<JHybridMMKVPlatformContextSpec>(hybridObject);
+    if (castHybridObject == nullptr) [[unlikely]] {
+      throw std::runtime_error("Failed to downcast JHybridObject to JHybridMMKVPlatformContextSpec!");
+    }
+    return castHybridObject;
+  }
+
+  jni::local_ref<JHybridMMKVPlatformContextSpec::CxxPart::jhybriddata> JHybridMMKVPlatformContextSpec::CxxPart::initHybrid(jni::alias_ref<jhybridobject> jThis) {
     return makeCxxInstance(jThis);
   }
 
-  void JHybridMMKVPlatformContextSpec::registerNatives() {
-    registerHybrid({
-      makeNativeMethod("initHybrid", JHybridMMKVPlatformContextSpec::initHybrid),
-    });
-  }
-
-  size_t JHybridMMKVPlatformContextSpec::getExternalMemorySize() noexcept {
-    static const auto method = javaClassStatic()->getMethod<jlong()>("getMemorySize");
-    return method(_javaPart);
-  }
-
-  bool JHybridMMKVPlatformContextSpec::equals(const std::shared_ptr<HybridObject>& other) {
-    if (auto otherCast = std::dynamic_pointer_cast<JHybridMMKVPlatformContextSpec>(other)) {
-      return _javaPart == otherCast->_javaPart;
+  std::shared_ptr<JHybridObject> JHybridMMKVPlatformContextSpec::CxxPart::createHybridObject(const jni::local_ref<JHybridObject::JavaPart>& javaPart) {
+    auto castJavaPart = jni::dynamic_ref_cast<JHybridMMKVPlatformContextSpec::JavaPart>(javaPart);
+    if (castJavaPart == nullptr) [[unlikely]] {
+      throw std::runtime_error("Failed to cast JHybridObject::JavaPart to JHybridMMKVPlatformContextSpec::JavaPart!");
     }
-    return false;
+    return std::make_shared<JHybridMMKVPlatformContextSpec>(castJavaPart);
   }
 
-  void JHybridMMKVPlatformContextSpec::dispose() noexcept {
-    static const auto method = javaClassStatic()->getMethod<void()>("dispose");
-    method(_javaPart);
-  }
-
-  std::string JHybridMMKVPlatformContextSpec::toString() {
-    static const auto method = javaClassStatic()->getMethod<jni::JString()>("toString");
-    auto javaString = method(_javaPart);
-    return javaString->toStdString();
+  void JHybridMMKVPlatformContextSpec::CxxPart::registerNatives() {
+    registerHybrid({
+      makeNativeMethod("initHybrid", JHybridMMKVPlatformContextSpec::CxxPart::initHybrid),
+    });
   }
 
   // Properties
@@ -52,12 +46,12 @@ namespace margelo::nitro::mmkv {
 
   // Methods
   std::string JHybridMMKVPlatformContextSpec::getBaseDirectory() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getBaseDirectory");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getBaseDirectory");
     auto __result = method(_javaPart);
     return __result->toStdString();
   }
   std::optional<std::string> JHybridMMKVPlatformContextSpec::getAppGroupDirectory() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getAppGroupDirectory");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getAppGroupDirectory");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toStdString()) : std::nullopt;
   }

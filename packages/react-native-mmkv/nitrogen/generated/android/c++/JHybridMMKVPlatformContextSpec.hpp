@@ -18,34 +18,33 @@ namespace margelo::nitro::mmkv {
 
   using namespace facebook;
 
-  class JHybridMMKVPlatformContextSpec: public jni::HybridClass<JHybridMMKVPlatformContextSpec, JHybridObject>,
-                                        public virtual HybridMMKVPlatformContextSpec {
+  class JHybridMMKVPlatformContextSpec: public virtual HybridMMKVPlatformContextSpec, public virtual JHybridObject {
   public:
-    static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/mmkv/HybridMMKVPlatformContextSpec;";
-    static jni::local_ref<jhybriddata> initHybrid(jni::alias_ref<jhybridobject> jThis);
-    static void registerNatives();
+    struct JavaPart: public jni::JavaClass<JavaPart, JHybridObject::JavaPart> {
+      static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/mmkv/HybridMMKVPlatformContextSpec;";
+      std::shared_ptr<JHybridMMKVPlatformContextSpec> getJHybridMMKVPlatformContextSpec();
+    };
+    struct CxxPart: public jni::HybridClass<CxxPart, JHybridObject::CxxPart> {
+      static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/mmkv/HybridMMKVPlatformContextSpec$CxxPart;";
+      static jni::local_ref<jhybriddata> initHybrid(jni::alias_ref<jhybridobject> jThis);
+      static void registerNatives();
+      using HybridBase::HybridBase;
+    protected:
+      std::shared_ptr<JHybridObject> createHybridObject(const jni::local_ref<JHybridObject::JavaPart>& javaPart) override;
+    };
 
-  protected:
-    // C++ constructor (called from Java via `initHybrid()`)
-    explicit JHybridMMKVPlatformContextSpec(jni::alias_ref<jhybridobject> jThis) :
+  public:
+    explicit JHybridMMKVPlatformContextSpec(const jni::local_ref<JHybridMMKVPlatformContextSpec::JavaPart>& javaPart):
       HybridObject(HybridMMKVPlatformContextSpec::TAG),
-      HybridBase(jThis),
-      _javaPart(jni::make_global(jThis)) {}
-
-  public:
+      JHybridObject(javaPart),
+      _javaPart(jni::make_global(javaPart)) {}
     ~JHybridMMKVPlatformContextSpec() override {
       // Hermes GC can destroy JS objects on a non-JNI Thread.
       jni::ThreadScope::WithClassLoader([&] { _javaPart.reset(); });
     }
 
   public:
-    size_t getExternalMemorySize() noexcept override;
-    bool equals(const std::shared_ptr<HybridObject>& other) override;
-    void dispose() noexcept override;
-    std::string toString() override;
-
-  public:
-    inline const jni::global_ref<JHybridMMKVPlatformContextSpec::javaobject>& getJavaPart() const noexcept {
+    inline const jni::global_ref<JHybridMMKVPlatformContextSpec::JavaPart>& getJavaPart() const noexcept {
       return _javaPart;
     }
 
@@ -59,9 +58,7 @@ namespace margelo::nitro::mmkv {
     std::optional<std::string> getAppGroupDirectory() override;
 
   private:
-    friend HybridBase;
-    using HybridBase::HybridBase;
-    jni::global_ref<JHybridMMKVPlatformContextSpec::javaobject> _javaPart;
+    jni::global_ref<JHybridMMKVPlatformContextSpec::JavaPart> _javaPart;
   };
 
 } // namespace margelo::nitro::mmkv

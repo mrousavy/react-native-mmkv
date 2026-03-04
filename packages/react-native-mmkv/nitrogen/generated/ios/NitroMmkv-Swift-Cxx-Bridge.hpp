@@ -41,7 +41,7 @@ namespace margelo::nitro::mmkv::bridge::swift {
     return optional.has_value();
   }
   inline std::string get_std__optional_std__string_(const std::optional<std::string>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::shared_ptr<HybridMMKVPlatformContextSpec>
