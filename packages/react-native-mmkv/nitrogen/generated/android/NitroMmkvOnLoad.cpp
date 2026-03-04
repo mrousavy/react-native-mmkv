@@ -22,33 +22,43 @@
 namespace margelo::nitro::mmkv {
 
 int initialize(JavaVM* vm) {
+  return facebook::jni::initialize(vm, []() {
+    ::margelo::nitro::mmkv::registerAllNatives();
+  });
+}
+
+struct JHybridMMKVPlatformContextSpecImpl: public jni::JavaClass<JHybridMMKVPlatformContextSpecImpl, JHybridMMKVPlatformContextSpec::JavaPart> {
+  static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/mmkv/HybridMMKVPlatformContext;";
+  static std::shared_ptr<JHybridMMKVPlatformContextSpec> create() {
+    static auto constructorFn = javaClassStatic()->getConstructor<JHybridMMKVPlatformContextSpecImpl::javaobject()>();
+    jni::local_ref<JHybridMMKVPlatformContextSpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
+    return javaPart->getJHybridMMKVPlatformContextSpec();
+  }
+};
+
+void registerAllNatives() {
   using namespace margelo::nitro;
   using namespace margelo::nitro::mmkv;
-  using namespace facebook;
 
-  return facebook::jni::initialize(vm, [] {
-    // Register native JNI methods
-    margelo::nitro::mmkv::JHybridMMKVPlatformContextSpec::registerNatives();
+  // Register native JNI methods
+  margelo::nitro::mmkv::JHybridMMKVPlatformContextSpec::CxxPart::registerNatives();
 
-    // Register Nitro Hybrid Objects
-    HybridObjectRegistry::registerHybridObjectConstructor(
-      "MMKVFactory",
-      []() -> std::shared_ptr<HybridObject> {
-        static_assert(std::is_default_constructible_v<HybridMMKVFactory>,
-                      "The HybridObject \"HybridMMKVFactory\" is not default-constructible! "
-                      "Create a public constructor that takes zero arguments to be able to autolink this HybridObject.");
-        return std::make_shared<HybridMMKVFactory>();
-      }
-    );
-    HybridObjectRegistry::registerHybridObjectConstructor(
-      "MMKVPlatformContext",
-      []() -> std::shared_ptr<HybridObject> {
-        static DefaultConstructableObject<JHybridMMKVPlatformContextSpec::javaobject> object("com/margelo/nitro/mmkv/HybridMMKVPlatformContext");
-        auto instance = object.create();
-        return instance->cthis()->shared();
-      }
-    );
-  });
+  // Register Nitro Hybrid Objects
+  HybridObjectRegistry::registerHybridObjectConstructor(
+    "MMKVFactory",
+    []() -> std::shared_ptr<HybridObject> {
+      static_assert(std::is_default_constructible_v<HybridMMKVFactory>,
+                    "The HybridObject \"HybridMMKVFactory\" is not default-constructible! "
+                    "Create a public constructor that takes zero arguments to be able to autolink this HybridObject.");
+      return std::make_shared<HybridMMKVFactory>();
+    }
+  );
+  HybridObjectRegistry::registerHybridObjectConstructor(
+    "MMKVPlatformContext",
+    []() -> std::shared_ptr<HybridObject> {
+      return JHybridMMKVPlatformContextSpecImpl::create();
+    }
+  );
 }
 
 } // namespace margelo::nitro::mmkv
