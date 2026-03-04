@@ -9,7 +9,7 @@ PODS:
     - hermes-engine/Pre-built (= 0.82.0)
   - hermes-engine/Pre-built (0.82.0)
   - MMKVCore (2.3.0)
-  - NitroMmkv (4.1.1):
+  - NitroMmkv (4.1.2):
     - boost
     - DoubleConversion
     - fast_float
@@ -40,7 +40,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - NitroModules (0.33.2):
+  - NitroModules (0.35.0):
     - boost
     - DoubleConversion
     - fast_float
@@ -2721,8 +2721,8 @@ SPEC CHECKSUMS:
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 8642d8f14a548ab718ec112e9bebdfdd154138b5
   MMKVCore: d078dce7d6586a888b2c2ef5343b6242678e3ee8
-  NitroMmkv: 73e121c7b5c2f0b8b9db7831d29201df45fcf340
-  NitroModules: dae3143fe7bd2dcc7da1d97c51707c17a3caa163
+  NitroMmkv: 07194e57841afecaa32c9a0ba8b64aa3189ca21b
+  NitroModules: 0ffbade1b2ebcfa12f3821c970b17fa369320810
   RCT-Folly: 59ec0ac1f2f39672a0c6e6cecdd39383b764646f
   RCTDeprecation: 22bf66112da540a7d40e536366ddd8557934fca1
   RCTRequired: a0ed4dc41b35f79fbb6d8ba320e06882a8c792cf
@@ -2794,4 +2794,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ac6e3a3935879b4d187353a98679212e0e3604ce
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2
