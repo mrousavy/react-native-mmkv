@@ -249,6 +249,40 @@ import { deleteMMKV } from 'react-native-mmkv'
 const wasDeleted = deleteMMKV('my-instance')
 ```
 
+### Log Level
+
+By default, MMKV logs at `Debug` level in debug builds and `Warning` level in release builds. You can override this at build time to control the verbosity of MMKV's native logs.
+
+| Value | Level |
+|-------|-------|
+| 0 | Debug |
+| 1 | Info |
+| 2 | Warning |
+| 3 | Error |
+| 4 | None |
+
+#### Android
+
+Set `MMKV_logLevel` in your app's `android/gradle.properties`:
+
+```properties
+MMKV_logLevel=4
+```
+
+#### iOS
+
+Set `$MMKVLogLevel` in your app's `ios/Podfile`, then run `pod install`:
+
+```ruby
+$MMKVLogLevel = 4
+```
+
+Or use an environment variable during `pod install`:
+
+```sh
+MMKV_LOG_LEVEL=4 pod install
+```
+
 ## Testing with Jest or Vitest
 
 A mocked MMKV instance is automatically used when testing with Jest or Vitest, so you will be able to use `createMMKV()` as per normal in your tests. Refer to [`example/__tests__/MMKV.harness.ts`](example/__tests__/MMKV.harness.ts) for an example using Jest.

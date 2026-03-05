@@ -26,11 +26,18 @@ Pod::Spec.new do |s|
   s.compiler_flags = '-x objective-c++'
   s.dependency 'MMKVCore', '2.3.0'
 
+  # Optionally configure MMKV log level via Podfile ($MMKVLogLevel) or env var (MMKV_LOG_LEVEL)
+  mmkv_log_level = $MMKVLogLevel || ENV['MMKV_LOG_LEVEL']
+  gcc_preprocessor_defs = "$(inherited) FOLLY_NO_CONFIG FOLLY_CFG_NO_COROUTINES"
+  if mmkv_log_level != nil && mmkv_log_level.to_s != ""
+    gcc_preprocessor_defs += " MMKV_LOG_LEVEL=#{mmkv_log_level}"
+  end
+
   # TODO: Remove when no one uses RN 0.79 anymore
   # Add support for React Native 0.79 or below
   s.pod_target_xcconfig = {
     "HEADER_SEARCH_PATHS" => ["${PODS_ROOT}/RCT-Folly"],
-    "GCC_PREPROCESSOR_DEFINITIONS" => "$(inherited) FOLLY_NO_CONFIG FOLLY_CFG_NO_COROUTINES",
+    "GCC_PREPROCESSOR_DEFINITIONS" => gcc_preprocessor_defs,
     "OTHER_CPLUSPLUSFLAGS" => "$(inherited) -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"
   }
 

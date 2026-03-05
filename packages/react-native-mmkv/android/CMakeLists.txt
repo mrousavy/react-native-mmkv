@@ -5,6 +5,11 @@ set (PACKAGE_NAME NitroMmkv)
 set (CMAKE_VERBOSE_MAKEFILE ON)
 set (CMAKE_CXX_STANDARD 20)
 
+# Optionally configure MMKV log level (passed from Gradle as -DMMKV_LOG_LEVEL=<0-4>)
+if(DEFINED MMKV_LOG_LEVEL)
+  add_definitions(-DMMKV_LOG_LEVEL=${MMKV_LOG_LEVEL})
+endif()
+
 # Find all C++ files (shared and platform specifics)
 file(GLOB_RECURSE shared_files RELATIVE ${CMAKE_SOURCE_DIR}
      "../cpp/**.cpp"
