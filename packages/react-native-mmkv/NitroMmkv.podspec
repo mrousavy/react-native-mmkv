@@ -34,6 +34,10 @@ Pod::Spec.new do |s|
     "OTHER_CPLUSPLUSFLAGS" => "$(inherited) -DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1"
   }
 
+  s.pod_target_xcconfig = {
+    "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES" => "YES"
+  }
+
   load 'nitrogen/generated/ios/NitroMmkv+autolinking.rb'
   add_nitrogen_files(s)
 
