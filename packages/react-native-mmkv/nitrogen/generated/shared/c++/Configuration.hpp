@@ -51,10 +51,11 @@ namespace margelo::nitro::mmkv {
     std::optional<EncryptionType> encryptionType     SWIFT_PRIVATE;
     std::optional<Mode> mode     SWIFT_PRIVATE;
     std::optional<bool> readOnly     SWIFT_PRIVATE;
+    std::optional<bool> compareBeforeSet     SWIFT_PRIVATE;
 
   public:
     Configuration() = default;
-    explicit Configuration(std::string id, std::optional<std::string> path, std::optional<std::string> encryptionKey, std::optional<EncryptionType> encryptionType, std::optional<Mode> mode, std::optional<bool> readOnly): id(id), path(path), encryptionKey(encryptionKey), encryptionType(encryptionType), mode(mode), readOnly(readOnly) {}
+    explicit Configuration(std::string id, std::optional<std::string> path, std::optional<std::string> encryptionKey, std::optional<EncryptionType> encryptionType, std::optional<Mode> mode, std::optional<bool> readOnly, std::optional<bool> compareBeforeSet): id(id), path(path), encryptionKey(encryptionKey), encryptionType(encryptionType), mode(mode), readOnly(readOnly), compareBeforeSet(compareBeforeSet) {}
 
   public:
     friend bool operator==(const Configuration& lhs, const Configuration& rhs) = default;
@@ -75,7 +76,8 @@ namespace margelo::nitro {
         JSIConverter<std::optional<std::string>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionKey"))),
         JSIConverter<std::optional<margelo::nitro::mmkv::EncryptionType>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionType"))),
         JSIConverter<std::optional<margelo::nitro::mmkv::Mode>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "mode"))),
-        JSIConverter<std::optional<bool>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "readOnly")))
+        JSIConverter<std::optional<bool>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "readOnly"))),
+        JSIConverter<std::optional<bool>>::fromJSI(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "compareBeforeSet")))
       );
     }
     static inline jsi::Value toJSI(jsi::Runtime& runtime, const margelo::nitro::mmkv::Configuration& arg) {
@@ -86,6 +88,7 @@ namespace margelo::nitro {
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "encryptionType"), JSIConverter<std::optional<margelo::nitro::mmkv::EncryptionType>>::toJSI(runtime, arg.encryptionType));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "mode"), JSIConverter<std::optional<margelo::nitro::mmkv::Mode>>::toJSI(runtime, arg.mode));
       obj.setProperty(runtime, PropNameIDCache::get(runtime, "readOnly"), JSIConverter<std::optional<bool>>::toJSI(runtime, arg.readOnly));
+      obj.setProperty(runtime, PropNameIDCache::get(runtime, "compareBeforeSet"), JSIConverter<std::optional<bool>>::toJSI(runtime, arg.compareBeforeSet));
       return obj;
     }
     static inline bool canConvert(jsi::Runtime& runtime, const jsi::Value& value) {
@@ -102,6 +105,7 @@ namespace margelo::nitro {
       if (!JSIConverter<std::optional<margelo::nitro::mmkv::EncryptionType>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "encryptionType")))) return false;
       if (!JSIConverter<std::optional<margelo::nitro::mmkv::Mode>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "mode")))) return false;
       if (!JSIConverter<std::optional<bool>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "readOnly")))) return false;
+      if (!JSIConverter<std::optional<bool>>::canConvert(runtime, obj.getProperty(runtime, PropNameIDCache::get(runtime, "compareBeforeSet")))) return false;
       return true;
     }
   };

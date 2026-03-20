@@ -18,13 +18,18 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   if (config.readOnly.value_or(false)) {
     mmkvMode = mmkvMode | MMKVMode::MMKV_READ_ONLY;
   }
-  bool useAes256Encryption = config.encryptionType.has_value() && config.encryptionType.value() == EncryptionType::AES_256;
-  std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
+  bool useAes256Encryption = config.encryptionType.value_or(EncryptionType::AES_128) == EncryptionType::AES_256;
+  std::string encryptionKey = config.encryptionKey.value_or("");
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
-  std::string rootPath = config.path.has_value() ? config.path.value() : "";
+  std::string rootPath = config.path.value_or("");
   std::string* rootPathPtr = rootPath.size() > 0 ? &rootPath : nullptr;
+  bool compareBeforeSet = config.compareBeforeSet.value_or(false);
 
-  MMKVConfig mmkvConfig{.mode = mmkvMode, .aes256 = useAes256Encryption, .cryptKey = encryptionKeyPtr, .rootPath = rootPathPtr};
+  MMKVConfig mmkvConfig{.mode = mmkvMode,
+                        .aes256 = useAes256Encryption,
+                        .cryptKey = encryptionKeyPtr,
+                        .rootPath = rootPathPtr,
+                        .enableCompareBeforeSet = compareBeforeSet};
 
   bool hasEncryptionKey = encryptionKey.size() > 0;
   Logger::log(LogLevel::Info, TAG, "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)", config.id.c_str(), rootPath.c_str(),

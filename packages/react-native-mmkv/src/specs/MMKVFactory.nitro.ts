@@ -86,6 +86,14 @@ export interface Configuration {
    * @default false
    */
   readOnly?: boolean
+  /**
+   * If `true`, MMKV will internally compare a value for equality before writing to
+   * disk, and if the new value is equal to what is already stored, it will skip
+   * the file write.
+   * Treat this as an optional performance optimization.
+   * @default false
+   */
+  compareBeforeSet?: boolean
 }
 
 export interface MMKVFactory
