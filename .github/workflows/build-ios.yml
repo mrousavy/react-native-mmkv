@@ -30,6 +30,8 @@ on:
 
 env:
   USE_CCACHE: 1
+  # Must match the runner's architecture (macOS-15 runners are arm64)
+  ARCH: arm64
 
 jobs:
   build:
@@ -75,6 +77,6 @@ jobs:
           -scheme MmkvExample \
           -sdk iphonesimulator \
           -configuration Debug \
-          -destination 'generic/platform=iOS Simulator' \
+          -destination 'generic/platform=iOS Simulator,arch=${{ env.ARCH }}' \
           build \
           CODE_SIGNING_ALLOWED=NO"
