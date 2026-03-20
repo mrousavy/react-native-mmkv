@@ -22,7 +22,7 @@ export default function App() {
   const [example, setExample] = useMMKVString('nitrooooo');
 
   useMMKVListener((k) => {
-    console.log(`${k} changed! New size: ${storage.size}`);
+    console.log(`${k} changed! New size: ${storage.byteSize}`);
   });
 
   const save = React.useCallback(() => {

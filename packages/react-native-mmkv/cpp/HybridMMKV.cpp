@@ -162,14 +162,7 @@ std::optional<double> HybridMMKV::getNumber(const std::string& key) {
 
 std::optional<std::shared_ptr<ArrayBuffer>> HybridMMKV::getBuffer(const std::string& key) {
   MMBuffer result;
-#ifdef __APPLE__
-  // iOS: Convert std::string to NSString* for MMKVCore pod compatibility
-  bool hasValue = instance->getBytes(@(key.c_str()), result);
-#else
-  // Android/other platforms: Use std::string directly (converts to
-  // std::string_view)
   bool hasValue = instance->getBytes(key, result);
-#endif
   if (hasValue) {
     return std::make_shared<ManagedMMBuffer>(std::move(result));
   } else {
