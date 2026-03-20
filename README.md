@@ -150,7 +150,7 @@ const isMmkvFastAsf = storage.getBoolean('is-mmkv-fast-asf') // true
 ```ts
 const [username, setUsername] = useMMKVString('user.name')
 const [age, setAge] = useMMKVNumber('user.age')
-const [isMmkvFastAsf, setIsMmkvFastAf] = useMMKVBoolean('is-mmkv-fast-asf')
+const [isMmkvFastAsf, setIsMmkvFastAsf] = useMMKVBoolean('is-mmkv-fast-asf')
 ```
 
 ### Keys
