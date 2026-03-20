@@ -14,23 +14,23 @@
 namespace margelo::nitro::mmkv {
 
 HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
-  std::string path = config.path.has_value() ? config.path.value() : "";
+  MMKVMode mmkvMode = getMMKVMode(config);
+  if (config.readOnly.value_or(false)) {
+    mmkvMode = mmkvMode | MMKVMode::MMKV_READ_ONLY;
+  }
+  bool useAes256Encryption = config.encryptionType.has_value() && config.encryptionType.value() == EncryptionType::AES_256;
   std::string encryptionKey = config.encryptionKey.has_value() ? config.encryptionKey.value() : "";
+  std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
+  std::string rootPath = config.path.has_value() ? config.path.value() : "";
+  std::string* rootPathPtr = rootPath.size() > 0 ? &rootPath : nullptr;
+
+  MMKVConfig mmkvConfig{.mode = mmkvMode, .aes256 = useAes256Encryption, .cryptKey = encryptionKeyPtr, .rootPath = rootPathPtr};
+
   bool hasEncryptionKey = encryptionKey.size() > 0;
-  Logger::log(LogLevel::Info, TAG, "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)", config.id.c_str(), path.c_str(),
+  Logger::log(LogLevel::Info, TAG, "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)", config.id.c_str(), rootPath.c_str(),
               hasEncryptionKey ? "true" : "false");
 
-  std::string* pathPtr = path.size() > 0 ? &path : nullptr;
-  std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
-  size_t defaultExpectedCapacity = 0;
-  bool useAes256Encryption = config.encryptionType.has_value() && config.encryptionType.value() == EncryptionType::AES_256;
-  MMKVMode mode = getMMKVMode(config);
-  if (config.readOnly.has_value() && config.readOnly.value()) {
-    Logger::log(LogLevel::Info, TAG, "Instance is read-only!");
-    mode = mode | ::mmkv::MMKV_READ_ONLY;
-  }
-
-  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, defaultExpectedCapacity, useAes256Encryption);
+  instance = MMKV::mmkvWithID(config.id, mmkvConfig);
 
   if (instance == nullptr) [[unlikely]] {
     // Check if instanceId is invalid
@@ -53,7 +53,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
     }
 
     // Check if path is maybe invalid
-    if (path.empty()) [[unlikely]] {
+    if (rootPath.empty()) [[unlikely]] {
       throw std::runtime_error("Failed to create MMKV instance! `path` cannot be empty!");
     }
 
@@ -246,9 +246,8 @@ MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
       return ::mmkv::MMKV_SINGLE_PROCESS;
     case Mode::MULTI_PROCESS:
       return ::mmkv::MMKV_MULTI_PROCESS;
-    default:
-      [[unlikely]] throw std::runtime_error("Invalid MMKV Mode value!");
   }
+  throw std::runtime_error("Invalid MMKV Mode value!");
 }
 
 double HybridMMKV::importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) {
