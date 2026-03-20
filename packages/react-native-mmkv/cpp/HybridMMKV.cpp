@@ -39,7 +39,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
 
   if (instance == nullptr) [[unlikely]] {
     // Check if instanceId is invalid
-    if (config.id.empty()) [[unlikely]] {
+    if (config.id.empty()) {
       throw std::runtime_error("Failed to create MMKV instance! `id` cannot be empty!");
     }
 
@@ -104,25 +104,25 @@ void HybridMMKV::set(const std::string& key, const std::variant<bool, std::share
   }
 
   // Pattern-match each potential value in std::variant
-  bool didSet = std::visit(overloaded{[&](bool b) {
-                                        // boolean
-                                        return instance->set(b, key);
-                                      },
-                                      [&](const std::shared_ptr<ArrayBuffer>& buf) {
-                                        // ArrayBuffer
-                                        MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
-                                        return instance->set(std::move(buffer), key);
-                                      },
-                                      [&](const std::string& string) {
-                                        // string
-                                        return instance->set(string, key);
-                                      },
-                                      [&](double number) {
-                                        // number
-                                        return instance->set(number, key);
-                                      }},
-                           value);
-  if (!didSet) {
+  bool successful = std::visit(overloaded{[&](bool b) {
+                                            // boolean
+                                            return instance->set(b, key);
+                                          },
+                                          [&](const std::shared_ptr<ArrayBuffer>& buf) {
+                                            // ArrayBuffer
+                                            MMBuffer buffer(buf->data(), buf->size(), MMBufferCopyFlag::MMBufferNoCopy);
+                                            return instance->set(std::move(buffer), key);
+                                          },
+                                          [&](const std::string& string) {
+                                            // string
+                                            return instance->set(string, key);
+                                          },
+                                          [&](double number) {
+                                            // number
+                                            return instance->set(number, key);
+                                          }},
+                               value);
+  if (!successful) [[unlikely]] {
     throw std::runtime_error("Failed to set value for key \"" + key + "\"!");
   }
 
@@ -214,7 +214,7 @@ void HybridMMKV::encrypt(const std::string& key, std::optional<EncryptionType> e
 
 void HybridMMKV::decrypt() {
   bool successful = instance->reKey("");
-  if (!successful) {
+  if (!successful) [[unlikely]] {
     throw std::runtime_error("Failed to decrypt MMKV instance!");
   }
 }
@@ -250,7 +250,7 @@ MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
 
 double HybridMMKV::importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) {
   auto hybridMMKV = std::dynamic_pointer_cast<HybridMMKV>(other);
-  if (hybridMMKV == nullptr) {
+  if (hybridMMKV == nullptr) [[unlikely]] {
     throw std::runtime_error("The given `MMKV` instance is not of type `HybridMMKV`!");
   }
 

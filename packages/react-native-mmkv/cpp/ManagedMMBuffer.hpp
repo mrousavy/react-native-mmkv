@@ -15,7 +15,7 @@ namespace margelo::nitro::mmkv {
 /**
  An ArrayBuffer subclass that manages MMBuffer memory (by ownership).
  */
-class ManagedMMBuffer : public ArrayBuffer {
+class ManagedMMBuffer final : public ArrayBuffer {
 public:
   explicit ManagedMMBuffer(MMBuffer&& buffer) : _buffer(std::move(buffer)) {}
 
