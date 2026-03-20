@@ -619,6 +619,143 @@ describe('MMKV Encryption & Security', () => {
   });
 });
 
+describe('MMKV Compare Before Set', () => {
+  afterEach(() => {
+    try {
+      createMMKV({ id: 'compare-before-set-test' }).clearAll();
+      createMMKV({ id: 'compare-disabled-test' }).clearAll();
+    } catch {
+      // Instances might not exist, that's okay
+    }
+  });
+
+  it('should create instance with compareBeforeSet enabled', () => {
+    const storage = createMMKV({
+      id: 'compare-before-set-test',
+      compareBeforeSet: true,
+    });
+
+    storage.set('key', 'value');
+    expect(storage.getString('key')).toStrictEqual('value');
+
+    storage.set('key', 'updated');
+    expect(storage.getString('key')).toStrictEqual('updated');
+  });
+
+  it('should create instance with compareBeforeSet disabled', () => {
+    const storage = createMMKV({
+      id: 'compare-disabled-test',
+      compareBeforeSet: false,
+    });
+
+    storage.set('key', 'value');
+    expect(storage.getString('key')).toStrictEqual('value');
+
+    storage.set('key', 'updated');
+    expect(storage.getString('key')).toStrictEqual('updated');
+  });
+
+  it('should not trigger listener when setting same value with compareBeforeSet', async () => {
+    const storage = createMMKV({
+      id: 'compare-before-set-test',
+      compareBeforeSet: true,
+    });
+
+    storage.set('key', 'value');
+
+    const changedKeys: string[] = [];
+    const listener = storage.addOnValueChangedListener(key => {
+      changedKeys.push(key);
+    });
+
+    // Set the same value again - should NOT trigger listener
+    storage.set('key', 'value');
+
+    await waitForNextTick();
+
+    expect(changedKeys).not.toContain('key');
+
+    listener.remove();
+  });
+
+  it('should trigger listener when setting different value with compareBeforeSet', async () => {
+    const storage = createMMKV({
+      id: 'compare-before-set-test',
+      compareBeforeSet: true,
+    });
+
+    storage.set('key', 'value');
+
+    const changedKeys: string[] = [];
+    const listener = storage.addOnValueChangedListener(key => {
+      changedKeys.push(key);
+    });
+
+    // Set a different value - should trigger listener
+    storage.set('key', 'different-value');
+
+    await waitForNextTick();
+
+    expect(changedKeys).toContain('key');
+    expect(storage.getString('key')).toStrictEqual('different-value');
+
+    listener.remove();
+  });
+
+  it('should not change byteSize when setting same value with compareBeforeSet', () => {
+    const storage = createMMKV({
+      id: 'compare-before-set-test',
+      compareBeforeSet: true,
+    });
+
+    storage.set('str', 'hello');
+    storage.set('num', 42);
+    storage.set('bool', true);
+    storage.set('buf', new Uint8Array([1, 2, 3]).buffer);
+
+    const sizeAfterInitialSet = storage.byteSize;
+
+    // Set same values again
+    storage.set('str', 'hello');
+    storage.set('num', 42);
+    storage.set('bool', true);
+    storage.set('buf', new Uint8Array([1, 2, 3]).buffer);
+
+    // byteSize should not have changed
+    expect(storage.byteSize).toStrictEqual(sizeAfterInitialSet);
+  });
+
+  it('should compare all value types before set', async () => {
+    const storage = createMMKV({
+      id: 'compare-before-set-test',
+      compareBeforeSet: true,
+    });
+
+    storage.set('str', 'hello');
+    storage.set('num', 42);
+    storage.set('bool', true);
+    storage.set('buf', new Uint8Array([1, 2, 3]).buffer);
+
+    const changedKeys: string[] = [];
+    const listener = storage.addOnValueChangedListener(key => {
+      changedKeys.push(key);
+    });
+
+    // Set same values again
+    storage.set('str', 'hello');
+    storage.set('num', 42);
+    storage.set('bool', true);
+    storage.set('buf', new Uint8Array([1, 2, 3]).buffer);
+
+    await waitForNextTick();
+
+    // None should have triggered
+    expect(changedKeys.length).toStrictEqual(0);
+
+    listener.remove();
+  });
+});
+
 describe('MMKV Storage Management', () => {
   let storage: MMKV;
 
