@@ -1,5 +1,6 @@
 import type { MMKV } from '../specs/MMKV.nitro'
 import type { Configuration } from '../specs/MMKVFactory.nitro'
+import { createTextDecoder } from '../web/createTextDecoder'
 import { createTextEncoder } from '../web/createTextEncoder'
 import {
   getLocalStorage,
@@ -16,6 +17,7 @@ export function createMMKV(
     throw new Error("MMKV: 'path' is not supported on Web!")
   }
 
+  const textDecoder = createTextDecoder()
   const textEncoder = createTextEncoder()
   const listeners = new Set<(key: string) => void>()
 
@@ -71,7 +73,11 @@ export function createMMKV(
     set: (key, value) => {
       const storage = getLocalStorage()
       if (key === '') throw new Error('Cannot set a value for an empty key!')
-      storage.setItem(prefixedKey(key), value.toString())
+      if (value instanceof ArrayBuffer) {
+        storage.setItem(prefixedKey(key), textDecoder.decode(value))
+      } else {
+        storage.setItem(prefixedKey(key), String(value))
+      }
       callListeners(key)
     },
     getString: (key) => {
