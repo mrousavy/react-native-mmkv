@@ -838,7 +838,7 @@ describe('MMKV Multi-Process Mode', () => {
 
   it('should support encryption in multi-process mode', () => {
     const storage = createMMKV({
-      id: 'multi-process-test',
+      id: 'multi-process-encrypted-test',
       mode: 'multi-process',
       encryptionKey: 'secret-key-12345',
     });
@@ -846,6 +846,8 @@ describe('MMKV Multi-Process Mode', () => {
     storage.set('secret', 'data');
     expect(storage.getString('secret')).toStrictEqual('data');
     expect(storage.isEncrypted).toStrictEqual(true);
+
+    storage.clearAll();
   });
 });
 
