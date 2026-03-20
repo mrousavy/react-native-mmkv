@@ -779,6 +779,76 @@ describe('MMKV Storage Management', () => {
   });
 });
 
+
+describe('MMKV Multi-Process Mode', () => {
+  afterEach(() => {
+    try {
+      createMMKV({ id: 'multi-process-test' }).clearAll();
+    } catch {
+      // Instance might not exist, that's okay
+    }
+  });
+
+  it('should create an instance in multi-process mode', () => {
+    const storage = createMMKV({
+      id: 'multi-process-test',
+      mode: 'multi-process',
+    });
+
+    storage.set('key', 'value');
+    expect(storage.getString('key')).toStrictEqual('value');
+  });
+
+  it('should store and retrieve all value types in multi-process mode', () => {
+    const storage = createMMKV({
+      id: 'multi-process-test',
+      mode: 'multi-process',
+    });
+
+    storage.set('str', 'hello');
+    storage.set('num', 3.14);
+    storage.set('bool', true);
+    storage.set('buf', new Uint8Array([10, 20, 30]).buffer);
+
+    expect(storage.getString('str')).toStrictEqual('hello');
+    expect(storage.getNumber('num')).toStrictEqual(3.14);
+    expect(storage.getBoolean('bool')).toStrictEqual(true);
+    expect(new Uint8Array(storage.getBuffer('buf')!)).toEqual(
+      new Uint8Array([10, 20, 30])
+    );
+  });
+
+  it('should support remove, contains and clearAll in multi-process mode', () => {
+    const storage = createMMKV({
+      id: 'multi-process-test',
+      mode: 'multi-process',
+    });
+
+    storage.set('a', 'one');
+    storage.set('b', 'two');
+    expect(storage.contains('a')).toBe(true);
+
+    storage.remove('a');
+    expect(storage.contains('a')).toBe(false);
+    expect(storage.getString('b')).toStrictEqual('two');
+
+    storage.clearAll();
+    expect(storage.getAllKeys()).toEqual([]);
+  });
+
+  it('should support encryption in multi-process mode', () => {
+    const storage = createMMKV({
+      id: 'multi-process-test',
+      mode: 'multi-process',
+      encryptionKey: 'secret-key-12345',
+    });
+
+    storage.set('secret', 'data');
+    expect(storage.getString('secret')).toStrictEqual('data');
+    expect(storage.isEncrypted).toStrictEqual(true);
+  });
+});
+
 describe('MMKV Listeners & Observers', () => {
   let storage: MMKV;
 
