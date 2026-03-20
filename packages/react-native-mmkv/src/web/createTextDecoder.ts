@@ -1,4 +1,4 @@
-export function createTextDecoder() {
+export function createTextDecoder(): TextDecoder {
   const g = global ?? globalThis ?? window
   if (g.TextDecoder != null) {
     return new g.TextDecoder()

@@ -1,4 +1,4 @@
-export function createTextEncoder() {
+export function createTextEncoder(): TextEncoder {
   const g = global ?? globalThis ?? window
   if (g.TextEncoder != null) {
     return new g.TextEncoder()
