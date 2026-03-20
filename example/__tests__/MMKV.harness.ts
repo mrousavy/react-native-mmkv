@@ -619,6 +619,47 @@ describe('MMKV Encryption & Security', () => {
   });
 });
 
+describe('MMKV Read-Only Mode', () => {
+  // Note: MMKV caches instances by ID, so once an ID is opened with a given
+  // mode it cannot be reopened with a different mode in the same process.
+  // These tests use an ID that is only ever opened as read-only.
+
+  it('should report isReadOnly as true', () => {
+    const storage = createMMKV({ id: 'read-only-fresh-test', readOnly: true });
+    expect(storage.isReadOnly).toStrictEqual(true);
+  });
+
+  it('should report isReadOnly as false for writable instance', () => {
+    const storage = createMMKV({ id: 'writable-mode-test' });
+    expect(storage.isReadOnly).toStrictEqual(false);
+    storage.clearAll();
+  });
+
+  it('should throw when trying to set a value', () => {
+    const storage = createMMKV({ id: 'read-only-set-test', readOnly: true });
+    expect(() => storage.set('key', 'value')).toThrow();
+  });
+
+  it('should throw when trying to remove a value', () => {
+    const storage = createMMKV({ id: 'read-only-remove-test', readOnly: true });
+    expect(() => storage.remove('key')).toThrow();
+  });
+
+  it('should throw when trying to clearAll', () => {
+    const storage = createMMKV({ id: 'read-only-clear-test', readOnly: true });
+    expect(() => storage.clearAll()).toThrow();
+  });
+
+  it('should support contains and getAllKeys on empty read-only instance', () => {
+    const storage = createMMKV({ id: 'read-only-keys-test', readOnly: true });
+
+    expect(storage.contains('nonexistent')).toBe(false);
+    expect(storage.getAllKeys()).toEqual([]);
+    expect(storage.length).toStrictEqual(0);
+  });
+});
+
+
 describe('MMKV Compare Before Set', () => {
   afterEach(() => {
     try {
