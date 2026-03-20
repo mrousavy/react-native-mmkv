@@ -25,7 +25,7 @@ export function createMockMMKV(
       return this.byteSize
     },
     get byteSize(): number {
-      // esimate - assumes UTF8
+      // estimate - assumes UTF8
       return JSON.stringify(storage).length
     },
     isReadOnly: false,

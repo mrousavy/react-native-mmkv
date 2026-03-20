@@ -227,7 +227,7 @@ void HybridMMKV::trim() {
 Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
   // Add listener
   auto mmkvID = instance->mmapID();
-  auto listenerID = MMKVValueChangedListenerRegistry::addListener(instance->mmapID(), onValueChanged);
+  auto listenerID = MMKVValueChangedListenerRegistry::addListener(mmkvID, onValueChanged);
 
   return Listener([=]() {
     // remove()

@@ -98,7 +98,7 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
   recrypt(key: string | undefined): void
   /**
    * Encrypts the data in this MMKV instance with the
-   * given {@linkcode key} and {@linkcode ecnryptionType}.
+   * given {@linkcode key} and {@linkcode encryptionType}.
    *
    * If this MMKV instance is already encrypted ({@linkcode isEncrypted}),
    * it will re-encrypt the data.
