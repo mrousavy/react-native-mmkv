@@ -30,11 +30,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
     mode = mode | ::mmkv::MMKV_READ_ONLY;
   }
 
-#ifdef __APPLE__
   instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, defaultExpectedCapacity, useAes256Encryption);
-#else
-  instance = MMKV::mmkvWithID(config.id, mode, encryptionKeyPtr, pathPtr, defaultExpectedCapacity, useAes256Encryption);
-#endif
 
   if (instance == nullptr) [[unlikely]] {
     // Check if instanceId is invalid
