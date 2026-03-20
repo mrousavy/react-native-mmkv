@@ -517,8 +517,7 @@ describe('MMKV Encryption & Security', () => {
 
       // Remove encryption
       storage.decrypt();
-      // TODO: Add this check after https://github.com/Tencent/MMKV/issues/1642 is resolved
-      // expect(storage.isEncrypted).toStrictEqual(false)
+      expect(storage.isEncrypted).toStrictEqual(false)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
     });
 
@@ -599,8 +598,7 @@ describe('MMKV Encryption & Security', () => {
 
       // Remove encryption
       storage.decrypt()
-      // TODO: Add this check after https://github.com/Tencent/MMKV/issues/1642 is resolved
-      // expect(storage.isEncrypted).toStrictEqual(false)
+      expect(storage.isEncrypted).toStrictEqual(false)
       expect(storage.getString('data-key')).toStrictEqual('original-data');
     });
 
