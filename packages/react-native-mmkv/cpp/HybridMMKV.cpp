@@ -122,12 +122,10 @@ void HybridMMKV::set(const std::string& key, const std::variant<bool, std::share
                                         return instance->set(number, key);
                                       }},
                            value);
-  if (!didSet) {
-    throw std::runtime_error("Failed to set value for key \"" + key + "\"!");
+  if (didSet) {
+    // Value was written - notify listeners
+    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
   }
-
-  // Notify on changed
-  MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
 }
 
 std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
