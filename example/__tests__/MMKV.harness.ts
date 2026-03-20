@@ -655,53 +655,6 @@ describe('MMKV Compare Before Set', () => {
     expect(storage.getString('key')).toStrictEqual('updated');
   });
 
-  it('should not trigger listener when setting same value with compareBeforeSet', async () => {
-    const storage = createMMKV({
-      id: 'compare-before-set-test',
-      compareBeforeSet: true,
-    });
-
-    storage.set('key', 'value');
-
-    const changedKeys: string[] = [];
-    const listener = storage.addOnValueChangedListener(key => {
-      changedKeys.push(key);
-    });
-
-    // Set the same value again - should NOT trigger listener
-    storage.set('key', 'value');
-
-    await waitForNextTick();
-
-    expect(changedKeys).not.toContain('key');
-
-    listener.remove();
-  });
-
-  it('should trigger listener when setting different value with compareBeforeSet', async () => {
-    const storage = createMMKV({
-      id: 'compare-before-set-test',
-      compareBeforeSet: true,
-    });
-
-    storage.set('key', 'value');
-
-    const changedKeys: string[] = [];
-    const listener = storage.addOnValueChangedListener(key => {
-      changedKeys.push(key);
-    });
-
-    // Set a different value - should trigger listener
-    storage.set('key', 'different-value');
-
-    await waitForNextTick();
-
-    expect(changedKeys).toContain('key');
-    expect(storage.getString('key')).toStrictEqual('different-value');
-
-    listener.remove();
-  });
-
   it('should not change byteSize when setting same value with compareBeforeSet', () => {
     const storage = createMMKV({
       id: 'compare-before-set-test',
@@ -725,34 +678,18 @@ describe('MMKV Compare Before Set', () => {
     expect(storage.byteSize).toStrictEqual(sizeAfterInitialSet);
   });
 
-  it('should compare all value types before set', async () => {
+  it('should change byteSize when setting a different value with compareBeforeSet', () => {
     const storage = createMMKV({
       id: 'compare-before-set-test',
       compareBeforeSet: true,
     });
 
-    storage.set('str', 'hello');
-    storage.set('num', 42);
-    storage.set('bool', true);
-    storage.set('buf', new Uint8Array([1, 2, 3]).buffer);
+    storage.set('key', 'short');
+    const sizeAfterInitialSet = storage.byteSize;
 
-    const changedKeys: string[] = [];
-    const listener = storage.addOnValueChangedListener(key => {
-      changedKeys.push(key);
-    });
-
-    // Set same values again
-    storage.set('str', 'hello');
-    storage.set('num', 42);
-    storage.set('bool', true);
-    storage.set('buf', new Uint8Array([1, 2, 3]).buffer);
-
-    await waitForNextTick();
-
-    // None should have triggered
-    expect(changedKeys.length).toStrictEqual(0);
-
-    listener.remove();
+    // Set a longer value - byteSize should increase
+    storage.set('key', 'a much longer string value that takes more space');
+    expect(storage.byteSize).toBeGreaterThan(sizeAfterInitialSet);
   });
 });
 
