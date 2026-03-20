@@ -640,14 +640,17 @@ describe('MMKV Read-Only Mode', () => {
     expect(() => storage.set('key', 'value')).toThrow();
   });
 
-  it('should throw when trying to remove a value', () => {
+  it('should not remove values in read-only mode', () => {
     const storage = createMMKV({ id: 'read-only-remove-test', readOnly: true });
-    expect(() => storage.remove('key')).toThrow();
+    // MMKV silently no-ops remove on read-only instances
+    expect(storage.remove('key')).toStrictEqual(false);
   });
 
-  it('should throw when trying to clearAll', () => {
+  it('should not clear values in read-only mode', () => {
     const storage = createMMKV({ id: 'read-only-clear-test', readOnly: true });
-    expect(() => storage.clearAll()).toThrow();
+    // MMKV silently no-ops clearAll on read-only instances
+    storage.clearAll();
+    expect(storage.length).toStrictEqual(0);
   });
 
   it('should support contains and getAllKeys on empty read-only instance', () => {
