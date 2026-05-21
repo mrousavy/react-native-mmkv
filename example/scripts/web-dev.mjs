@@ -1,18 +1,27 @@
-// Same-origin host that fronts `react-native start` and serves an HTML
-// shell which mounts the app via AppRegistry.runApplication. Bare RN
-// doesn't ship a web dev mode, so this is the minimal Expo-equivalent.
+// One-command web dev server for the bare-RN example.
+//
+// Spawns Metro (`react-native start`), waits for it to come up, then serves
+// a same-origin HTML shell that mounts the app via AppRegistry.runApplication
+// (through index.web.js). Bare RN ships no web dev mode — this is the
+// minimal Expo-equivalent.
 //
 // Usage:
-//   1. bun start                 # Metro on 8081
-//   2. bun run web:dev           # this script on 3000
-//   3. open http://localhost:3000
+//   bun run web:dev          # starts Metro + host, then open http://localhost:3000
+//
+// Env:
+//   PORT        host port (default 3000)
+//   METRO_PORT  Metro port (default 8081)
+//   METRO_URL   use an already-running Metro instead of spawning one
 
 import http from 'node:http';
+import { spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import httpProxy from 'http-proxy';
 
-const TARGET = process.env.METRO_URL ?? 'http://localhost:8081';
 const PORT = Number(process.env.PORT ?? 3000);
+const METRO_PORT = Number(process.env.METRO_PORT ?? 8081);
+const EXTERNAL_METRO = process.env.METRO_URL;
+const TARGET = EXTERNAL_METRO ?? `http://localhost:${METRO_PORT}`;
 
 const APP_NAME = (() => {
   try {
@@ -45,6 +54,41 @@ const HTML = `<!doctype html>
   </body>
 </html>`;
 
+// --- Metro -----------------------------------------------------------------
+
+let metro = null;
+
+const startMetro = () => {
+  console.log(`[web-dev] starting Metro on :${METRO_PORT} ...`);
+  metro = spawn(
+    'bunx',
+    ['react-native', 'start', '--port', String(METRO_PORT)],
+    { cwd: new URL('..', import.meta.url).pathname, stdio: 'inherit' }
+  );
+  metro.on('exit', (code) => {
+    console.log(`[web-dev] Metro exited (${code}); shutting down`);
+    process.exit(code ?? 0);
+  });
+};
+
+const waitForMetro = async () => {
+  const deadline = Date.now() + 90_000;
+  while (Date.now() < deadline) {
+    try {
+      const res = await fetch(`${TARGET}/status`);
+      if (res.ok && (await res.text()).includes('packager-status:running')) {
+        return;
+      }
+    } catch {
+      // not up yet
+    }
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  throw new Error(`Metro did not become ready at ${TARGET}`);
+};
+
+// --- Host server -----------------------------------------------------------
+
 const proxy = httpProxy.createProxyServer({
   target: TARGET,
   ws: true,
@@ -73,6 +117,24 @@ server.on('upgrade', (req, socket, head) => {
   proxy.ws(req, socket, head);
 });
 
-server.listen(PORT, () => {
-  console.log(`[web-dev] http://localhost:${PORT} -> ${TARGET}`);
+// --- Lifecycle -------------------------------------------------------------
+
+const shutdown = () => {
+  if (metro && !metro.killed) metro.kill('SIGTERM');
+  process.exit(0);
+};
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
+
+const main = async () => {
+  if (!EXTERNAL_METRO) startMetro();
+  await waitForMetro();
+  server.listen(PORT, () => {
+    console.log(`\n[web-dev] ready -> http://localhost:${PORT}\n`);
+  });
+};
+
+main().catch((err) => {
+  console.error('[web-dev]', err.message);
+  shutdown();
 });

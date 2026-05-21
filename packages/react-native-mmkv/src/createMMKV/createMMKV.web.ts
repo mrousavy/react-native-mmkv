@@ -42,7 +42,7 @@ export function createMMKV(
   return {
     id: config.id,
     get length(): number {
-     return getLocalStorage().length
+      return getLocalStorage().length
     },
     get size(): number {
       return this.byteSize
