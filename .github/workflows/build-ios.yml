@@ -30,7 +30,6 @@ on:
 
 env:
   USE_CCACHE: 1
-  
 
 jobs:
   build:
