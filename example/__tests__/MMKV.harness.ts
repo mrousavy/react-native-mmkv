@@ -10,7 +10,6 @@ import { MMKV, createMMKV, deleteMMKV, existsMMKV } from 'react-native-mmkv';
 
 const skipOnWeb = (reason: string): boolean => {
   if (Platform.OS === 'web') {
-     
     console.log(`[skip · web] ${reason}`);
     return true;
   }

@@ -3,15 +3,6 @@ name: Harness Web
 on:
   workflow_dispatch:
     inputs:
-      browser:
-        description: "Playwright browser to run against"
-        required: false
-        default: "chromium"
-        type: choice
-        options:
-          - chromium
-          - firefox
-          - webkit
       proxy_port:
         description: "Local port for the same-origin proxy in front of harness Metro"
         required: false
@@ -51,7 +42,6 @@ on:
       - "example/scripts/web-proxy.mjs"
 
 env:
-  BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
   PROXY_PORT: ${{ github.event.inputs.proxy_port || '3000' }}
 
 jobs:
@@ -67,7 +57,7 @@ jobs:
 
       - name: Install Playwright browser
         working-directory: example
-        run: bunx playwright install --with-deps ${{ env.BROWSER }}
+        run: bunx playwright install --with-deps chromium
 
       - name: Start same-origin proxy
         working-directory: example

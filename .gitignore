@@ -14,3 +14,5 @@ build
 compile_commands.json
 
 **/tsconfig.tsbuildinfo
+
+example/.harness/
