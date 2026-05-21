@@ -30,8 +30,6 @@ on:
 
 env:
   USE_CCACHE: 1
-  # Must match the runner's architecture (macOS-15 runners are arm64)
-  ARCH: arm64
 
 jobs:
   build:
@@ -54,8 +52,8 @@ jobs:
           bundler-cache: true
           working-directory: example
 
-      - name: Select Xcode 16.4
-        run: sudo xcode-select -s "/Applications/Xcode_16.4.app/Contents/Developer"
+      - name: Select Xcode 26.2
+        run: sudo xcode-select -s "/Applications/Xcode_26.2.app/Contents/Developer"
 
       - name: Restore Pods cache
         uses: actions/cache@v5
@@ -77,6 +75,6 @@ jobs:
           -scheme MmkvExample \
           -sdk iphonesimulator \
           -configuration Debug \
-          -destination 'generic/platform=iOS Simulator,arch=${{ env.ARCH }}' \
+          -destination 'generic/platform=iOS Simulator' \
           build \
           CODE_SIGNING_ALLOWED=NO"

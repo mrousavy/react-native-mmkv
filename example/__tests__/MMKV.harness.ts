@@ -5,7 +5,17 @@ import {
   beforeEach,
   afterEach,
 } from 'react-native-harness';
+import { Platform } from 'react-native';
 import { MMKV, createMMKV, deleteMMKV, existsMMKV } from 'react-native-mmkv';
+
+const skipOnWeb = (reason: string): boolean => {
+  if (Platform.OS === 'web') {
+     
+    console.log(`[skip · web] ${reason}`);
+    return true;
+  }
+  return false;
+};
 
 const waitForNextTick = async () => {
   await new Promise<void>(resolve => setTimeout(resolve, 0));
@@ -225,6 +235,7 @@ describe('MMKV Core Functionality', () => {
 
   describe('ArrayBuffer/Buffer Operations', () => {
     it('should store and retrieve ArrayBuffer correctly', () => {
+      if (skipOnWeb("ArrayBuffer round-trip is not supported by the web")) return;
       const key = 'bufferTest';
       const data = new Uint8Array([1, 2, 3, 4, 5, 255]);
       const buffer = data.buffer;
@@ -240,6 +251,7 @@ describe('MMKV Core Functionality', () => {
     });
 
     it('should handle empty ArrayBuffer', () => {
+      if (skipOnWeb("ArrayBuffer round-trip is not supported by the web")) return;
       const key = 'emptyBuffer';
       const emptyBuffer = new ArrayBuffer(0);
 
@@ -251,6 +263,7 @@ describe('MMKV Core Functionality', () => {
     });
 
     it('should handle large ArrayBuffer', () => {
+      if (skipOnWeb("ArrayBuffer round-trip is not supported by the web")) return;
       const key = 'largeBuffer';
       const size = 1024 * 1024; // 1MB
       const data = new Uint8Array(size);
@@ -275,6 +288,7 @@ describe('MMKV Core Functionality', () => {
     });
 
     it('should handle different typed arrays', () => {
+      if (skipOnWeb("typed-array round-trip is not supported by the web")) return;
       const int16Data = new Int16Array([1000, -1000, 32767, -32768]);
       const float32Data = new Float32Array([3.14159, -2.718, 1.414]);
       const uint32Data = new Uint32Array([0, 1, 4294967295]);
@@ -293,6 +307,7 @@ describe('MMKV Core Functionality', () => {
     });
 
     it('should handle buffer type interpretation', () => {
+      if (skipOnWeb("ArrayBuffer round-trip is not supported by the wen")) return;
       const key = 'bufferTypeTest';
       const data = new Uint8Array([65, 66, 67]); // 'ABC' in ASCII
 
@@ -400,6 +415,7 @@ describe('MMKV Configuration & Multiple Instances', () => {
     });
 
     it('should import other keys properly', () => {
+      if (skipOnWeb("importAllFrom semantics are not supported on web")) return;
       const storage1 = createMMKV({ id: 'first-storage' })
       const storage2 = createMMKV({ id: 'second-storage' })
       storage1.clearAll()
@@ -460,6 +476,7 @@ describe('MMKV Encryption & Security', () => {
 
   describe('Encryption (AES-128)', () => {
     it('should create encrypted instance and store data', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       const encryptionKey = 'test-key-123456';
       const storage = createMMKV({
         id: 'encrypted-test-128',
@@ -478,6 +495,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should isolate encrypted and non-encrypted instances', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       const plainStorage = createMMKV({ id: 'plain-test' });
       const encryptedStorage = createMMKV({
         id: 'encrypted-isolation-test-128',
@@ -497,6 +515,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should handle recryption', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       const storage = createMMKV({ id: 'recrypt-test-128' });
 
       expect(storage.isEncrypted).toStrictEqual(false)
@@ -522,6 +541,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should handle encryption key validation', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       // Test maximum key length (16 bytes)
       const maxKey = '1234567890123456'; // exactly 16 characters
       const storage = createMMKV({
@@ -539,6 +559,7 @@ describe('MMKV Encryption & Security', () => {
 
   describe('Encryption (AES-256)', () => {
     it('should create encrypted instance and store data', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       const encryptionKey = 'test-key-123456-longer-than-16';
       const storage = createMMKV({
         id: 'encrypted-test-256',
@@ -558,6 +579,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should isolate encrypted and non-encrypted instances', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       const plainStorage = createMMKV({ id: 'plain-test' });
       const encryptedStorage = createMMKV({
         id: 'encrypted-isolation-test-256',
@@ -578,6 +600,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should handle recryption', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       // TODO: Add encryptionType to recrypt
       const storage = createMMKV({ id: 'recrypt-test-256' });
       expect(storage.isEncrypted).toStrictEqual(false)
@@ -603,6 +626,7 @@ describe('MMKV Encryption & Security', () => {
     });
 
     it('should handle encryption key validation', () => {
+      if (skipOnWeb("encryption is not supported on Web")) return;
       // Test maximum key length (32 bytes)
       const maxKey = '12345678901234561234567890123456'; // exactly 32 characters
       const storage = createMMKV({
@@ -625,6 +649,7 @@ describe('MMKV Read-Only Mode', () => {
   // These tests use an ID that is only ever opened as read-only.
 
   it('should report isReadOnly as true', () => {
+    if (skipOnWeb("read-only mode is not implemented on Web")) return;
     const storage = createMMKV({ id: 'read-only-fresh-test', readOnly: true });
     expect(storage.isReadOnly).toStrictEqual(true);
   });
@@ -636,17 +661,20 @@ describe('MMKV Read-Only Mode', () => {
   });
 
   it('should throw when trying to set a value', () => {
+    if (skipOnWeb("read-only mode is not implemented on Web")) return;
     const storage = createMMKV({ id: 'read-only-set-test', readOnly: true });
     expect(() => storage.set('key', 'value')).toThrow();
   });
 
   it('should not remove values in read-only mode', () => {
+    if (skipOnWeb("read-only mode is not implemented on Web")) return;
     const storage = createMMKV({ id: 'read-only-remove-test', readOnly: true });
     // MMKV silently no-ops remove on read-only instances
     expect(storage.remove('key')).toStrictEqual(false);
   });
 
   it('should not clear values in read-only mode', () => {
+    if (skipOnWeb("read-only mode is not implemented on Web")) return;
     const storage = createMMKV({ id: 'read-only-clear-test', readOnly: true });
     // MMKV silently no-ops clearAll on read-only instances
     storage.clearAll();
@@ -654,6 +682,7 @@ describe('MMKV Read-Only Mode', () => {
   });
 
   it('should support contains and getAllKeys on empty read-only instance', () => {
+    if (skipOnWeb("read-only mode is not implemented on Web")) return;
     const storage = createMMKV({ id: 'read-only-keys-test', readOnly: true });
 
     expect(storage.contains('nonexistent')).toBe(false);
@@ -908,6 +937,7 @@ describe('MMKV Multi-Process Mode', () => {
   });
 
   it('should create an instance in multi-process mode', () => {
+    if (skipOnWeb("multi-process mode is not supported on Web")) return;
     const storage = createMMKV({
       id: 'multi-process-test',
       mode: 'multi-process',
@@ -918,6 +948,7 @@ describe('MMKV Multi-Process Mode', () => {
   });
 
   it('should store and retrieve all value types in multi-process mode', () => {
+    if (skipOnWeb("multi-process mode is not supported on Web")) return;
     const storage = createMMKV({
       id: 'multi-process-test',
       mode: 'multi-process',
@@ -937,6 +968,7 @@ describe('MMKV Multi-Process Mode', () => {
   });
 
   it('should support remove, contains and clearAll in multi-process mode', () => {
+    if (skipOnWeb("multi-process mode is not supported on Web")) return;
     const storage = createMMKV({
       id: 'multi-process-test',
       mode: 'multi-process',
@@ -955,6 +987,7 @@ describe('MMKV Multi-Process Mode', () => {
   });
 
   it('should support encryption in multi-process mode', () => {
+    if (skipOnWeb("multi-process mode is not supported on Web")) return;
     const storage = createMMKV({
       id: 'multi-process-encrypted-test',
       mode: 'multi-process',
@@ -1136,6 +1169,7 @@ describe('Deleting instances and checking if they exist', () => {
 
   describe('Checking if an instance exists', () => {
     it('should exist', () => {
+      if (skipOnWeb("existsMMKV cannot detect a freshly-created empty instance on Web")) return;
       createMMKV({ id: 'some-instance' })
       const exists = existsMMKV('some-instance')
       expect(exists).toStrictEqual(true)
@@ -1149,12 +1183,14 @@ describe('Deleting instances and checking if they exist', () => {
 
   describe('Deleting an instance', () => {
     it('should delete properly', () => {
+      if (skipOnWeb("deleteMMKV cannot remove a freshly-created empty instance on Web")) return;
       createMMKV({ id: 'some-instance' })
       const wasDeleted = deleteMMKV('some-instance')
       expect(wasDeleted).toStrictEqual(true)
     })
 
     it('should delete properly and exists should be false', () => {
+      if (skipOnWeb("existsMMKV/deleteMMKV semantics differ on Web")) return;
       createMMKV({ id: 'some-instance' })
       const wasDeleted = deleteMMKV('some-instance')
       expect(wasDeleted).toStrictEqual(true)

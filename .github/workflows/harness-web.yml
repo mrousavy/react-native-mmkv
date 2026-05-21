@@ -1,0 +1,86 @@
+name: Harness Web
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: "Playwright browser to run against"
+        required: false
+        default: "chromium"
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+      proxy_port:
+        description: "Local port for the same-origin proxy in front of harness Metro"
+        required: false
+        default: "3000"
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/harness-web.yml"
+      - "packages/react-native-mmkv/src/**"
+      - "packages/react-native-mmkv/lib/**"
+      - "**/bun.lock"
+      - "**/react-native.config.js"
+      - "**/nitro.json"
+      - "example/__tests__/**"
+      - "example/rn-harness.config.mjs"
+      - "example/metro.config.js"
+      - "example/babel.config.js"
+      - "example/app.json"
+      - "example/index.js"
+      - "example/scripts/web-proxy.mjs"
+  pull_request:
+    paths:
+      - ".github/workflows/harness-web.yml"
+      - "packages/react-native-mmkv/src/**"
+      - "packages/react-native-mmkv/lib/**"
+      - "**/bun.lock"
+      - "**/react-native.config.js"
+      - "**/nitro.json"
+      - "example/__tests__/**"
+      - "example/rn-harness.config.mjs"
+      - "example/metro.config.js"
+      - "example/babel.config.js"
+      - "example/app.json"
+      - "example/index.js"
+      - "example/scripts/web-proxy.mjs"
+
+env:
+  BROWSER: ${{ github.event.inputs.browser || 'chromium' }}
+  PROXY_PORT: ${{ github.event.inputs.proxy_port || '3000' }}
+
+jobs:
+  harness_web:
+    name: Harness Web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install npm dependencies (bun)
+        run: bun install
+
+      - name: Install Playwright browser
+        working-directory: example
+        run: bunx playwright install --with-deps ${{ env.BROWSER }}
+
+      - name: Start same-origin proxy
+        working-directory: example
+        run: |
+          PROXY_PORT=${{ env.PROXY_PORT }} bun run web:proxy &
+          echo "PROXY_PID=$!" >> $GITHUB_ENV
+
+      - name: Run Harness Web tests
+        working-directory: example
+        env:
+          HARNESS_WEB_URL: http://localhost:${{ env.PROXY_PORT }}
+        run: bun run test:harness --harnessRunner web
+
+      - name: Stop proxy
+        if: always()
+        run: kill $PROXY_PID || true
