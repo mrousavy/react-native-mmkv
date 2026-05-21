@@ -42,7 +42,13 @@ export function createMMKV(
   return {
     id: config.id,
     get length(): number {
-      return getLocalStorage().length
+      const storage = getLocalStorage()
+      let count = 0
+      for (let i = 0; i < storage.length; i++) {
+        const key = storage.key(i)
+        if (key != null && key.startsWith(keyPrefix)) count++
+      }
+      return count
     },
     get size(): number {
       return this.byteSize
