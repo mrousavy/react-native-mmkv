@@ -1,5 +1,6 @@
 name: Build iOS
 
+
 on:
   push:
     branches:
@@ -30,6 +31,7 @@ on:
 
 env:
   USE_CCACHE: 1
+  ARCH: arm64
 
 jobs:
   build:
@@ -75,6 +77,6 @@ jobs:
           -scheme MmkvExample \
           -sdk iphonesimulator \
           -configuration Debug \
-          -destination 'generic/platform=iOS Simulator' \
+          -destination 'generic/platform=iOS Simulator',arch=${{ env.ARCH }} \
           build \
           CODE_SIGNING_ALLOWED=NO"
