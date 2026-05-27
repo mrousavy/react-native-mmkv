@@ -14,11 +14,20 @@
   },
   "autolinking": {
     "MMKVFactory": {
-      "cpp": "HybridMMKVFactory"
+      "all": {
+        "language": "c++",
+        "implementationClassName": "HybridMMKVFactory"
+      }
     },
     "MMKVPlatformContext": {
-      "swift": "HybridMMKVPlatformContext",
-      "kotlin": "HybridMMKVPlatformContext"
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridMMKVPlatformContext"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridMMKVPlatformContext"
+      }
     }
   },
   "ignorePaths": [
