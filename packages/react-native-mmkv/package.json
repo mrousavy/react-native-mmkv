@@ -63,7 +63,7 @@
     "@react-native/eslint-config": "0.85.3",
     "@react-native/jest-preset": "0.85.3",
     "@testing-library/react-native": "^13.3.1",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^30.0.0",
     "@types/react": "^19.2.15",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.0",
