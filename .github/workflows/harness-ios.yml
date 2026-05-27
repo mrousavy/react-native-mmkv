@@ -119,5 +119,8 @@ jobs:
 
       - name: Run Harness E2E tests
         working-directory: example
+        env:
+          HARNESS_IOS_DEVICE: ${{ env.DEVICE_MODEL }}
+          HARNESS_IOS_VERSION: ${{ env.IOS_VERSION }}
         run: |
           bun run test:harness --harnessRunner ios
