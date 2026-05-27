@@ -1,7 +1,5 @@
 import type { MMKV } from '../specs/MMKV.nitro'
 import type { Configuration } from '../specs/MMKVFactory.nitro'
-import { createTextDecoder } from '../web/createTextDecoder'
-import { createTextEncoder } from '../web/createTextEncoder'
 import {
   getLocalStorage,
   LOCAL_STORAGE_KEY_WILDCARD,
@@ -17,8 +15,6 @@ export function createMMKV(
     throw new Error("MMKV: 'path' is not supported on Web!")
   }
 
-  const textDecoder = createTextDecoder()
-  const textEncoder = createTextEncoder()
   const listeners = new Set<(key: string) => void>()
 
   if (config.id.includes(LOCAL_STORAGE_KEY_WILDCARD)) {
@@ -75,7 +71,12 @@ export function createMMKV(
       const storage = getLocalStorage()
       if (key === '') throw new Error('Cannot set a value for an empty key!')
       if (value instanceof ArrayBuffer) {
-        storage.setItem(prefixedKey(key), textDecoder.decode(value))
+        const bytes = new Uint8Array(value)
+        let binary = ''
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]!)
+        }
+        storage.setItem(prefixedKey(key), binary)
       } else {
         storage.setItem(prefixedKey(key), String(value))
       }
@@ -101,7 +102,11 @@ export function createMMKV(
       const storage = getLocalStorage()
       const value = storage.getItem(prefixedKey(key))
       if (value == null) return undefined
-      return textEncoder.encode(value).buffer
+      const bytes = new Uint8Array(value.length)
+      for (let i = 0; i < value.length; i++) {
+        bytes[i] = value.charCodeAt(i)
+      }
+      return bytes.buffer
     },
     getAllKeys: () => {
       const storage = getLocalStorage()
