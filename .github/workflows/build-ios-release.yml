@@ -61,6 +61,7 @@ jobs:
           zip -r ../../../../../../MmkvExample-Release-Simulator.zip MmkvExample.app
 
       - name: Upload .app to Release
+        if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
