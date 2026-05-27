@@ -28,9 +28,9 @@ int initialize(JavaVM* vm) {
 }
 
 struct JHybridMMKVPlatformContextSpecImpl: public jni::JavaClass<JHybridMMKVPlatformContextSpecImpl, JHybridMMKVPlatformContextSpec::JavaPart> {
-  static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/mmkv/HybridMMKVPlatformContext;";
+  static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/mmkv/HybridMMKVPlatformContext;";
   static std::shared_ptr<JHybridMMKVPlatformContextSpec> create() {
-    static auto constructorFn = javaClassStatic()->getConstructor<JHybridMMKVPlatformContextSpecImpl::javaobject()>();
+    static const auto constructorFn = javaClassStatic()->getConstructor<JHybridMMKVPlatformContextSpecImpl::javaobject()>();
     jni::local_ref<JHybridMMKVPlatformContextSpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
     return javaPart->getJHybridMMKVPlatformContextSpec();
   }
