@@ -31,7 +31,7 @@ jobs:
       - name: Setup Ruby (bundle)
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2
+          ruby-version: 4.0.5
           bundler-cache: true
           working-directory: example/ios
 
