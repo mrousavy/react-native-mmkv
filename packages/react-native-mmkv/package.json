@@ -59,7 +59,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@expo/config-plugins": "^10.1.2",
     "@react-native/eslint-config": "0.85.3",
     "@react-native/jest-preset": "0.85.3",
     "@testing-library/react-native": "^13.3.1",
