@@ -60,8 +60,6 @@ jobs:
         with:
           path: example/ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock', '**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
       - name: Install Pods
         working-directory: example
         run: bun pods
