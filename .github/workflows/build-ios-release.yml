@@ -36,8 +36,6 @@ jobs:
         with:
           path: example/ios/Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock', '**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-pods-
       - name: Install Pods
         working-directory: example
         run: bun pods
@@ -63,6 +61,7 @@ jobs:
           zip -r ../../../../../../MmkvExample-Release-Simulator.zip MmkvExample.app
 
       - name: Upload .app to Release
+        if: github.event_name == 'release'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
