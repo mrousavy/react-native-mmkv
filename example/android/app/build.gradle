@@ -73,35 +73,35 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
-    ndkVersion rootProject.ext.ndkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
+    ndkVersion = rootProject.ext.ndkVersion
+    buildToolsVersion = rootProject.ext.buildToolsVersion
+    compileSdk = rootProject.ext.compileSdkVersion
 
-    namespace "com.mrousavy.mmkv.example"
+    namespace = "com.mrousavy.mmkv.example"
     defaultConfig {
-        applicationId "com.mrousavy.mmkv.example"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.mrousavy.mmkv.example"
+        minSdkVersion = rootProject.ext.minSdkVersion
+        targetSdkVersion = rootProject.ext.targetSdkVersion
+        versionCode = 1
+        versionName = "1.0"
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile = file('debug.keystore')
+            storePassword = 'android'
+            keyAlias = 'androiddebugkey'
+            keyPassword = 'android'
         }
     }
     buildTypes {
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig = signingConfigs.debug
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
-            minifyEnabled enableProguardInReleaseBuilds
+            signingConfig = signingConfigs.debug
+            minifyEnabled = enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
