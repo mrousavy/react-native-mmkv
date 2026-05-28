@@ -5,7 +5,6 @@ const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, '..');
 const rootNodeModules = path.resolve(workspaceRoot, 'node_modules');
 
-
 const SINGLETONS = ['react', 'react-native', 'react-dom', 'react-native-web'];
 
 const requireResolveFromRoot = (req) =>

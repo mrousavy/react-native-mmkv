@@ -33,8 +33,8 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf android/build node_modules/**/android/build lib",
-    "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
-    "lint-ci": "eslint \"**/*.{js,ts,tsx}\" -f @jamesacarr/github-actions",
+    "lint": "eslint \"**/*.{js,ts,tsx}\" --fix && prettier --write \"**/*.{js,ts,tsx}\"",
+    "lint-ci": "eslint \"**/*.{js,ts,tsx}\" --max-warnings=0 -f @jamesacarr/github-actions && prettier --check \"**/*.{js,ts,tsx}\"",
     "typescript": "tsc",
     "specs": "tsc && nitrogen --logLevel=\"debug\"",
     "build": "tsc --noEmit false",
@@ -59,17 +59,15 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@expo/config-plugins": "^10.1.2",
     "@react-native/eslint-config": "0.85.3",
     "@react-native/jest-preset": "0.85.3",
     "@testing-library/react-native": "^13.3.1",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/react": "^19.2.15",
     "eslint": "^8.57.1",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-config-prettier": "^10.1.8",
     "nitrogen": "0.35.9",
-    "prettier": "^3.3.3",
+    "prettier": "^3.8.3",
     "react": "19.2.6",
     "react-native": "0.85.3",
     "react-native-nitro-modules": "0.35.9",
@@ -85,22 +83,7 @@
     "extends": [
       "@react-native",
       "prettier"
-    ],
-    "plugins": [
-      "prettier"
-    ],
-    "rules": {
-      "prettier/prettier": [
-        "warn",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
-        }
-      ]
-    }
+    ]
   },
   "eslintIgnore": [
     "node_modules/",

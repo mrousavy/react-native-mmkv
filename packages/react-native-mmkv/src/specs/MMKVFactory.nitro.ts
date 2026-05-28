@@ -96,8 +96,10 @@ export interface Configuration {
   compareBeforeSet?: boolean
 }
 
-export interface MMKVFactory
-  extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
+export interface MMKVFactory extends HybridObject<{
+  ios: 'c++'
+  android: 'c++'
+}> {
   /**
    * Initialize the MMKV library with the given root path.
    * This has to be called once, before using {@linkcode createMMKV}.
