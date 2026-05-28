@@ -100,7 +100,7 @@ jobs:
           -scheme MmkvExample \
           -sdk iphonesimulator \
           -configuration Debug \
-          -destination 'platform=iOS Simulator,name=${{ env.DEVICE_MODEL }}' \
+          -destination 'generic/platform=iOS Simulator' \
           build \
           CODE_SIGNING_ALLOWED=NO"
 
