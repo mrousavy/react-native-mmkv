@@ -73,7 +73,7 @@
     "react": "19.2.6",
     "react-native": "0.85.3",
     "react-native-nitro-modules": "0.35.9",
-    "typescript": "^5.8.3"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": "*",

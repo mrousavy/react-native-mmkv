@@ -13,12 +13,10 @@
     "jsx": "react",
     "lib": ["esnext", "DOM"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": false,
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "noImplicitUseStrict": false,
-    "noStrictGenericChecks": false,
     "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -26,6 +24,7 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
+    "types": ["jest", "node"],
     "verbatimModuleSyntax": true
   }
 }
