@@ -10,7 +10,7 @@ on:
 jobs:
   build_release:
     name: Build iOS Example App (release, new architecture)
-    runs-on: macos-latest
+    runs-on: macos-26
     steps:
       - uses: actions/checkout@v6
       - uses: oven-sh/setup-bun@v2
@@ -28,8 +28,8 @@ jobs:
           bundler-cache: true
           working-directory: example
 
-      - name: Select Xcode 16.4
-        run: sudo xcode-select -s "/Applications/Xcode_16.4.app/Contents/Developer"
+      - name: Select Xcode 26.5
+        run: sudo xcode-select -s "/Applications/Xcode_26.5.app/Contents/Developer"
 
       - name: Restore Pods cache
         uses: actions/cache@v5
