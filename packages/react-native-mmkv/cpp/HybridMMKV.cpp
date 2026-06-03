@@ -82,6 +82,10 @@ double HybridMMKV::getByteSize() {
   return instance->actualSize();
 }
 
+size_t HybridMMKV::getExternalMemorySize() noexcept {
+  return instance != nullptr ? instance->actualSize() : 0;
+}
+
 bool HybridMMKV::getIsReadOnly() {
   return instance->isReadOnly();
 }

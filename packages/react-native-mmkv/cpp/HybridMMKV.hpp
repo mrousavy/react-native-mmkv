@@ -44,6 +44,9 @@ public:
   Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) override;
   double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) override;
 
+protected:
+  size_t getExternalMemorySize() noexcept override;
+
 private:
   static MMKVMode getMMKVMode(const Configuration& config);
 
