@@ -134,13 +134,20 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    */
   trim(): void
   /**
+   * Checks whether this {@linkcode MMKV} instance was changed by another process,
+   * such as an app extension, App Clip, or background service.
+   *
+   * This is only needed if you want to manually force MMKV's native outer-process
+   * content check. Web implementations do nothing.
+   */
+  checkExternalContentChanged(): void
+  /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
    *
    * To unsubscribe from value changes, call `remove()` on the Listener.
    */
   addOnValueChangedListener(onValueChanged: (key: string) => void): Listener
-
   /**
    * Imports all keys and values from the
    * given other {@linkcode MMKV} instance.

@@ -6,8 +6,8 @@
 //
 
 #include "HybridMMKV.hpp"
+#include "MMKVListenerRegistry.hpp"
 #include "MMKVTypes.hpp"
-#include "MMKVValueChangedListenerRegistry.hpp"
 #include "ManagedMMBuffer.hpp"
 #include <NitroModules/NitroLogger.hpp>
 
@@ -64,6 +64,8 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
 
     throw std::runtime_error("Failed to create MMKV instance!");
   }
+
+  MMKVListenerRegistry::registerInstance(instance);
 }
 
 std::string HybridMMKV::getId() {
@@ -127,7 +129,7 @@ void HybridMMKV::set(const std::string& key, const std::variant<bool, std::share
   }
 
   // Notify on changed
-  MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+  MMKVListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
 }
 
 std::optional<bool> HybridMMKV::getBoolean(const std::string& key) {
@@ -178,7 +180,7 @@ bool HybridMMKV::remove(const std::string& key) {
   bool wasRemoved = instance->removeValueForKey(key);
   if (wasRemoved) {
     // Notify on changed
-    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+    MMKVListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
   }
   return wasRemoved;
 }
@@ -192,7 +194,7 @@ void HybridMMKV::clearAll() {
   instance->clearAll();
   for (const auto& key : keysBefore) {
     // Notify on changed
-    MMKVValueChangedListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
+    MMKVListenerRegistry::notifyOnValueChanged(instance->mmapID(), key);
   }
 }
 
@@ -224,14 +226,18 @@ void HybridMMKV::trim() {
   instance->clearMemoryCache();
 }
 
+void HybridMMKV::checkExternalContentChanged() {
+  instance->checkContentChanged();
+}
+
 Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
   // Add listener
   auto mmkvID = instance->mmapID();
-  auto listenerID = MMKVValueChangedListenerRegistry::addListener(mmkvID, onValueChanged);
+  auto listenerID = MMKVListenerRegistry::addValueChangedListener(mmkvID, onValueChanged);
 
   return Listener([=]() {
     // remove()
-    MMKVValueChangedListenerRegistry::removeListener(mmkvID, listenerID);
+    MMKVListenerRegistry::removeValueChangedListener(mmkvID, listenerID);
   });
 }
 

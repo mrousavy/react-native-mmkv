@@ -7,6 +7,8 @@
 
 #include "HybridMMKVFactory.hpp"
 #include "HybridMMKV.hpp"
+#include "MMKVGlobalHandler.hpp"
+#include "MMKVListenerRegistry.hpp"
 #include "MMKVTypes.hpp"
 
 namespace margelo::nitro::mmkv {
@@ -19,7 +21,7 @@ void HybridMMKVFactory::initializeMMKV(const std::string& rootPath) {
   Logger::log(LogLevel::Info, TAG, "Initializing MMKV with rootPath=%s", rootPath.c_str());
 
   MMKVLogLevel logLevel = static_cast<MMKVLogLevel>(MMKV_LOG_LEVEL);
-  MMKV::initializeMMKV(rootPath, logLevel);
+  MMKV::initializeMMKV(rootPath, logLevel, &MMKVGlobalHandler::shared());
 }
 
 std::shared_ptr<HybridMMKVSpec> HybridMMKVFactory::createMMKV(const Configuration& configuration) {
@@ -27,6 +29,7 @@ std::shared_ptr<HybridMMKVSpec> HybridMMKVFactory::createMMKV(const Configuratio
 }
 
 bool HybridMMKVFactory::deleteMMKV(const std::string& id) {
+  MMKVListenerRegistry::unregisterInstance(id);
   return MMKV::removeStorage(id);
 }
 

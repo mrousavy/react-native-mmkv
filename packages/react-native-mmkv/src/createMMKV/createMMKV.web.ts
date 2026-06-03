@@ -126,6 +126,9 @@ export function createMMKV(
     trim: () => {
       // no-op
     },
+    checkExternalContentChanged: () => {
+      // no-op
+    },
     dispose: () => {},
     equals: () => false,
     name: 'MMKV',
