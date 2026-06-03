@@ -241,6 +241,9 @@ To check if an MMKV instance exists, use `existsMMKV(...)`:
 import { existsMMKV } from 'react-native-mmkv'
 
 const exists = existsMMKV('my-instance')
+
+// For instances created with a custom path:
+const existsAtPath = existsMMKV('my-instance', '/custom/mmkv/path')
 ```
 
 ### Delete an MMKV instance
@@ -251,6 +254,19 @@ To delete an MMKV instance, use `deleteMMKV(...)`:
 import { deleteMMKV } from 'react-native-mmkv'
 
 const wasDeleted = deleteMMKV('my-instance')
+
+// For instances created with a custom path:
+const wasDeletedAtPath = deleteMMKV('my-instance', '/custom/mmkv/path')
+```
+
+### Get the default MMKV base directory
+
+To get the default native MMKV base directory, use `getBaseDirectory()`:
+
+```ts
+import { getBaseDirectory } from 'react-native-mmkv'
+
+const baseDirectory = getBaseDirectory()
 ```
 
 ### Log Level

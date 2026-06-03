@@ -5,6 +5,9 @@ export type { Configuration, Mode } from './specs/MMKVFactory.nitro'
 // The create function
 export { createMMKV } from './createMMKV/createMMKV'
 
+// Path utilities
+export { getBaseDirectory } from './getBaseDirectory/getBaseDirectory'
+
 // Exists + Delete
 export { existsMMKV } from './existsMMKV/existsMMKV'
 export { deleteMMKV } from './deleteMMKV/deleteMMKV'

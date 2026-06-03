@@ -26,12 +26,16 @@ std::shared_ptr<HybridMMKVSpec> HybridMMKVFactory::createMMKV(const Configuratio
   return std::make_shared<HybridMMKV>(configuration);
 }
 
-bool HybridMMKVFactory::deleteMMKV(const std::string& id) {
-  return MMKV::removeStorage(id);
+bool HybridMMKVFactory::deleteMMKV(const std::string& id, const std::optional<std::string>& path) {
+  std::string rootPath = path.value_or("");
+  std::string* rootPathPtr = rootPath.empty() ? nullptr : &rootPath;
+  return MMKV::removeStorage(id, rootPathPtr);
 }
 
-bool HybridMMKVFactory::existsMMKV(const std::string& id) {
-  return MMKV::checkExist(id);
+bool HybridMMKVFactory::existsMMKV(const std::string& id, const std::optional<std::string>& path) {
+  std::string rootPath = path.value_or("");
+  std::string* rootPathPtr = rootPath.empty() ? nullptr : &rootPath;
+  return MMKV::checkExist(id, rootPathPtr);
 }
 
 } // namespace margelo::nitro::mmkv

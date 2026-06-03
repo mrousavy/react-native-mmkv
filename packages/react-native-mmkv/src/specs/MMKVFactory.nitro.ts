@@ -112,16 +112,17 @@ export interface MMKVFactory extends HybridObject<{
   createMMKV(configuration: Configuration): MMKV
 
   /**
-   * Deletes the MMKV instance with the
-   * given {@linkcode id}.
+   * Deletes the MMKV instance with the given `id`.
+   * If the instance was created with a custom `path`, pass the same path here.
    */
-  deleteMMKV(id: string): boolean
+  deleteMMKV(id: string, path?: string): boolean
 
   /**
-   * Returns `true` if an MMKV instance with the
-   * given {@linkcode id} exists, `false` otherwise.
+   * Returns `true` if an MMKV instance with the given `id` exists, `false`
+   * otherwise. If the instance was created with a custom `path`, pass the same
+   * path here.
    */
-  existsMMKV(id: string): boolean
+  existsMMKV(id: string, path?: string): boolean
 
   /**
    * Get the default MMKV instance's ID.
