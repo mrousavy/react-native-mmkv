@@ -126,6 +126,12 @@ export function createMMKV(
     trim: () => {
       // no-op
     },
+    backupToDirectory: () => {
+      throw new Error('`backupToDirectory(..)` is not supported on Web!')
+    },
+    restoreFromDirectory: () => {
+      throw new Error('`restoreFromDirectory(..)` is not supported on Web!')
+    },
     dispose: () => {},
     equals: () => false,
     name: 'MMKV',

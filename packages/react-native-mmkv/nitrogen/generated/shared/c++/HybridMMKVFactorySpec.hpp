@@ -17,11 +17,23 @@
 namespace margelo::nitro::mmkv { class HybridMMKVSpec; }
 // Forward declaration of `Configuration` to properly resolve imports.
 namespace margelo::nitro::mmkv { struct Configuration; }
+// Forward declaration of `BackupMMKVOptions` to properly resolve imports.
+namespace margelo::nitro::mmkv { struct BackupMMKVOptions; }
+// Forward declaration of `RestoreMMKVOptions` to properly resolve imports.
+namespace margelo::nitro::mmkv { struct RestoreMMKVOptions; }
+// Forward declaration of `BackupAllMMKVOptions` to properly resolve imports.
+namespace margelo::nitro::mmkv { struct BackupAllMMKVOptions; }
+// Forward declaration of `RestoreAllMMKVOptions` to properly resolve imports.
+namespace margelo::nitro::mmkv { struct RestoreAllMMKVOptions; }
 
 #include <string>
 #include <memory>
 #include "HybridMMKVSpec.hpp"
 #include "Configuration.hpp"
+#include "BackupMMKVOptions.hpp"
+#include "RestoreMMKVOptions.hpp"
+#include "BackupAllMMKVOptions.hpp"
+#include "RestoreAllMMKVOptions.hpp"
 
 namespace margelo::nitro::mmkv {
 
@@ -58,6 +70,10 @@ namespace margelo::nitro::mmkv {
       virtual std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) = 0;
       virtual bool deleteMMKV(const std::string& id) = 0;
       virtual bool existsMMKV(const std::string& id) = 0;
+      virtual bool backupMMKV(const BackupMMKVOptions& options) = 0;
+      virtual bool restoreMMKV(const RestoreMMKVOptions& options) = 0;
+      virtual double backupAllMMKV(const BackupAllMMKVOptions& options) = 0;
+      virtual double restoreAllMMKV(const RestoreAllMMKVOptions& options) = 0;
 
     protected:
       // Hybrid Setup

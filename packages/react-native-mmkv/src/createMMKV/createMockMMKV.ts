@@ -80,6 +80,14 @@ export function createMockMMKV(
     trim: () => {
       // no-op
     },
+    backupToDirectory: () => {
+      console.warn('Backup is not supported in mocked MMKV instances!')
+      return true
+    },
+    restoreFromDirectory: () => {
+      console.warn('Restore is not supported in mocked MMKV instances!')
+      return true
+    },
     name: 'MMKV',
     dispose: () => {},
     equals: () => {

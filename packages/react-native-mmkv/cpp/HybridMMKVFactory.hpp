@@ -22,6 +22,10 @@ public:
   std::shared_ptr<HybridMMKVSpec> createMMKV(const Configuration& configuration) override;
   bool deleteMMKV(const std::string& id) override;
   bool existsMMKV(const std::string& id) override;
+  bool backupMMKV(const BackupMMKVOptions& options) override;
+  bool restoreMMKV(const RestoreMMKVOptions& options) override;
+  double backupAllMMKV(const BackupAllMMKVOptions& options) override;
+  double restoreAllMMKV(const RestoreAllMMKVOptions& options) override;
 };
 
 } // namespace margelo::nitro::mmkv
