@@ -233,6 +233,33 @@ const otherStorage = createMMKV(...)
 const importedCount = storage.importAllFrom(otherStorage)
 ```
 
+### Backup and Restore
+
+To back up and restore a single MMKV instance, use the instance APIs:
+
+```ts
+const storage = createMMKV({ id: 'user-storage' })
+
+const didBackup = storage.backupToDirectory('/path/to/backup')
+const didRestore = storage.restoreFromDirectory('/path/to/backup')
+```
+
+You can also back up or restore one or all instances with the top-level APIs:
+
+```ts
+import { backupAllMMKV, restoreAllMMKV } from 'react-native-mmkv'
+
+const backupCount = backupAllMMKV({
+  destinationDirectory: '/path/to/backup',
+})
+
+const restoreCount = restoreAllMMKV({
+  sourceDirectory: '/path/to/backup',
+})
+```
+
+Backup and restore are native-only APIs. The source and destination directories must be writable native filesystem paths.
+
 ### Check if an MMKV instance exists
 
 To check if an MMKV instance exists, use `existsMMKV(...)`:
@@ -295,6 +322,7 @@ A mocked MMKV instance is automatically used when testing with Jest or Vitest, s
 
 * [Hooks](./docs/HOOKS.md)
 * [Value-change Listeners](./docs/LISTENERS.md)
+* [Backup and Restore](./docs/BACKUP_RESTORE.md)
 * [Migrate from AsyncStorage](./docs/MIGRATE_FROM_ASYNC_STORAGE.md)
 * [Using MMKV with redux-persist](./docs/WRAPPER_REDUX.md)
 * [Using MMKV with recoil](./docs/WRAPPER_RECOIL.md)

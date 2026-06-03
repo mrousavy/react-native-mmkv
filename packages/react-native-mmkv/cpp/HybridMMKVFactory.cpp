@@ -11,6 +11,17 @@
 
 namespace margelo::nitro::mmkv {
 
+namespace {
+
+  const std::string* getOptionalRootPath(const std::optional<std::string>& rootPath) {
+    if (!rootPath.has_value() || rootPath->empty()) {
+      return nullptr;
+    }
+    return &rootPath.value();
+  }
+
+} // namespace
+
 std::string HybridMMKVFactory::getDefaultMMKVInstanceId() {
   return DEFAULT_MMAP_ID;
 }
@@ -32,6 +43,24 @@ bool HybridMMKVFactory::deleteMMKV(const std::string& id) {
 
 bool HybridMMKVFactory::existsMMKV(const std::string& id) {
   return MMKV::checkExist(id);
+}
+
+bool HybridMMKVFactory::backupMMKV(const BackupMMKVOptions& options) {
+  return MMKV::backupOneToDirectory(options.id, options.destinationDirectory, getOptionalRootPath(options.rootPath));
+}
+
+bool HybridMMKVFactory::restoreMMKV(const RestoreMMKVOptions& options) {
+  return MMKV::restoreOneFromDirectory(options.id, options.sourceDirectory, getOptionalRootPath(options.rootPath));
+}
+
+double HybridMMKVFactory::backupAllMMKV(const BackupAllMMKVOptions& options) {
+  size_t backupCount = MMKV::backupAllToDirectory(options.destinationDirectory, getOptionalRootPath(options.rootPath));
+  return static_cast<double>(backupCount);
+}
+
+double HybridMMKVFactory::restoreAllMMKV(const RestoreAllMMKVOptions& options) {
+  size_t restoreCount = MMKV::restoreAllFromDirectory(options.sourceDirectory, getOptionalRootPath(options.rootPath));
+  return static_cast<double>(restoreCount);
 }
 
 } // namespace margelo::nitro::mmkv

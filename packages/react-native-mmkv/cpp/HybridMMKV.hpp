@@ -41,6 +41,8 @@ public:
   void encrypt(const std::string& key, std::optional<EncryptionType> encryptionType) override;
   void decrypt() override;
   void trim() override;
+  bool backupToDirectory(const std::string& destinationDirectory) override;
+  bool restoreFromDirectory(const std::string& sourceDirectory) override;
   Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) override;
   double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) override;
 
@@ -49,9 +51,11 @@ protected:
 
 private:
   static MMKVMode getMMKVMode(const Configuration& config);
+  const std::string* getRootPath() const;
 
 private:
   MMKV* instance;
+  std::string rootPath;
 };
 
 } // namespace margelo::nitro::mmkv

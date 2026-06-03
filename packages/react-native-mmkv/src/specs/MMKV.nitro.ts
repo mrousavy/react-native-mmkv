@@ -134,6 +134,16 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    */
   trim(): void
   /**
+   * Back up this MMKV instance to the given destination directory.
+   * @returns true if the backup was successful, false otherwise.
+   */
+  backupToDirectory(destinationDirectory: string): boolean
+  /**
+   * Restore this MMKV instance from the given source directory.
+   * @returns true if the restore was successful, false otherwise.
+   */
+  restoreFromDirectory(sourceDirectory: string): boolean
+  /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
    *

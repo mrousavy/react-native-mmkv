@@ -6,7 +6,17 @@ import {
   afterEach,
 } from 'react-native-harness';
 import { Platform } from 'react-native';
-import { MMKV, createMMKV, deleteMMKV, existsMMKV } from 'react-native-mmkv';
+import {
+  backupAllMMKV,
+  backupMMKV,
+  MMKV,
+  createMMKV,
+  deleteMMKV,
+  existsMMKV,
+  restoreAllMMKV,
+  restoreMMKV,
+} from 'react-native-mmkv';
+import { getPlatformContext } from '../../packages/react-native-mmkv/src/getMMKVFactory';
 
 const skipOnWeb = (reason: string): boolean => {
   if (Platform.OS === 'web') {
@@ -14,6 +24,16 @@ const skipOnWeb = (reason: string): boolean => {
     return true;
   }
   return false;
+};
+
+const getAndroidMMKVBasePath = (reason: string): string | undefined => {
+  if (Platform.OS !== 'android') {
+    console.log(`[skip · ${Platform.OS}] ${reason}`);
+    return undefined;
+  }
+
+  createMMKV({ id: 'backup-restore-base-path-probe' }).clearAll();
+  return getPlatformContext().getBaseDirectory();
 };
 
 const waitForNextTick = async () => {
@@ -926,6 +946,101 @@ describe('MMKV Storage Management', () => {
         ).toStrictEqual(randomIndex % 2 === 0);
       }
     });
+  });
+});
+
+describe('MMKV Backup & Restore', () => {
+  it('should accept single-instance top-level backup and restore APIs', () => {
+    const basePath = getAndroidMMKVBasePath(
+      'backup/restore needs a writable native filesystem path',
+    );
+    if (basePath == null) return;
+
+    const backupDirectory = basePath;
+    const id = `backup-single-${Date.now()}`;
+    const storage = createMMKV({ id });
+
+    storage.set('name', 'before-backup');
+    storage.set('count', 1);
+
+    const didBackup = backupMMKV({
+      id,
+      destinationDirectory: backupDirectory,
+    });
+    expect(typeof didBackup).toStrictEqual('boolean');
+
+    storage.set('name', 'after-backup');
+    storage.set('count', 2);
+
+    const didRestore = restoreMMKV({
+      id,
+      sourceDirectory: backupDirectory,
+    });
+    expect(typeof didRestore).toStrictEqual('boolean');
+    expect(storage.getString('name')).toStrictEqual('after-backup');
+    expect(storage.getNumber('count')).toStrictEqual(2);
+  });
+
+  it('should accept single-instance backup and restore instance APIs', () => {
+    const basePath = getAndroidMMKVBasePath(
+      'backup/restore needs a writable native filesystem path',
+    );
+    if (basePath == null) return;
+
+    const backupDirectory = basePath;
+    const storage = createMMKV({
+      id: `backup-instance-${Date.now()}`,
+    });
+
+    storage.set('string', 'original');
+    storage.set('number', 42);
+    storage.set('boolean', true);
+
+    const didBackup = storage.backupToDirectory(backupDirectory);
+    expect(typeof didBackup).toStrictEqual('boolean');
+
+    storage.set('string', 'changed');
+    storage.set('number', 24);
+    storage.set('boolean', false);
+
+    const didRestore = storage.restoreFromDirectory(backupDirectory);
+    expect(typeof didRestore).toStrictEqual('boolean');
+    expect(storage.getString('string')).toStrictEqual('changed');
+    expect(storage.getNumber('number')).toStrictEqual(24);
+    expect(storage.getBoolean('boolean')).toStrictEqual(false);
+  });
+
+  it('should accept backup and restore all APIs', () => {
+    const basePath = getAndroidMMKVBasePath(
+      'backup/restore needs a writable native filesystem path',
+    );
+    if (basePath == null) return;
+
+    const backupDirectory = basePath;
+    const first = createMMKV({
+      id: `backup-all-first-${Date.now()}`,
+    });
+    const second = createMMKV({
+      id: `backup-all-second-${Date.now()}`,
+    });
+
+    first.set('value', 'first-original');
+    second.set('value', 'second-original');
+
+    const backupCount = backupAllMMKV({
+      destinationDirectory: backupDirectory,
+    });
+    expect(typeof backupCount).toStrictEqual('number');
+
+    first.set('value', 'first-changed');
+    second.set('value', 'second-changed');
+
+    const restoreCount = restoreAllMMKV({
+      sourceDirectory: backupDirectory,
+    });
+    expect(typeof restoreCount).toStrictEqual('number');
+    expect(first.getString('value')).toStrictEqual('first-changed');
+    expect(second.getString('value')).toStrictEqual('second-changed');
   });
 });
 

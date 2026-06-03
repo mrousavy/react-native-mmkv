@@ -21,7 +21,7 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
   bool useAes256Encryption = config.encryptionType.value_or(EncryptionType::AES_128) == EncryptionType::AES_256;
   std::string encryptionKey = config.encryptionKey.value_or("");
   std::string* encryptionKeyPtr = encryptionKey.size() > 0 ? &encryptionKey : nullptr;
-  std::string rootPath = config.path.value_or("");
+  rootPath = config.path.value_or("");
   std::string* rootPathPtr = rootPath.size() > 0 ? &rootPath : nullptr;
   bool compareBeforeSet = config.compareBeforeSet.value_or(false);
 
@@ -228,6 +228,14 @@ void HybridMMKV::trim() {
   instance->clearMemoryCache();
 }
 
+bool HybridMMKV::backupToDirectory(const std::string& destinationDirectory) {
+  return MMKV::backupOneToDirectory(instance->mmapID(), destinationDirectory, getRootPath());
+}
+
+bool HybridMMKV::restoreFromDirectory(const std::string& sourceDirectory) {
+  return MMKV::restoreOneFromDirectory(instance->mmapID(), sourceDirectory, getRootPath());
+}
+
 Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
   // Add listener
   auto mmkvID = instance->mmapID();
@@ -250,6 +258,13 @@ MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
       return ::mmkv::MMKV_MULTI_PROCESS;
   }
   throw std::runtime_error("Invalid MMKV Mode value!");
+}
+
+const std::string* HybridMMKV::getRootPath() const {
+  if (rootPath.empty()) {
+    return nullptr;
+  }
+  return &rootPath;
 }
 
 double HybridMMKV::importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) {

@@ -19,6 +19,10 @@ namespace margelo::nitro::mmkv {
       prototype.registerHybridMethod("createMMKV", &HybridMMKVFactorySpec::createMMKV);
       prototype.registerHybridMethod("deleteMMKV", &HybridMMKVFactorySpec::deleteMMKV);
       prototype.registerHybridMethod("existsMMKV", &HybridMMKVFactorySpec::existsMMKV);
+      prototype.registerHybridMethod("backupMMKV", &HybridMMKVFactorySpec::backupMMKV);
+      prototype.registerHybridMethod("restoreMMKV", &HybridMMKVFactorySpec::restoreMMKV);
+      prototype.registerHybridMethod("backupAllMMKV", &HybridMMKVFactorySpec::backupAllMMKV);
+      prototype.registerHybridMethod("restoreAllMMKV", &HybridMMKVFactorySpec::restoreAllMMKV);
     });
   }
 

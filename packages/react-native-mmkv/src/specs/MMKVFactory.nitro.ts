@@ -96,6 +96,66 @@ export interface Configuration {
   compareBeforeSet?: boolean
 }
 
+export interface BackupMMKVOptions {
+  /**
+   * The MMKV instance ID to back up.
+   */
+  id: string
+  /**
+   * The directory to write the backup files to.
+   */
+  destinationDirectory: string
+  /**
+   * The root path where the MMKV instance is stored.
+   *
+   * @default undefined
+   */
+  rootPath?: string
+}
+
+export interface RestoreMMKVOptions {
+  /**
+   * The MMKV instance ID to restore.
+   */
+  id: string
+  /**
+   * The directory to restore the backup files from.
+   */
+  sourceDirectory: string
+  /**
+   * The root path where the MMKV instance should be restored.
+   *
+   * @default undefined
+   */
+  rootPath?: string
+}
+
+export interface BackupAllMMKVOptions {
+  /**
+   * The directory to write the backup files to.
+   */
+  destinationDirectory: string
+  /**
+   * The root path where the MMKV instances are stored.
+   *
+   * @default undefined
+   */
+  rootPath?: string
+}
+
+export interface RestoreAllMMKVOptions {
+  /**
+   * The directory to restore the backup files from.
+   */
+  sourceDirectory: string
+  /**
+   * The root path where the MMKV instances should be restored.
+   *
+   * @default undefined
+   */
+  rootPath?: string
+}
+
 export interface MMKVFactory extends HybridObject<{
   ios: 'c++'
   android: 'c++'
@@ -122,6 +182,28 @@ export interface MMKVFactory extends HybridObject<{
    * given {@linkcode id} exists, `false` otherwise.
    */
   existsMMKV(id: string): boolean
+
+  /**
+   * Back up one MMKV instance to the given destination directory.
+   */
+  backupMMKV(options: BackupMMKVOptions): boolean
+
+  /**
+   * Restore one MMKV instance from the given source directory.
+   */
+  restoreMMKV(options: RestoreMMKVOptions): boolean
+
+  /**
+   * Back up all MMKV instances to the given destination directory.
+   * @returns the number of backed-up instances.
+   */
+  backupAllMMKV(options: BackupAllMMKVOptions): number
+
+  /**
+   * Restore all MMKV instances from the given source directory.
+   * @returns the number of restored instances.
+   */
+  restoreAllMMKV(options: RestoreAllMMKVOptions): number
 
   /**
    * Get the default MMKV instance's ID.
