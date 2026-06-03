@@ -29,7 +29,8 @@ HybridMMKV::HybridMMKV(const Configuration& config) : HybridObject(TAG) {
                         .aes256 = useAes256Encryption,
                         .cryptKey = encryptionKeyPtr,
                         .rootPath = rootPathPtr,
-                        .enableCompareBeforeSet = compareBeforeSet};
+                        .enableCompareBeforeSet = compareBeforeSet,
+                        .recover = getRecoveryStrategy(config)};
 
   bool hasEncryptionKey = encryptionKey.size() > 0;
   Logger::log(LogLevel::Info, TAG, "Creating MMKV instance \"%s\"... (Path: %s, Encrypted: %s)", config.id.c_str(), rootPath.c_str(),
@@ -246,6 +247,20 @@ MMKVMode HybridMMKV::getMMKVMode(const Configuration& config) {
       return ::mmkv::MMKV_MULTI_PROCESS;
   }
   throw std::runtime_error("Invalid MMKV Mode value!");
+}
+
+std::optional<MMKVRecoverStrategic> HybridMMKV::getRecoveryStrategy(const Configuration& config) {
+  if (!config.recoveryStrategy.has_value()) {
+    return std::nullopt;
+  }
+
+  switch (config.recoveryStrategy.value()) {
+    case RecoveryStrategy::DISCARD_ON_ERROR:
+      return MMKVRecoverStrategic::OnErrorDiscard;
+    case RecoveryStrategy::RECOVER_ON_ERROR:
+      return MMKVRecoverStrategic::OnErrorRecover;
+  }
+  throw std::runtime_error("Invalid MMKV RecoveryStrategy value!");
 }
 
 double HybridMMKV::importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) {
