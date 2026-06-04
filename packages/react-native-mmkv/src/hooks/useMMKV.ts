@@ -12,9 +12,13 @@ function isConfigurationEqual(
 
   return (
     left.encryptionKey === right.encryptionKey &&
+    left.encryptionType === right.encryptionType &&
     left.id === right.id &&
     left.path === right.path &&
-    left.mode === right.mode
+    left.mode === right.mode &&
+    left.readOnly === right.readOnly &&
+    left.compareBeforeSet === right.compareBeforeSet &&
+    left.recoveryStrategy === right.recoveryStrategy
   )
 }
 

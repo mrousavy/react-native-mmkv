@@ -49,6 +49,7 @@ protected:
 
 private:
   static MMKVMode getMMKVMode(const Configuration& config);
+  static std::optional<MMKVRecoverStrategic> getRecoveryStrategy(const Configuration& config);
 
 private:
   MMKV* instance;

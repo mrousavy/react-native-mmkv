@@ -392,6 +392,30 @@ describe('MMKV Configuration & Multiple Instances', () => {
       // Clean up
       storage1.clearAll();
     });
+
+    it('should create instance with discard-on-error recovery strategy', () => {
+      const storage = createMMKV({
+        id: 'recovery-discard-test',
+        recoveryStrategy: 'discard-on-error',
+      });
+
+      storage.set('key', 'value');
+      expect(storage.getString('key')).toStrictEqual('value');
+
+      storage.clearAll();
+    });
+
+    it('should create instance with recover-on-error recovery strategy', () => {
+      const storage = createMMKV({
+        id: 'recovery-recover-test',
+        recoveryStrategy: 'recover-on-error',
+      });
+
+      storage.set('key', 'value');
+      expect(storage.getString('key')).toStrictEqual('value');
+
+      storage.clearAll();
+    });
   });
 
   describe('Instance Management', () => {
