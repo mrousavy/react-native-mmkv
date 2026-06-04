@@ -416,6 +416,17 @@ describe('MMKV Configuration & Multiple Instances', () => {
 
       storage.clearAll();
     });
+
+    it('should check for external content changes', () => {
+      const storage = createMMKV({ id: 'content-change-check-test' });
+
+      storage.checkContentChanged();
+
+      storage.set('content-change-check', 'value');
+      expect(storage.getString('content-change-check')).toStrictEqual('value');
+
+      storage.clearAll();
+    });
   });
 
   describe('Instance Management', () => {

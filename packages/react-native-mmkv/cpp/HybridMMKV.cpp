@@ -229,6 +229,10 @@ void HybridMMKV::trim() {
   instance->clearMemoryCache();
 }
 
+void HybridMMKV::checkContentChanged() {
+  instance->checkContentChanged();
+}
+
 Listener HybridMMKV::addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) {
   // Add listener
   auto mmkvID = instance->mmapID();

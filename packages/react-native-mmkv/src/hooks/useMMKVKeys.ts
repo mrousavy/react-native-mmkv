@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { MMKV } from '../specs/MMKV.nitro'
 import { getDefaultMMKVInstance } from '../createMMKV/getDefaultMMKVInstance'
 import { useMMKVListener } from './useMMKVListener'
+import { addContentChangedAppStateListener } from './addContentChangedAppStateListener'
 
 /**
  * Get a list of all keys that exist in the given MMKV {@linkcode instance}.
@@ -31,6 +32,13 @@ export function useMMKVKeys(instance?: MMKV): string[] {
       }
     })
   }, mmkv)
+
+  useEffect(() => {
+    const appStateListener = addContentChangedAppStateListener(mmkv, () => {
+      setKeys(mmkv.getAllKeys())
+    })
+    return () => appStateListener.remove()
+  }, [mmkv])
 
   return allKeys
 }
