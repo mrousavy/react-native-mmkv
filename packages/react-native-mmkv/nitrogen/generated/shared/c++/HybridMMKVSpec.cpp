@@ -33,6 +33,7 @@ namespace margelo::nitro::mmkv {
       prototype.registerHybridMethod("encrypt", &HybridMMKVSpec::encrypt);
       prototype.registerHybridMethod("decrypt", &HybridMMKVSpec::decrypt);
       prototype.registerHybridMethod("trim", &HybridMMKVSpec::trim);
+      prototype.registerHybridMethod("checkContentChanged", &HybridMMKVSpec::checkContentChanged);
       prototype.registerHybridMethod("addOnValueChangedListener", &HybridMMKVSpec::addOnValueChangedListener);
       prototype.registerHybridMethod("importAllFrom", &HybridMMKVSpec::importAllFrom);
     });

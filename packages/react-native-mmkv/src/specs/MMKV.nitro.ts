@@ -134,6 +134,11 @@ export interface MMKV extends HybridObject<{ ios: 'c++'; android: 'c++' }> {
    */
   trim(): void
   /**
+   * Checks whether the underlying storage file changed outside this process,
+   * and reloads this instance's data if needed.
+   */
+  checkContentChanged(): void
+  /**
    * Adds a value changed listener. The Listener will be called whenever any value
    * in this storage instance changes (set or delete).
    *

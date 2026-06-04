@@ -41,6 +41,7 @@ public:
   void encrypt(const std::string& key, std::optional<EncryptionType> encryptionType) override;
   void decrypt() override;
   void trim() override;
+  void checkContentChanged() override;
   Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) override;
   double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) override;
 

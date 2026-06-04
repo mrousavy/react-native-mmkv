@@ -80,6 +80,9 @@ export function createMockMMKV(
     trim: () => {
       // no-op
     },
+    checkContentChanged: () => {
+      // no-op
+    },
     name: 'MMKV',
     dispose: () => {},
     equals: () => {

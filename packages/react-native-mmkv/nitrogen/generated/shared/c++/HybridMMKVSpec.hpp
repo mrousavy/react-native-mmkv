@@ -80,6 +80,7 @@ namespace margelo::nitro::mmkv {
       virtual void encrypt(const std::string& key, std::optional<EncryptionType> encryptionType) = 0;
       virtual void decrypt() = 0;
       virtual void trim() = 0;
+      virtual void checkContentChanged() = 0;
       virtual Listener addOnValueChangedListener(const std::function<void(const std::string& /* key */)>& onValueChanged) = 0;
       virtual double importAllFrom(const std::shared_ptr<HybridMMKVSpec>& other) = 0;
 
