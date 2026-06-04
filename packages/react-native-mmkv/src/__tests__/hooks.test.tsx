@@ -1,6 +1,5 @@
 import React from 'react'
-import { AppState, Button, Text } from 'react-native'
-import type { AppStateStatus, NativeEventSubscription } from 'react-native'
+import { Button, Text } from 'react-native'
 import {
   act,
   fireEvent,
@@ -10,7 +9,7 @@ import {
   cleanup,
   waitFor,
 } from '@testing-library/react-native'
-import { createMMKV, useMMKVKeys, useMMKVNumber, useMMKVString } from '..'
+import { createMMKV, useMMKVNumber, useMMKVString } from '..'
 
 const mmkv = createMMKV()
 
@@ -21,36 +20,7 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup()
-  jest.restoreAllMocks()
 })
-
-function mockAppStateChangeListener(): {
-  emit: (state: AppStateStatus) => void
-} {
-  const listeners = new Set<(state: AppStateStatus) => void>()
-
-  jest
-    .spyOn(AppState, 'addEventListener')
-    .mockImplementation((type, listener): NativeEventSubscription => {
-      if (type === 'change') {
-        listeners.add(listener as (state: AppStateStatus) => void)
-      }
-
-      return {
-        remove: () => {
-          listeners.delete(listener as (state: AppStateStatus) => void)
-        },
-      } as NativeEventSubscription
-    })
-
-  return {
-    emit: (state) => {
-      act(() => {
-        listeners.forEach((listener) => listener(state))
-      })
-    },
-  }
-}
 
 test('hooks update when the value is changed directly through the instance', () => {
   const { result } = renderHook(() => useMMKVString('string-key', mmkv))
@@ -158,41 +128,4 @@ test('useMMKV hook stays consistent during rapid updates', async () => {
   await waitFor(() => {
     expect(result.current[0]).toBe(100)
   })
-})
-
-test('useMMKV hook checks for external content changes when app becomes active', () => {
-  const appState = mockAppStateChangeListener()
-  const key = 'app-state-key'
-  let value = 'before'
-
-  const checkContentChanged = jest.spyOn(mmkv, 'checkContentChanged')
-  jest.spyOn(mmkv, 'getString').mockImplementation((requestedKey) => {
-    return requestedKey === key ? value : undefined
-  })
-
-  const { result } = renderHook(() => useMMKVString(key, mmkv))
-  expect(result.current[0]).toStrictEqual('before')
-
-  value = 'after'
-  appState.emit('active')
-
-  expect(checkContentChanged).toHaveBeenCalledTimes(1)
-  expect(result.current[0]).toStrictEqual('after')
-})
-
-test('useMMKVKeys checks for external content changes when app becomes active', () => {
-  const appState = mockAppStateChangeListener()
-  let keys: string[] = []
-
-  const checkContentChanged = jest.spyOn(mmkv, 'checkContentChanged')
-  jest.spyOn(mmkv, 'getAllKeys').mockImplementation(() => keys)
-
-  const { result } = renderHook(() => useMMKVKeys(mmkv))
-  expect(result.current).toStrictEqual([])
-
-  keys = ['external-key']
-  appState.emit('active')
-
-  expect(checkContentChanged).toHaveBeenCalledTimes(1)
-  expect(result.current).toStrictEqual(['external-key'])
 })

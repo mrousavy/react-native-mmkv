@@ -1,7 +1,6 @@
 import { useCallback, useSyncExternalStore } from 'react'
 import { getDefaultMMKVInstance } from '../createMMKV/getDefaultMMKVInstance'
 import type { MMKV } from '../specs/MMKV.nitro'
-import { addContentChangedAppStateListener } from './addContentChangedAppStateListener'
 
 export function createMMKVHook<
   T extends (boolean | number | string | ArrayBufferLike) | undefined,
@@ -22,14 +21,7 @@ export function createMMKVHook<
               onStoreChange()
             }
           })
-          const appStateListener = addContentChangedAppStateListener(
-            mmkv,
-            onStoreChange
-          )
-          return () => {
-            listener.remove()
-            appStateListener.remove()
-          }
+          return () => listener.remove()
         },
         [key, mmkv]
       ),
