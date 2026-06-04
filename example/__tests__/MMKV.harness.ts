@@ -1161,6 +1161,17 @@ describe('MMKV Listeners & Observers', () => {
       listener.remove();
     });
   });
+
+  describe('External Content Change Checks', () => {
+    it('should allow manually checking for external content changes', async () => {
+      storage.checkExternalContentChanged();
+      storage.set('external-api-test', 'value');
+
+      await waitForNextTick();
+
+      expect(storage.getString('external-api-test')).toStrictEqual('value');
+    });
+  });
 });
 
 describe('Deleting instances and checking if they exist', () => {

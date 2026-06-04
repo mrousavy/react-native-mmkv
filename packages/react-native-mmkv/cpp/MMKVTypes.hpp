@@ -17,6 +17,8 @@ namespace mmkv {
 using MMKV = ::MMKV;
 using MMKVMode = ::MMKVMode;
 using MMKVLogLevel = ::MMKVLogLevel;
+using MMKVLog_t = ::MMKVLog_t;
+using MMKVRecoverStrategic = ::MMKVRecoverStrategic;
 
 // Constants - bring into mmkv namespace
 constexpr auto MMKVLogDebug = ::MMKVLogDebug;
@@ -24,6 +26,8 @@ constexpr auto MMKVLogInfo = ::MMKVLogInfo;
 constexpr auto MMKVLogWarning = ::MMKVLogWarning;
 constexpr auto MMKVLogError = ::MMKVLogError;
 constexpr auto MMKVLogNone = ::MMKVLogNone;
+constexpr auto OnErrorDiscard = ::OnErrorDiscard;
+constexpr auto OnErrorRecover = ::OnErrorRecover;
 
 constexpr auto MMKV_SINGLE_PROCESS = ::MMKV_SINGLE_PROCESS;
 constexpr auto MMKV_MULTI_PROCESS = ::MMKV_MULTI_PROCESS;
@@ -33,6 +37,9 @@ constexpr auto MMKV_READ_ONLY = ::MMKVMode::MMKV_READ_ONLY;
 #else
 #include <MMKVCore/MMKV.h>
 // iOS already has everything in mmkv:: namespace
+namespace mmkv {
+using MMKVLog_t = ::MMKVLog_t;
+} // namespace mmkv
 #endif
 
 /**
