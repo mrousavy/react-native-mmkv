@@ -181,8 +181,8 @@ const user = {
 storage.set('user', JSON.stringify(user))
 
 // Deserialize the JSON string into an object
-const jsonUser = storage.getString('user') // { 'username': 'Marc', 'age': 21 }
-const userObject = JSON.parse(jsonUser)
+const jsonUser = storage.getString('user') // '{ "username": "Marc", "age": 21 }'
+const userObject = JSON.parse(jsonUser) // { username: 'Marc', age: 21 }
 ```
 
 ### Encryption
@@ -215,7 +215,7 @@ console.log(buffer) // [1, 100, 255]
 
 ```ts
 // get size of MMKV storage in bytes
-const size = storage.size
+const size = storage.byteSize
 if (size >= 4096) {
   // clean unused keys and clear memory cache
   storage.trim()
