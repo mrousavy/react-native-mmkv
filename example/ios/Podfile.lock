@@ -3,10 +3,10 @@ PODS:
   - hermes-engine (250829098.0.10):
     - hermes-engine/Pre-built (= 250829098.0.10)
   - hermes-engine/Pre-built (250829098.0.10)
-  - MMKVCore (2.4.1)
+  - MMKVCore (2.4.2)
   - NitroMmkv (4.3.2):
     - hermes-engine
-    - MMKVCore (= 2.4.1)
+    - MMKVCore (= 2.4.2)
     - NitroModules
     - RCTRequired
     - RCTTypeSafety
@@ -2151,8 +2151,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FBLazyVector: 24e62c765683b8d89006a88a2c8f5cf019f0074d
   hermes-engine: f87521eebf2751865bc281cc0080f7ceaec32dae
-  MMKVCore: b29cd04b69f5794074e22183ba42ffee52445279
-  NitroMmkv: 1d06bbfa371e0a7817d9a3bac314111fa0d8cdfb
+  MMKVCore: a58d2ce5b580948122e85be3ddf378c9b1ef739e
+  NitroMmkv: 8590cd26df3e5b8534db8ff698d9fb2383bad85c
   NitroModules: 16bc17a076b12304d608f7c915b9d321f56dfc19
   RCTDeprecation: a4c521821fab57cbb125b36effe84d897d0dfa12
   RCTRequired: 9f3a7e5645d4bc3f551593de7550bb66ab6e42bc
@@ -2162,7 +2162,7 @@ SPEC CHECKSUMS:
   React: e2dc35338068bbd299c66f043ae0d7f25de8499e
   React-callinvoker: 28b25d21b124c26cebaea713ba7d801b9351dc48
   React-Core: 02ed7d2ffb70437bdf2aba074a13078a7b0b9ff0
-  React-Core-prebuilt: dc36d84d6574e057ad66761e3ceeacc68f20bbc9
+  React-Core-prebuilt: f1c20a028f2e128d94a9df626b87151ea78fc72a
   React-CoreModules: b3a5a42dadcde3b5d47b325bd912eb2ced89e146
   React-cxxreact: fe8f88dda044e5905e99a00f41b7a874c3908716
   React-debug: 92944dc4d89f56d640e75498266cbde557a48189
