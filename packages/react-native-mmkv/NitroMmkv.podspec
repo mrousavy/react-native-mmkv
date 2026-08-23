@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
 
   # Add MMKV Core dependency
   s.compiler_flags = '-x objective-c++'
-  s.dependency 'MMKVCore', '2.4.0'
+  s.dependency 'MMKVCore', '2.4.2'
 
   # Optionally configure MMKV log level via Podfile ($MMKVLogLevel) or env var (MMKV_LOG_LEVEL)
   mmkv_log_level = $MMKVLogLevel || ENV['MMKV_LOG_LEVEL']
