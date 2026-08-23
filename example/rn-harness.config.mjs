@@ -29,8 +29,8 @@ const config = {
     applePlatform({
       name: 'ios',
       device: appleSimulator(
-        process.env.HARNESS_IOS_DEVICE ?? 'iPhone 16 Pro',
-        process.env.HARNESS_IOS_VERSION ?? '18.6'
+        process.env.HARNESS_IOS_DEVICE ?? 'iPhone 17 Pro',
+        process.env.HARNESS_IOS_VERSION ?? '26.5'
       ),
       bundleId: 'com.mrousavy.mmkv.example',
     }),
