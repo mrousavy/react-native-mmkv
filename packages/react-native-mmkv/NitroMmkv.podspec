@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.authors      = package["author"]
 
   s.platforms    = { :ios => min_ios_version_supported, :visionos => 1.0, :tvos => "12.0", :osx => "10.14" }
-  s.source       = { :git => "https://github.com/mrousavy/react-native-mmkv.git", :tag => "#{s.version}" }
+  s.source       = { :git => "https://github.com/margelo/react-native-mmkv.git", :tag => "#{s.version}" }
 
   s.source_files = [
     # Implementation (Swift)

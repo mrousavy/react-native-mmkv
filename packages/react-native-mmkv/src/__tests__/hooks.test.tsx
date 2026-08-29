@@ -72,7 +72,7 @@ test('functional updates to hooks', () => {
   const button = screen.getByTestId('button')
 
   // Why these assertions:
-  // https://github.com/mrousavy/react-native-mmkv/issues/599
+  // https://github.com/margelo/react-native-mmkv/issues/599
   fireEvent.press(button)
   expect(screen.getByTestId('state-value').children).toStrictEqual([
     'State: ',
