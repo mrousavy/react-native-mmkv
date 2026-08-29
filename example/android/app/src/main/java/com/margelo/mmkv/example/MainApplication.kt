@@ -1,4 +1,4 @@
-package com.mrousavy.mmkv.example
+package com.margelo.mmkv.example
 
 import android.app.Application
 import com.facebook.react.PackageList

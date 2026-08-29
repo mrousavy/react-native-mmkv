@@ -42,7 +42,7 @@
 * **Customizable storage location**
 * **High performance** because everything is **written in C++**
 * **~30x faster than AsyncStorage**
-* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ NitroModules**](https://github.com/mrousavy/nitro) instead of the "old" Bridge
+* Uses [**JSI**](https://reactnative.dev/docs/the-new-architecture/landing-page#fast-javascriptnative-interfacing) and [**C++ NitroModules**](https://github.com/margelo/nitro) instead of the "old" Bridge
 * **iOS**, **Android** and **Web** support
 * Easy to use **React Hooks** API
 
@@ -304,7 +304,7 @@ A mocked MMKV instance is automatically used when testing with Jest or Vitest, s
 * [Using MMKV with jotai](./docs/WRAPPER_JOTAI.md)
 * [Using MMKV with react-query](./docs/WRAPPER_REACT_QUERY.md)
 * [Using MMKV with Tinybase](./docs/WRAPPER_TINYBASE.md)
-* [How is this library different from **react-native-mmkv-storage**?](https://github.com/mrousavy/react-native-mmkv/issues/100#issuecomment-886477361)
+* [How is this library different from **react-native-mmkv-storage**?](https://github.com/margelo/react-native-mmkv/issues/100#issuecomment-886477361)
 
 ## LocalStorage and In-Memory Storage (Web)
 

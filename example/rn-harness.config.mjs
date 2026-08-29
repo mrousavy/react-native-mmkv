@@ -24,7 +24,7 @@ const config = {
           heapSize: '1G',
         }
       ),
-      bundleId: 'com.mrousavy.mmkv.example',
+      bundleId: 'com.margelo.mmkv.example',
     }),
     applePlatform({
       name: 'ios',
@@ -32,7 +32,7 @@ const config = {
         process.env.HARNESS_IOS_DEVICE ?? 'iPhone 17 Pro',
         process.env.HARNESS_IOS_VERSION ?? '26.5'
       ),
-      bundleId: 'com.mrousavy.mmkv.example',
+      bundleId: 'com.margelo.mmkv.example',
     }),
     webPlatform({
       name: 'web',

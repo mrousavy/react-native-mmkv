@@ -47,14 +47,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mrousavy/react-native-mmkv.git"
+    "url": "git+https://github.com/margelo/react-native-mmkv.git"
   },
   "author": "Marc Rousavy <me@mrousavy.com> (https://github.com/mrousavy)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrousavy/react-native-mmkv/issues"
+    "url": "https://github.com/margelo/react-native-mmkv/issues"
   },
-  "homepage": "https://github.com/mrousavy/react-native-mmkv#readme",
+  "homepage": "https://github.com/margelo/react-native-mmkv#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

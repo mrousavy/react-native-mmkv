@@ -16,7 +16,7 @@ There have been a few breaking changes. This guide will help you migrate over fr
 
 ### Nitro Modules dependency
 
-Since react-native-mmkv is now a Nitro Module, you need to install the [react-native-nitro-modules](https://github.com/mrousavy/nitro) core dependency in your app:
+Since react-native-mmkv is now a Nitro Module, you need to install the [react-native-nitro-modules](https://github.com/margelo/nitro) core dependency in your app:
 
 ```sh
 npm install react-native-nitro-modules

@@ -1,3 +1,3 @@
 # react-native-mmkv
 
-See https://github.com/mrousavy/react-native-mmkv
+See https://github.com/margelo/react-native-mmkv
