@@ -317,6 +317,21 @@ If a user chooses to disable LocalStorage in their browser, the library will aut
 
 ## Integrations
 
+#### Expo
+
+If you use Expo Prebuild or EAS Build, configure the log level through the config plugin:
+
+```json
+{
+  "expo": {
+    "plugins": [
+      ["react-native-mmkv", { "logLevel": 4 }]
+    ]
+  }
+}
+```
+
+
 ### Rozenite
 
 Use [@rozenite/mmkv-plugin](https://www.rozenite.dev/docs/official-plugins/mmkv) to debug your MMKV storage using Rozenite.
