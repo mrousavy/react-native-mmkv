@@ -15,7 +15,7 @@ def reactNativeArchitectures() {
 }
 
 def isNewArchitectureEnabled() {
-  return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+  return project.hasProperty("newArchEnabled") && project.getProperty("newArchEnabled") == "true"
 }
 
 apply plugin: "com.android.library"
