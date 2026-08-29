@@ -6,7 +6,13 @@ import {
   afterEach,
 } from 'react-native-harness';
 import { Platform } from 'react-native';
-import { MMKV, createMMKV, deleteMMKV, existsMMKV } from 'react-native-mmkv';
+import {
+  MMKV,
+  createMMKV,
+  deleteMMKV,
+  existsMMKV,
+  getBaseDirectory,
+} from 'react-native-mmkv';
 
 const skipOnWeb = (reason: string): boolean => {
   if (Platform.OS === 'web') {
@@ -18,6 +24,12 @@ const skipOnWeb = (reason: string): boolean => {
 
 const waitForNextTick = async () => {
   await new Promise<void>((resolve) => setTimeout(resolve, 0));
+};
+
+const getNativeCustomPath = (name: string): string | undefined => {
+  if (skipOnWeb('custom paths are not supported on Web')) return undefined;
+  const baseDirectory = getBaseDirectory();
+  return `${baseDirectory}/${name}`;
 };
 
 describe('MMKV Core Functionality', () => {
@@ -1221,6 +1233,27 @@ describe('Deleting instances and checking if they exist', () => {
       const exists = existsMMKV('some-non-existing-instance');
       expect(exists).toStrictEqual(false);
     });
+
+    it('should accept an explicit undefined path argument', () => {
+      const id = `some-location-instance-${Date.now()}`;
+      const storage = createMMKV({ id });
+      storage.set('value', 'stored');
+
+      const exists = existsMMKV(id, undefined);
+      expect(exists).toStrictEqual(true);
+    });
+
+    it('should check custom path instances with their path', () => {
+      const id = `some-path-instance-${Date.now()}`;
+      const path = getNativeCustomPath(`path-aware-exists-${Date.now()}`);
+      if (path == null) return;
+
+      const storage = createMMKV({ id, path });
+      storage.set('value', 'stored');
+
+      expect(existsMMKV(id)).toStrictEqual(false);
+      expect(existsMMKV(id, path)).toStrictEqual(true);
+    });
   });
 
   describe('Deleting an instance', () => {
@@ -1248,6 +1281,29 @@ describe('Deleting instances and checking if they exist', () => {
     it('should not delete', () => {
       const wasDeleted = deleteMMKV('some-non-existing-instance');
       expect(wasDeleted).toStrictEqual(false);
+    });
+
+    it('should accept an explicit undefined path argument', () => {
+      const id = `some-location-instance-${Date.now()}`;
+      const storage = createMMKV({ id });
+      storage.set('value', 'stored');
+
+      const wasDeleted = deleteMMKV(id, undefined);
+      expect(wasDeleted).toStrictEqual(true);
+      expect(existsMMKV(id, undefined)).toStrictEqual(false);
+    });
+
+    it('should delete custom path instances with their path', () => {
+      const id = `some-path-instance-${Date.now()}`;
+      const path = getNativeCustomPath(`path-aware-delete-${Date.now()}`);
+      if (path == null) return;
+
+      const storage = createMMKV({ id, path });
+      storage.set('value', 'stored');
+
+      expect(existsMMKV(id, path)).toStrictEqual(true);
+      expect(deleteMMKV(id, path)).toStrictEqual(true);
+      expect(existsMMKV(id, path)).toStrictEqual(false);
     });
   });
 });
